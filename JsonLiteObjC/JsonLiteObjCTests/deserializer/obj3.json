@@ -1,0 +1,22 @@
+{
+    "id": "asdfghjk",
+    "while": [
+                {
+                "strValue": "string value",
+                "intValue": 123,
+                "array": [
+                          123,
+                          "123"
+                          ],
+                "child": {
+                "strValue": "string value",
+                "intValue": 123,
+                "array": [
+                          123,
+                          "123"
+                          ],
+                "child": null
+                }
+                }
+                ]
+}

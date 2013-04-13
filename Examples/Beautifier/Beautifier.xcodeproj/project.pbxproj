@@ -1,0 +1,273 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		84FD6833170E2B9800FCAA29 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6832170E2B9800FCAA29 /* main.c */; };
+		84FD6835170E2B9800FCAA29 /* Beautifier.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84FD6834170E2B9800FCAA29 /* Beautifier.1 */; };
+		84FD6849170E2BCC00FCAA29 /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6844170E2BCC00FCAA29 /* jsonlite_builder.c */; };
+		84FD684A170E2BCC00FCAA29 /* jsonlite_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6845170E2BCC00FCAA29 /* jsonlite_hash.c */; };
+		84FD684B170E2BCC00FCAA29 /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6846170E2BCC00FCAA29 /* jsonlite_parser.c */; };
+		84FD684C170E2BCC00FCAA29 /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6847170E2BCC00FCAA29 /* jsonlite_token.c */; };
+		84FD684D170E2BCC00FCAA29 /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6848170E2BCC00FCAA29 /* jsonlite_token_pool.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		84FD682D170E2B9800FCAA29 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				84FD6835170E2B9800FCAA29 /* Beautifier.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		84FD682F170E2B9800FCAA29 /* Beautifier */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Beautifier; sourceTree = BUILT_PRODUCTS_DIR; };
+		84FD6832170E2B9800FCAA29 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		84FD6834170E2B9800FCAA29 /* Beautifier.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Beautifier.1; sourceTree = "<group>"; };
+		84FD683C170E2BC000FCAA29 /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
+		84FD683D170E2BC000FCAA29 /* jsonlite_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_builder.h; sourceTree = "<group>"; };
+		84FD683E170E2BC000FCAA29 /* jsonlite_hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_hash.h; sourceTree = "<group>"; };
+		84FD683F170E2BC000FCAA29 /* jsonlite_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_parser.h; sourceTree = "<group>"; };
+		84FD6840170E2BC000FCAA29 /* jsonlite_token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token.h; sourceTree = "<group>"; };
+		84FD6841170E2BC000FCAA29 /* jsonlite_token_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token_pool.h; sourceTree = "<group>"; };
+		84FD6842170E2BC000FCAA29 /* jsonlite_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_types.h; sourceTree = "<group>"; };
+		84FD6844170E2BCC00FCAA29 /* jsonlite_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_builder.c; sourceTree = "<group>"; };
+		84FD6845170E2BCC00FCAA29 /* jsonlite_hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_hash.c; sourceTree = "<group>"; };
+		84FD6846170E2BCC00FCAA29 /* jsonlite_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
+		84FD6847170E2BCC00FCAA29 /* jsonlite_token.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
+		84FD6848170E2BCC00FCAA29 /* jsonlite_token_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		84FD682C170E2B9800FCAA29 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		84FD6826170E2B9800FCAA29 = {
+			isa = PBXGroup;
+			children = (
+				84FD6831170E2B9800FCAA29 /* Beautifier */,
+				84FD6830170E2B9800FCAA29 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		84FD6830170E2B9800FCAA29 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				84FD682F170E2B9800FCAA29 /* Beautifier */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		84FD6831170E2B9800FCAA29 /* Beautifier */ = {
+			isa = PBXGroup;
+			children = (
+				84FD683B170E2BC000FCAA29 /* include */,
+				84FD6843170E2BCC00FCAA29 /* src */,
+				84FD6832170E2B9800FCAA29 /* main.c */,
+				84FD6834170E2B9800FCAA29 /* Beautifier.1 */,
+			);
+			path = Beautifier;
+			sourceTree = "<group>";
+		};
+		84FD683B170E2BC000FCAA29 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				84FD683C170E2BC000FCAA29 /* jsonlite.h */,
+				84FD683D170E2BC000FCAA29 /* jsonlite_builder.h */,
+				84FD683E170E2BC000FCAA29 /* jsonlite_hash.h */,
+				84FD683F170E2BC000FCAA29 /* jsonlite_parser.h */,
+				84FD6840170E2BC000FCAA29 /* jsonlite_token.h */,
+				84FD6841170E2BC000FCAA29 /* jsonlite_token_pool.h */,
+				84FD6842170E2BC000FCAA29 /* jsonlite_types.h */,
+			);
+			name = include;
+			path = ../../../jsonlite/include;
+			sourceTree = "<group>";
+		};
+		84FD6843170E2BCC00FCAA29 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				84FD6844170E2BCC00FCAA29 /* jsonlite_builder.c */,
+				84FD6845170E2BCC00FCAA29 /* jsonlite_hash.c */,
+				84FD6846170E2BCC00FCAA29 /* jsonlite_parser.c */,
+				84FD6847170E2BCC00FCAA29 /* jsonlite_token.c */,
+				84FD6848170E2BCC00FCAA29 /* jsonlite_token_pool.c */,
+			);
+			name = src;
+			path = ../../../jsonlite/src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		84FD682E170E2B9800FCAA29 /* Beautifier */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84FD6838170E2B9800FCAA29 /* Build configuration list for PBXNativeTarget "Beautifier" */;
+			buildPhases = (
+				84FD682B170E2B9800FCAA29 /* Sources */,
+				84FD682C170E2B9800FCAA29 /* Frameworks */,
+				84FD682D170E2B9800FCAA29 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Beautifier;
+			productName = Beautifier;
+			productReference = 84FD682F170E2B9800FCAA29 /* Beautifier */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		84FD6827170E2B9800FCAA29 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Andrii Mamchur";
+			};
+			buildConfigurationList = 84FD682A170E2B9800FCAA29 /* Build configuration list for PBXProject "Beautifier" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 84FD6826170E2B9800FCAA29;
+			productRefGroup = 84FD6830170E2B9800FCAA29 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				84FD682E170E2B9800FCAA29 /* Beautifier */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		84FD682B170E2B9800FCAA29 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84FD6833170E2B9800FCAA29 /* main.c in Sources */,
+				84FD6849170E2BCC00FCAA29 /* jsonlite_builder.c in Sources */,
+				84FD684A170E2BCC00FCAA29 /* jsonlite_hash.c in Sources */,
+				84FD684B170E2BCC00FCAA29 /* jsonlite_parser.c in Sources */,
+				84FD684C170E2BCC00FCAA29 /* jsonlite_token.c in Sources */,
+				84FD684D170E2BCC00FCAA29 /* jsonlite_token_pool.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		84FD6836170E2B9800FCAA29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		84FD6837170E2B9800FCAA29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		84FD6839170E2B9800FCAA29 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		84FD683A170E2B9800FCAA29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		84FD682A170E2B9800FCAA29 /* Build configuration list for PBXProject "Beautifier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84FD6836170E2B9800FCAA29 /* Debug */,
+				84FD6837170E2B9800FCAA29 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84FD6838170E2B9800FCAA29 /* Build configuration list for PBXNativeTarget "Beautifier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84FD6839170E2B9800FCAA29 /* Debug */,
+				84FD683A170E2B9800FCAA29 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 84FD6827170E2B9800FCAA29 /* Project object */;
+}

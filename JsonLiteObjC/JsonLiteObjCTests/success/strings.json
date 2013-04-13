@@ -1,0 +1,14 @@
+[
+    "",
+    "Test",
+    "\nTe\nst\n",
+    "\r\n\t\\\/\b\f\"",
+    " spaces ",
+    "/",
+    "/unescaped/slashes",
+    "\/escaped\/slashes",
+    "\uD835\uDEE2",
+    "\u00E9",
+    "\ud834\udd1e",
+    "42\u00e942\u226542"
+]

@@ -1,0 +1,7 @@
+{
+    "str" : "string",
+    "number" : 134,
+    "url" : "http://code.google.com/p/jsonlite/",
+    "decimal" : 123456789987654321,
+    "date" : "Wed Nov 04 07:20:37\u0020+0000 2009"
+}

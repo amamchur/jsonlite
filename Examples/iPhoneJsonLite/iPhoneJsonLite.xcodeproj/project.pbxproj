@@ -1,0 +1,483 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8416D5AD1683C880003D166F /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5A81683C880003D166F /* jsonlite_builder.c */; };
+		8416D5AE1683C880003D166F /* jsonlite_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5A91683C880003D166F /* jsonlite_hash.c */; };
+		8416D5AF1683C880003D166F /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5AA1683C880003D166F /* jsonlite_parser.c */; };
+		8416D5B01683C880003D166F /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5AB1683C880003D166F /* jsonlite_token.c */; };
+		8416D5B11683C880003D166F /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5AC1683C880003D166F /* jsonlite_token_pool.c */; };
+		84F11FA61675580200F74694 /* pass1.json in Resources */ = {isa = PBXBuildFile; fileRef = 84F11FA51675580200F74694 /* pass1.json */; };
+		87E75BCE15828FFA00100333 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87E75BCD15828FFA00100333 /* UIKit.framework */; };
+		87E75BD015828FFA00100333 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87E75BCF15828FFA00100333 /* Foundation.framework */; };
+		87E75BD215828FFA00100333 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87E75BD115828FFA00100333 /* CoreGraphics.framework */; };
+		87E75BD815828FFA00100333 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 87E75BD615828FFA00100333 /* InfoPlist.strings */; };
+		87E75BDB15828FFA00100333 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75BDA15828FFA00100333 /* main.m */; };
+		87E75BE115828FFA00100333 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87E75BDF15828FFA00100333 /* MainWindow.xib */; };
+		87E75BE415828FFA00100333 /* iPhoneJsonLiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75BE315828FFA00100333 /* iPhoneJsonLiteViewController.m */; };
+		87E75BE715828FFA00100333 /* iPhoneJsonLiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87E75BE515828FFA00100333 /* iPhoneJsonLiteViewController.xib */; };
+		87E75C0E1582906200100333 /* JsonLiteAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75C031582906200100333 /* JsonLiteAccumulator.m */; };
+		87E75C101582906200100333 /* JsonLiteDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75C071582906200100333 /* JsonLiteDeserializer.m */; };
+		87E75C111582906200100333 /* JsonLiteMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75C091582906200100333 /* JsonLiteMetaData.m */; };
+		87E75C121582906200100333 /* JsonLiteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75C0B1582906200100333 /* JsonLiteParser.m */; };
+		87E75C131582906200100333 /* JsonLiteSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75C0D1582906200100333 /* JsonLiteSerializer.m */; };
+		87E75C231582907700100333 /* iPhoneJsonLiteAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75C171582907700100333 /* iPhoneJsonLiteAppDelegate.m */; };
+		87E75C251582907700100333 /* json_p1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 87E75C1A1582907700100333 /* json_p1.txt */; };
+		87E75C261582907700100333 /* json_p2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 87E75C1B1582907700100333 /* json_p2.txt */; };
+		87E75C271582907700100333 /* json_p3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 87E75C1C1582907700100333 /* json_p3.txt */; };
+		87E75C291582907700100333 /* TWTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75C1F1582907700100333 /* TWTimeline.m */; };
+		87E75C2A1582907700100333 /* TWUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75C211582907700100333 /* TWUser.m */; };
+		87E75C2D1582A18200100333 /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 87E75C2B1582A18100100333 /* sample.json */; };
+		87E75C2E1582A18200100333 /* twitter_public_timeline.json in Resources */ = {isa = PBXBuildFile; fileRef = 87E75C2C1582A18200100333 /* twitter_public_timeline.json */; };
+		87E8A2CD15B9F94200476361 /* JsonLiteConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E8A2CC15B9F94100476361 /* JsonLiteConverters.m */; };
+		87EFCA3D1676228D00277DE5 /* JsonLiteCollections.m in Sources */ = {isa = PBXBuildFile; fileRef = 87EFCA3C1676228D00277DE5 /* JsonLiteCollections.m */; };
+		87FFFAB616286E09004AAD06 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 87FFFAB516286E09004AAD06 /* Default-568h@2x.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8416D5A01683C880003D166F /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
+		8416D5A11683C880003D166F /* jsonlite_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_builder.h; sourceTree = "<group>"; };
+		8416D5A21683C880003D166F /* jsonlite_hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_hash.h; sourceTree = "<group>"; };
+		8416D5A31683C880003D166F /* jsonlite_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_parser.h; sourceTree = "<group>"; };
+		8416D5A41683C880003D166F /* jsonlite_token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token.h; sourceTree = "<group>"; };
+		8416D5A51683C880003D166F /* jsonlite_token_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token_pool.h; sourceTree = "<group>"; };
+		8416D5A61683C880003D166F /* jsonlite_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_types.h; sourceTree = "<group>"; };
+		8416D5A81683C880003D166F /* jsonlite_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_builder.c; sourceTree = "<group>"; };
+		8416D5A91683C880003D166F /* jsonlite_hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_hash.c; sourceTree = "<group>"; };
+		8416D5AA1683C880003D166F /* jsonlite_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
+		8416D5AB1683C880003D166F /* jsonlite_token.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
+		8416D5AC1683C880003D166F /* jsonlite_token_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
+		84F11FA51675580200F74694 /* pass1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = pass1.json; path = ../../../JsonLiteObjC/JsonLiteObjCTests/fail/pass1.json; sourceTree = "<group>"; };
+		87E75BC915828FFA00100333 /* iPhoneJsonLite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPhoneJsonLite.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		87E75BCD15828FFA00100333 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		87E75BCF15828FFA00100333 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		87E75BD115828FFA00100333 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		87E75BD515828FFA00100333 /* iPhoneJsonLite-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iPhoneJsonLite-Info.plist"; sourceTree = "<group>"; };
+		87E75BD715828FFA00100333 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		87E75BD915828FFA00100333 /* iPhoneJsonLite-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iPhoneJsonLite-Prefix.pch"; sourceTree = "<group>"; };
+		87E75BDA15828FFA00100333 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		87E75BE015828FFA00100333 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		87E75BE215828FFA00100333 /* iPhoneJsonLiteViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhoneJsonLiteViewController.h; sourceTree = "<group>"; };
+		87E75BE315828FFA00100333 /* iPhoneJsonLiteViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhoneJsonLiteViewController.m; sourceTree = "<group>"; };
+		87E75BE615828FFA00100333 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/iPhoneJsonLiteViewController.xib; sourceTree = "<group>"; };
+		87E75C021582906200100333 /* JsonLiteAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteAccumulator.h; sourceTree = "<group>"; };
+		87E75C031582906200100333 /* JsonLiteAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteAccumulator.m; sourceTree = "<group>"; };
+		87E75C061582906200100333 /* JsonLiteDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteDeserializer.h; sourceTree = "<group>"; };
+		87E75C071582906200100333 /* JsonLiteDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteDeserializer.m; sourceTree = "<group>"; };
+		87E75C081582906200100333 /* JsonLiteMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteMetaData.h; sourceTree = "<group>"; };
+		87E75C091582906200100333 /* JsonLiteMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteMetaData.m; sourceTree = "<group>"; };
+		87E75C0A1582906200100333 /* JsonLiteParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteParser.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		87E75C0B1582906200100333 /* JsonLiteParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteParser.m; sourceTree = "<group>"; };
+		87E75C0C1582906200100333 /* JsonLiteSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteSerializer.h; sourceTree = "<group>"; };
+		87E75C0D1582906200100333 /* JsonLiteSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteSerializer.m; sourceTree = "<group>"; };
+		87E75C161582907700100333 /* iPhoneJsonLiteAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iPhoneJsonLiteAppDelegate.h; sourceTree = "<group>"; };
+		87E75C171582907700100333 /* iPhoneJsonLiteAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iPhoneJsonLiteAppDelegate.m; sourceTree = "<group>"; };
+		87E75C1A1582907700100333 /* json_p1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = json_p1.txt; sourceTree = "<group>"; };
+		87E75C1B1582907700100333 /* json_p2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = json_p2.txt; sourceTree = "<group>"; };
+		87E75C1C1582907700100333 /* json_p3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = json_p3.txt; sourceTree = "<group>"; };
+		87E75C1E1582907700100333 /* TWTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWTimeline.h; sourceTree = "<group>"; };
+		87E75C1F1582907700100333 /* TWTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWTimeline.m; sourceTree = "<group>"; };
+		87E75C201582907700100333 /* TWUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWUser.h; sourceTree = "<group>"; };
+		87E75C211582907700100333 /* TWUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWUser.m; sourceTree = "<group>"; };
+		87E75C2B1582A18100100333 /* sample.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sample.json; sourceTree = SOURCE_ROOT; };
+		87E75C2C1582A18200100333 /* twitter_public_timeline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = twitter_public_timeline.json; sourceTree = SOURCE_ROOT; };
+		87E8A2CB15B9F94000476361 /* JsonLiteConverters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteConverters.h; sourceTree = "<group>"; };
+		87E8A2CC15B9F94100476361 /* JsonLiteConverters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteConverters.m; sourceTree = "<group>"; };
+		87EFCA3B1676228D00277DE5 /* JsonLiteCollections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteCollections.h; sourceTree = "<group>"; };
+		87EFCA3C1676228D00277DE5 /* JsonLiteCollections.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteCollections.m; sourceTree = "<group>"; };
+		87FFFAB516286E09004AAD06 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		87E75BC615828FFA00100333 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87E75BCE15828FFA00100333 /* UIKit.framework in Frameworks */,
+				87E75BD015828FFA00100333 /* Foundation.framework in Frameworks */,
+				87E75BD215828FFA00100333 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8416D59E1683C880003D166F /* jsonlite */ = {
+			isa = PBXGroup;
+			children = (
+				8416D59F1683C880003D166F /* include */,
+				8416D5A71683C880003D166F /* src */,
+			);
+			name = jsonlite;
+			path = ../../../jsonlite;
+			sourceTree = "<group>";
+		};
+		8416D59F1683C880003D166F /* include */ = {
+			isa = PBXGroup;
+			children = (
+				8416D5A01683C880003D166F /* jsonlite.h */,
+				8416D5A11683C880003D166F /* jsonlite_builder.h */,
+				8416D5A21683C880003D166F /* jsonlite_hash.h */,
+				8416D5A31683C880003D166F /* jsonlite_parser.h */,
+				8416D5A41683C880003D166F /* jsonlite_token.h */,
+				8416D5A51683C880003D166F /* jsonlite_token_pool.h */,
+				8416D5A61683C880003D166F /* jsonlite_types.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		8416D5A71683C880003D166F /* src */ = {
+			isa = PBXGroup;
+			children = (
+				8416D5A81683C880003D166F /* jsonlite_builder.c */,
+				8416D5A91683C880003D166F /* jsonlite_hash.c */,
+				8416D5AA1683C880003D166F /* jsonlite_parser.c */,
+				8416D5AB1683C880003D166F /* jsonlite_token.c */,
+				8416D5AC1683C880003D166F /* jsonlite_token_pool.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		87E75BBE15828FF900100333 = {
+			isa = PBXGroup;
+			children = (
+				87FFFAB516286E09004AAD06 /* Default-568h@2x.png */,
+				87E75BD315828FFA00100333 /* iPhoneJsonLite */,
+				87E75BCC15828FFA00100333 /* Frameworks */,
+				87E75BCA15828FFA00100333 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		87E75BCA15828FFA00100333 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				87E75BC915828FFA00100333 /* iPhoneJsonLite.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		87E75BCC15828FFA00100333 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				87E75BCD15828FFA00100333 /* UIKit.framework */,
+				87E75BCF15828FFA00100333 /* Foundation.framework */,
+				87E75BD115828FFA00100333 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		87E75BD315828FFA00100333 /* iPhoneJsonLite */ = {
+			isa = PBXGroup;
+			children = (
+				8416D59E1683C880003D166F /* jsonlite */,
+				87E75C011582906200100333 /* objc */,
+				87E75BDF15828FFA00100333 /* MainWindow.xib */,
+				87E75BE215828FFA00100333 /* iPhoneJsonLiteViewController.h */,
+				87E75BE315828FFA00100333 /* iPhoneJsonLiteViewController.m */,
+				87E75BE515828FFA00100333 /* iPhoneJsonLiteViewController.xib */,
+				87E75C161582907700100333 /* iPhoneJsonLiteAppDelegate.h */,
+				87E75C171582907700100333 /* iPhoneJsonLiteAppDelegate.m */,
+				87E75C1A1582907700100333 /* json_p1.txt */,
+				87E75C1B1582907700100333 /* json_p2.txt */,
+				87E75C1C1582907700100333 /* json_p3.txt */,
+				87E75C1E1582907700100333 /* TWTimeline.h */,
+				87E75C1F1582907700100333 /* TWTimeline.m */,
+				87E75C201582907700100333 /* TWUser.h */,
+				87E75C211582907700100333 /* TWUser.m */,
+				84F11FA51675580200F74694 /* pass1.json */,
+				87E75C2B1582A18100100333 /* sample.json */,
+				87E75C2C1582A18200100333 /* twitter_public_timeline.json */,
+				87E75BD415828FFA00100333 /* Supporting Files */,
+			);
+			path = iPhoneJsonLite;
+			sourceTree = "<group>";
+		};
+		87E75BD415828FFA00100333 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				87E75BD515828FFA00100333 /* iPhoneJsonLite-Info.plist */,
+				87E75BD615828FFA00100333 /* InfoPlist.strings */,
+				87E75BD915828FFA00100333 /* iPhoneJsonLite-Prefix.pch */,
+				87E75BDA15828FFA00100333 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		87E75C011582906200100333 /* objc */ = {
+			isa = PBXGroup;
+			children = (
+				87EFCA3B1676228D00277DE5 /* JsonLiteCollections.h */,
+				87EFCA3C1676228D00277DE5 /* JsonLiteCollections.m */,
+				87E75C021582906200100333 /* JsonLiteAccumulator.h */,
+				87E75C031582906200100333 /* JsonLiteAccumulator.m */,
+				87E75C061582906200100333 /* JsonLiteDeserializer.h */,
+				87E75C071582906200100333 /* JsonLiteDeserializer.m */,
+				87E75C081582906200100333 /* JsonLiteMetaData.h */,
+				87E75C091582906200100333 /* JsonLiteMetaData.m */,
+				87E75C0A1582906200100333 /* JsonLiteParser.h */,
+				87E75C0B1582906200100333 /* JsonLiteParser.m */,
+				87E75C0C1582906200100333 /* JsonLiteSerializer.h */,
+				87E75C0D1582906200100333 /* JsonLiteSerializer.m */,
+				87E8A2CB15B9F94000476361 /* JsonLiteConverters.h */,
+				87E8A2CC15B9F94100476361 /* JsonLiteConverters.m */,
+			);
+			name = objc;
+			path = ../../../objc;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		87E75BC815828FFA00100333 /* iPhoneJsonLite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 87E75BEA15828FFA00100333 /* Build configuration list for PBXNativeTarget "iPhoneJsonLite" */;
+			buildPhases = (
+				87E75BC515828FFA00100333 /* Sources */,
+				87E75BC615828FFA00100333 /* Frameworks */,
+				87E75BC715828FFA00100333 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iPhoneJsonLite;
+			productName = iPhoneJsonLite;
+			productReference = 87E75BC915828FFA00100333 /* iPhoneJsonLite.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		87E75BC015828FF900100333 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = "Andrii Mamchur";
+			};
+			buildConfigurationList = 87E75BC315828FF900100333 /* Build configuration list for PBXProject "iPhoneJsonLite" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 87E75BBE15828FF900100333;
+			productRefGroup = 87E75BCA15828FFA00100333 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				87E75BC815828FFA00100333 /* iPhoneJsonLite */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		87E75BC715828FFA00100333 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87E75BD815828FFA00100333 /* InfoPlist.strings in Resources */,
+				87E75BE115828FFA00100333 /* MainWindow.xib in Resources */,
+				87E75BE715828FFA00100333 /* iPhoneJsonLiteViewController.xib in Resources */,
+				87E75C251582907700100333 /* json_p1.txt in Resources */,
+				87E75C261582907700100333 /* json_p2.txt in Resources */,
+				87E75C271582907700100333 /* json_p3.txt in Resources */,
+				87E75C2D1582A18200100333 /* sample.json in Resources */,
+				87E75C2E1582A18200100333 /* twitter_public_timeline.json in Resources */,
+				87FFFAB616286E09004AAD06 /* Default-568h@2x.png in Resources */,
+				84F11FA61675580200F74694 /* pass1.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		87E75BC515828FFA00100333 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87E75BDB15828FFA00100333 /* main.m in Sources */,
+				87E75BE415828FFA00100333 /* iPhoneJsonLiteViewController.m in Sources */,
+				87E75C0E1582906200100333 /* JsonLiteAccumulator.m in Sources */,
+				87E75C101582906200100333 /* JsonLiteDeserializer.m in Sources */,
+				87E75C111582906200100333 /* JsonLiteMetaData.m in Sources */,
+				87E75C121582906200100333 /* JsonLiteParser.m in Sources */,
+				87E75C131582906200100333 /* JsonLiteSerializer.m in Sources */,
+				87E75C231582907700100333 /* iPhoneJsonLiteAppDelegate.m in Sources */,
+				87E75C291582907700100333 /* TWTimeline.m in Sources */,
+				87E75C2A1582907700100333 /* TWUser.m in Sources */,
+				87E8A2CD15B9F94200476361 /* JsonLiteConverters.m in Sources */,
+				87EFCA3D1676228D00277DE5 /* JsonLiteCollections.m in Sources */,
+				8416D5AD1683C880003D166F /* jsonlite_builder.c in Sources */,
+				8416D5AE1683C880003D166F /* jsonlite_hash.c in Sources */,
+				8416D5AF1683C880003D166F /* jsonlite_parser.c in Sources */,
+				8416D5B01683C880003D166F /* jsonlite_token.c in Sources */,
+				8416D5B11683C880003D166F /* jsonlite_token_pool.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		87E75BD615828FFA00100333 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87E75BD715828FFA00100333 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		87E75BDF15828FFA00100333 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87E75BE015828FFA00100333 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		87E75BE515828FFA00100333 /* iPhoneJsonLiteViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				87E75BE615828FFA00100333 /* en */,
+			);
+			name = iPhoneJsonLiteViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		87E75BE815828FFA00100333 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ANALYZER_MALLOC = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		87E75BE915828FFA00100333 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ANALYZER_MALLOC = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		87E75BEB15828FFA00100333 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_MALLOC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iPhoneJsonLite/iPhoneJsonLite-Prefix.pch";
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				INFOPLIST_FILE = "iPhoneJsonLite/iPhoneJsonLite-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		87E75BEC15828FFA00100333 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_MALLOC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iPhoneJsonLite/iPhoneJsonLite-Prefix.pch";
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				INFOPLIST_FILE = "iPhoneJsonLite/iPhoneJsonLite-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		87E75BC315828FF900100333 /* Build configuration list for PBXProject "iPhoneJsonLite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				87E75BE815828FFA00100333 /* Debug */,
+				87E75BE915828FFA00100333 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		87E75BEA15828FFA00100333 /* Build configuration list for PBXNativeTarget "iPhoneJsonLite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				87E75BEB15828FFA00100333 /* Debug */,
+				87E75BEC15828FFA00100333 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 87E75BC015828FF900100333 /* Project object */;
+}

@@ -1,0 +1,27 @@
+{
+    "name": "matrix 4x4",
+    "matrix": [
+        [{
+            "strValue": "string value",
+            "intValue": 123,
+            "array": [123, "123"],
+            "child": null
+        }, {
+            "strValue": "string value",
+            "intValue": 123,
+            "array": [123, "123"],
+            "child": null
+        }],
+        [{
+            "strValue": "string value",
+            "intValue": 123,
+            "array": [123, "123"],
+            "child": null
+        }, {
+            "strValue": "string value",
+            "intValue": 123,
+            "array": [123, "123"],
+            "child": null
+        }]
+    ]
+}
