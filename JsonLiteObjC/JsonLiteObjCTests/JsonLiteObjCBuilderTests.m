@@ -108,13 +108,14 @@
     jsonlite_builder_release(bs);
 }
 
-- (void)testManualBuilding {
+- (void)manualBuildingWithIndentation:(int)indentation {
+    
     jsonlite_builder bs = jsonlite_builder_init(32);
     STAssertTrue(bs != NULL, @"Builder not created");
     
     jsonlite_result result = jsonlite_result_ok;
     
-    result = jsonlite_builder_set_indentation(NULL, 4);
+    result = jsonlite_builder_set_indentation(NULL, indentation);
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
     result = jsonlite_builder_set_double_format(NULL, "%.10f");
@@ -138,16 +139,31 @@
     result = jsonlite_builder_key(NULL, "key", strlen("key"));
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
-    result = jsonlite_builder_raw_key(NULL, "\"key\"", strlen("\"key\""));
+    result = jsonlite_builder_raw_key(NULL, "key", strlen("key"));
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
-    result = jsonlite_builder_raw_key(bs, NULL, strlen("\"key\""));
+    result = jsonlite_builder_raw_key(bs, NULL, strlen("key"));
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
+    result = jsonlite_builder_raw_key(bs, "key", 0);
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
     result = jsonlite_builder_raw_value(NULL, "\"key\"", strlen("\"key\""));
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
     result = jsonlite_builder_raw_value(bs, NULL, strlen("\"key\""));
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
+    result = jsonlite_builder_raw_value(bs, "\"key\"", 0);
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
+    result = jsonlite_builder_raw_string(NULL, "key", strlen("key"));
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
+    result = jsonlite_builder_raw_string(bs, NULL, strlen("key"));
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
+    result = jsonlite_builder_raw_string(bs, "key", 0);
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
     result = jsonlite_builder_string(NULL, "key", strlen("key"));
@@ -174,6 +190,9 @@
     result = jsonlite_builder_array_end(NULL);
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
+    result = jsonlite_builder_set_indentation(bs, indentation);
+    STAssertTrue(result == jsonlite_result_ok, @"Incorrect error");
+    
     result = jsonlite_builder_key(bs, "key", strlen("key"));
     STAssertTrue(result == jsonlite_result_not_allowed, @"Parse state error");
     
@@ -184,6 +203,9 @@
     STAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect error");
     
     result = jsonlite_builder_raw_value(bs, "\"key\"", strlen("\"key\""));
+    STAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect error");
+    
+    result = jsonlite_builder_raw_string(bs, "key", strlen("key"));
     STAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect error");
     
     result = jsonlite_builder_null(bs);
@@ -207,7 +229,7 @@
     result = jsonlite_builder_array_end(bs);
     STAssertTrue(result == jsonlite_result_not_allowed, @"Parse state error");
     
-    result = jsonlite_builder_set_indentation(bs, 4);
+    result = jsonlite_builder_set_indentation(bs, indentation);
     STAssertTrue(result == jsonlite_result_ok, @"Incorrect error");
         
     result = jsonlite_builder_object_begin(bs);
@@ -219,13 +241,19 @@
     result = jsonlite_builder_array_begin(bs);
     STAssertTrue(result == jsonlite_result_not_allowed, @"Parse state error");
     
-    result = jsonlite_builder_raw_key(bs, "\"key\"", strlen("\"key\""));
+    result = jsonlite_builder_raw_key(bs, "key1", strlen("key1"));
     STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
     
-    result = jsonlite_builder_raw_value(bs, "\"key\"", strlen("\"key\""));
+    result = jsonlite_builder_raw_value(bs, "\"value1\"", strlen("\"value1\""));
     STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
     
-    result = jsonlite_builder_raw_key(bs, "\"key1\"", strlen("\"key1\""));
+    result = jsonlite_builder_raw_key(bs, "key3", strlen("key3"));
+    STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
+    
+    result = jsonlite_builder_raw_string(bs, "string", strlen("string"));
+    STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
+    
+    result = jsonlite_builder_raw_key(bs, "key4", strlen("key4"));
     STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
     
     result = jsonlite_builder_array_begin(bs);
@@ -237,6 +265,12 @@
     result = jsonlite_builder_array_begin(bs);
     STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
 
+    result = jsonlite_builder_raw_value(bs, "\"value1\"", strlen("\"value1\""));
+    STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
+    
+    result = jsonlite_builder_raw_string(bs, "value1", strlen("value1"));
+    STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
+    
     result = jsonlite_builder_array_end(bs);
     STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
     
@@ -273,6 +307,14 @@
     
     result = jsonlite_builder_release(bs);
     STAssertTrue(result == jsonlite_result_ok, @"Release error");
+}
+
+- (void)testManualBuildingBeautifier {
+    [self manualBuildingWithIndentation:4];
+}
+
+- (void)testManualBuilding {
+    [self manualBuildingWithIndentation:0];
 }
 
 @end

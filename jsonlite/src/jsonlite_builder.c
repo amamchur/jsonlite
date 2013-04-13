@@ -520,7 +520,7 @@ static  void jsonlite_builder_raw_char(jsonlite_builder builder, char data) {
 jsonlite_result jsonlite_builder_raw_key(jsonlite_builder builder, const void *data, size_t length) {
 	jsonlite_write_state *ws;
 
-    if (builder == NULL || data == NULL) {
+    if (builder == NULL || data == NULL || length == 0) {
         return jsonlite_result_invalid_argument;
     }
     
@@ -552,7 +552,7 @@ jsonlite_result jsonlite_builder_raw_key(jsonlite_builder builder, const void *d
 jsonlite_result jsonlite_builder_raw_string(jsonlite_builder builder, const void *data, size_t length) {
     jsonlite_write_state *ws;
     
-    if (builder == NULL) {
+    if (builder == NULL || data == NULL || length == 0) {
         return jsonlite_result_invalid_argument;
     }
     
@@ -572,15 +572,12 @@ jsonlite_result jsonlite_builder_raw_string(jsonlite_builder builder, const void
     }
     
     return jsonlite_result_not_allowed;
-
-    
-    return jsonlite_result_not_allowed;
 }
 
 jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void *data, size_t length) {
 	jsonlite_write_state *ws;
 
-    if (builder == NULL || data == NULL) {
+    if (builder == NULL || data == NULL || length == 0) {
         return jsonlite_result_invalid_argument;
     }
     

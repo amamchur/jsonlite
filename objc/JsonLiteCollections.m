@@ -163,14 +163,16 @@ typedef struct JsonLiteDictionaryBucket {
 }
 
 - (id)objectAtIndex:(NSUInteger)index {
+    NSException *exc = nil;
     if (index >= count) {
-        // gcov do not show code coverage for exceptions.
         id cls = NSStringFromClass([self class]);
         id sel = NSStringFromSelector(_cmd);
-        [NSException raise:NSRangeException
-                    format:@"*** -[%@ %@]: index (%d) beyond bounds (%d)", cls, sel, index, count];
+        NSString *str = [NSString stringWithFormat:@"*** -[%@ %@]: index (%d) beyond bounds (%d)", cls, sel, index, count];
+        exc = [NSException exceptionWithName:NSRangeException
+                                      reason:str
+                                    userInfo:nil];
     }
-    
+    [exc raise];
     return values[index];
 }
 
