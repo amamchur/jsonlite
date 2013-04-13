@@ -1,7 +1,9 @@
 jsonlite
+========
 Copyright © 2013, Andrii Mamchur.
 
 Overview
+--------
 jsonlite - very high performance JSON tokenizer written in pure C.
 
 Most important features:
@@ -54,7 +56,9 @@ Parsing Twitter time line
 Depth 16 - enough to process payload
 Compiled for x86 architecture (32bit)
 (1 x 16 + 25) x 32bit / 8 = 164 bytes
+
 JsonLite Objective-C
+====================
 JsonLite Objective-C - power extension of jsonlite for Objective-C/Cocoa.
 
 Most important features:
