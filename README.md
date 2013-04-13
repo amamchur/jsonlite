@@ -6,19 +6,21 @@ Overview
 --------
 jsonlite - very high performance JSON tokenizer written in pure C.
 
-Most important features:
+> ## Most important features:
+>
+> *   strict RFC 4627
+> *   low memory usage
+> *   ability to process raw token data
+> *   streaming support
+> *   JSON building + pretty-printing
+> *   token pool
+> *   parse depth configuration
+> *   no external dependencies
+> *   no recursion
+> *   100% code coverage
 
-strict RFC 4627
-low memory usage
-ability to process raw token data
-streaming support
-JSON building + pretty-printing
-token pool
-parse depth configuration
-no external dependencies
-no recursion
-100% code coverage
 Appropriate Uses
+----------------
 JSON validation
 
 jsonlite is the best solution for JSON validation because of high performance, steaming processing and low memory usage. Of course there is no reason to collect data for validation - just use jsonlite with default callback.
