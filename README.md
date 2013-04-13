@@ -6,7 +6,7 @@ Overview
 --------
 jsonlite - very high performance JSON tokenizer written in pure C.
 
-> ## Most important features:
+> ##### Most important features:
 >
 > *   strict RFC 4627
 > *   low memory usage
@@ -63,22 +63,22 @@ JsonLite Objective-C
 ====================
 JsonLite Objective-C - power extension of jsonlite for Objective-C/Cocoa.
 
-Most important features:
+> ##### Most important features:
+>
+> *   very fast JSON parsing (candidate for the fastest Objective-C parser, needed independent benchmarks)
+> *   streaming/chunk parsing
+> *   parse JSON to Cocoa collections and objects
+> *   serialize object to JSON
+> *   deserialize JSON to custom models
+> *   support NSDecimalNumber, NSDate and NSURL
+> *   provide ability to support any type of Objective-C
+> *   objects' pool
 
-very fast JSON parsing (candidate for the fastest Objective-C parser, needed independent benchmarks)
-streaming/chunk parsing
-parse JSON to Cocoa collections and objects
-serialize object to JSON
-deserialize JSON to custom models
-support NSDecimalNumber, NSDate and NSURL
-provide ability to support any type of Objective-C
-objects' pool
-Situations where JsonLite Objective-C may not be suitable
-NSJSONSerialization is enough for you.
-Project use Automatic Reference Counting
-Appropriate Uses
-Objective-C models serialization/deserialization (bindings)
-
-Currency in JSON
-
-JsonLite Objective-C supports NSDecimalNumberv
+> ###### Situations where JsonLite Objective-C may not be suitable
+>
+> *   NSJSONSerialization is enough for you.
+> *   Project use Automatic Reference Counting
+> ###### Appropriate Uses
+>
+> *   Serialization/deserialization (bindings)
+> *   NSDecimalNumberv
