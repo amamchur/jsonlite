@@ -80,6 +80,7 @@ JsonLite Objective-C - power extension of jsonlite for Objective-C/Cocoa.
 >
 > *   NSJSONSerialization is enough for you.
 > *   Project use Automatic Reference Counting
+
 > ###### Appropriate Uses
 >
 > *   Serialization/deserialization (bindings)
