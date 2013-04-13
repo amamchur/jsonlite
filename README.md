@@ -29,7 +29,7 @@ jsonlite is the best solution for JSON validation because of high performance, s
 
 Simple combination of jsonlite_parser + jsonlite_builder makes JSON beautifying without token transformation.
 
-Transformation example: "tab char": "\u0009" -> "tab char": "\t" or use popular JSON validator http://jsonlint.com
+Transformation example: "tab char": "<strong>\u0009</strong>" -> "tab char": "<strong>\t</strong>" or use popular JSON validator http://jsonlint.com
 
 Input:
 <pre>
@@ -48,18 +48,33 @@ Output:
 jsonlite was designed to work with huge JSON payload. Internal memory usage depends on maximal JSON depth only (See "jsonlite memory usage"). It does not collect data by itself, it just delegate this responsibility to high-level components.
 
 #### jsonlite memory usage
-Memory Usage = (1 x Depth + 25) x Word Size / 8 or use jsonlite_parser_estimate_size(depth)
+**Memory Usage** = (1 x **Depth** + 25) x **Word Size** / 8 or use *jsonlite_parser_estimate_size(depth)*
 
-Variable Name  Description
-Memory Usage	 Memory used by jsonlite without JSON payload
-Depth	 Parsing depth
-Word Size	 Machine word size in bits
-For example:
+<table>
+    <tr>
+        <th>Variable Name</v>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>**Memory Usage**</td>
+        <td>Memory used by jsonlite without JSON payload</td>
+    </tr>
+    <tr>
+        <td>**Depth**</td>
+        <td>Parsing depth</td>
+    </tr>
+    <tr>
+        <td>**Word Size**</td>
+        <td>Machine word size in bits</td>
+    </tr>
+<table/>
 
-Parsing Twitter time line
-Depth 16 - enough to process payload
-Compiled for x86 architecture (32bit)
-(1 x 16 + 25) x 32bit / 8 = 164 bytes
+> For example:
+> 
+> * Parsing Twitter time line
+> * Depth 16 - enough to process payload
+> * Compiled for x86 architecture (32bit)
+> * (1 x 16 + 25) x 32bit / 8 = 164 bytes
 
 JsonLite Objective-C
 ====================
