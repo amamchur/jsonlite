@@ -32,15 +32,17 @@ Simple combination of jsonlite_parser + jsonlite_builder makes JSON beautifying 
 Transformation example: "tab char": "\u0009" -> "tab char": "\t" or use popular JSON validator http://jsonlint.com
 
 Input:
-
-{
+<pre>
+<code>{
     "tab char": "\u0009"
-}
+}</code>
+</pre>
 Output:
-
-{
+<pre>
+<code>{
     "tab char": "\t"
-}
+}</code>
+</pre>
 #### Huge JSON payload processing
 
 jsonlite was designed to work with huge JSON payload. Internal memory usage depends on maximal JSON depth only (See "jsonlite memory usage"). It does not collect data by itself, it just delegate this responsibility to high-level components.
