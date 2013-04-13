@@ -19,13 +19,13 @@ jsonlite - very high performance JSON tokenizer written in pure C.
 > *   no recursion
 > *   100% code coverage
 
-Appropriate Uses
+### Appropriate Uses
 ----------------
-JSON validation
+#### JSON validation
 
 jsonlite is the best solution for JSON validation because of high performance, steaming processing and low memory usage. Of course there is no reason to collect data for validation - just use jsonlite with default callback.
 
-JSON beautifying (see Beautifier)
+#### JSON beautifying (see Beautifier)
 
 Simple combination of jsonlite_parser + jsonlite_builder makes JSON beautifying without token transformation.
 
@@ -41,11 +41,11 @@ Output:
 {
     "tab char": "\t"
 }
-Huge JSON payload processing
+#### Huge JSON payload processing
 
 jsonlite was designed to work with huge JSON payload. Internal memory usage depends on maximal JSON depth only (See "jsonlite memory usage"). It does not collect data by itself, it just delegate this responsibility to high-level components.
 
-jsonlite memory usage
+#### jsonlite memory usage
 Memory Usage = (1 x Depth + 25) x Word Size / 8 or use jsonlite_parser_estimate_size(depth)
 
 Variable Name  Description
