@@ -1,5 +1,5 @@
 //
-//  Copyright 2012, Andrii Mamchur
+//  Copyright 2012-2013, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -36,15 +36,13 @@ static uint32_t __inline jsonlite_clz( uint32_t x ) {
 static const uint32_t jsonlite_utf8_masks[] = {0x1F, 0x7FF, 0xFFFF, 0x1FFFFF};
 
 uint8_t jsonlite_hex_char_to_uint8(uint8_t c) {
-    uint8_t res;
+    uint8_t res = 0xFF;
     if (c >= '0' && c <= '9') {
         res = c - '0';
     } else if (c >= 'a' && c <= 'f') {
         res = c - 'a' + 10;
     } else if (c >= 'A' && c <= 'F') {
         res = c - 'A' + 10;
-    } else {
-        res = 0xFF;
     }
     return res;
 }
@@ -53,6 +51,9 @@ static int unicode_char_to_utf16(uint32_t ch, uint16_t *utf16) {
     uint32_t v = ch - 0x10000;
     uint32_t vh = v >> 10;
     uint32_t vl = v & 0x3FF;
+    if (utf16 == NULL) {
+        return 0;
+    }
 	if (ch <= 0xFFFF) {
         *utf16 = (uint16_t)ch;
         return 1;
@@ -72,6 +73,10 @@ size_t jsonlite_token_decode_size_for_uft8(jsonlite_token *ts) {
 }
 
 size_t jsonlite_token_decode_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
+    if (ts == NULL || buffer == NULL) {
+        return 0;
+    }
+    
     const uint8_t *p = ts->start;
   	uint8_t *c;
 	uint32_t hex;
@@ -151,6 +156,10 @@ size_t jsonlite_token_decode_size_for_uft16(jsonlite_token *ts) {
 }
 
 size_t jsonlite_token_decode_to_uft16(jsonlite_token *ts, uint16_t **buffer) {
+    if (ts == NULL || buffer == NULL) {
+        return 0;
+    }
+    
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint16_t *c;
