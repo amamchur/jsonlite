@@ -253,20 +253,25 @@ static Class class_JsonLiteNumberToken;
     return result == jsonlite_result_ok;
 }
 
-- (void)suspend {
-    if (internal.parser != NULL) {
-        jsonlite_parser_suspend(internal.parser);
+- (NSError *)suspend {
+    if (internal.parser == NULL) {
+        return [JsonLiteParser errorForCode:JsonLiteCodeNotAllowed];
     }
+
+    
+    jsonlite_result result = jsonlite_parser_suspend(internal.parser);
+    self.parseError = [JsonLiteParser errorForCode:(JsonLiteCode)result];
+    return parseError;
 }
 
-- (BOOL)resume {
+- (NSError *)resume {
     if (internal.parser == NULL) {
-        return NO;
+        return [JsonLiteParser errorForCode:JsonLiteCodeNotAllowed];
     }
     
     jsonlite_result result = jsonlite_parser_resume(internal.parser);
     self.parseError = [JsonLiteParser errorForCode:(JsonLiteCode)result];
-    return result == jsonlite_result_ok;
+    return parseError;
 }
 
 - (void)reset {

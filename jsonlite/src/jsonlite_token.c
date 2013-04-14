@@ -51,9 +51,6 @@ static int unicode_char_to_utf16(uint32_t ch, uint16_t *utf16) {
     uint32_t v = ch - 0x10000;
     uint32_t vh = v >> 10;
     uint32_t vl = v & 0x3FF;
-    if (utf16 == NULL) {
-        return 0;
-    }
 	if (ch <= 0xFFFF) {
         *utf16 = (uint16_t)ch;
         return 1;

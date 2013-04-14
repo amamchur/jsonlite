@@ -268,6 +268,52 @@
     STAssertNil(child.child, @"child was not binded");
 }
 
+- (void)testObj1Chunk {
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"obj1"
+                                                                      ofType:@"json"
+                                                                 inDirectory:@"deserializer"];
+    NSError *error = nil;
+    NSData *data = [[NSData alloc] initWithContentsOfFile:path
+                                                  options:0
+                                                    error:&error];
+    STAssertNil(error, @"Can not open file");
+    
+    JsonLiteParser *parser = [[JsonLiteParser alloc] init];
+    JsonLiteDeserializer *deserializer = [[JsonLiteDeserializer alloc] initWithRootClass:[JsonLiteTestObj1 class]];
+    deserializer.delegate = self;
+    parser.delegate = deserializer;
+    
+    NSUInteger length = [data length];
+    char buffer[1];
+    for (NSUInteger i = 0; i < length; ++i) {
+        NSRange range = NSMakeRange(i, sizeof(buffer));
+        [data getBytes:buffer range:range];
+        
+        NSData *d = [[NSData alloc] initWithBytesNoCopy:buffer length:range.length];
+        [parser parse:d];
+        error = parser.parseError;
+        STAssertTrue(error == nil || [error code] == JsonLiteCodeEndOfStream, @"Incorrect error");        
+        [d release];        
+    }
+    
+    JsonLiteTestObj1 *obj = [deserializer object];
+    [deserializer release];
+    [parser release];
+    
+    STAssertNotNil(obj.strValue, @"strValue was not binded");
+    STAssertNotNil(obj.intValue, @"intValue was not binded");
+    STAssertNotNil(obj.array, @"array was not binded");
+    STAssertTrue([obj.array count] == 2, @"array has invalid size");
+    STAssertNotNil(obj.child, @"child was not bilded");
+    
+    JsonLiteTestObj1 *child = obj.child;
+    STAssertNotNil(child.strValue, @"strValue was not binded");
+    STAssertNotNil(child.intValue, @"intValue was not binded");
+    STAssertNotNil(child.array, @"array was not binded");
+    STAssertTrue([child.array count] == 2, @"array has invalid size");
+    STAssertNil(child.child, @"child was not binded");
+}
+
 - (void)testObj2 {
     NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"obj2"
                                                                       ofType:@"json"

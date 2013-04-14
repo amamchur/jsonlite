@@ -88,8 +88,8 @@ extern NSString * const JsonLiteCodeDomain;
 
 - (BOOL)parse:(NSData *)data;
 
-- (void)suspend;
-- (BOOL)resume;
+- (NSError *)suspend;
+- (NSError *)resume;
 - (void)reset;
 
 - (id)init;

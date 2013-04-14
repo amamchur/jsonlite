@@ -122,16 +122,10 @@ typedef struct JsonLiteDictionaryBucket {
 }
 
 - (id)objectForKey:(id)aKey {
-    // TODO: Implement test for CFHash collision case.
-    
     CFHashCode hash = CFHash((CFTypeRef)aKey);
     int index = hash & JsonLiteDictionaryFrontMask;
     for (JsonLiteDictionaryBucket *b = buckets[index]; b != NULL; b = b->next) {
-        if (b->hash != hash) {
-            continue;
-        }
-        
-        if ([b->key isEqual:aKey]) {
+        if (b->hash == hash && [b->key isEqual:aKey]) {
             return b->value;
         }
     }
