@@ -454,7 +454,10 @@
 }
 
 - (void)testMetaData {
-    JsonLiteClassMetaData *metaData = [[JsonLiteClassMetaData alloc] initWithClass:[JsonLiteTestObj1 class]];
+    JsonLiteClassMetaData *metaData = [JsonLiteClassMetaData metaDataForClass:nil];
+    STAssertNil(metaData, @"metaData is not nil");    
+    
+    metaData = [[JsonLiteClassMetaData alloc] initWithClass:[JsonLiteTestObj1 class]];
     STAssertTrue(metaData.objectClass == [JsonLiteTestObj1 class], @"Bad class");
     STAssertTrue([metaData.binding count] == 0, @"Bad binding");
     STAssertTrue([metaData.keys count] == 4, @"Bad keys");
