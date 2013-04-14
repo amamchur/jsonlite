@@ -15,7 +15,7 @@ Examples/iPhoneJsonLite/.DS_Store
 
 Examples/iPhoneJsonLite/iPhoneJsonLite.xcodeproj/xcuserdata/admin.xcuserdatad/xcschemes/xcschememanagement.plist
 
-JsonLiteObjC/.DS_Store
+JsonLiteObjC/cov/
 
 JsonLiteObjC/.DS_Store
 
@@ -26,3 +26,5 @@ JsonLiteObjC/JsonLiteObjC.xcodeproj/project.xcworkspace/xcuserdata/admin.xcuserd
 *.xcuserstate
 
 JsonLiteObjC/JsonLiteObjC.xcodeproj/xcuserdata/admin.xcuserdatad/xcschemes/xcschememanagement.plist
+
+JsonLiteObjC/coverage.info

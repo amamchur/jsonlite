@@ -277,7 +277,7 @@
         NSRange range = NSMakeRange(i, sizeof(buffer));
         [data getBytes:buffer range:range];
         
-        NSData *d = [[NSData alloc] initWithBytesNoCopy:buffer length:range.length];
+        NSData *d = [[NSData alloc] initWithBytesNoCopy:buffer length:range.length freeWhenDone:NO];
         [parser parse:d];
         error = parser.parseError;
         STAssertTrue(error == nil || [error code] == JsonLiteCodeEndOfStream, @"Incorrect error");        
