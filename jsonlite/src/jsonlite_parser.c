@@ -44,7 +44,14 @@ static uint32_t __inline jsonlite_clz( uint32_t x ) {
 #define CALL_VALUE_CALLBACK(cbs, type, jt)  (cbs.type(&cbs.context, jt))
 #define CALL_STATE_CALLBACK(cbs, type)      (cbs.type(&cbs.context))
 
-#define CHECK_LIMIT(c, l) if ((c) >= (l)) {parser->result = jsonlite_result_end_of_stream; return 0;}
+#define CHECK_LIMIT(c, l)                                   \
+do {                                                        \
+    if ((c) >= (l)) {                                       \
+        parser->result = jsonlite_result_end_of_stream;     \
+        return 0;                                           \
+    }                                                       \
+} while (0)
+
 #define CHECK_LIMIT_RET_EOS(c, l) if ((c) >= (l)) return jsonlite_result_end_of_stream
 
 struct jsonlite_parse_state_struct;
@@ -515,7 +522,7 @@ static jsonlite_result take_string_escape(jsonlite_parser parser, jsonlite_token
             return take_string_unicode_escape(parser, jt);
         default:
             parser->cursor = c - 1;
-            set_error(parser, --c, jsonlite_result_invalid_escape);
+            set_error(parser, c - 1, jsonlite_result_invalid_escape);
             return jsonlite_result_invalid_escape;
     }
 }
@@ -529,12 +536,12 @@ static jsonlite_result take_string_value(jsonlite_parser parser, jsonlite_token 
     for (; c < l; ++c) {    
         if (*c == '"') {
             jt->end = c;
-            parser->cursor = ++c;
+            parser->cursor = c + 1;
             return jsonlite_result_ok;
         }
         
         if (*c == '\\') {
-            parser->cursor = ++c;
+            parser->cursor = c + 1;
             res = take_string_escape(parser, jt);
             if (res != jsonlite_result_ok) {
                 return (jsonlite_result)res;

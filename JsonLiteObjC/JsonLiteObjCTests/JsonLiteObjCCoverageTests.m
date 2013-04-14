@@ -290,7 +290,6 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     JsonLiteAccumulator *acc = [JsonLiteAccumulator accumulatorWithDepth:32];
     parser.delegate = acc;
     NSData *data = [NSData data];
-    NSError *error = nil;
     
     [parser reset];
     [acc reset];
@@ -325,7 +324,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     [parser parse:[NSData dataWithBytes:json4 length:sizeof(json4) - 1]];
     STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
     [parser parse:[NSData dataWithBytes:json5 length:sizeof(json5) - 1]];
-    STAssertTrue(error == nil, @"Incorrect error");
+    STAssertTrue(parser.parseError == nil, @"Incorrect error");
     
     [parser reset];
     [acc reset];
@@ -339,11 +338,11 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     [parser parse:[NSData dataWithBytes:json4 length:sizeof(json4) - 1]];
     STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
     [parser parse:[NSData dataWithBytes:json5 length:sizeof(json5) - 1]];
-    STAssertTrue(error == nil, @"Incorrect error");
+    STAssertTrue(parser.parseError  == nil, @"Incorrect error");
     [acc reset];
     
     Class cls = [JsonLiteToken class];
-    IMP imp = class_getMethodImplementation(cls, @selector(allocValue));
+    IMP imp = class_getMethodImplementation(cls, @selector(copyValue));
     imp(nil, nil);
 }
 

@@ -56,8 +56,8 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     jsonlite_token_pool numberPool;
     NSUInteger capacity;
     struct {
-        unsigned int didAccumulateArray : 1;
-        unsigned int didAccumulateDictionary : 1;
+        BOOL didAccumulateArray : 1;
+        BOOL didAccumulateDictionary : 1;
     } flags;
 }
 @end
@@ -132,7 +132,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 }
 
 - (id)object {
-    return [[(id)*values retain] autorelease];
+    return [[*values retain] autorelease];
 }
 
 - (void)reset {
@@ -254,7 +254,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 - (void)parser:(JsonLiteParser *)parser foundKeyToken:(JsonLiteStringToken *)token {
     jsonlite_token_bucket *item = jsonlite_token_pool_get_bucket(keyPool, (jsonlite_token *)token);
     if (item->value == nil) {
-        item->value = [token allocValue];
+        item->value = [token copyValue];
         item->value_hash = CFHash((CFTypeRef)item->value);
     }
     
@@ -266,7 +266,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 - (void)parser:(JsonLiteParser *)parser foundStringToken:(JsonLiteStringToken *)token {
     jsonlite_token_bucket *item = jsonlite_token_pool_get_bucket(stringPool, (jsonlite_token *)token);
     if (item->value == nil) {
-        item->value = [token allocValue];
+        item->value = [token copyValue];
     }
     
     CHECK_CAPACITY();
@@ -276,7 +276,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 - (void)parser:(JsonLiteParser *)parser foundNumberToken:(JsonLiteNumberToken *)token {
     jsonlite_token_bucket *item = jsonlite_token_pool_get_bucket(numberPool, (jsonlite_token *)token);
     if (item->value == nil) {
-        item->value = [token allocValue];
+        item->value = [token copyValue];
     }
     
     CHECK_CAPACITY();

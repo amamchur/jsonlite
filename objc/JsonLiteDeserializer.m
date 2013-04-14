@@ -73,8 +73,8 @@ static JsonLiteArrayBinder *arrayBinder = nil;
     NSMutableArray *bindingStack;
     NSMutableArray *metaDataStack;
     struct {
-        unsigned int didDeserializeObject : 1;
-        unsigned int didDeserializeArray : 1;
+        BOOL didDeserializeObject : 1;
+        BOOL didDeserializeArray : 1;
     } flags;
 }
 
@@ -264,7 +264,7 @@ static JsonLiteArrayBinder *arrayBinder = nil;
 - (void)parser:(JsonLiteParser *)parser foundKeyToken:(JsonLiteStringToken *)token {
     jsonlite_token_bucket *item = jsonlite_token_pool_get_bucket(keyPool, (jsonlite_token *)token);
     if (item->value == nil) {
-        item->value = [token allocValue];
+        item->value = [token copyValue];
     }
 
     JsonLiteMetaDataState *ms = [metaDataStack lastObject];

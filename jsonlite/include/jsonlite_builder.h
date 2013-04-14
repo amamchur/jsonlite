@@ -200,9 +200,9 @@ extern "C" {
     
     /** \brief Write raw key.
      *
-     * jsonlite_builder_raw_key does not perform any tranformation.
+     * jsonlite_builder_raw_key does not perform any transformation.
      * jsonlite_builder_raw_key wraps raw key with '"' (U+0022).
-     * If data alredy was wraped with '"' use following practice jsonlite_builder_raw_key(d, data + 1, size - 2);
+     * If data already was wrapped with '"' use following practice jsonlite_builder_raw_key(d, data + 1, size - 2);
      * @see jsonlite_builder
      * @see jsonlite_result
      * @param builder the builder object
@@ -216,9 +216,9 @@ extern "C" {
     
     /** \brief Write raw string.
      *
-     * jsonlite_builder_raw_string does not perform any tranformation.
+     * jsonlite_builder_raw_string does not perform any transformation.
      * jsonlite_builder_raw_string wraps raw string with '"' (U+0022).
-     * If data alredy was wraped with '"' use following practice jsonlite_builder_raw_string(d, data + 1, size - 2);
+     * If data already was wrapped with '"' use following practice jsonlite_builder_raw_string(d, data + 1, size - 2);
      * @see jsonlite_builder
      * @see jsonlite_result
      * @param builder the builder object
@@ -232,7 +232,7 @@ extern "C" {
     
     /** \brief Write raw value.
      *
-     * jsonlite_builder_raw_value does not perform any tranformation.
+     * jsonlite_builder_raw_value does not perform any transformation.
      * jsonlite_builder_raw_value does not wrap raw value with '"' (U+0022).
      * @see jsonlite_builder
      * @see jsonlite_result

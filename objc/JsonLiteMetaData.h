@@ -36,7 +36,6 @@
 @interface JsonLiteBindRule : NSObject {
     NSString *key;
     NSString *property;
-    Class arrayItemClass;    
 }
 
 @property (nonatomic, readonly) NSString *key;

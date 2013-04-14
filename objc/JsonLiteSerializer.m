@@ -145,7 +145,7 @@
     }    
     
     bs = jsonlite_builder_init(16);
-    jsonlite_builder_set_indentation(bs, indentation > 0 ? indentation : 0);
+    jsonlite_builder_set_indentation(bs, indentation > 0 ? (size_t)indentation : 0);
     
     if ([obj isKindOfClass:[NSArray class]]) {
         [self serializeArray:obj];

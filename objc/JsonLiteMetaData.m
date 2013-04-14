@@ -14,7 +14,6 @@
 
 #import "JsonLiteMetaData.h"
 #import <objc/runtime.h>
-#import <objc/message.h>
 
 @implementation JsonLiteBindRule
 
@@ -91,11 +90,9 @@
     const char *end = NULL;
     int run = 1;
     while (*p && run) {
-        switch (*p) {
-            case ',':
-                end = p;
-                run = 0;
-                break;
+        if (*p ==  ',') {
+            end = p;
+            run = 0;
         }
         p++;
     }
@@ -117,11 +114,9 @@
     const char *end = NULL;
     int run = 1;
     while (*p && run) {
-        switch (*p) {
-            case ',':
-                end = p;
-                run = 0;
-                break;
+        if (*p ==  ',') {
+            end = p;
+            run = 0;
         }
         p++;
     }
@@ -207,7 +202,7 @@
 //                break;
 //            case 'P':
 //                propertyFlags.garbageCollection = 1;
-                break;
+//                break;
             case 'T':
                 p = [self takePropertyType:p];
                 break;
@@ -232,8 +227,8 @@
         getterImp = class_getMethodImplementation(cls, getterSelector);
     }
     if (setterImp == NULL && !propertyFlags.readonlyAccess) {
-        NSMutableString *str = [NSString stringWithFormat:@"set%@%@:", 
-                                [[name substringToIndex:1] uppercaseString], 
+        NSString *str = [NSString stringWithFormat:@"set%@%@:",
+                                [[name substringToIndex:1] uppercaseString],
                                 [name substringFromIndex:1]];
         setterSelector = NSSelectorFromString(str);
         setterImp = class_getMethodImplementation(cls, setterSelector);
@@ -262,11 +257,15 @@
 
 @end
 
+@interface JsonLiteClassMetaData() {
+    NSDictionary *binding;
+    NSArray *keys;
+}
+@end
+
 @implementation JsonLiteClassMetaData
 
 @synthesize properties;
-@synthesize binding;
-@synthesize keys;
 @synthesize objectClass;
 
 - (NSDictionary *)binding {

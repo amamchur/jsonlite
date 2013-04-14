@@ -41,9 +41,9 @@ jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value
 }
 
 void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
-    size_t size = pool->content_pool_size;
+    size_t length, size = pool->content_pool_size;
     uint8_t *buffer, *p;
-    ptrdiff_t offset = 0, length;
+    ptrdiff_t offset = 0;
     jsonlite_token_bucket *b;
 	int i;
 
@@ -180,7 +180,7 @@ static int jsonlite_token_compare(const uint8_t *t1, const uint8_t *t2, size_t l
     switch (d.rem) {
         case 3: if (*t1++ != *t2++) return 0;
         case 2: if (*t1++ != *t2++) return 0;
-        case 1: if (*t1++ != *t2++) return 0;
+        case 1: if (*t1 != *t2) return 0;
             break;
     }
     

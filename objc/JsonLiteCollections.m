@@ -9,7 +9,6 @@
 #import "JsonLiteCollections.h"
 
 #import <objc/runtime.h>
-#import <objc/message.h>
 
 typedef struct JsonLiteDictionaryBucket {
     CFHashCode hash;
@@ -23,8 +22,6 @@ typedef struct JsonLiteDictionaryBucket {
     NSInteger count;
     JsonLiteDictionaryBucket *buffer;
 }
-
-+ (id)enumeratorForDictionary:(JsonLiteDictionary *)dict;
 
 @end
 
@@ -49,22 +46,18 @@ typedef struct JsonLiteDictionaryBucket {
 
 @implementation JsonLiteDictionaryEnumerator
 
-- (id)initForDictionary:(JsonLiteDictionary *)dict {
-    self = [super init];
+- (id)initWithBuffer:(JsonLiteDictionaryBucket *)aBuffer count:(NSUInteger)aCount {
+    self = [self init];
     if (self != nil) {
-        buffer = dict->buffer;
-        count = dict->count;
+        buffer = aBuffer;
+        count = aCount;
         index = 0;
     }
     return self;
 }
 
-+ (id)enumeratorForDictionary:(JsonLiteDictionary *)dict {
-    return [[[self alloc] initForDictionary:dict] autorelease];
-}
-
 - (NSArray *)allObjects {
-    NSMutableArray *array = [NSMutableArray arrayWithCapacity:count];
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:(NSUInteger)count];
     for (int i = 0; i < count; i++) {
         [array addObject:(buffer + i)->key];
     }
@@ -133,7 +126,9 @@ typedef struct JsonLiteDictionaryBucket {
 }
 
 - (NSEnumerator *)keyEnumerator {
-    return [JsonLiteDictionaryEnumerator enumeratorForDictionary:self];
+    JsonLiteDictionaryEnumerator *e = [[JsonLiteDictionaryEnumerator alloc] initWithBuffer:buffer
+                                                                                     count:count];
+    return [e autorelease];
 }
 
 @end

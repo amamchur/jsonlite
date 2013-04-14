@@ -43,20 +43,20 @@ extern NSString * const JsonLiteCodeDomain;
 
 @interface JsonLiteToken : NSObject
 
-- (id)allocValue;
+- (id)copyValue;
 - (id)value;
 
 @end
 
 @interface JsonLiteStringToken : JsonLiteToken
 
-- (NSString *)allocNoCopyValue;
+- (NSString *)copyStringWithBytesNoCopy;
 
 @end
 
 @interface JsonLiteNumberToken : JsonLiteToken
 
-- (NSDecimalNumber *)allocDecimal;
+- (NSDecimalNumber *)copyDecimal;
 - (NSDecimalNumber *)decimal;
 
 @end
