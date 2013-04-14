@@ -350,7 +350,7 @@
 				879D181115BA9B1A00791C72 /* Frameworks */,
 				879D181215BA9B1A00791C72 /* Resources */,
 				879D181315BA9B1A00791C72 /* ShellScript */,
-				8486B958171AEF0C00331ED5 /* ShellScript */,
+				8486B958171AEF0C00331ED5 /* Generate Coverage Report */,
 			);
 			buildRules = (
 			);
@@ -405,18 +405,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8486B958171AEF0C00331ED5 /* ShellScript */ = {
+		8486B958171AEF0C00331ED5 /* Generate Coverage Report */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Generate Coverage Report";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/lcov --capture --directory \"${TEMP_FILE_DIR}/Objects-normal/i386\" --output-file coverage.info\n/usr/local/bin/genhtml \"${TEMP_FILE_DIR}/Objects-normal/i386/coverage.info\" --output-directory cov\n";
+			shellScript = "file=\"jsonlite_parser.gcda\"\nif [ -f \"$file\" ]\nthen\n    /usr/local/bin/lcov --capture --directory \"${TEMP_FILE_DIR}/Objects-normal/i386\" --output-file coverage.info\n    /usr/local/bin/genhtml coverage.info --output-directory cov\nfi\n";
 		};
 		879D181315BA9B1A00791C72 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
