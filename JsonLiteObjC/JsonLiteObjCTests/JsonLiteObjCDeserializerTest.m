@@ -100,23 +100,11 @@
 @implementation JsonLiteTestObj1
 
 - (BOOL)isEqual:(id)object {
-    if (![object isKindOfClass:[JsonLiteTestObj1 class]]) {
-        return NO;
-    }
     JsonLiteTestObj1 *obj = object;
-    if (![self.strValue isEqual:obj.strValue]) {
-        return NO;
-    }
-    if (![self.intValue isEqual:obj.intValue]) {
-        return NO;
-    }
-    if (![self.array isEqual:obj.array]) {
-        return NO;
-    }
-    if (self.child == obj.child) {
-        return YES;
-    }
-    return [self.child isEqual:obj.child];
+    BOOL equal = [self.strValue isEqual:obj.strValue];  
+    equal = equal && [self.intValue isEqual:obj.intValue];    
+    equal = equal && [self.array isEqual:obj.array];
+    return equal && (self.child == obj.child || [self.child isEqual:obj.child]);
 }
 
 - (void)dealloc {

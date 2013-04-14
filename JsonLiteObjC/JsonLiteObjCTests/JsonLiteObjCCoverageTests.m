@@ -95,27 +95,36 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 }
 
 - (void)parserDidStartObject:(JsonLiteParser *)parser {
+    STAssertNotNil(parser, @"Parser is nil");
 }
 
 - (void)parserDidEndObject:(JsonLiteParser *)parser {
+    STAssertNotNil(parser, @"Parser is nil");
 }
 
 - (void)parserDidStartArray:(JsonLiteParser *)parser {
+    STAssertNotNil(parser, @"Parser is nil");
 }
 
 - (void)parserDidEndArray:(JsonLiteParser *)parser {
+    STAssertNotNil(parser, @"Parser is nil");
 }
 
 - (void)parserFoundTrueToken:(JsonLiteParser *)parser {
+    STAssertNotNil(parser, @"Parser is nil");
 }
 
 - (void)parserFoundFalseToken:(JsonLiteParser *)parser {
+    STAssertNotNil(parser, @"Parser is nil");
 }
 
 - (void)parserFoundNullToken:(JsonLiteParser *)parser {
+    STAssertNotNil(parser, @"Parser is nil");
 }
 
 - (void)parser:(JsonLiteParser *)parser foundKeyToken:(JsonLiteStringToken *)token {
+    STAssertNotNil(parser, @"Parser is nil");
+    STAssertNotNil(token, @"Token is nil");
     [token retain];
     [token retain];
     [token release];
@@ -125,6 +134,8 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 }
 
 - (void)parser:(JsonLiteParser *)parser foundStringToken:(JsonLiteStringToken *)token {
+    STAssertNotNil(parser, @"Parser is nil");
+    STAssertNotNil(token, @"Token is nil");
     [token retain];
     [token retain];
     [token release];
@@ -134,6 +145,8 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 }
 
 - (void)parser:(JsonLiteParser *)parser foundNumberToken:(JsonLiteNumberToken *)token {
+    STAssertNotNil(parser, @"Parser is nil");
+    STAssertNotNil(token, @"Token is nil");
     [token retain];
     [token retain];
     [token release];
@@ -297,22 +310,36 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     char json1[] = "     ";
     char json2[] = "{\"key\" : 12345, \"obj\": {}, \"arr";
     char json3[] = "ay\":[null, true, false, \"string\", {\"acb\" : 1}],";
-    char json4[] = "\"child\": {\"key\" : 12345, \"array\":[]} }";
+    char json4[] = "\"child\": {\"key\" : 12345, \"array\":[]},";
+    char json5[] = "\"mixarray\": [\"string\", 0, null, true, false] }";
  
     [parser reset];
     [acc reset];
     parser.delegate = acc;
     [parser parse:[NSData dataWithBytes:json1 length:sizeof(json1) - 1]];
+    STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
     [parser parse:[NSData dataWithBytes:json2 length:sizeof(json2) - 1]];
+    STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
     [parser parse:[NSData dataWithBytes:json3 length:sizeof(json3) - 1]];
+    STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
     [parser parse:[NSData dataWithBytes:json4 length:sizeof(json4) - 1]];
-    STAssertTrue(error == nil, @"Bad error");
+    STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
+    [parser parse:[NSData dataWithBytes:json5 length:sizeof(json5) - 1]];
+    STAssertTrue(error == nil, @"Incorrect error");
     
     [parser reset];
     [acc reset];
     parser.delegate = self;
     [parser parse:[NSData dataWithBytes:json1 length:sizeof(json1) - 1]];
+    STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
     [parser parse:[NSData dataWithBytes:json2 length:sizeof(json2) - 1]];
+    STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
+    [parser parse:[NSData dataWithBytes:json3 length:sizeof(json3) - 1]];
+    STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
+    [parser parse:[NSData dataWithBytes:json4 length:sizeof(json4) - 1]];
+    STAssertTrue([parser.parseError code] == JsonLiteCodeEndOfStream, @"Incorrect error");
+    [parser parse:[NSData dataWithBytes:json5 length:sizeof(json5) - 1]];
+    STAssertTrue(error == nil, @"Incorrect error");
     [acc reset];
     
     Class cls = [JsonLiteToken class];
@@ -410,7 +437,11 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     ParseSuspender *del = [[ParseSuspender alloc] init];
     parser.delegate = del;
     
-    [parser resume];
+    NSError *error = [parser suspend];
+    STAssertTrue([error code] == JsonLiteCodeNotAllowed, @"Incorrect error");
+    
+    error = [parser resume];
+    STAssertTrue([error code] == JsonLiteCodeNotAllowed, @"Incorrect error");
     
     BOOL run = ![parser parse:[NSData dataWithBytes:json1 length:sizeof(json1) - 1]];
     while (run) {

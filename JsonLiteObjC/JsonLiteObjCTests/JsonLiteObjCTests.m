@@ -38,14 +38,10 @@
                                                                       ofType:@"json"
                                                                  inDirectory:dir];
     NSError *error = nil;
-    NSData *data = [[NSData alloc] initWithContentsOfFile:path 
+    NSData *data = [[[NSData alloc] initWithContentsOfFile:path
                                                   options:0
-                                                    error:&error];
+                                                    error:&error] autorelease];
     STAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
-    if (error != nil) {
-        [data release];
-        return nil;
-    }
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteAccumulator *accumulator  = [[JsonLiteAccumulator alloc] init];
@@ -73,7 +69,6 @@
     parser.delegate = nil;
     [accumulator release];
     [parser release];
-    [data release];
     
     return object;
 }
@@ -83,14 +78,10 @@
                                                                       ofType:@"json"
                                                                  inDirectory:dir];
     NSError *error = nil;
-    NSData *data = [[NSData alloc] initWithContentsOfFile:path
+    NSData *data = [[[NSData alloc] initWithContentsOfFile:path
                                                   options:0
-                                                    error:&error];
+                                                    error:&error] autorelease];
     STAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
-    if (error != nil) {
-        [data release];
-        return nil;
-    }
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] initWithDepth:3];
     JsonLiteAccumulator *delegate = [[JsonLiteAccumulator alloc] init];
@@ -98,7 +89,6 @@
     [parser parse:data];    
     [delegate release];
     [parser autorelease];
-    [data release];
     
     return parser.parseError;
 }
@@ -160,13 +150,14 @@
         STAssertTrue([obj1 isEqual:obj2], @"#%d Object is not equals: %@ == %@", i, obj1, obj2);
     }
     
+    NSException *exc = nil;
     @try {
         [object objectAtIndex:[array count]];
-        STAssertTrue(NO, @"No exption");
     }
     @catch (NSException *exception) {
-        STAssertTrue([[exception name] isEqualToString:NSRangeException], @"Bad exception");
+        exc = [[exception retain] autorelease];
     }
+    STAssertTrue([[exc name] isEqualToString:NSRangeException], @"Bad exception");
 }
 
 - (void)testObjectValues {

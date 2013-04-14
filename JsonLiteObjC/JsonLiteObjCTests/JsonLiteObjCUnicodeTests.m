@@ -19,6 +19,11 @@
 #import "JsonLiteAccumulator.h"
 #import "JsonLiteSerializer.h"
 
+typedef struct UnicodeTestCtx {
+    NSDictionary *dict;
+    JsonLiteObjCUnicodeTests *test;
+} UnicodeTestCtx;
+
 static void string_found(jsonlite_callback_context *, jsonlite_token *);
 static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
 
@@ -76,11 +81,13 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     [parser release];
     [jls release];
     
-    [self compareDictionary:dict withDictionary:object];
+    BOOL equal = [self compareDictionary:dict withDictionary:object];
+    STAssertTrue(equal, @"Not equal");
     
+    UnicodeTestCtx ctx = { dict, self};
     jsonlite_parser p = jsonlite_parser_init(256);
     jsonlite_parser_callbacks cbs = jsonlite_default_callbacks;
-    cbs.context.client_state = dict;
+    cbs.context.client_state = &ctx;
     cbs.string_found = string_found;
     
     jsonlite_result result = jsonlite_parser_set_callback(NULL, &cbs);
@@ -289,10 +296,15 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     jsonlite_parser_release(p);
 }
 
+- (void)fastFails:(BOOL)fail {
+    STAssertFalse(fail, @"Failed test case from C code callback");
+}
+
 @end
 
 static void string_found(jsonlite_callback_context *ctx, struct jsonlite_token *token) {
-    NSDictionary *dict = (NSDictionary *)ctx->client_state;
+    UnicodeTestCtx *context = (UnicodeTestCtx *)ctx->client_state;
+    NSDictionary *dict = context->dict;
     uint8_t *buffer = NULL;
     size_t size = jsonlite_token_decode_to_uft8(token, &buffer);
     
@@ -300,14 +312,16 @@ static void string_found(jsonlite_callback_context *ctx, struct jsonlite_token *
     [str autorelease];
     free(buffer);
     
+    BOOL fails = YES;
     for (id key in dict) {
         id value = [dict objectForKey:key];
         if ([value isEqual:str]) {
-            return;
+            fails = NO;
+            break;
         }
     }
     
-    NSLog(@"Not found");
+    [context->test fastFails:fails];
 }
 
 static void string_token_found(jsonlite_callback_context *ctx, struct jsonlite_token *token) {
@@ -328,12 +342,6 @@ static void string_token_found(jsonlite_callback_context *ctx, struct jsonlite_t
                                                                kCFAllocatorDefault);
     [str2 autorelease];
     
-    SenTestCase *testCase = (SenTestCase *)ctx->client_state;
-    if (![str1 isEqualToString:str2]) {
-        [testCase failWithException:[NSException failureInCondition:@"str1 != str2"
-                                                             isTrue:NO
-                                                             inFile:[NSString stringWithUTF8String:__FILE__]
-                                                             atLine:__LINE__
-                                                    withDescription:@"Object are not equal"]];
-    }
+    JsonLiteObjCUnicodeTests *testCase = (JsonLiteObjCUnicodeTests *)ctx->client_state;
+    [testCase fastFails:![str1 isEqualToString:str2]];
 }

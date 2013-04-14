@@ -75,6 +75,7 @@
     JsonLiteParser *parser = [JsonLiteParser parser];
     JsonLiteDeserializer *deserializer = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteConvert class]];
     deserializer.converter = converter;
+    STAssertEqualObjects(deserializer.converter, converter, @"Object are not equals");
     parser.delegate = deserializer;
     [parser parse:data];
     
@@ -90,7 +91,7 @@
     
     JsonLiteSerializer *ser = [JsonLiteSerializer serializer];
     ser.converter = converter;
-    
+    STAssertEqualObjects(ser.converter, converter, @"converters are not equals");
     data = [ser serializeObject:obj];
     
     [deserializer reset];

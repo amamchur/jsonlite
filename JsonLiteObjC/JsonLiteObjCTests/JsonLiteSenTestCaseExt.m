@@ -17,28 +17,29 @@
 
 @implementation SenTestCase(JsonLiteSenTestCaseExt)
 
-- (void)compareNumber:(NSNumber *)n1 withNumber:(NSNumber *)n2 {
+- (BOOL)compareNumber:(NSNumber *)n1 withNumber:(NSNumber *)n2 {
     double d1 = [n1 doubleValue];
     double d2 = [n2 doubleValue];
     double dx = fabs(d1 - d2);
-    if (dx > 0.00000005) {
-        STAssertTrue(NO, @"Not equal");
-    }
+    return dx <= 0.00000005;
 }
 
-- (void)compareDictionary:(NSDictionary *)d1 withDictionary:(NSDictionary *)d2 {
+- (BOOL)compareDictionary:(NSDictionary *)d1 withDictionary:(NSDictionary *)d2 {
     NSInteger c1 = [d1 count];
     NSInteger c2 = [d2 count];
-    if (c1 != c2) {
-        STAssertTrue(c1 == c2, @"Length is not equal");
-        return;
+    BOOL equal = c1 == c2;
+    if (!equal) {
+        return NO;
     }
     
     for (id key in d1) {
         id obj1 = [d1 objectForKey:key];
         id obj2 = [d2 objectForKey:key];
         if ([obj1 isKindOfClass:[NSArray class]] && [obj2 isKindOfClass:[NSArray class]]) {
-            [self compareArray:obj1 withArray:obj2];
+            equal = [self compareArray:obj1 withArray:obj2];
+            if (!equal) {
+                return NO;
+            }
             continue;
         }
         
@@ -48,46 +49,101 @@
         }
         
         if ([obj1 isKindOfClass:[NSNumber class]] && [obj2 isKindOfClass:[NSNumber class]]) {
-            [self compareNumber:obj1 withNumber:obj2];
+            equal = [self compareNumber:obj1 withNumber:obj2];
+            if (!equal) {
+                return NO;
+            }
             continue;
         }
         
         if (obj1 != NULL && obj2 != NULL) {
-            STAssertTrue([obj1 isEqual:obj2], @"Objects are not equal");
-        } else {
-            STAssertTrue(NO, @"Objects are not equal");
+            if (![obj1 isEqual:obj2]) {
+                return NO;
+            }
         }
     }
+    return YES;
 }
 
-- (void)compareArray:(NSArray *)a1 withArray:(NSArray *)a2 {
+- (BOOL)compareArray:(NSArray *)a1 withArray:(NSArray *)a2 {
     NSInteger c1 = [a1 count];
     NSInteger c2 = [a2 count];
-    if (c1 != c2) {
-        STAssertTrue(c1 == c2, @"Length is not equal");
-        return;
+    BOOL equal = c1 == c2;
+    if (!equal) {
+        return NO;
     }
     
     for (NSInteger i = 0; i < c1; i++) {
         id obj1 = [a1 objectAtIndex:i];
         id obj2 = [a2 objectAtIndex:i];
         if ([obj1 isKindOfClass:[NSArray class]] && [obj2 isKindOfClass:[NSArray class]]) {
-            [self compareArray:obj1 withArray:obj2];
+            equal = [self compareArray:obj1 withArray:obj2];
+            if (!equal) {
+                return NO;
+            }
             continue;
         }
         
         if ([obj1 isKindOfClass:[NSDictionary class]] && [obj2 isKindOfClass:[NSDictionary class]]) {
-            [self compareDictionary:obj1 withDictionary:obj2];
+            equal = [self compareDictionary:obj1 withDictionary:obj2];
+            if (!equal) {
+                return NO;
+            }
             continue;
         }
         
         if ([obj1 isKindOfClass:[NSNumber class]] && [obj2 isKindOfClass:[NSNumber class]]) {
-            [self compareNumber:obj1 withNumber:obj2];
+            equal = [self compareNumber:obj1 withNumber:obj2];
+            if (!equal) {
+                return NO;
+            }
             continue;
         }
-        
-        STAssertTrue([obj1 isEqual:obj2], @"Objects are not equal");
+        if (![obj1 isEqual:obj2]) {
+            return NO;
+        }
     }
+    
+    return YES;
+}
+
+- (void)testCompareMethods {
+    NSNumber *n1 = [NSNumber numberWithInt:1];
+    NSNumber *n2 = [NSNumber numberWithInt:2];
+    STAssertFalse([self compareNumber:n1 withNumber:n2], @"Number are equal");
+    STAssertTrue([self compareNumber:n1 withNumber:n1], @"Number are not equal");
+    
+    NSDictionary *d1 = [NSDictionary dictionaryWithObject:@"a" forKey:@"b"];
+    NSDictionary *d2 = [NSDictionary dictionary];
+    STAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
+    
+    d1 = [NSDictionary dictionaryWithObject:[NSArray array] forKey:@"a"];
+    d2 = [NSDictionary dictionaryWithObject:[NSArray arrayWithObject:@"2"] forKey:@"a"];
+    STAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
+    
+    d1 = [NSDictionary dictionaryWithObject:n1 forKey:@"a"];
+    d2 = [NSDictionary dictionaryWithObject:n2 forKey:@"a"];
+    STAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
+    
+    d1 = [NSDictionary dictionaryWithObject:@"v1" forKey:@"a"];
+    d2 = [NSDictionary dictionaryWithObject:@"v2" forKey:@"a"];
+    STAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
+    
+    NSArray *a1 = [NSArray arrayWithObject:[NSArray arrayWithObject:@"v1"]];
+    NSArray *a2 = [NSArray arrayWithObject:[NSArray arrayWithObject:@"v2"]];
+    STAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
+    
+    a1 = [NSArray arrayWithObject:d1];
+    a2 = [NSArray arrayWithObject:d2];
+    STAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
+    
+    a1 = [NSArray arrayWithObject:n1];
+    a2 = [NSArray arrayWithObject:n2];
+    STAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
+    
+    a1 = [NSArray arrayWithObject:@"v1"];
+    a2 = [NSArray arrayWithObject:@"v2"];
+    STAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
 }
 
 @end

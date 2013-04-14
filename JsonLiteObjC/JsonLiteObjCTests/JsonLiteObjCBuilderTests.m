@@ -26,14 +26,10 @@
                                                                       ofType:@"json"
                                                                  inDirectory:dir];
     NSError *error = nil;
-    NSData *data = [[NSData alloc] initWithContentsOfFile:path
+    NSData *data = [[[NSData alloc] initWithContentsOfFile:path
                                                   options:0
-                                                   error:&error];
+                                                   error:&error] autorelease];
     STAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
-    if (error != nil) {
-        [data release];
-        return nil;
-    }
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteAccumulator *delegate = [[JsonLiteAccumulator alloc] init];
@@ -47,7 +43,6 @@
     
     [delegate release];
     [parser release];
-    [data release];
     
     return object;
 }
@@ -70,7 +65,7 @@
     [parser release]; 
     [jls release];
     
-    [self compareArray:object withArray:object1];
+    STAssertTrue([self compareArray:object withArray:object1], @"Not equal");
 }
 
 - (void)testBuilderBeauty {
@@ -79,6 +74,7 @@
     
     JsonLiteSerializer *jls =[[JsonLiteSerializer alloc] init];
     jls.indentation = 4;
+    STAssertEquals(jls.indentation, 4, @"Indentations are not equal");
     NSData *data = [jls serializeObject:object];
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
@@ -92,7 +88,7 @@
     [parser release];
     [jls release];
     
-    [self compareArray:object withArray:object1];
+    STAssertTrue([self compareArray:object withArray:object1], @"Not equal");
 }
 
 - (void)testBuilderInitialization {

@@ -17,8 +17,8 @@
 
 @interface SenTestCase(JsonLiteSenTestCaseExt)
 
-- (void)compareNumber:(NSNumber *)n1 withNumber:(NSNumber *)n2;
-- (void)compareDictionary:(NSDictionary *)d1 withDictionary:(NSDictionary *)d2;
-- (void)compareArray:(NSArray *)a1 withArray:(NSArray *)a2;
+- (BOOL)compareNumber:(NSNumber *)n1 withNumber:(NSNumber *)n2;
+- (BOOL)compareDictionary:(NSDictionary *)d1 withDictionary:(NSDictionary *)d2;
+- (BOOL)compareArray:(NSArray *)a1 withArray:(NSArray *)a2;
 
 @end
