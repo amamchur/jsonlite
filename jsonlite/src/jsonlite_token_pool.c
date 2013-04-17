@@ -163,28 +163,7 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
 }
 
 static int jsonlite_token_compare(const uint8_t *t1, const uint8_t *t2, size_t length) {
-    div_t d = div((int)length, sizeof(uint32_t));
-    const uint32_t *a = (const uint32_t *)t1;
-    const uint32_t *b = (const uint32_t *)t2;
-	int i;
-
-    for (i = 0; i < d.quot; i++) {
-        if (*a++ != *b++) {
-            return 0;
-        }
-    }
-    
-    t1 = (const uint8_t *)a;
-    t2 = (const uint8_t *)b;
-    
-    switch (d.rem) {
-        case 3: if (*t1++ != *t2++) return 0;
-        case 2: if (*t1++ != *t2++) return 0;
-        case 1: if (*t1 != *t2) return 0;
-            break;
-    }
-    
-    return 1;
+    return memcmp(t1, t2, length) == 0 ? 1 : 0;
 }
 
 static void jsonlite_extend_capacity(jsonlite_token_pool pool, int index) {
