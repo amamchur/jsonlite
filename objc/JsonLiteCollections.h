@@ -17,5 +17,8 @@
 
 @end
 
-@interface JsonLiteArray : NSArray 
+@interface JsonLiteArray : NSArray
+
++ (id)allocArrayWithObjects:(const id *)objects count:(NSUInteger)cnt;
+
 @end

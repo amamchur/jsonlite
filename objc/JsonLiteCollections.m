@@ -135,16 +135,20 @@ typedef struct JsonLiteDictionaryBucket {
 
 @implementation JsonLiteArray
 
-- (id)initWithObjects:(const id *)objects count:(NSUInteger)cnt {
-    self = [super init];
-    if (self != nil) {
-        count = cnt;
-        if (cnt > 0) {
-            values = malloc(sizeof(id) * cnt);
-            memcpy(values, objects, sizeof(id) * cnt);
-        }
++ (id)allocArrayWithObjects:(const id *)objects count:(NSUInteger)cnt {
+    size_t size = class_getInstanceSize(self);
+    size_t totalSize = size + cnt * sizeof(id);
+    uint8_t *mem = calloc(1, totalSize);
+    JsonLiteArray *array = (JsonLiteArray *)mem;
+    object_setClass(array, self);
+    array = [array init];
+    array->values = (id *)(mem + size);
+    array->count = cnt;
+    if (cnt > 0) {
+        array->values = malloc(sizeof(id) * cnt);
+        memcpy(array->values, objects, sizeof(id) * cnt);
     }
-    return self;
+    return (id)mem;
 }
 
 - (NSUInteger)count  {
@@ -169,7 +173,6 @@ typedef struct JsonLiteDictionaryBucket {
     for (int i = 0; i < count; i++) {
         CFRelease(values[i]);
     }
-    free(values);
     [super dealloc];
 }
 
