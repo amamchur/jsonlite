@@ -80,12 +80,8 @@ typedef struct JsonLiteDictionaryBucket {
                         hashes:(const CFHashCode *)hashes
                          count:(NSUInteger)cnt {
     size_t size = class_getInstanceSize(self);
-    size_t totalSize = size + cnt * sizeof(JsonLiteDictionaryBucket);
-    uint8_t *mem = calloc(1, totalSize);
-    JsonLiteDictionary *dict = (JsonLiteDictionary *)mem;
-    object_setClass(dict, self);
-    dict = [dict init];
-    dict->buffer = (JsonLiteDictionaryBucket *)(mem + size);
+    JsonLiteDictionary *dict = class_createInstance(self, cnt * sizeof(JsonLiteDictionaryBucket));
+    dict->buffer = (JsonLiteDictionaryBucket *)((uint8_t *)dict  + size);
     dict->count = cnt;
     
     JsonLiteDictionaryBucket *b = dict->buffer;
@@ -99,7 +95,7 @@ typedef struct JsonLiteDictionaryBucket {
         dict->buckets[index] = b;
     }
     
-    return (id)mem;
+    return dict;
 }
 
 - (void)dealloc {
@@ -137,18 +133,15 @@ typedef struct JsonLiteDictionaryBucket {
 
 + (id)allocArrayWithObjects:(const id *)objects count:(NSUInteger)cnt {
     size_t size = class_getInstanceSize(self);
-    size_t totalSize = size + cnt * sizeof(id);
-    uint8_t *mem = calloc(1, totalSize);
-    JsonLiteArray *array = (JsonLiteArray *)mem;
-    object_setClass(array, self);
+    JsonLiteArray *array = class_createInstance(self, cnt * sizeof(id));
     array = [array init];
-    array->values = (id *)(mem + size);
+    array->values = (id *)((uint8_t *)array + size);
     array->count = cnt;
     if (cnt > 0) {
-        array->values = malloc(sizeof(id) * cnt);
+        array->values = (id *)((uint8_t *)array + size);
         memcpy(array->values, objects, sizeof(id) * cnt);
     }
-    return (id)mem;
+    return array;
 }
 
 - (NSUInteger)count  {
