@@ -9,16 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface JsonLiteDictionary : NSDictionary
-
-+ (id)allocDictionaryWithValue:(const id *)values
-                          keys:(const id *)keys
-                        hashes:(const CFHashCode *)hashes
-                         count:(NSUInteger)cnt;
-
 @end
 
 @interface JsonLiteArray : NSArray
-
-+ (id)allocArrayWithObjects:(const id *)objects count:(NSUInteger)cnt;
-
 @end
+
+id JsonLiteCreateDictionary(const id *values, const id *keys, const CFHashCode *hashes, NSUInteger count);
+id JsonLiteCreateArray(const id *objects, NSUInteger count);

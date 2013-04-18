@@ -38,6 +38,7 @@ typedef struct JsonLiteDictionaryBucket {
 @end
 
 @interface JsonLiteArray() {
+@public
     NSUInteger count;
     id *values;
 }
@@ -75,29 +76,6 @@ typedef struct JsonLiteDictionaryBucket {
 
 @implementation JsonLiteDictionary
 
-+ (id)allocDictionaryWithValue:(const id *)values
-                          keys:(const id *)keys
-                        hashes:(const CFHashCode *)hashes
-                         count:(NSUInteger)cnt {
-    size_t size = class_getInstanceSize(self);
-    JsonLiteDictionary *dict = class_createInstance(self, cnt * sizeof(JsonLiteDictionaryBucket));
-    dict->buffer = (JsonLiteDictionaryBucket *)((uint8_t *)dict  + size);
-    dict->count = cnt;
-    
-    JsonLiteDictionaryBucket *b = dict->buffer;
-    for (int i = 0; i < cnt; i++, b++) {
-        CFHashCode hash = hashes[i];
-        int index = hash & JsonLiteDictionaryFrontMask;
-        b->hash = hash;
-        b->key = keys[i];
-        b->value = values[i];
-        b->next = dict->buckets[index];
-        dict->buckets[index] = b;
-    }
-    
-    return dict;
-}
-
 - (void)dealloc {
     for (int i = 0; i < count; i++) {
         CFRelease(buffer[i].key);
@@ -131,19 +109,6 @@ typedef struct JsonLiteDictionaryBucket {
 
 @implementation JsonLiteArray
 
-+ (id)allocArrayWithObjects:(const id *)objects count:(NSUInteger)cnt {
-    size_t size = class_getInstanceSize(self);
-    JsonLiteArray *array = class_createInstance(self, cnt * sizeof(id));
-    array = [array init];
-    array->values = (id *)((uint8_t *)array + size);
-    array->count = cnt;
-    if (cnt > 0) {
-        array->values = (id *)((uint8_t *)array + size);
-        memcpy(array->values, objects, sizeof(id) * cnt);
-    }
-    return array;
-}
-
 - (NSUInteger)count  {
     return count;
 }
@@ -170,3 +135,48 @@ typedef struct JsonLiteDictionaryBucket {
 }
 
 @end
+
+id JsonLiteCreateDictionary(const id *values, const id *keys, const CFHashCode *hashes, NSUInteger count) {
+    static Class cls = nil;
+    static size_t size = 0;
+    if (cls == nil) {
+        cls = [JsonLiteDictionary class];
+        size = class_getInstanceSize(cls);
+    }
+
+    JsonLiteDictionary *dict = class_createInstance(cls, count * sizeof(JsonLiteDictionaryBucket));
+    dict->buffer = (JsonLiteDictionaryBucket *)((uint8_t *)dict  + size);
+    dict->count = count;
+    
+    JsonLiteDictionaryBucket *b = dict->buffer;
+    for (int i = 0; i < count; i++, b++) {
+        CFHashCode hash = hashes[i];
+        int index = hash & JsonLiteDictionaryFrontMask;
+        b->hash = hash;
+        b->key = keys[i];
+        b->value = values[i];
+        b->next = dict->buckets[index];
+        dict->buckets[index] = b;
+    }
+    
+    return dict;
+}
+
+id JsonLiteCreateArray(const id *objects, NSUInteger count) {
+    static Class cls = nil;
+    static size_t size = 0;
+    if (cls == nil) {
+        cls = [JsonLiteArray class];
+        size = class_getInstanceSize(cls);
+    }
+
+    JsonLiteArray *array = class_createInstance(cls, count * sizeof(id));
+    array = [array init];
+    array->values = (id *)((uint8_t *)array + size);
+    array->count = count;
+    if (count > 0) {
+        array->values = (id *)((uint8_t *)array + size);
+        memcpy(array->values, objects, sizeof(id) * count);
+    }
+    return array;
+}

@@ -206,10 +206,10 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 }
 
 - (void)parserDidEndObject:(JsonLiteParser *)parser {
-    JsonLiteDictionary *d = [JsonLiteDictionary allocDictionaryWithValue:current->values
-                                                                    keys:current->keys
-                                                                  hashes:current->hashes
-                                                                   count:current->length];
+    JsonLiteDictionary *d = JsonLiteCreateDictionary(current->values,
+                                                     current->keys,
+                                                     current->hashes,
+                                                     current->length);
     JsonLiteAccumulatorState *prev = current - 1;
     prev->values[prev->length++] = d;
     
@@ -225,7 +225,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 }
 
 - (void)parserDidEndArray:(JsonLiteParser *)parser {
-    JsonLiteArray *a = [JsonLiteArray allocArrayWithObjects:current->values count:current->length];
+    JsonLiteArray *a =JsonLiteCreateArray(current->values, current->length);
     JsonLiteAccumulatorState *prev = current - 1;
     prev->values[prev->length++] = a;
     
