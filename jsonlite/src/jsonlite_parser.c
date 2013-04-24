@@ -102,7 +102,6 @@ JSONLITE_FCS take_number(jsonlite_parser parser);
 JSONLITE_FCS take_true(jsonlite_parser parser);
 JSONLITE_FCS take_false(jsonlite_parser parser);
 JSONLITE_FCS take_null(jsonlite_parser parser);
-JSONLITE_FCS take_custom_token(jsonlite_parser parser, const uint8_t *t, jsonlite_state_callback callback);
 
 static int skip_whitespace(jsonlite_parser parser);
 static jsonlite_result take_string_escape(jsonlite_parser parser, jsonlite_token *jt);
@@ -116,10 +115,6 @@ static void empty_value_callback(jsonlite_callback_context *ctx, jsonlite_token 
 
 static void empty_state_callback(jsonlite_callback_context *ctx) {
 }
-
-static uint8_t token_null[] = "null";
-static uint8_t token_true[] = "true";
-static uint8_t token_false[] = "false";
 
 const jsonlite_parser_callbacks jsonlite_default_callbacks = {
     &empty_state_callback,
@@ -744,31 +739,44 @@ JSONLITE_FCS take_number_exp(jsonlite_parser parser, jsonlite_token *jt) {
     return 0;
 }
 
-JSONLITE_FCS take_custom_token(jsonlite_parser parser, const uint8_t *t, jsonlite_state_callback callback) {
+JSONLITE_FCS take_true(jsonlite_parser parser) {
+    static uint8_t token[] = "true";
     const uint8_t *c = parser->cursor;
-    while (*t) {
-        if (*c++ != *t++) {
-            parser->cursor = c;
-            return set_error(parser, c, jsonlite_result_invalid_token);
-        }
+    CHECK_LIMIT(c + 3, parser->limit);
+    int res = memcmp(token, c, sizeof(token) - 1);
+    if (res == 0) {
+        parser->cursor = c + sizeof(token) - 1;
+        CALL_STATE_CALLBACK(parser->callbacks, true_found);
+        return -1;
     }
     
-    parser->cursor = c;    
-    callback(&parser->callbacks.context);
-    return -1;
-}
-
-JSONLITE_FCS take_true(jsonlite_parser parser) {
-    CHECK_LIMIT(parser->cursor + 3, parser->limit);
-    return take_custom_token(parser, token_true, parser->callbacks.true_found);
+    return set_error(parser, c, jsonlite_result_invalid_token);
 }
 
 JSONLITE_FCS take_false(jsonlite_parser parser) {
-    CHECK_LIMIT(parser->cursor + 4, parser->limit);
-    return take_custom_token(parser, token_false, parser->callbacks.false_found);
+    static uint8_t token[] = "false";
+    const uint8_t *c = parser->cursor;
+    CHECK_LIMIT(c + 4, parser->limit);
+    int res = memcmp(token, c, sizeof(token) - 1);
+    if (res == 0) {
+        parser->cursor = c + sizeof(token) - 1;
+        CALL_STATE_CALLBACK(parser->callbacks, false_found);
+        return -1;
+    }
+    
+    return set_error(parser, c, jsonlite_result_invalid_token);
 }
 
 JSONLITE_FCS take_null(jsonlite_parser parser) {
-    CHECK_LIMIT(parser->cursor + 3, parser->limit);
-    return take_custom_token(parser, token_null, parser->callbacks.null_found);
+    static uint8_t token[] = "null";
+    const uint8_t *c = parser->cursor;
+    CHECK_LIMIT(c + 3, parser->limit);
+    int res = memcmp(token, c, sizeof(token) - 1);
+    if (res == 0) {
+        parser->cursor = c + sizeof(token) - 1;
+        CALL_STATE_CALLBACK(parser->callbacks, null_found);
+        return -1;
+    }
+    
+    return set_error(parser, c, jsonlite_result_invalid_token);
 }

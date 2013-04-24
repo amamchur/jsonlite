@@ -16,7 +16,7 @@
 #import "JsonLiteCollections.h"
 #import "jsonlite_token_pool.h"
 
-#define CHECK_CAPACITY() if (keys + capacity < current->keys + current->length + 1) [self extendCapacity];
+#define CHECK_CAPACITY() if (keys + capacity < current->keys + current->length + 1) [self extendCapacity]
 
 typedef struct JsonLiteAccumulatorState {
     id *keys;
@@ -115,6 +115,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     jsonlite_token_pool_release(keyPool);
     jsonlite_token_pool_release(stringPool);
     jsonlite_token_pool_release(numberPool);
+    
     free(values);
     free(state);
     free(hashes);
