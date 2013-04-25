@@ -100,3 +100,5 @@ JsonLite Objective-C - power extension of jsonlite for Objective-C/Cocoa.
 >
 > *   Serialization/deserialization (bindings)
 > *   NSDecimalNumberv
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8f6b05150539f0a02198d76d128993f4 "githalytics.com")](http://githalytics.com/github.com/amamchur)
