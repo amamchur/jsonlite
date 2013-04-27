@@ -21,4 +21,8 @@
 - (BOOL)compareDictionary:(NSDictionary *)d1 withDictionary:(NSDictionary *)d2;
 - (BOOL)compareArray:(NSArray *)a1 withArray:(NSArray *)a2;
 
+- (id)parseObjectFromFile:(NSString *)file inDir:(NSString *)dir;
+- (NSError *)parseErrorFromFile:(NSString *)file inDir:(NSString *)dir;
+- (NSData *)dataFromFile:(NSString *)file inDir:(NSString *)dir;
+
 @end

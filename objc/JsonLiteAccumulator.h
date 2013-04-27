@@ -29,7 +29,7 @@ struct JsonLiteAccumulatorState;
 
 @interface JsonLiteAccumulator : NSObject<JsonLiteParserDelegate>
 
-@property (nonatomic, readonly) NSUInteger maxDepth;
+@property (nonatomic, readonly) NSUInteger depth;
 @property (nonatomic, readonly) NSUInteger currentDepth;
 @property (nonatomic, assign) id<JsonLiteAccumulatorDelegate> delegate;
 

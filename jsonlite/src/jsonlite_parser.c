@@ -157,7 +157,7 @@ jsonlite_parser jsonlite_parser_init(size_t depth) {
     return parser;
 }
 
-jsonlite_result jsonlite_parser_set_callback(jsonlite_parser parser, jsonlite_parser_callbacks *cbs) {
+jsonlite_result jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs) {
     if (parser == NULL) {
         return jsonlite_result_invalid_argument;
     }

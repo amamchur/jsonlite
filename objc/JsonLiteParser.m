@@ -203,6 +203,11 @@ static Class class_JsonLiteNumberToken;
 
 - (id)initWithDepth:(NSUInteger)aDepth {
     self = [super init];
+    if (aDepth == 0) {
+        [self release];
+        return nil;
+    }
+    
     if (self != nil) {        
         depth = aDepth;
         internal.parser = NULL;

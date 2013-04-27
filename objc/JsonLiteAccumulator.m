@@ -64,7 +64,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 
 @implementation JsonLiteAccumulator
 
-@synthesize maxDepth;
+@synthesize depth;
 @synthesize delegate;
 
 - (NSUInteger)currentDepth {
@@ -75,8 +75,13 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     return [[[JsonLiteAccumulator alloc] initWithDepth:depth] autorelease];
 }
 
-- (id)initWithDepth:(NSUInteger)depth {
+- (id)initWithDepth:(NSUInteger)aDepth {
     self = [super init];
+    if (aDepth == 0) {
+        [self release];
+        return nil;
+    }
+    
     if (self != nil) {
         keyPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
         stringPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
@@ -88,8 +93,8 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
         keys = buffer + capacity;
         hashes = malloc(capacity * sizeof(CFHashCode));
         
-        maxDepth = depth;
-        state = malloc(maxDepth * sizeof(JsonLiteAccumulatorState));
+        depth = aDepth;
+        state = malloc(depth * sizeof(JsonLiteAccumulatorState));
         
         state->values = values;
         state->keys = keys;
@@ -140,7 +145,10 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     while (current > state) {
         ReleaseKeyValues(current--);
     }
-    ReleaseKeyValues(state);
+    
+    if (state != NULL) {
+        ReleaseKeyValues(state);
+    }
 }
 
 - (void)extendCapacity {

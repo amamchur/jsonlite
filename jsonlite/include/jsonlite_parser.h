@@ -132,7 +132,7 @@ extern "C" {
      * @param parser the callbacks object.
      * @return jsonlite_result_invalid_argument when parser or cbs are NULL; otherwise jsonlite_result_ok.
      */
-    jsonlite_result jsonlite_parser_set_callback(jsonlite_parser parser, jsonlite_parser_callbacks *cbs);
+    jsonlite_result jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs);
     
     /** \brief Returns result of last operation.
      * @see jsonlite_parser

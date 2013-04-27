@@ -347,7 +347,8 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 }
 
 - (void)testEmptyJsonChunk {
-    STAssertTrue(jsonlite_parser_estimate_size(16) == 164, @"");
+    STAssertTrue(jsonlite_parser_estimate_size(16) == 164, @"Incorrect estimated size");
+    STAssertTrue(jsonlite_parser_estimate_size(0) > 0, @"Incorrect estimated size");
     
     char json1[] = "     ";
     char json2[] = "{\"key\" : 12345, \"obj\": {}, \"arr";

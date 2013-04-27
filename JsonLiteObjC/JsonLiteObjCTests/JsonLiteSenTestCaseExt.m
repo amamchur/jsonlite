@@ -14,6 +14,8 @@
 //  limitations under the License
 
 #import "JsonLiteSenTestCaseExt.h"
+#import "JsonLiteAccumulator.h"
+#import "JsonLiteParser.h"
 
 @implementation SenTestCase(JsonLiteSenTestCaseExt)
 
@@ -144,6 +146,75 @@
     a1 = [NSArray arrayWithObject:@"v1"];
     a2 = [NSArray arrayWithObject:@"v2"];
     STAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
+}
+
+- (id)parseObjectFromFile:(NSString *)file inDir:(NSString *)dir {
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:file
+                                                                      ofType:@"json"
+                                                                 inDirectory:dir];
+    NSError *error = nil;
+    NSData *data = [[[NSData alloc] initWithContentsOfFile:path
+                                                   options:0
+                                                     error:&error] autorelease];
+    STAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
+    
+    JsonLiteParser *parser = [[JsonLiteParser alloc] init];
+    JsonLiteAccumulator *accumulator  = [[JsonLiteAccumulator alloc] init];
+    parser.delegate = accumulator;
+    
+    BOOL complete = [parser parse:data];
+    STAssertTrue(error == nil, @"Parsing error %@.", error);
+    STAssertTrue(complete, @"Parsing not complate.");
+    STAssertTrue(parser.parseError == nil, @"Parsing not complate.");
+    STAssertTrue(parser.delegate == accumulator, @"Parsing not complate.");
+    STAssertTrue(parser.depth > 0, @"Parsing not complate.");
+    STAssertTrue(accumulator.currentDepth == 0, @"Parsing not complate.");
+    STAssertTrue(accumulator.depth > 0, @"Parsing not complate.");
+    
+    accumulator.delegate = nil;
+    STAssertTrue(accumulator.delegate == nil, @"Parsing not complate.");
+    
+    accumulator.delegate = nil;
+    STAssertTrue(accumulator.delegate == nil, @"Parsing not complate.");
+    
+    id object = [accumulator object];
+    
+    parser.delegate = nil;
+    [accumulator release];
+    [parser release];
+    
+    return object;
+}
+
+- (NSError *)parseErrorFromFile:(NSString *)file inDir:(NSString *)dir {
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:file
+                                                                      ofType:@"json"
+                                                                 inDirectory:dir];
+    NSError *error = nil;
+    NSData *data = [[[NSData alloc] initWithContentsOfFile:path
+                                                   options:0
+                                                     error:&error] autorelease];
+    STAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
+    
+    JsonLiteParser *parser = [[JsonLiteParser alloc] initWithDepth:3];
+    JsonLiteAccumulator *delegate = [[JsonLiteAccumulator alloc] init];
+    parser.delegate = delegate;
+    [parser parse:data];
+    [delegate release];
+    [parser autorelease];
+    
+    return parser.parseError;
+}
+
+- (NSData *)dataFromFile:(NSString *)file inDir:(NSString *)dir {
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:file
+                                                                      ofType:@"json"
+                                                                 inDirectory:dir];
+    NSError *error = nil;
+    NSData *data = [[[NSData alloc] initWithContentsOfFile:path
+                                                   options:0
+                                                     error:&error] autorelease];
+    return data;
 }
 
 @end
