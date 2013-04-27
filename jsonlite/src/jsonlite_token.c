@@ -68,18 +68,15 @@ size_t jsonlite_token_decode_size_for_uft8(jsonlite_token *ts) {
 }
 
 size_t jsonlite_token_decode_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
-    if (ts == NULL || buffer == NULL) {
+    size_t size = jsonlite_token_decode_size_for_uft8(ts);
+    if (size == 0 || buffer == NULL) {
         return 0;
     }
     
     const uint8_t *p = ts->start;
-  	uint8_t *c;
+  	uint8_t *c = (uint8_t *)malloc(size);
 	uint32_t hex;
-    if (*buffer == NULL) {
-        *buffer = (uint8_t *)malloc(jsonlite_token_decode_size_for_uft8(ts));
-    }
-    
-    c = *buffer;
+    *buffer = c;
 
     while (p < ts->end) {
         if (*p != '\\') {
@@ -147,22 +144,19 @@ size_t jsonlite_token_decode_size_for_uft16(jsonlite_token *ts) {
         return 0;
     }
     
-    return (ts->end - ts->start) * sizeof(uint16_t) + 2;
+    return (ts->end - ts->start + 1) * sizeof(uint16_t);
 }
 
 size_t jsonlite_token_decode_to_uft16(jsonlite_token *ts, uint16_t **buffer) {
-    if (ts == NULL || buffer == NULL) {
+    size_t size = jsonlite_token_decode_size_for_uft16(ts);
+    if (size == 0 || buffer == NULL) {
         return 0;
     }
     
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
-    uint16_t *c;
-    if (*buffer == NULL) {
-        *buffer = (uint16_t *)malloc(jsonlite_token_decode_size_for_uft16(ts));
-    }
-    
-    c = *buffer;
+    uint16_t *c = (uint16_t *)malloc(size);
+    *buffer = c;
     
     for (; p < l;) {
         uint32_t unichar = *p;

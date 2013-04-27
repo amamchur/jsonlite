@@ -133,6 +133,101 @@
     jsonlite_parser_release(NULL);
 }
 
+- (void)testJsonLiteParserTokenC {
+    uint16_t *unicode = NULL;
+    uint8_t *buffer = NULL;
+    uint8_t str[] = "qwerty";
+    uint16_t str16[] = {'q', 'w', 'e', 'r', 't', 'y', 0};
+    jsonlite_token token;
+    token.start = str;
+    token.end = str + sizeof(str) - 1;
+    token.string_type = jsonlite_string_ascii;
+    
+    size_t size = jsonlite_token_decode_size_for_uft8(NULL);
+    STAssertTrue(size == 0, @"Size is not zero");
+    
+    size = jsonlite_token_decode_size_for_uft8(&token);
+    STAssertTrue(size == sizeof(str), @"Incorrect size - %d", size);
+    
+    size = jsonlite_token_decode_to_uft8(NULL, NULL);
+    STAssertTrue(size == 0, @"Size is not zero");
+    
+    size = jsonlite_token_decode_to_uft8(NULL, &buffer);
+    STAssertTrue(size == 0, @"Size is not zero");
+    free(buffer);
+    buffer = NULL;
+    
+    size = jsonlite_token_decode_to_uft8(&token, NULL);
+    STAssertTrue(size == 0, @"Size is not zero");
+    
+    size = jsonlite_token_decode_to_uft8(&token, &buffer);
+    STAssertTrue(buffer != NULL, @"Buffer is null");
+    STAssertTrue(size == strlen((char *)str), @"Size is not zero");
+    STAssertTrue(memcmp(str, buffer, sizeof(str)) == 0, @"String are not equal");
+    
+    free(buffer);
+    buffer = NULL;
+    
+    size = jsonlite_token_decode_size_for_uft16(NULL);
+    STAssertTrue(size == 0, @"Size is not zero");
+    
+    size = jsonlite_token_decode_size_for_uft16(&token);
+    STAssertTrue(size == sizeof(str) * 2, @"Incorrect size - %d", size);
+    
+    size = jsonlite_token_decode_to_uft16(NULL, NULL);
+    STAssertTrue(size == 0, @"Size is not zero");
+    
+    size = jsonlite_token_decode_to_uft16(NULL, &unicode);
+    STAssertTrue(size == 0, @"Size is not zero");
+    free(unicode);
+    unicode = NULL;
+    
+    size = jsonlite_token_decode_to_uft16(&token, &unicode);
+    STAssertTrue(unicode != NULL, @"Buffer is null");
+    STAssertTrue(size == sizeof(str16) - sizeof(uint16_t), @"Size is not zero");
+    STAssertTrue(memcmp(str16, unicode, sizeof(str16)) == 0, @"String are not equal");
+    
+    free(unicode);
+    unicode = NULL;
+    
+    uint8_t n = jsonlite_hex_char_to_uint8('0');
+    STAssertTrue(n == 0, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('9');
+    STAssertTrue(n == 9, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('5');
+    STAssertTrue(n == 5, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('a');
+    STAssertTrue(n == 10, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('f');
+    STAssertTrue(n == 15, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('c');
+    STAssertTrue(n == 12, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('A');
+    STAssertTrue(n == 10, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('F');
+    STAssertTrue(n == 15, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('C');
+    STAssertTrue(n == 12, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('\0');
+    STAssertTrue(n == 0xFF, @"Incorrect value");
+
+    n = jsonlite_hex_char_to_uint8('z');
+    STAssertTrue(n == 0xFF, @"Incorrect value");
+    
+    n = jsonlite_hex_char_to_uint8('Z');
+    STAssertTrue(n == 0xFF, @"Incorrect value");
+
+}
+
 - (void)testJsonLiteParserObjC {
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     STAssertNotNil(parser, @"Parser is nil");
