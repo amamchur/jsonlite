@@ -431,7 +431,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "file=\"${TEMP_FILE_DIR}/Objects-normal/i386/jsonlite_parser.gcda\"\nif [ -f \"$file\" ] && [ -f \"/usr/local/bin/lcov\" ]; then\n    /usr/local/bin/lcov --capture --directory \"${TEMP_FILE_DIR}/Objects-normal/i386\" --output-file coverage.info\n    /usr/local/bin/genhtml coverage.info --output-directory cov\n    cd \"${TEMP_FILE_DIR}/Objects-normal/i386/\"\n    rm *.gcda\nfi\n";
+			shellScript = "file=\"${TEMP_FILE_DIR}/Objects-normal/i386/jsonlite_parser.gcda\"\nif [ -f \"$file\" ] && [ -f \"/usr/local/bin/lcov\" ]; then\n    /usr/local/bin/lcov --capture --directory \"${TEMP_FILE_DIR}/Objects-normal/i386\" --output-file coverage.info --rc lcov_branch_coverage=1\n    /usr/local/bin/genhtml coverage.info --output-directory cov --rc lcov_branch_coverage=1\n    cd \"${TEMP_FILE_DIR}/Objects-normal/i386/\"\n    rm *.gcda\nfi\n";
 		};
 		879D181315BA9B1A00791C72 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
