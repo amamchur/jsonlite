@@ -234,7 +234,7 @@
     [parser release];
     
     parser = [[JsonLiteParser alloc] initWithDepth:0];
-    STAssertNil(parser, @"Parser is NOT nil");
+    STAssertNotNil(parser, @"Parser is nil");
     [parser release];
     
     parser = [[JsonLiteParser alloc] initWithDepth:512];

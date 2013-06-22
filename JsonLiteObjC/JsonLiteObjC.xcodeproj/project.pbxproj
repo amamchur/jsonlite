@@ -312,6 +312,8 @@
 			children = (
 				879D190F15BA9E7700791C72 /* JsonLiteAccumulator.h */,
 				879D191015BA9E7700791C72 /* JsonLiteAccumulator.m */,
+				87EFCA351676214C00277DE5 /* JsonLiteCollections.h */,
+				87EFCA361676214C00277DE5 /* JsonLiteCollections.m */,
 				879D191315BA9E7700791C72 /* JsonLiteConverters.h */,
 				879D191415BA9E7700791C72 /* JsonLiteConverters.m */,
 				879D191515BA9E7700791C72 /* JsonLiteDeserializer.h */,
@@ -322,8 +324,6 @@
 				879D191A15BA9E7700791C72 /* JsonLiteParser.m */,
 				879D191B15BA9E7700791C72 /* JsonLiteSerializer.h */,
 				879D191C15BA9E7700791C72 /* JsonLiteSerializer.m */,
-				87EFCA351676214C00277DE5 /* JsonLiteCollections.h */,
-				87EFCA361676214C00277DE5 /* JsonLiteCollections.m */,
 			);
 			name = objc;
 			path = ../objc;

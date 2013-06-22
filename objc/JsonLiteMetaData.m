@@ -14,6 +14,7 @@
 
 #import "JsonLiteMetaData.h"
 #import <objc/runtime.h>
+#import <objc/objc-sync.h>
 
 @implementation JsonLiteBindRule
 
@@ -382,19 +383,19 @@
         return nil;
     }
     
-    static NSMutableDictionary *dict = nil;
+    static NSMutableDictionary *cache = nil;
     JsonLiteClassMetaData *metaData = nil;
-    @synchronized (self) {
-        if (dict == nil) {
-            dict = [[NSMutableDictionary alloc] init];
+    objc_sync_enter(self);
+        if (cache == nil) {
+            cache = [[NSMutableDictionary alloc] init];
         }
-        metaData = [dict objectForKey:cls];
+        metaData = [cache objectForKey:cls];
         if (metaData == nil) {
             metaData = [[JsonLiteClassMetaData alloc] initWithClass:cls];
-            [dict setObject:metaData forKey:(id<NSCopying>)cls];
+            [cache setObject:metaData forKey:(id<NSCopying>)cls];
             [metaData release];
         }
-    }
+    objc_sync_exit(self);
     return metaData;
 }
 

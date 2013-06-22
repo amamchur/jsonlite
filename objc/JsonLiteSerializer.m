@@ -24,6 +24,16 @@
 
 @end
 
+static int is_float(CFNumberRef number) {
+    CFNumberType t = CFNumberGetType(number);
+    int res = t == kCFNumberFloatType;
+    res |= t == kCFNumberDoubleType;
+    res |= t == kCFNumberFloat32Type;
+    res |= t == kCFNumberFloat64Type;
+    res |= t == kCFNumberCGFloatType;
+    return res;
+}
+
 @implementation JsonLiteSerializer
 
 @synthesize indentation;
@@ -51,35 +61,45 @@
 
 - (void)serializeProperties:(NSObject *)obj {
     jsonlite_builder_object_begin(bs);
+    
     JsonLiteClassMetaData *metaData = [JsonLiteClassMetaData metaDataForClass:[obj class]];
-    NSArray *keys = metaData.keys;    
-    for (NSString *key in keys) {
+    NSArray *keys = metaData.keys;
+    NSInteger count = [keys count];
+    for (NSInteger i = 0; i < count; i++) {
+        id key = [keys objectAtIndex:i];
         JsonLiteClassProperty *property = [metaData propertyToBindKey:key];
         id value = [property valueOfObject:obj];
         char *buffer = (char *)[key cStringUsingEncoding:NSUTF8StringEncoding];
         jsonlite_builder_key(bs, buffer, strlen(buffer));
         [self serializeValue:value];
     }
-    
+
     jsonlite_builder_object_end(bs);
 }
 
 - (void)serializeDictionary:(NSDictionary *)dict {
     jsonlite_builder_object_begin(bs);
+    
     NSArray *keys = [dict allKeys];
-    for (NSString *key in keys) {
+    NSInteger count = [keys count];
+    for (NSInteger i = 0; i < count; i++) {
+        id key = [keys objectAtIndex:i];
         char *buffer = (char *)[key cStringUsingEncoding:NSUTF8StringEncoding];
         jsonlite_builder_key(bs, buffer, strlen(buffer));
         [self serializeValue:[dict objectForKey:key]];
     }
+    
     jsonlite_builder_object_end(bs);
 }
 
 - (void)serializeArray:(NSArray *)array {
     jsonlite_builder_array_begin(bs);
-    for (id obj in array) {
-        [self serializeValue:obj];
+    
+    NSInteger count = [array count];
+    for (NSInteger i = 0; i < count; i++) {
+        [self serializeValue:[array objectAtIndex:i]];
     }
+
     jsonlite_builder_array_end(bs);
 }
 
@@ -106,24 +126,18 @@
             jsonlite_builder_true(bs);
             return;
         }
+        
         if ((CFBooleanRef)obj == kCFBooleanFalse) {
             jsonlite_builder_false(bs);
             return;
         }
         
-        CFNumberType numberType = CFNumberGetType((CFNumberRef)obj);
-        switch (numberType) {
-            case kCFNumberFloatType:
-            case kCFNumberDoubleType:
-            case kCFNumberFloat32Type:
-            case kCFNumberFloat64Type:
-            case kCFNumberCGFloatType:
-                jsonlite_builder_double(bs, [obj doubleValue]);
-                return;
-            default:
-                jsonlite_builder_int(bs, [obj longLongValue]);
-                return;
+        if (is_float((CFNumberRef)obj)) {
+            jsonlite_builder_double(bs, [obj doubleValue]);
+        } else {
+            jsonlite_builder_int(bs, [obj longLongValue]);
         }
+        return;
     }
     
     if ([obj isKindOfClass:[NSArray class]]) {
