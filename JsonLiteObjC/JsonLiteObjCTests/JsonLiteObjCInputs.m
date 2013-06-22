@@ -267,13 +267,13 @@
     [acc release];
     
     acc = [JsonLiteAccumulator accumulatorWithDepth:0];
-    STAssertNil(acc, @"Accumulator is NOT nil");
+    STAssertNotNil(acc, @"Accumulator is nil");
     
     acc = [JsonLiteAccumulator accumulatorWithDepth:64];
     STAssertNotNil(acc, @"Accumulator is nil");
     
     acc = [[JsonLiteAccumulator alloc] initWithDepth:0];
-    STAssertNil(acc, @"Accumulator is NOT nil");
+    STAssertNotNil(acc, @"Accumulator is nil");
     [acc release];
     
     acc = [[JsonLiteAccumulator alloc] initWithDepth:512];

@@ -40,8 +40,8 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
         CFRelease((CFTypeRef)key);
     }
     
-    memset(s->values, 0, s->length * sizeof(id));
-    memset(s->keys, 0, s->length * sizeof(id));
+    memset(s->values, 0, s->length * sizeof(id)); // LCOV_EXCL_LINE
+    memset(s->keys, 0, s->length * sizeof(id)); // LCOV_EXCL_LINE
     s->length = 0;
 }
 
@@ -77,11 +77,6 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 
 - (id)initWithDepth:(NSUInteger)aDepth {
     self = [super init];
-    if (aDepth == 0) {
-        [self release];
-        return nil;
-    }
-    
     if (self != nil) {
         keyPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
         stringPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
@@ -93,7 +88,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
         keys = buffer + capacity;
         hashes = malloc(capacity * sizeof(CFHashCode));
         
-        depth = aDepth;
+        depth = aDepth == 0 ? 16 : aDepth;
         state = malloc(depth * sizeof(JsonLiteAccumulatorState));
         
         state->values = values;
@@ -142,13 +137,11 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 }
 
 - (void)reset {
-    while (current > state) {
+    while (current >= state) {
         ReleaseKeyValues(current--);
     }
     
-    if (state != NULL) {
-        ReleaseKeyValues(state);
-    }
+    current = state;
 }
 
 - (void)extendCapacity {
@@ -158,9 +151,9 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     id *newValues = buffer;
     id *newKeys = buffer + newCapacity;
     
-    memcpy(newValues, values, capacity * sizeof(id));
-    memcpy(newKeys, keys, capacity * sizeof(id));
-    memcpy(newHashes, hashes, capacity * sizeof(CFHashCode));
+    memcpy(newValues, values, capacity * sizeof(id)); // LCOV_EXCL_LINE
+    memcpy(newKeys, keys, capacity * sizeof(id)); // LCOV_EXCL_LINE
+    memcpy(newHashes, hashes, capacity * sizeof(CFHashCode)); // LCOV_EXCL_LINE
     
     NSInteger keysOffset = newKeys - keys;
     NSInteger valuesOffset = newValues - values;
@@ -196,8 +189,8 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 }
 
 - (void)popState {
-    memset(current->values, 0, current->length * sizeof(id));
-    memset(current->keys, 0, current->length * sizeof(id));
+    memset(current->values, 0, current->length * sizeof(id)); // LCOV_EXCL_LINE
+    memset(current->keys, 0, current->length * sizeof(id)); // LCOV_EXCL_LINE
     current->length = 0;
     current--;
 }
