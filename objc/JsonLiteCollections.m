@@ -176,7 +176,7 @@ id JsonLiteCreateArray(const id *objects, NSUInteger count) {
     array->count = count;
     if (count > 0) {
         array->values = (id *)((uint8_t *)array + size);
-        memcpy(array->values, objects, sizeof(id) * count);
+        memcpy(array->values, objects, sizeof(id) * count); // LCOV_EXCL_LINE
     }
     return array;
 }

@@ -70,14 +70,14 @@
 }
 
 - (void)setValue:(id)value forObject:(id)obj {
-#ifdef DEBUG
-    if (propertyFlags.objectType) {
-        NSParameterAssert(value == nil || [value isKindOfClass:objectClass]);
-    }
-    if (propertyFlags.classObject) {
-        NSParameterAssert(value == nil || class_getName(value) != NULL);
-    }
-#endif
+//#ifdef DEBUG
+//    if (propertyFlags.objectType) {
+//        NSParameterAssert(value == nil || [value isKindOfClass:objectClass]);
+//    }
+//    if (propertyFlags.classObject) {
+//        NSParameterAssert(value == nil || class_getName(value) != NULL);
+//    }
+//#endif
     setterImp(obj, setterSelector, value);
 }
 
