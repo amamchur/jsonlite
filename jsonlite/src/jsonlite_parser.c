@@ -103,7 +103,7 @@ JSONLITE_FCS take_true(jsonlite_parser parser);
 JSONLITE_FCS take_false(jsonlite_parser parser);
 JSONLITE_FCS take_null(jsonlite_parser parser);
 
-static int is_ancii_escaped_character(uint8_t c);
+static int is_ascii_escaped_character(uint8_t c);
 static int is_number_termination_character(uint8_t c);
 static int is_number_sign_character(uint8_t c);
 static int is_exponent_character(uint8_t c);
@@ -308,7 +308,7 @@ static void jsonlite_finish_parse(jsonlite_parser parser) {
     }
 }
 
-static int is_ancii_escaped_character(uint8_t c) {
+static int is_ascii_escaped_character(uint8_t c) {
     return c == '"' || c == '\\' || c == 'n' || c == 'r' || c == '/' || c == 'b' || c == 'f' || c ==  't';
 }
 
@@ -519,7 +519,7 @@ static jsonlite_result take_string_escape(jsonlite_parser parser, jsonlite_token
     const uint8_t *c = parser->cursor;
     const uint8_t *l = parser->limit;
     CHECK_LIMIT_RET_EOS(c, l);
-    if (is_ancii_escaped_character(*c)) {
+    if (is_ascii_escaped_character(*c)) {
         jt->string_type = (jsonlite_string_type)(jt->string_type | jsonlite_string_escape);
         parser->cursor = c;
         return jsonlite_result_ok;
@@ -725,7 +725,7 @@ JSONLITE_FCS take_number_exp(jsonlite_parser parser, jsonlite_token *jt) {
 }
 
 JSONLITE_FCS take_true(jsonlite_parser parser) {
-    static uint8_t token[] = "true";
+    static const uint8_t token[] = "true";
     const uint8_t *c = parser->cursor;
     CHECK_LIMIT(c + 3, parser->limit);
     int res = memcmp(token, c, sizeof(token) - 1);
@@ -739,7 +739,7 @@ JSONLITE_FCS take_true(jsonlite_parser parser) {
 }
 
 JSONLITE_FCS take_false(jsonlite_parser parser) {
-    static uint8_t token[] = "false";
+    static const uint8_t token[] = "false";
     const uint8_t *c = parser->cursor;
     CHECK_LIMIT(c + 4, parser->limit);
     int res = memcmp(token, c, sizeof(token) - 1);
@@ -753,7 +753,7 @@ JSONLITE_FCS take_false(jsonlite_parser parser) {
 }
 
 JSONLITE_FCS take_null(jsonlite_parser parser) {
-    static uint8_t token[] = "null";
+    static const uint8_t token[] = "null";
     const uint8_t *c = parser->cursor;
     CHECK_LIMIT(c + 3, parser->limit);
     int res = memcmp(token, c, sizeof(token) - 1);

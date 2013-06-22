@@ -62,6 +62,13 @@
 
 @end
 
+@interface JsonLiteTestMatrix2 : NSObject
+
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSArray *matrix;
+
+@end
+
 @implementation JsonLiteTestGetterSetter
 
 @dynamic dynamic;
@@ -150,6 +157,21 @@
 
 + (NSArray *)jsonLiteBindingRules {
     id b1 = [JsonLiteBindRule ruleForKey:@"matrix" elementClass:[JsonLiteTestObj1 class]];
+    return [NSArray arrayWithObjects:b1, nil];
+}
+
+- (void)dealloc {
+    [_name release];
+    [_matrix release];
+    [super dealloc];
+}
+
+@end
+
+@implementation JsonLiteTestMatrix2
+
++ (NSArray *)jsonLiteBindingRules {
+    id b1 = [JsonLiteBindRule ruleForKey:@"matrix" elementClass:NULL];
     return [NSArray arrayWithObjects:b1, nil];
 }
 
@@ -407,7 +429,29 @@
             STAssertTrue([o isEqual:o], @"Not equal");
         }
     }
+}
+
+- (void)testMatrix2 {
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"object_matrix"
+                                                                      ofType:@"json"
+                                                                 inDirectory:@"deserializer"];
+    NSError *error = nil;
+    NSData *data = [[NSData alloc] initWithContentsOfFile:path
+                                                  options:0
+                                                    error:&error];
+    STAssertNil(error, @"Can not open file");
     
+    JsonLiteParser *parser = [JsonLiteParser parser];
+    JsonLiteDeserializer *deserializer = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteTestMatrix2 class]];
+    parser.delegate = deserializer;
+    [parser parse:data];
+    
+    JsonLiteTestMatrix2 *matrix = [deserializer object];
+    STAssertNotNil(matrix, @"matrix not binded");
+    STAssertNotNil(matrix.name, @"name not binded");
+    STAssertTrue([matrix.matrix count] == 2, @"matrix not binded");
+    STAssertTrue([[matrix.matrix objectAtIndex:0] count] == 2, @"");
+    STAssertTrue([[[matrix.matrix objectAtIndex:0] objectAtIndex:0] isKindOfClass:[NSNull class]], @"");
 }
 
 - (void)testSerAndDeser {

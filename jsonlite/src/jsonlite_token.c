@@ -117,14 +117,14 @@ size_t jsonlite_token_decode_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
                 if (hex < 0x80) {
                     *c++ = (uint8_t)hex;
                 } else if (hex < 0x0800) {
-                    c[1] = (hex & 0x3F) | 0x80;
+                    c[1] = (uint8_t)(hex & 0x3F) | 0x80;
                     hex = hex >> 6;
                     c[0] = (uint8_t)hex | 0xC0;
                     c += 2;
                 } else {
-                    c[2] = (hex & 0x3F) | 0x80;
+                    c[2] = (uint8_t)(hex & 0x3F) | 0x80;
                     hex = hex >> 6;
-                    c[1] = (hex & 0x3F) | 0x80;
+                    c[1] = (uint8_t)(hex & 0x3F) | 0x80;
                     hex = hex >> 6;
                     c[0] = (uint8_t)hex | 0xE0;
                     c += 3;

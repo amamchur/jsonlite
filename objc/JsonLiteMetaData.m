@@ -112,19 +112,10 @@
 
 - (const char *)takeMutator:(const char *)p ofClass:(Class)cls {
     const char *start = p;
-    const char *end = NULL;
-    int run = 1;
-    while (*p && run) {
-        if (*p ==  ',') {
-            end = p;
-            run = 0;
-        }
-        p++;
-    }
+    for (; *p !=  ','; p++);
     
-    end = end ? end : p;
     NSString *str = [[NSString alloc] initWithBytes:start
-                                             length:end - start
+                                             length:p - start
                                            encoding:NSUTF8StringEncoding];
     
     setterSelector = NSSelectorFromString(str);
@@ -142,38 +133,27 @@
 - (const char *)takePropertyType:(const char *)p {
     const char *start = NULL;
     const char *end = NULL;
-    int run = 1;
-    while (*p && run) {
-        switch (*p) {
-            case '@':
-                propertyFlags.objectType = 1;
+    for (;; p++) {
+        if (*p == '@') {
+            propertyFlags.objectType = 1;
+        } else if (*p == '#') {
+            propertyFlags.classObject = 1;
+            return p + 1;
+        } else if (*p == '\"') {
+            if (start == NULL) {
+                start = p + 1;
+            } else {
+                end = p;
                 break;
-            case '#':
-                propertyFlags.classObject = 1;
-                break;
-            case '\"':
-                if (start == NULL) {
-                    start = p + 1;
-                } else {
-                    end = p;
-                    run = 0;
-                }
-                break;
-            case ',':
-                run = 0;
-                break;
+            }
         }
-        p++;
     }
     
-    if (start && end) {
-        NSString *str = [[NSString alloc] initWithBytes:start
-                                                 length:end - start
-                                               encoding:NSUTF8StringEncoding];
-        
-        objectClass = NSClassFromString(str);
-        [str release];
-    }    
+    NSString *str = [[NSString alloc] initWithBytes:start
+                                             length:end - start
+                                           encoding:NSUTF8StringEncoding];    
+    objectClass = NSClassFromString(str);
+    [str release];
     return p;
 }
 
@@ -340,7 +320,9 @@
 - (void)collectKeys {
     NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[binding allKeys]];
     NSMutableArray *propertiesKeys = [NSMutableArray arrayWithArray:[properties allKeys]];
-    for (id key in array) {
+    NSInteger count = [array count];
+    for (NSInteger i = 0; i < count; i++) {
+        id key = [array objectAtIndex:i];
         JsonLiteBindRule *rule = [binding objectForKey:key];
         [propertiesKeys removeObject:rule.property];
     }
