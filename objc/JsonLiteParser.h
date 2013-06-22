@@ -30,9 +30,6 @@ typedef enum {
     JsonLiteCodeInvalidNumber,
     JsonLiteCodeInvalidToken,
     JsonLiteCodeInvalidUTF8,
-    JsonLiteCodeNotSupportedOctal,
-    JsonLiteCodeNotSupportedHex,
-    JsonLiteCodeNotSupportedControlChar,
     JsonLiteCodeSuspended,    
     JsonLiteCodeNotAllowed
 }  JsonLiteCode;

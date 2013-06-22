@@ -103,6 +103,10 @@ JSONLITE_FCS take_true(jsonlite_parser parser);
 JSONLITE_FCS take_false(jsonlite_parser parser);
 JSONLITE_FCS take_null(jsonlite_parser parser);
 
+static int is_ancii_escaped_character(uint8_t c);
+static int is_number_termination_character(uint8_t c);
+static int is_number_sign_character(uint8_t c);
+static int is_exponent_character(uint8_t c);
 static int skip_whitespace(jsonlite_parser parser);
 static jsonlite_result take_string_escape(jsonlite_parser parser, jsonlite_token *jt);
 static jsonlite_result take_string_value(jsonlite_parser parser, jsonlite_token *jt);
@@ -304,6 +308,22 @@ static void jsonlite_finish_parse(jsonlite_parser parser) {
     }
 }
 
+static int is_ancii_escaped_character(uint8_t c) {
+    return c == '"' || c == '\\' || c == 'n' || c == 'r' || c == '/' || c == 'b' || c == 'f' || c ==  't';
+}
+
+static int is_number_termination_character(uint8_t c) {
+    return c == ',' || c == '}' || c == ']' || c == ' ' || c == '\r' || c == '\n' || c == '\t';
+}
+
+static int is_number_sign_character(uint8_t c) {
+    return c == '-' || c == '+';
+}
+
+static int is_exponent_character(uint8_t c) {
+    return c == 'E' || c == 'e';
+}
+
 static int skip_whitespace(jsonlite_parser parser) {
     const uint8_t *c = parser->cursor;
     const uint8_t *l = parser->limit;
@@ -499,27 +519,21 @@ static jsonlite_result take_string_escape(jsonlite_parser parser, jsonlite_token
     const uint8_t *c = parser->cursor;
     const uint8_t *l = parser->limit;
     CHECK_LIMIT_RET_EOS(c, l);
-    switch (*c) {
-        case '"':
-        case '\\':
-        case 'n':
-        case 'r':
-        case '/':
-        case 'b':
-        case 'f':
-        case 't':
-            jt->string_type = (jsonlite_string_type)(jt->string_type | jsonlite_string_escape);
-            parser->cursor = c;
-            return jsonlite_result_ok;
-        case 'u':
-            jt->string_type = (jsonlite_string_type)(jt->string_type | jsonlite_string_unicode_escape);
-            parser->cursor++;
-            return take_string_unicode_escape(parser, jt);
-        default:
-            parser->cursor = c - 1;
-            set_error(parser, c - 1, jsonlite_result_invalid_escape);
-            return jsonlite_result_invalid_escape;
+    if (is_ancii_escaped_character(*c)) {
+        jt->string_type = (jsonlite_string_type)(jt->string_type | jsonlite_string_escape);
+        parser->cursor = c;
+        return jsonlite_result_ok;
     }
+    
+    if (*c == 'u') {
+        jt->string_type = (jsonlite_string_type)(jt->string_type | jsonlite_string_unicode_escape);
+        parser->cursor++;
+        return take_string_unicode_escape(parser, jt);
+    }
+    
+    parser->cursor = c - 1;
+    set_error(parser, c - 1, jsonlite_result_invalid_escape);
+    return jsonlite_result_invalid_escape;
 }
 
 static jsonlite_result take_string_value(jsonlite_parser parser, jsonlite_token *jt) {
@@ -546,7 +560,7 @@ static jsonlite_result take_string_value(jsonlite_parser parser, jsonlite_token 
         }
         
         if (*c < 0x20) {
-            return jsonlite_result_unsupported_control_char;
+            return jsonlite_result_invalid_token;
         }
         
         if (*c >= 0x80) {
@@ -607,7 +621,6 @@ JSONLITE_FCS take_number(jsonlite_parser parser) {
     jt.start = parser->cursor;
     jt.number_type = jsonlite_number_int;
     
-    CHECK_LIMIT(c, l);
     if (*c == '-') {
         jt.number_type |= jsonlite_number_negative;
         ++c;
@@ -626,33 +639,21 @@ JSONLITE_FCS take_number(jsonlite_parser parser) {
         CHECK_LIMIT(c, l);
         if (likely(*c >= '0' && *c <= '9')) {
             if ((jt.number_type & jsonlite_number_zero_leading) != 0) {
-                return set_error(parser, c, jsonlite_result_unsupported_octal);
+                return set_error(parser, c, jsonlite_result_invalid_number);
             }
-        } else if (*c == 'e' || *c == 'E') {
+        } else if (is_exponent_character(*c)) {
             parser->cursor = c;
             return take_number_exp(parser, &jt);
         } else if (*c == '.') {
             parser->cursor = c;
             return take_number_frac(parser, &jt);
-        } else {        
-            switch (*c) {
-                case ',':
-                case '}':
-                case ']':
-                case ' ':
-                case '\r':
-                case '\n':
-                case '\t':
-                    parser->cursor = c;
-                    jt.end = c;
-                    CALL_VALUE_CALLBACK(parser->callbacks, number_found, &jt);
-                    return -1;
-                case 'x':
-                case 'X':
-                    return set_error(parser, c, jsonlite_result_unsupported_hex);
-                default:
-                    return set_error(parser, c, jsonlite_result_invalid_number);
-            }
+        } else if (is_number_termination_character(*c)) {
+            parser->cursor = c;
+            jt.end = c;
+            CALL_VALUE_CALLBACK(parser->callbacks, number_found, &jt);
+            return -1;
+        } else {
+            return set_error(parser, c, jsonlite_result_invalid_number);
         }
     }
     return -1;
@@ -669,27 +670,21 @@ JSONLITE_FCS take_number_frac(jsonlite_parser parser, jsonlite_token *jt) {
             continue;
         }
         
-        switch (*c) {
-            case 'E':
-            case 'e':
-                parser->cursor = c;
-                return take_number_exp(parser, jt);
-            case ',':
-            case ']':
-            case '}':
-            case ' ':
-            case '\r':
-            case '\n':
-            case '\t':
-                jt->number_type |= jsonlite_number_frac;
-                parser->cursor = c;
-                jt->end = c;
-                CALL_VALUE_CALLBACK(parser->callbacks, number_found, jt);
-                return -1;
-            default:
-                return set_error(parser, c, jsonlite_result_invalid_number);
+        if (is_number_termination_character(*c)) {
+            jt->number_type |= jsonlite_number_frac;
+            parser->cursor = c;
+            jt->end = c;
+            CALL_VALUE_CALLBACK(parser->callbacks, number_found, jt);
+            return -1;
         }
-    }     
+        
+        if (is_exponent_character(*c)) {
+            parser->cursor = c;
+            return take_number_exp(parser, jt);
+        }
+        
+        return set_error(parser, c, jsonlite_result_invalid_number);
+    }
     return 0;
 }
 
@@ -698,11 +693,8 @@ JSONLITE_FCS take_number_exp(jsonlite_parser parser, jsonlite_token *jt) {
     const uint8_t *l = parser->limit;
 
     CHECK_LIMIT(c, l);
-    switch (*c) {
-        case '+':
-        case '-':
-            ++c;
-            break;
+    if (is_number_sign_character(*c)) {
+        ++c;
     }
 
     CHECK_LIMIT(c, l);
@@ -719,22 +711,15 @@ JSONLITE_FCS take_number_exp(jsonlite_parser parser, jsonlite_token *jt) {
             continue;
         }
         
-        switch (*c) {
-            case ',':
-            case ']':
-            case '}':
-            case ' ':
-            case '\r':
-            case '\n':
-            case '\t':
-                jt->number_type |= jsonlite_number_exp;
-                parser->cursor = c;
-                jt->end = c;
-                CALL_VALUE_CALLBACK(parser->callbacks, number_found, jt);
-                return -1;
-            default:
-                return set_error(parser, c, jsonlite_result_invalid_number);
+        if (is_number_termination_character(*c)) {
+            jt->number_type |= jsonlite_number_exp;
+            parser->cursor = c;
+            jt->end = c;
+            CALL_VALUE_CALLBACK(parser->callbacks, number_found, jt);
+            return -1;
         }
+        
+        return set_error(parser, c, jsonlite_result_invalid_number);
     }    
     return 0;
 }

@@ -208,7 +208,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     jsonlite_parser ps = jsonlite_parser_init(100);
     STAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
-    STAssertTrue(result == jsonlite_result_unsupported_hex, @"Parse fails");
+    STAssertTrue(result == jsonlite_result_invalid_number, @"Parse fails");
     jsonlite_parser_release(ps);
 }
 

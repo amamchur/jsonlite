@@ -243,12 +243,12 @@
 
 - (void)testFail13 {
     NSError *error = [self parseErrorFromFile:@"fail13" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeNotSupportedOctal, @"Test failed.");
+    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
 }
 
 - (void)testFail14 {
     NSError *error = [self parseErrorFromFile:@"fail14" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeNotSupportedHex, @"Test failed.");
+    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
 }
 
 - (void)testFail15 {
@@ -303,7 +303,7 @@
 
 - (void)testFail25 {
     NSError *error = [self parseErrorFromFile:@"fail25" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeNotSupportedControlChar, @"Test failed.");
+    STAssertTrue([error code] == JsonLiteCodeInvalidToken, @"Test failed.");
 }
 
 - (void)testFail26 {
@@ -313,7 +313,7 @@
 
 - (void)testFail27 {
     NSError *error = [self parseErrorFromFile:@"fail27" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeNotSupportedControlChar, @"Test failed.");
+    STAssertTrue([error code] == JsonLiteCodeInvalidToken, @"Test failed.");
 }
 
 - (void)testFail28 {

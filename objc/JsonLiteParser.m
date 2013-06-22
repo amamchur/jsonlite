@@ -342,9 +342,6 @@ static Class class_JsonLiteNumberToken;
         case JsonLiteCodeInvalidEscape:
             str = @"Invalid escape character.";
             break;
-        case JsonLiteCodeNotSupportedControlChar:
-            str = @"Invalid UFT8 character.";
-            break;
         case JsonLiteCodeInvalidNumber:
             str = @"Invalid number format.";
             break;
@@ -353,12 +350,6 @@ static Class class_JsonLiteNumberToken;
             break;
         case JsonLiteCodeInvalidUTF8:
             str = @"Invalid UTF 8";
-            break;
-        case JsonLiteCodeNotSupportedOctal:
-            str = @"Octal numbers aren't supported by JSON.";
-            break;
-        case JsonLiteCodeNotSupportedHex:
-            str = @"HEX numbers aren't supported by JSON.";
             break;
         case JsonLiteCodeNotAllowed:
             str = @"Operation not allowed";

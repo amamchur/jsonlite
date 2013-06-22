@@ -162,7 +162,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeNotSupportedControlChar, @"Bad error!");
+        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidToken, @"Bad error!");
     }
     {
         data = [NSMutableData data];
