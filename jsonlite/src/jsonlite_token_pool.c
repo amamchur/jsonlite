@@ -18,6 +18,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define JSONLITE_TOKEN_POOL_FRONT 0x80
+#define JSONLITE_TOKEN_POOL_FRONT_MASK (JSONLITE_TOKEN_POOL_FRONT - 1)
+
 typedef struct content_pool_size {
     jsonlite_token_bucket *buckets[JSONLITE_TOKEN_POOL_FRONT];
     size_t buckets_length[JSONLITE_TOKEN_POOL_FRONT];

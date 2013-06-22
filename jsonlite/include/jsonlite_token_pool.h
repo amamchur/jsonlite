@@ -26,15 +26,12 @@ typedef void (*jsonlite_token_pool_release_value_fn)(void *);
 typedef struct content_pool_size* jsonlite_token_pool;
     
 typedef struct jsonlite_token_bucket {
-    uint32_t hash;
+    ptrdiff_t hash;
     const uint8_t *start;
     const uint8_t *end;
     const void *value;
-    uint32_t value_hash;
+    ptrdiff_t value_hash;
 } jsonlite_token_bucket;
-
-#define JSONLITE_TOKEN_POOL_FRONT 0x80
-#define JSONLITE_TOKEN_POOL_FRONT_MASK (JSONLITE_TOKEN_POOL_FRONT - 1)
     
 jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value_fn release_fn);
 void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool);
