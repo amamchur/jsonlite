@@ -135,6 +135,9 @@
     result = jsonlite_builder_key(NULL, "key", strlen("key"));
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
+    result = jsonlite_builder_key(bs, NULL, strlen("key"));
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
     result = jsonlite_builder_raw_key(NULL, "key", strlen("key"));
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
@@ -163,6 +166,9 @@
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
     result = jsonlite_builder_string(NULL, "key", strlen("key"));
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
+    result = jsonlite_builder_string(bs, NULL, strlen("key"));
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
     result = jsonlite_builder_null(NULL);
@@ -303,6 +309,26 @@
     
     result = jsonlite_builder_release(bs);
     STAssertTrue(result == jsonlite_result_ok, @"Release error");
+}
+
+- (void)testDepth {
+    jsonlite_builder bs = jsonlite_builder_init(2);
+    jsonlite_result result = jsonlite_builder_object_begin(bs);
+    STAssertTrue(result == jsonlite_result_ok, @"Bad result");
+    result = jsonlite_builder_key(bs, "a", sizeof("a"));
+    STAssertTrue(result == jsonlite_result_ok, @"Bad result");
+    result = jsonlite_builder_object_begin(bs);
+    STAssertTrue(result == jsonlite_result_depth_limit, @"Bad result");
+    jsonlite_builder_release(bs);
+    
+    bs = jsonlite_builder_init(3);
+    result = jsonlite_builder_array_begin(bs);
+    STAssertTrue(result == jsonlite_result_ok, @"Bad result");
+    result = jsonlite_builder_array_begin(bs);
+    STAssertTrue(result == jsonlite_result_ok, @"Bad result");
+    result = jsonlite_builder_array_begin(bs);
+    STAssertTrue(result == jsonlite_result_depth_limit, @"Bad result");
+    jsonlite_builder_release(bs);
 }
 
 - (void)testManualBuildingBeautifier {

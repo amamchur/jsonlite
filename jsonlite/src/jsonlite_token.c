@@ -121,7 +121,7 @@ size_t jsonlite_token_decode_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
                     hex = hex >> 6;
                     c[0] = (uint8_t)hex | 0xC0;
                     c += 2;
-                } else if (hex <= 0xFFFF) {
+                } else {
                     c[2] = (hex & 0x3F) | 0x80;
                     hex = hex >> 6;
                     c[1] = (hex & 0x3F) | 0x80;

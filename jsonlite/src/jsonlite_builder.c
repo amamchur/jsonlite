@@ -483,10 +483,10 @@ static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, siz
     jsonlite_builder_buffer *buffer = builder->buffer;
     size_t write_limit = buffer->limit - buffer->cursor;
     if (write_limit >= length) {
-        memcpy(buffer->cursor, data, length);
+        memcpy(buffer->cursor, data, length); // LCOV_EXCL_LINE
         buffer->cursor += length;
     } else {
-        memcpy(buffer->cursor, data, write_limit);
+        memcpy(buffer->cursor, data, write_limit); // LCOV_EXCL_LINE
         buffer->cursor += write_limit;
         
         jsonlite_builder_push_buffer(builder);
@@ -498,10 +498,10 @@ static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, siz
     jsonlite_builder_buffer *buffer = builder->buffer;
     size_t write_limit = buffer->limit - buffer->cursor;
     if (write_limit >= count) {
-        memset(buffer->cursor, ch, count);
+        memset(buffer->cursor, ch, count); // LCOV_EXCL_LINE
         buffer->cursor += count;
     } else {
-        memset(buffer->cursor, ch, write_limit);
+        memset(buffer->cursor, ch, write_limit); // LCOV_EXCL_LINE
         buffer->cursor += write_limit;
         
         jsonlite_builder_push_buffer(builder);
@@ -618,7 +618,7 @@ jsonlite_result jsonlite_builder_data(jsonlite_builder builder, char **data, siz
     buff = *data; 
     for (b = builder->first; b != NULL; b = b->next) {
         size_t s = b->cursor - b->data;
-        memcpy(buff, b->data, s);
+        memcpy(buff, b->data, s); // LCOV_EXCL_LINE
         buff += s;
     }
     return jsonlite_result_ok;

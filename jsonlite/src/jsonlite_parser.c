@@ -198,8 +198,8 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
     if (parser->tail != NULL) {
         size_t total_size = size + parser->tail_size;
         uint8_t *b = (uint8_t *)malloc(total_size);
-        memcpy(b, parser->tail, parser->tail_size);
-        memcpy(b + parser->tail_size, buffer, size);
+        memcpy(b, parser->tail, parser->tail_size);  // LCOV_EXCL_LINE
+        memcpy(b + parser->tail_size, buffer, size); // LCOV_EXCL_LINE
         
         free(parser->buffer_own);
         free(parser->tail);
@@ -304,7 +304,7 @@ static void jsonlite_finish_parse(jsonlite_parser parser) {
     parser->tail_size = parser->limit - parser->token_start;
     if (parser->tail_size > 0) {
         parser->tail = malloc(parser->tail_size);
-        memcpy(parser->tail, parser->token_start, parser->tail_size);
+        memcpy(parser->tail, parser->token_start, parser->tail_size); // LCOV_EXCL_LINE
     }
 }
 

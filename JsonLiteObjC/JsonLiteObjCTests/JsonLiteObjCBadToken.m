@@ -37,6 +37,24 @@
     STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Incorrect error");
 }
 
+- (void)testBadIntToken2 {
+    NSError *error = [self parseErrorFromFile:@"bad_int_token2" inDir:@"bad_token"];
+    STAssertNotNil(error, @"Error is nil");
+    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Incorrect error");
+}
+
+- (void)testBadIntToken3 {
+    NSError *error = [self parseErrorFromFile:@"bad_int_token3" inDir:@"bad_token"];
+    STAssertNotNil(error, @"Error is nil");
+    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Incorrect error");
+}
+
+- (void)testBadIntToken4 {
+    NSError *error = [self parseErrorFromFile:@"bad_int_token4" inDir:@"bad_token"];
+    STAssertNotNil(error, @"Error is nil");
+    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Incorrect error");
+}
+
 - (void)testBadOctToken {
     NSError *error = [self parseErrorFromFile:@"bad_oct_token" inDir:@"bad_token"];
     STAssertNotNil(error, @"Error is nil");

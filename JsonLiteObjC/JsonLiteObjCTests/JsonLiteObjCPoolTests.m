@@ -34,6 +34,18 @@
     b = jsonlite_token_pool_get_bucket(pool, NULL);
     STAssertTrue(b == NULL, @"Bucket is not null");
     
+    token.start = NULL;
+    token.end = NULL;
+    b = jsonlite_token_pool_get_bucket(pool, &token);
+    STAssertTrue(b == NULL, @"Bucket is not null");
+    
+    token.start = (uint8_t *)0xDEADBEEF;
+    token.end = NULL;
+    b = jsonlite_token_pool_get_bucket(pool, &token);
+    STAssertTrue(b == NULL, @"Bucket is not null");
+    
+    token.start = NULL;
+    token.end = (uint8_t *)0xDEADBEEF;
     b = jsonlite_token_pool_get_bucket(pool, &token);
     STAssertTrue(b == NULL, @"Bucket is not null");
     

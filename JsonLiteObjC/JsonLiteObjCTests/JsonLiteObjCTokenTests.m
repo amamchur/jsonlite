@@ -19,6 +19,11 @@
 @implementation JsonLiteObjCTokenTests
 
 - (void)testTokenFunctions {
+    char token_string = "abc";
+    jsonlite_token token;
+    token.start = token_string;
+    token.end = token_string + sizeof(token_string) - 1;
+    
     uint8_t *uft8_buffer = NULL;
     uint16_t *uft16_buffer = NULL;
     size_t size = jsonlite_token_decode_size_for_uft8(NULL);
@@ -30,6 +35,9 @@
     size = jsonlite_token_decode_to_uft8(NULL, &uft8_buffer);
     STAssertTrue(size == 0, @"Size is not 0");
     
+    size = jsonlite_token_decode_to_uft8(&token, NULL);
+    STAssertTrue(size == 0, @"Size is not 0");
+    
     size = jsonlite_token_decode_size_for_uft16(NULL);
     STAssertTrue(size == 0, @"Size is not 0");
     
@@ -37,6 +45,9 @@
     STAssertTrue(size == 0, @"Size is not 0");
     
     size = jsonlite_token_decode_to_uft16(NULL, &uft16_buffer);
+    STAssertTrue(size == 0, @"Size is not 0");
+    
+    size = jsonlite_token_decode_to_uft16(&token, NULL);
     STAssertTrue(size == 0, @"Size is not 0");
     
     size = jsonlite_hex_char_to_uint8('Q');
