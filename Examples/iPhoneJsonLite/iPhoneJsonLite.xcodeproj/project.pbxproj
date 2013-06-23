@@ -12,6 +12,7 @@
 		8416D5AF1683C880003D166F /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5AA1683C880003D166F /* jsonlite_parser.c */; };
 		8416D5B01683C880003D166F /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5AB1683C880003D166F /* jsonlite_token.c */; };
 		8416D5B11683C880003D166F /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5AC1683C880003D166F /* jsonlite_token_pool.c */; };
+		849E831F1776480E00D78592 /* mesh.json in Resources */ = {isa = PBXBuildFile; fileRef = 849E831E1776480E00D78592 /* mesh.json */; };
 		84F11FA61675580200F74694 /* pass1.json in Resources */ = {isa = PBXBuildFile; fileRef = 84F11FA51675580200F74694 /* pass1.json */; };
 		87E75BCE15828FFA00100333 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87E75BCD15828FFA00100333 /* UIKit.framework */; };
 		87E75BD015828FFA00100333 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87E75BCF15828FFA00100333 /* Foundation.framework */; };
@@ -52,6 +53,7 @@
 		8416D5AA1683C880003D166F /* jsonlite_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
 		8416D5AB1683C880003D166F /* jsonlite_token.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
 		8416D5AC1683C880003D166F /* jsonlite_token_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
+		849E831E1776480E00D78592 /* mesh.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mesh.json; sourceTree = "<group>"; };
 		84F11FA51675580200F74694 /* pass1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = pass1.json; path = ../../../JsonLiteObjC/JsonLiteObjCTests/fail/pass1.json; sourceTree = "<group>"; };
 		87E75BC915828FFA00100333 /* iPhoneJsonLite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPhoneJsonLite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87E75BCD15828FFA00100333 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -189,6 +191,7 @@
 				87E75C1F1582907700100333 /* TWTimeline.m */,
 				87E75C201582907700100333 /* TWUser.h */,
 				87E75C211582907700100333 /* TWUser.m */,
+				849E831E1776480E00D78592 /* mesh.json */,
 				84F11FA51675580200F74694 /* pass1.json */,
 				87E75C2B1582A18100100333 /* sample.json */,
 				87E75C2C1582A18200100333 /* twitter_public_timeline.json */,
@@ -291,6 +294,7 @@
 				87E75C2E1582A18200100333 /* twitter_public_timeline.json in Resources */,
 				87FFFAB616286E09004AAD06 /* Default-568h@2x.png in Resources */,
 				84F11FA61675580200F74694 /* pass1.json in Resources */,
+				849E831F1776480E00D78592 /* mesh.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

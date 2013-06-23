@@ -61,4 +61,10 @@
     STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Incorrect error");
 }
 
+- (void)testBadFractionToken {
+    NSError *error = [self parseErrorFromFile:@"bad_fraction_token" inDir:@"bad_token"];
+    STAssertNotNil(error, @"Error is nil");
+    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Incorrect error");
+}
+
 @end
