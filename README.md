@@ -150,3 +150,8 @@ Decimal & JSON - now it is not problem! Just use converters (JsonLiteDecimal in 
     NSLog(@"Number - %@", model.number);
 }
 ```
+
+#### Code coverage
+
+JsonLite Objective-C includes more then 140 different test. (currently only one branch is not covered)
+![Image](../master/JsonLiteObjC/cov.png?raw=true)
