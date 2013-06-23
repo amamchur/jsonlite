@@ -4,7 +4,7 @@ Copyright © 2013, Andrii Mamchur.
 
 JsonLite Objective-C
 ====================
-JsonLite Objective-C - the best JSON parser for for Objective-C/Cocoa.
+JsonLite Objective-C - the fastest JSON parser for for Objective-C/Cocoa.
 
 If you:
 
