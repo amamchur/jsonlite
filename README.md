@@ -4,7 +4,19 @@ Copyright © 2013, Andrii Mamchur.
 
 JsonLite Objective-C
 ====================
-JsonLite Objective-C - power extension of jsonlite for Objective-C/Cocoa.
+JsonLite Objective-C - the best JSON parser for for Objective-C/Cocoa.
+
+If you:
+
+* Need fastest JSON parser
+* Are limited to memory
+* Need chunk/streaming processing
+* Need bind JSON to model
+* Build JSON from model
+* Deal with decimal, url or dates
+* Deal with raw tokens
+
+**JsonLite Objective-C is your choice.**
 
 ### Getting Started
 Current example shows how to quick tokenize and accumulate results to Cocoa collection.
