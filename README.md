@@ -98,7 +98,7 @@ Model rules!!! It's really hard to deal with Cocoa collections. The best way is 
 // ...
 ```
 
-And now model to JSON.
+And model to JSON.
 ``` objective-c
 
 #import "JsonLiteSerializer.h"
