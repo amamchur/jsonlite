@@ -2,103 +2,139 @@ jsonlite
 ========
 Copyright © 2013, Andrii Mamchur.
 
-Overview
---------
-jsonlite - very high performance JSON tokenizer written in pure C.
-
-> ##### Most important features:
->
-> *   strict RFC 4627
-> *   low memory usage
-> *   ability to process raw token data
-> *   streaming support
-> *   JSON building + pretty-printing
-> *   token pool
-> *   parse depth configuration
-> *   no external dependencies
-> *   no recursion
-> *   100% code coverage
-
-### Appropriate Uses
-----------------
-#### JSON validation
-
-jsonlite is the best solution for JSON validation because of high performance, steaming processing and low memory usage. Of course there is no reason to collect data for validation - just use jsonlite with default callback.
-
-#### JSON beautifying (see Beautifier)
-
-Simple combination of jsonlite_parser + jsonlite_builder makes JSON beautifying without token transformation.
-
-Transformation example: "tab char": "<strong>\u0009</strong>" -> "tab char": "<strong>\t</strong>" or use popular JSON validator http://jsonlint.com
-
-Input:
-<pre>
-<code>{
-    "tab char": "\u0009"
-}</code>
-</pre>
-Output:
-<pre>
-<code>{
-    "tab char": "\t"
-}</code>
-</pre>
-#### Huge JSON payload processing
-
-jsonlite was designed to work with huge JSON payload. Internal memory usage depends on maximal JSON depth only (See "jsonlite memory usage"). It does not collect data by itself, it just delegate this responsibility to high-level components.
-
-#### jsonlite memory usage
-**Memory Usage** = (1 x **Depth** + 25) x **Word Size** / 8 or use *jsonlite_parser_estimate_size(depth)*
-
-<table>
-    <tr>
-        <th>Variable Name</v>
-        <th>Description</th>
-    </tr>
-    <tr>
-        <td>**Memory Usage**</td>
-        <td>Memory used by jsonlite without JSON payload</td>
-    </tr>
-    <tr>
-        <td>**Depth**</td>
-        <td>Parsing depth</td>
-    </tr>
-    <tr>
-        <td>**Word Size**</td>
-        <td>Machine word size in bits</td>
-    </tr>
-<table/>
-
-> For example:
-> 
-> * Parsing Twitter time line
-> * Depth 16 - enough to process payload
-> * Compiled for x86 architecture (32bit)
-> * (1 x 16 + 25) x 32bit / 8 = 164 bytes
-
 JsonLite Objective-C
 ====================
 JsonLite Objective-C - power extension of jsonlite for Objective-C/Cocoa.
 
-> ##### Most important features:
->
-> *   very fast JSON parsing (candidate for the fastest Objective-C parser, needed independent benchmarks)
-> *   streaming/chunk parsing
-> *   parse JSON to Cocoa collections and objects
-> *   serialize object to JSON
-> *   deserialize JSON to custom models
-> *   support NSDecimalNumber, NSDate and NSURL
-> *   provide ability to support any type of Objective-C
-> *   objects' pool
+### Getting Started
+Current example shows how to quick tokenize and accumulate results to Cocoa collection.
 
-> ###### Situations where JsonLite Objective-C may not be suitable
->
-> *   NSJSONSerialization is enough for you.
-> *   Project use Automatic Reference Counting
+``` objective-c
+#import "JsonLiteAccumulator.h"
 
-> ###### Appropriate Uses
->
-> *   Serialization/deserialization (bindings)
-> *   NSDecimalNumberv
+// ...
 
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8f6b05150539f0a02198d76d128993f4 "githalytics.com")](http://githalytics.com/github.com/amamchur)
+- (void)parse {
+    NSString *json = @"[\"hello\", null, 1234567890]";
+    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+    id result = [JsonLiteAccumulator objectFromData:data withMaxDepth:8];
+    NSLog(@"%@", result);
+}
+
+// ...
+```
+Lets play with chunks :)
+``` objective-c
+#import "JsonLiteParser.h"
+#import "JsonLiteAccumulator.h"
+
+// ...
+
+- (void)parseChunks {
+    NSString *json_part1 = @"[\"hello\", nu";
+    NSString *json_part2 = @"ll, 1234567890]";
+    NSData *data1 = [json_part1 dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data2 = [json_part2 dataUsingEncoding:NSUTF8StringEncoding];
+    JsonLiteParser *parser = [JsonLiteParser parserWithDepth:8];
+    JsonLiteAccumulator *acc = [JsonLiteAccumulator accumulatorWithDepth:8];
+    parser.delegate = acc;
+    [parser parse:data1];
+    [parser parse:data2];    
+    NSLog(@"Full object - %@", [acc object]);
+}
+
+// ...
+```
+
+Model rules!!! It's really hard to deal with Cocoa collections. The best way is to bind JSON to some model.
+``` objective-c
+#import "JsonLiteParser.h"
+#import "JsonLiteDeserializer.h"
+
+@interface Model : NSObject
+
+@property (nonatomic, copy) NSString *string;
+@property (nonatomic, copy) NSNumber *number;
+@property (nonatomic, copy) NSArray *array;
+
+@end
+
+@implementation Model
+
+- (void)dealloc {
+    self.string = nil;
+    self.number = nil;
+    self.array = nil;
+    [super dealloc];
+}
+
+@end
+// ...
+- (void)parseToModel {
+    NSString *json = @"{\"string\": \"hello\", \"number\" : 100, \"array\": [1, 2, 3]}";
+    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+    JsonLiteParser *parser = [JsonLiteParser parserWithDepth:8];
+    JsonLiteDeserializer *des = [JsonLiteDeserializer deserializerWithRootClass:[Model class]];
+    parser.delegate = des;
+    [parser parse:data];
+    
+    Model *model = [des object];
+    NSLog(@"String - %@", model.string);
+    NSLog(@"Number - %@", model.number);
+    NSLog(@"Array - %@", model.array);
+}
+// ...
+```
+
+And now model to JSON.
+``` objective-c
+
+#import "JsonLiteSerializer.h"
+
+- (void)buildFromModel {
+    Model *model = [[[Model alloc] init] autorelease];
+    model.string = @"Hello World";
+    model.number = [NSNumber numberWithInt:256];
+    model.array = [NSArray arrayWithObjects:@"Test", [NSNull null], nil];
+    JsonLiteSerializer *serializer = [JsonLiteSerializer serializer];
+    NSData *data = [serializer serializeObject:model];
+    NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@", json);
+    [json release];
+}
+```
+
+Decimal & JSON - now it is not problem! Just use converters (JsonLiteDecimal in our case).
+
+``` objective-c
+@interface Model : NSObject
+
+@property (nonatomic, copy) NSString *string;
+@property (nonatomic, copy) NSDecimalNumber *number;
+
+@end
+
+@implementation Model
+
+- (void)dealloc {
+    self.string = nil;
+    self.number = nil;
+    [super dealloc];
+}
+
+@end
+
+- (void)parseDecimalToModel {
+    NSString *json = @"{\"string\": \"This is Decimal!\", \"number\" : 95673465936453649563978.99 }";
+    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+    JsonLiteParser *parser = [JsonLiteParser parserWithDepth:8];
+    JsonLiteDeserializer *des = [JsonLiteDeserializer deserializerWithRootClass:[Model class]];
+    des.converter = [[[JsonLiteDecimal alloc] init] autorelease]; // Look here
+    parser.delegate = des;
+    [parser parse:data];
+    
+    Model *model = [des object];
+    NSLog(@"String - %@", model.string);
+    NSLog(@"Number - %@", model.number);
+}
+```
