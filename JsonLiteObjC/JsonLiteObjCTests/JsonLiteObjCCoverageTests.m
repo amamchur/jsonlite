@@ -451,4 +451,14 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     [del release];
 }
 
+- (void)testCFHashCollection {
+    NSString *json = @"{\"test4\": null, \"10D789E\" : null}";
+    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dic = [JsonLiteAccumulator objectFromData:data withMaxDepth:8];
+    id obj1 = [dic objectForKey:@"test4"];
+    id obj2 = [dic objectForKey:@"10D789E"];
+    STAssertEqualObjects(obj1, obj2, @"");
+
+}
+
 @end
