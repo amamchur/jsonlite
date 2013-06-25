@@ -1,22 +1,22 @@
 jsonlite
 ========
-Copyright © 2013, Andrii Mamchur.
+![Image](../master/JsonLiteObjC/cov.png?raw=true)
 
-JsonLite Objective-C
+JsonLite ObjC
 ====================
-JsonLite Objective-C - the fastest JSON parser for Objective-C/Cocoa.
+JsonLite ObjC - the fastest JSON parser for Objective-C/Cocoa.
 
 If you:
 
 * Need fastest JSON parser
 * Are limited to memory
 * Need chunk/streaming processing
-* Need bind JSON to model
-* Build JSON from model
+* Need binding JSON to model
+* Need to build JSON from model
 * Deal with decimal, url or dates
 * Deal with raw tokens
 
-**JsonLite Objective-C is your choice.**
+**Try JsonLite Objective-C**
 
 ### Getting Started
 Current example shows how to quick tokenize and accumulate results to Cocoa collection.
@@ -150,8 +150,3 @@ Decimal & JSON - now it is not problem! Just use converters (JsonLiteDecimal in 
     NSLog(@"Number - %@", model.number);
 }
 ```
-
-#### Code coverage
-
-JsonLite Objective-C includes more then 140 different test. (currently only one branch is not covered)
-![Image](../master/JsonLiteObjC/cov.png?raw=true)
