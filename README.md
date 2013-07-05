@@ -1,27 +1,94 @@
-jsonlite
-========
-![Image](../master/JsonLiteObjC/cov.png?raw=true)
+### Introduction to jsonlite
 
-JsonLite ObjC
-====================
-JsonLite ObjC - the fastest JSON parser for Objective-C/Cocoa.
+* [What is jsonlite and JsonLite ObjC?](#what-is-jsonlite-and-jsonlite-objc)
+* [Principles](#principles)
+* [Getting Started with jsonlite](#getting-started-with-jsonlite)
+  * [Validator](#validator)
+  * [Summer](#summer)
+  * [Beautifier](#beautifier)
+* [Getting Started with JsonLite ObjC](#getting-started-with-jsonlite-objc)
+  * [Parse to Cocoa Collection(s)](#parse-to-cocoa-collections)
+  * [Chunks](#chunks)
+  * [Model to JSON](#model-to-json)
+  * [JSON to Model](#json-to-model)
+  * [Decimal Number](#decimal-number)
+* [Roadmap](#roadmap)
+* [Code Coverage](#code-caverage)
+* [Licence](#licence)
 
-If you:
+#### What is jsonlite and JsonLite ObjC
 
-* Need fastest JSON parser
-* Are limited to memory
-* Need chunk/streaming processing
-* Need binding JSON to model
-* Need to build JSON from model
-* Deal with decimal, url or dates
-* Deal with raw tokens
+jsonlite is JSON [tokenizer](http://en.wikipedia.org/wiki/Tokenization). It's lightweight C libary that can be used for low-level JSON processing or parser development.
 
-**Try JsonLite Objective-C**
+JsonLite ObjC is JSON parser base on jsonlite. It's the fastest and flexible JSON parser for Objective-C.
 
-### Getting Started
+#### Principles
+* **Lightweight is more important than syntax sugar** 
+* **Reliability & quality is most important than everything else**
+* **Do that which is necessary**
+* **Divide and Rule**
+
+#### Getting Started with jsonlite
+###### Validator
+Current example shows how quick, easy and using **232 bytes** (64 bit arch) or **116 bytes** (32 bit arch) validate JSON.
+
+``` c
+#include <assert.h>
+#include "jsonlite.h"
+
+int main(int argc, const char * argv[]) {
+    const int JSON_DEPTH = 4;                                                   // Limitation of JSON depth
+    char json[] = "[-1, 0, 1, true, false, null]";                              // JSON to validate
+    size_t mem_used = jsonlite_parser_estimate_size(JSON_DEPTH);                // Estimate memory usage
+    printf("jsonlite will use %zd bytes of RAM for JSON validation", mem_used);
+    jsonlite_parser p = jsonlite_parser_init(JSON_DEPTH);                       // Init parser with specified depth
+    jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));   // Check JSON
+    assert(result == jsonlite_result_ok);                                       // Check result
+    jsonlite_parser_release(p);                                                 // Free resources
+    return 0;
+}
+``` 
+
+###### Summer
+Next example shows how to work with number tokens. jsonlite does not convert any number by itself. That's why you may use [strtol](http://www.cplusplus.com/reference/cstdlib/strtol/) or even [arbitrary-precision arithmetic](http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic).
+
+``` c
+#include <stdlib.h>
+#include <assert.h>
+#include "jsonlite.h"
+#include "jsonlite_token.h"
+
+long long sum = 0;
+
+static void number_callback(jsonlite_callback_context *ctx, jsonlite_token *token) {
+    char *end = NULL;
+    sum += strtoll((const char *)token->start, &end, 10);
+    assert(end == (char *)token->end);
+}
+
+int main(int argc, const char * argv[]) {
+    const int JSON_DEPTH = 4;                                   // Limitation of JSON depth
+    char json[] = "[-13453453, 0, 1, 123, 45345, -94534555]";   // Numbers to sum
+    jsonlite_parser_callbacks cbs = jsonlite_default_callbacks; // Init callbacks with default values
+    cbs.number_found = &number_callback;                        // Assign new callback function
+    jsonlite_parser p = jsonlite_parser_init(JSON_DEPTH);       // Init parser with specified depth
+    jsonlite_parser_set_callback(p, &cbs);                      // Set callback function(s)
+    jsonlite_parser_tokenize(p, json, sizeof(json));            // Tokenize/find numbers
+    jsonlite_parser_release(p);                                 // Free resources
+    printf("Total sum: %lld", sum);
+    return 0;
+}
+```
+###### Beautifier
+
+The example shows how to quick make JSON pretty. The example is bigger than previous, please, see it [here](../master/Examples/Beautifier/Beautifier/main.c).
+
+#### Getting Started with JsonLite ObjC
+
+###### Parse to Cocoa Collection(s)
 Current example shows how to quick tokenize and accumulate results to Cocoa collection.
 
-``` objective-c
+``` objc
 #import "JsonLiteAccumulator.h"
 
 // ...
@@ -35,8 +102,10 @@ Current example shows how to quick tokenize and accumulate results to Cocoa coll
 
 // ...
 ```
-Lets play with chunks :)
-``` objective-c
+###### Chunks
+
+A [chunk](http://en.wikipedia.org/wiki/Chunk_(information) is a fragment of JSON. JsonLite ObjC allows you to process a chunk while other parts of JSON are delivering by network. 'Chunk Oriented' processing style allow developer to improve memory usage and increase program performance, also its' provide ability to work with huge JSON data.
+``` objc
 #import "JsonLiteParser.h"
 #import "JsonLiteAccumulator.h"
 
@@ -57,9 +126,10 @@ Lets play with chunks :)
 
 // ...
 ```
+###### JSON to Model
 
-Model rules!!! It's really hard to deal with Cocoa collections. The best way is to bind JSON to some model.
-``` objective-c
+It's really hard to deal with Cocoa collections. The best way is to bind JSON to some model.
+``` objc
 #import "JsonLiteParser.h"
 #import "JsonLiteDeserializer.h"
 
@@ -98,8 +168,9 @@ Model rules!!! It's really hard to deal with Cocoa collections. The best way is 
 // ...
 ```
 
-And model to JSON.
-``` objective-c
+###### Model to JSON
+
+``` objc
 
 #import "JsonLiteSerializer.h"
 
@@ -115,10 +186,11 @@ And model to JSON.
     [json release];
 }
 ```
+###### Decimal Number
 
-Decimal & JSON - now it is not problem! Just use converters (JsonLiteDecimal in our case).
+Only JsonLite ObjC can work with NSDecimalNumber object and you can forgot about workaround with strings. It's very important feature for finance project. 
 
-``` objective-c
+``` objc
 @interface Model : NSObject
 
 @property (nonatomic, copy) NSString *string;
@@ -150,3 +222,21 @@ Decimal & JSON - now it is not problem! Just use converters (JsonLiteDecimal in 
     NSLog(@"Number - %@", model.number);
 }
 ```
+
+#### Code Coverage
+
+Full function, statement and branch coverage. 
+
+![Image](../master/JsonLiteObjC/cov.png?raw=true)
+
+#### Roadmap
+
+* Create Doxygen documentation
+* Create framework for Xcode projects
+* Create extension for Python
+
+#### Licence
+
+jsonlite and JsonLite ObjC are licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Copyright 2012-2013, Andrii Mamchur
