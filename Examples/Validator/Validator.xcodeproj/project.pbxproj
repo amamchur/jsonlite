@@ -1,0 +1,280 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		844795F5178815F600833C1E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 844795F4178815F600833C1E /* main.c */; };
+		844795F7178815F600833C1E /* Validator.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 844795F6178815F600833C1E /* Validator.1 */; };
+		8447960C1788161300833C1E /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796071788161300833C1E /* jsonlite_builder.c */; };
+		8447960D1788161300833C1E /* jsonlite_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796081788161300833C1E /* jsonlite_hash.c */; };
+		8447960E1788161300833C1E /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796091788161300833C1E /* jsonlite_parser.c */; };
+		8447960F1788161300833C1E /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 8447960A1788161300833C1E /* jsonlite_token.c */; };
+		844796101788161300833C1E /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 8447960B1788161300833C1E /* jsonlite_token_pool.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		844795EF178815F600833C1E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				844795F7178815F600833C1E /* Validator.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		844795F1178815F600833C1E /* Validator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Validator; sourceTree = BUILT_PRODUCTS_DIR; };
+		844795F4178815F600833C1E /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		844795F6178815F600833C1E /* Validator.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Validator.1; sourceTree = "<group>"; };
+		844795FF1788161300833C1E /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
+		844796001788161300833C1E /* jsonlite_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_builder.h; sourceTree = "<group>"; };
+		844796011788161300833C1E /* jsonlite_hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_hash.h; sourceTree = "<group>"; };
+		844796021788161300833C1E /* jsonlite_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_parser.h; sourceTree = "<group>"; };
+		844796031788161300833C1E /* jsonlite_token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token.h; sourceTree = "<group>"; };
+		844796041788161300833C1E /* jsonlite_token_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token_pool.h; sourceTree = "<group>"; };
+		844796051788161300833C1E /* jsonlite_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_types.h; sourceTree = "<group>"; };
+		844796071788161300833C1E /* jsonlite_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_builder.c; sourceTree = "<group>"; };
+		844796081788161300833C1E /* jsonlite_hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_hash.c; sourceTree = "<group>"; };
+		844796091788161300833C1E /* jsonlite_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
+		8447960A1788161300833C1E /* jsonlite_token.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
+		8447960B1788161300833C1E /* jsonlite_token_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		844795EE178815F600833C1E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		844795E8178815F600833C1E = {
+			isa = PBXGroup;
+			children = (
+				844795FD1788161300833C1E /* jsonlite */,
+				844795F3178815F600833C1E /* Validator */,
+				844795F2178815F600833C1E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		844795F2178815F600833C1E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				844795F1178815F600833C1E /* Validator */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		844795F3178815F600833C1E /* Validator */ = {
+			isa = PBXGroup;
+			children = (
+				844795F4178815F600833C1E /* main.c */,
+				844795F6178815F600833C1E /* Validator.1 */,
+			);
+			path = Validator;
+			sourceTree = "<group>";
+		};
+		844795FD1788161300833C1E /* jsonlite */ = {
+			isa = PBXGroup;
+			children = (
+				844795FE1788161300833C1E /* include */,
+				844796061788161300833C1E /* src */,
+			);
+			name = jsonlite;
+			path = ../../jsonlite;
+			sourceTree = "<group>";
+		};
+		844795FE1788161300833C1E /* include */ = {
+			isa = PBXGroup;
+			children = (
+				844795FF1788161300833C1E /* jsonlite.h */,
+				844796001788161300833C1E /* jsonlite_builder.h */,
+				844796011788161300833C1E /* jsonlite_hash.h */,
+				844796021788161300833C1E /* jsonlite_parser.h */,
+				844796031788161300833C1E /* jsonlite_token.h */,
+				844796041788161300833C1E /* jsonlite_token_pool.h */,
+				844796051788161300833C1E /* jsonlite_types.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		844796061788161300833C1E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				844796071788161300833C1E /* jsonlite_builder.c */,
+				844796081788161300833C1E /* jsonlite_hash.c */,
+				844796091788161300833C1E /* jsonlite_parser.c */,
+				8447960A1788161300833C1E /* jsonlite_token.c */,
+				8447960B1788161300833C1E /* jsonlite_token_pool.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		844795F0178815F600833C1E /* Validator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 844795FA178815F600833C1E /* Build configuration list for PBXNativeTarget "Validator" */;
+			buildPhases = (
+				844795ED178815F600833C1E /* Sources */,
+				844795EE178815F600833C1E /* Frameworks */,
+				844795EF178815F600833C1E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Validator;
+			productName = Validator;
+			productReference = 844795F1178815F600833C1E /* Validator */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		844795E9178815F600833C1E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Andrii Mamchur";
+			};
+			buildConfigurationList = 844795EC178815F600833C1E /* Build configuration list for PBXProject "Validator" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 844795E8178815F600833C1E;
+			productRefGroup = 844795F2178815F600833C1E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				844795F0178815F600833C1E /* Validator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		844795ED178815F600833C1E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				844795F5178815F600833C1E /* main.c in Sources */,
+				8447960C1788161300833C1E /* jsonlite_builder.c in Sources */,
+				8447960D1788161300833C1E /* jsonlite_hash.c in Sources */,
+				8447960E1788161300833C1E /* jsonlite_parser.c in Sources */,
+				8447960F1788161300833C1E /* jsonlite_token.c in Sources */,
+				844796101788161300833C1E /* jsonlite_token_pool.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		844795F8178815F600833C1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		844795F9178815F600833C1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		844795FB178815F600833C1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		844795FC178815F600833C1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		844795EC178815F600833C1E /* Build configuration list for PBXProject "Validator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				844795F8178815F600833C1E /* Debug */,
+				844795F9178815F600833C1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		844795FA178815F600833C1E /* Build configuration list for PBXNativeTarget "Validator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				844795FB178815F600833C1E /* Debug */,
+				844795FC178815F600833C1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 844795E9178815F600833C1E /* Project object */;
+}

@@ -17,7 +17,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define JSONLITE_FC         int
 #define JSONLITE_FCS        static int
 
 #ifdef _MSC_VER
@@ -57,7 +56,7 @@ do {                                                        \
 struct jsonlite_parse_state_struct;
 
 typedef struct jsonlite_parse_state_struct* jsonlite_parse_state;
-typedef JSONLITE_FC (*jsonlite_parse_function)(jsonlite_parser, jsonlite_parse_state);
+typedef int (*jsonlite_parse_function)(jsonlite_parser, jsonlite_parse_state);
 
 typedef struct jsonlite_parse_state_struct {
     jsonlite_parse_function function;
@@ -705,43 +704,37 @@ found_token:
 }
 
 JSONLITE_FCS take_true(jsonlite_parser parser) {
-    static const uint8_t token[] = "true";
-    const uint8_t *c = parser->cursor;
-    CHECK_LIMIT(c + 3, parser->limit);
-    int res = memcmp(token, c, sizeof(token) - 1);
+    CHECK_LIMIT(parser->cursor + 3, parser->limit);
+    int res = memcmp("true", parser->cursor, sizeof("true") - 1);
     if (res == 0) {
-        parser->cursor = c + sizeof(token) - 1;
+        parser->cursor += sizeof("true") - 1;
         CALL_STATE_CALLBACK(parser->callbacks, true_found);
         return -1;
     }
     
-    return set_error(parser, c, jsonlite_result_invalid_token);
+    return set_error(parser, parser->cursor, jsonlite_result_invalid_token);
 }
 
 JSONLITE_FCS take_false(jsonlite_parser parser) {
-    static const uint8_t token[] = "false";
-    const uint8_t *c = parser->cursor;
-    CHECK_LIMIT(c + 4, parser->limit);
-    int res = memcmp(token, c, sizeof(token) - 1);
+    CHECK_LIMIT(parser->cursor + 4, parser->limit);
+    int res = memcmp("false", parser->cursor, sizeof("false") - 1);
     if (res == 0) {
-        parser->cursor = c + sizeof(token) - 1;
+        parser->cursor += sizeof("false") - 1;
         CALL_STATE_CALLBACK(parser->callbacks, false_found);
         return -1;
     }
     
-    return set_error(parser, c, jsonlite_result_invalid_token);
+    return set_error(parser, parser->cursor, jsonlite_result_invalid_token);
 }
 
 JSONLITE_FCS take_null(jsonlite_parser parser) {
-    static const uint8_t token[] = "null";
-    const uint8_t *c = parser->cursor;
-    CHECK_LIMIT(c + 3, parser->limit);
-    int res = memcmp(token, c, sizeof(token) - 1);
+    CHECK_LIMIT(parser->cursor + 3, parser->limit);
+    int res = memcmp("null", parser->cursor, sizeof("null") - 1);
     if (res == 0) {
-        parser->cursor = c + sizeof(token) - 1;
+        parser->cursor += sizeof("null") - 1;
         CALL_STATE_CALLBACK(parser->callbacks, null_found);
         return -1;
     }
     
-    return set_error(parser, c, jsonlite_result_invalid_token);
+    return set_error(parser, parser->cursor, jsonlite_result_invalid_token);
 }
