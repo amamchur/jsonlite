@@ -29,7 +29,15 @@ JsonLite ObjC is JSON parser base on jsonlite. It's the fastest and flexible JSO
 
 #### Getting Started with jsonlite
 ###### Validator
-Current example shows how quick, easy and using **232 bytes** (64 bit arch) or **116 bytes** (32 bit arch) validate JSON.
+Current example shows how quick and easy [validate](http://en.wikipedia.org/wiki/Validator) JSON.
+
+**What's New?**
+* ***JSON*** - [JavaScript Object Notation](http://en.wikipedia.org/wiki/JSON)
+* ***JSON_DEPTH*** - maximal depth of JSON nested expressions
+* ***jsonlite_parser_estimate_size*** - estimates memory usage (in bytes). This value depends on CPU architecture.
+* ***jsonlite_parser_init*** - initialize parser
+* ***jsonlite_parser_tokenize*** - process JSON payload
+* ***jsonlite_parser_release*** - free all resources
 
 ``` c
 #include <assert.h>
@@ -50,6 +58,12 @@ int main(int argc, const char * argv[]) {
 
 ###### Summer
 Next example shows how to work with number tokens. jsonlite does not convert any number by itself. That's why you may use [strtol](http://www.cplusplus.com/reference/cstdlib/strtol/) or even [arbitrary-precision arithmetic](http://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic).
+
+**What's New?**
+* ***jsonlite_parser_callbacks*** - contains addresses of callback functions
+* ***jsonlite_default_callbacks*** - contains default callback functions (they do nothing).
+* ***jsonlite_parser_set_callback*** - sets new callback functions
+* ***number_callback*** - callback function. It converts number [token](https://en.wikipedia.org/wiki/Token_\(parser\)#Token) to C type and performs summing.
 
 ``` c
 #include <stdlib.h>
