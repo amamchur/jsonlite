@@ -191,6 +191,12 @@ int main(int argc, const char * argv[]) {
 Only JsonLite ObjC can work with NSDecimalNumber object and you can forgot about workaround with strings. It's very important feature for finance project. 
 
 ``` objc
+#import <Foundation/Foundation.h>
+#import <Foundation/Foundation.h>
+#import "JsonLiteParser.h"
+#import "JsonLiteDeserializer.h"
+#import "JsonLiteConverters.h"
+
 @interface Model : NSObject
 
 @property (nonatomic, copy) NSString *string;
@@ -208,18 +214,21 @@ Only JsonLite ObjC can work with NSDecimalNumber object and you can forgot about
 
 @end
 
-- (void)parseDecimalToModel {
-    NSString *json = @"{\"string\": \"This is Decimal!\", \"number\" : 95673465936453649563978.99 }";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    JsonLiteParser *parser = [JsonLiteParser parserWithDepth:8];
-    JsonLiteDeserializer *des = [JsonLiteDeserializer deserializerWithRootClass:[Model class]];
-    des.converter = [[[JsonLiteDecimal alloc] init] autorelease]; // Look here
-    parser.delegate = des;
-    [parser parse:data];
-    
-    Model *model = [des object];
-    NSLog(@"String - %@", model.string);
-    NSLog(@"Number - %@", model.number);
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        NSString *json = @"{\"string\": \"This is Decimal!\", \"number\" : 95673465936453649563978.99 }";
+        NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+        JsonLiteParser *parser = [JsonLiteParser parserWithDepth:8];
+        JsonLiteDeserializer *des = [JsonLiteDeserializer deserializerWithRootClass:[Model class]];
+        des.converter = [[[JsonLiteDecimal alloc] init] autorelease];
+        parser.delegate = des;
+        [parser parse:data];
+        
+        Model *model = [des object];
+        NSLog(@"String - %@", model.string);
+        NSLog(@"Number - %@", model.number);
+    }
+    return 0;
 }
 ```
 
