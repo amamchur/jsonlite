@@ -51,6 +51,12 @@ do {                                                        \
     }                                                       \
 } while (0)
 
+#define CHECK_HEX(c)                            \
+if ((c) < 48)               goto error_escape;  \
+if ((c) > 102)              goto error_escape;  \
+if (57 < (c) && (c) < 65)   goto error_escape;  \
+if (70 < (c) && (c) < 97)   goto error_escape
+
 #define CHECK_LIMIT_RET_EOS(c, l) if ((c) >= (l)) return jsonlite_result_end_of_stream
 
 struct jsonlite_parse_state_struct;
@@ -102,11 +108,7 @@ JSONLITE_FCS take_true(jsonlite_parser parser);
 JSONLITE_FCS take_false(jsonlite_parser parser);
 JSONLITE_FCS take_null(jsonlite_parser parser);
 
-static int is_ascii_escaped_character(uint8_t c);
 static int skip_whitespace(jsonlite_parser parser);
-static jsonlite_result take_string_escape(jsonlite_parser parser, jsonlite_token *jt);
-static jsonlite_result take_string_value(jsonlite_parser parser, jsonlite_token *jt);
-
 static void empty_value_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
 }
 
@@ -301,10 +303,6 @@ static void jsonlite_finish_parse(jsonlite_parser parser) {
     }
 }
 
-static int is_ascii_escaped_character(uint8_t c) {
-    return c == '"' || c == '\\' || c == 'n' || c == 'r' || c == '/' || c == 'b' || c == 'f' || c ==  't';
-}
-
 static int skip_whitespace(jsonlite_parser parser) {
     const uint8_t *c = parser->cursor;
     const uint8_t *l = parser->limit;
@@ -448,151 +446,107 @@ JSONLITE_FCS take_array_comma_end(jsonlite_parser parser, jsonlite_parse_state j
     }
 }
 
-static jsonlite_result take_string_unicode_escape(jsonlite_parser parser, jsonlite_token *jt) {
+static jsonlite_result take_string_token(jsonlite_parser parser, jsonlite_value_callback callback) {
     const uint8_t *c = parser->cursor;
     const uint8_t *l = parser->limit;
-    uint8_t hex;
-    uint16_t value = 0;
-    int i;
-    
-    CHECK_LIMIT_RET_EOS(c + 3, l);
-    for (i = 0; i < 4; i++, c++) {
-        hex = jsonlite_hex_char_to_uint8(*c);
-        if (unlikely(hex > 0x0F)) {
-            return jsonlite_result_invalid_escape;
-        }
-        value = (uint16_t)(value << 4) | hex;
-    }
-    
-    if (unlikely(value < 0xD800 || value > 0xDBFF)) {
-        parser->cursor = c - 1;
-        return jsonlite_result_ok;
-    }
-    
-    CHECK_LIMIT_RET_EOS(c + 5, l);
-    if (*c != '\\') {
-        return jsonlite_result_invalid_escape;
-    }
-    
-    c++;
-    if (*c != 'u') {
-        return jsonlite_result_invalid_escape;
-    }
-    
-    c++;
-    for (i = 0, value = 0; i < 4; i++, c++) {
-        hex = jsonlite_hex_char_to_uint8(*c);
-        if (unlikely(hex > 0x0F)) {
-            return jsonlite_result_invalid_escape;
-        }
-        value = (uint16_t)(value << 4) | hex;
-    }
-    
-    if (unlikely(value < 0xDC00 || value > 0xDFFF)) {
-        return jsonlite_result_invalid_escape;
-    }
-    
-    parser->cursor = c - 1;
-    return jsonlite_result_ok;
-}
-
-static jsonlite_result take_string_escape(jsonlite_parser parser, jsonlite_token *jt) {
-    const uint8_t *c = parser->cursor;
-    const uint8_t *l = parser->limit;
-    CHECK_LIMIT_RET_EOS(c, l);
-    if (is_ascii_escaped_character(*c)) {
-        jt->string_type = (jsonlite_string_type)(jt->string_type | jsonlite_string_escape);
-        parser->cursor = c;
-        return jsonlite_result_ok;
-    }
-    
-    if (*c == 'u') {
-        jt->string_type = (jsonlite_string_type)(jt->string_type | jsonlite_string_unicode_escape);
-        parser->cursor++;
-        return take_string_unicode_escape(parser, jt);
-    }
-    
-    parser->cursor = c - 1;
-    set_error(parser, c - 1, jsonlite_result_invalid_escape);
-    return jsonlite_result_invalid_escape;
-}
-
-static jsonlite_result take_string_value(jsonlite_parser parser, jsonlite_token *jt) {
-    const uint8_t *c = parser->cursor;
-    const uint8_t *l = parser->limit;
+    jsonlite_token jt;
+    jsonlite_string_type type = jsonlite_string_ascii;
     int res;
-	uint32_t code;
+	uint32_t value;
     
-    for (; c < l; ++c) {    
-        if (*c == '"') {
-            jt->end = c;
-            parser->cursor = c + 1;
-            return jsonlite_result_ok;
-        }
-        
-        if (*c == '\\') {
-            parser->cursor = c + 1;
-            res = take_string_escape(parser, jt);
-            if (res != jsonlite_result_ok) {
-                return (jsonlite_result)res;
+step:
+    if (++c == l)       goto end_of_stream;
+    if (*c == '"')      goto done;
+    if (*c == '\\')     goto escaped;
+    
+    if (*c >= 0x80)     goto utf8;
+    if (*c < 0x20)      goto error;
+    goto step;   
+escaped:
+    type |= jsonlite_string_escape;
+    if (++c == l)       goto end_of_stream;
+    switch (*c) {
+		case 34: goto step;
+		case 47: goto step;
+		case 92: goto step;
+		case 98: goto step;
+		case 102: goto step;
+		case 110: goto step;
+		case 114: goto step;
+		case 116: goto step;
+		case 117: goto hex1;
+	}
+    goto error_escape;
+hex1:
+    type |= jsonlite_string_unicode_escape;
+    if (++c + 3 >= l)           goto end_of_stream;
+CHECK_HEX(*c);
+    value = jsonlite_hex_char_to_uint8(*c++);
+hex2:
+    CHECK_HEX(*c);
+    value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
+hex3:
+    CHECK_HEX(*c);
+    value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
+hex4:
+    CHECK_HEX(*c);
+    value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
+    if (value < 0xD800 || value > 0xDBFF) goto step;
+hex1_s:
+    if (++c + 5 >= l)     goto end_of_stream;
+    if (*c++ != '\\')   goto error_escape;
+    if (*c++ != 'u')    goto error_escape;
+    CHECK_HEX(*c);
+    value = jsonlite_hex_char_to_uint8(*c++);
+hex2_s:
+    CHECK_HEX(*c);
+    value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
+hex3_s:
+    CHECK_HEX(*c);
+    value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
+hex4_s:
+    CHECK_HEX(*c);
+    value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
+    if (value < 0xDC00 || value > 0xDFFF) goto error_escape;
+    goto step;
+utf8:
+    res = jsonlite_clz(((*c) ^ 0xFF) << 0x19);
+    value = 0xAAAAAAAA; // == 1010...
+    CHECK_LIMIT(c + res, l);
+    switch (res) {
+        case 3: value = (value << 2) | (*++c >> 6);
+        case 2: value = (value << 2) | (*++c >> 6);
+        case 1: value = (value << 2) | (*++c >> 6);
+            if (value != 0xAAAAAAAA) {
+                return set_error(parser, c - res, jsonlite_result_invalid_utf8);
             }
-            c = parser->cursor;
-            continue;
-        }
-        
-        if (*c < 0x20) {
-            return jsonlite_result_invalid_token;
-        }
-        
-        if (*c >= 0x80) {
-            jt->string_type = (jsonlite_string_type)(jt->string_type | jsonlite_string_utf8);            
-            res = jsonlite_clz(((*c) ^ 0xFF) << 0x19);
-            code = 0xAAAAAAAA; // == 1010...
-            CHECK_LIMIT_RET_EOS(c + res, l);
-            switch (res) {
-                case 3: code = (code << 2) | (*++c >> 6);
-                case 2: code = (code << 2) | (*++c >> 6);
-                case 1: code = (code << 2) | (*++c >> 6);
-                    if (code != 0xAAAAAAAA) {
-                        set_error(parser, c - res, jsonlite_result_invalid_utf8);
-                        return jsonlite_result_invalid_utf8;
-                    }
-                    break;
-                default:
-                    set_error(parser, c, jsonlite_result_invalid_utf8);
-                    return jsonlite_result_invalid_utf8;
-            }
-        }
+            break;
+        default:
+            return set_error(parser, c, jsonlite_result_invalid_utf8);
     }
-    return jsonlite_result_end_of_stream;
+    goto step;
+error_escape:
+    return set_error(parser, c, jsonlite_result_invalid_escape);
+error:
+    return set_error(parser, c, jsonlite_result_invalid_token);
+end_of_stream:
+    parser->cursor = c;
+    return set_error(parser, c, jsonlite_result_end_of_stream);
+done:
+    jt.string_type = type;
+    jt.start = parser->cursor + 1;
+    jt.end = c;
+    parser->cursor = c + 1;
+    callback(&parser->callbacks.context, &jt);
+    return -1;
 }
 
 JSONLITE_FCS take_key(jsonlite_parser parser, jsonlite_parse_state ps) {
-	jsonlite_result result;
-    jsonlite_token jt;
-    jt.start = ++parser->cursor;
-    jt.string_type = jsonlite_string_ascii;
-    
-    result = take_string_value(parser, &jt);
-    if (likely(result == jsonlite_result_ok)) {
-        CALL_VALUE_CALLBACK(parser->callbacks, key_found, &jt);
-        return -1;
-    }
-    return set_error(parser, parser->cursor, result);
+    return take_string_token(parser, parser->callbacks.key_found);
 }
 
 JSONLITE_FCS take_string(jsonlite_parser parser) {
-	jsonlite_result result;
-    jsonlite_token jt;
-    jt.start = ++parser->cursor;
-    jt.string_type = jsonlite_string_ascii;
-    
-    result = take_string_value(parser, &jt);
-    if (likely(result == jsonlite_result_ok)) {
-        CALL_VALUE_CALLBACK(parser->callbacks, string_found, &jt);
-        return -1;
-    }
-    return set_error(parser, parser->cursor, result);
+    return take_string_token(parser, parser->callbacks.string_found);
 }
 
 JSONLITE_FCS take_number(jsonlite_parser parser) {
@@ -704,9 +658,8 @@ found_token:
 }
 
 JSONLITE_FCS take_true(jsonlite_parser parser) {
-    const uint8_t *c = parser->cursor;
-    CHECK_LIMIT(c + 3, parser->limit);
-    if (*c++ != 't') goto error;
+    const uint8_t *c = parser->cursor + 1;
+    CHECK_LIMIT(c + 2, parser->limit);
     if (*c++ != 'r') goto error;
     if (*c++ != 'u') goto error;
     if (*c != 'e') goto error;
@@ -718,9 +671,8 @@ error:
 }
 
 JSONLITE_FCS take_false(jsonlite_parser parser) {
-    const uint8_t *c = parser->cursor;
-    CHECK_LIMIT(c + 4, parser->limit);
-    if (*c++ != 'f') goto error;
+    const uint8_t *c = parser->cursor + 1;
+    CHECK_LIMIT(c + 3, parser->limit);
     if (*c++ != 'a') goto error;
     if (*c++ != 'l') goto error;
     if (*c++ != 's') goto error;
@@ -733,9 +685,8 @@ error:
 }
 
 JSONLITE_FCS take_null(jsonlite_parser parser) {
-    const uint8_t *c = parser->cursor;
-    CHECK_LIMIT(c + 3, parser->limit);
-    if (*c++ != 'n') goto error;
+    const uint8_t *c = parser->cursor + 1;
+    CHECK_LIMIT(c + 2, parser->limit);
     if (*c++ != 'u') goto error;
     if (*c++ != 'l') goto error;
     if (*c != 'l') goto error;
