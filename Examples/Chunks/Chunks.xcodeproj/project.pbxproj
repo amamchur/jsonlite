@@ -1,0 +1,357 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8447968B1788193D00833C1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8447968A1788193D00833C1E /* Foundation.framework */; };
+		8447968E1788193D00833C1E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8447968D1788193D00833C1E /* main.m */; };
+		844796921788193D00833C1E /* Chunks.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 844796911788193D00833C1E /* Chunks.1 */; };
+		844796B61788196600833C1E /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796A21788196600833C1E /* jsonlite_builder.c */; };
+		844796B71788196600833C1E /* jsonlite_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796A31788196600833C1E /* jsonlite_hash.c */; };
+		844796B81788196600833C1E /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796A41788196600833C1E /* jsonlite_parser.c */; };
+		844796B91788196600833C1E /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796A51788196600833C1E /* jsonlite_token.c */; };
+		844796BA1788196600833C1E /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796A61788196600833C1E /* jsonlite_token_pool.c */; };
+		844796BB1788196600833C1E /* JsonLiteAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 844796A91788196600833C1E /* JsonLiteAccumulator.m */; };
+		844796BC1788196600833C1E /* JsonLiteCollections.m in Sources */ = {isa = PBXBuildFile; fileRef = 844796AB1788196600833C1E /* JsonLiteCollections.m */; };
+		844796BD1788196600833C1E /* JsonLiteConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = 844796AD1788196600833C1E /* JsonLiteConverters.m */; };
+		844796BE1788196600833C1E /* JsonLiteDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 844796AF1788196600833C1E /* JsonLiteDeserializer.m */; };
+		844796BF1788196600833C1E /* JsonLiteMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 844796B11788196600833C1E /* JsonLiteMetaData.m */; };
+		844796C01788196600833C1E /* JsonLiteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 844796B31788196600833C1E /* JsonLiteParser.m */; };
+		844796C11788196600833C1E /* JsonLiteSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 844796B51788196600833C1E /* JsonLiteSerializer.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		844796851788193D00833C1E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				844796921788193D00833C1E /* Chunks.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		844796871788193D00833C1E /* Chunks */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chunks; sourceTree = BUILT_PRODUCTS_DIR; };
+		8447968A1788193D00833C1E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8447968D1788193D00833C1E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		844796901788193D00833C1E /* Chunks-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chunks-Prefix.pch"; sourceTree = "<group>"; };
+		844796911788193D00833C1E /* Chunks.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Chunks.1; sourceTree = "<group>"; };
+		8447969A1788196600833C1E /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
+		8447969B1788196600833C1E /* jsonlite_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_builder.h; sourceTree = "<group>"; };
+		8447969C1788196600833C1E /* jsonlite_hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_hash.h; sourceTree = "<group>"; };
+		8447969D1788196600833C1E /* jsonlite_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_parser.h; sourceTree = "<group>"; };
+		8447969E1788196600833C1E /* jsonlite_token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token.h; sourceTree = "<group>"; };
+		8447969F1788196600833C1E /* jsonlite_token_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token_pool.h; sourceTree = "<group>"; };
+		844796A01788196600833C1E /* jsonlite_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_types.h; sourceTree = "<group>"; };
+		844796A21788196600833C1E /* jsonlite_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_builder.c; sourceTree = "<group>"; };
+		844796A31788196600833C1E /* jsonlite_hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_hash.c; sourceTree = "<group>"; };
+		844796A41788196600833C1E /* jsonlite_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
+		844796A51788196600833C1E /* jsonlite_token.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
+		844796A61788196600833C1E /* jsonlite_token_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
+		844796A81788196600833C1E /* JsonLiteAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteAccumulator.h; sourceTree = "<group>"; };
+		844796A91788196600833C1E /* JsonLiteAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteAccumulator.m; sourceTree = "<group>"; };
+		844796AA1788196600833C1E /* JsonLiteCollections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteCollections.h; sourceTree = "<group>"; };
+		844796AB1788196600833C1E /* JsonLiteCollections.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteCollections.m; sourceTree = "<group>"; };
+		844796AC1788196600833C1E /* JsonLiteConverters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteConverters.h; sourceTree = "<group>"; };
+		844796AD1788196600833C1E /* JsonLiteConverters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteConverters.m; sourceTree = "<group>"; };
+		844796AE1788196600833C1E /* JsonLiteDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteDeserializer.h; sourceTree = "<group>"; };
+		844796AF1788196600833C1E /* JsonLiteDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteDeserializer.m; sourceTree = "<group>"; };
+		844796B01788196600833C1E /* JsonLiteMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteMetaData.h; sourceTree = "<group>"; };
+		844796B11788196600833C1E /* JsonLiteMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteMetaData.m; sourceTree = "<group>"; };
+		844796B21788196600833C1E /* JsonLiteParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteParser.h; sourceTree = "<group>"; };
+		844796B31788196600833C1E /* JsonLiteParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteParser.m; sourceTree = "<group>"; };
+		844796B41788196600833C1E /* JsonLiteSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteSerializer.h; sourceTree = "<group>"; };
+		844796B51788196600833C1E /* JsonLiteSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteSerializer.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		844796841788193D00833C1E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8447968B1788193D00833C1E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8447967E1788193D00833C1E = {
+			isa = PBXGroup;
+			children = (
+				844796981788196600833C1E /* jsonlite */,
+				844796A71788196600833C1E /* objc */,
+				8447968C1788193D00833C1E /* Chunks */,
+				844796891788193D00833C1E /* Frameworks */,
+				844796881788193D00833C1E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		844796881788193D00833C1E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				844796871788193D00833C1E /* Chunks */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		844796891788193D00833C1E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8447968A1788193D00833C1E /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8447968C1788193D00833C1E /* Chunks */ = {
+			isa = PBXGroup;
+			children = (
+				8447968D1788193D00833C1E /* main.m */,
+				844796911788193D00833C1E /* Chunks.1 */,
+				8447968F1788193D00833C1E /* Supporting Files */,
+			);
+			path = Chunks;
+			sourceTree = "<group>";
+		};
+		8447968F1788193D00833C1E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				844796901788193D00833C1E /* Chunks-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		844796981788196600833C1E /* jsonlite */ = {
+			isa = PBXGroup;
+			children = (
+				844796991788196600833C1E /* include */,
+				844796A11788196600833C1E /* src */,
+			);
+			name = jsonlite;
+			path = ../../jsonlite;
+			sourceTree = "<group>";
+		};
+		844796991788196600833C1E /* include */ = {
+			isa = PBXGroup;
+			children = (
+				8447969A1788196600833C1E /* jsonlite.h */,
+				8447969B1788196600833C1E /* jsonlite_builder.h */,
+				8447969C1788196600833C1E /* jsonlite_hash.h */,
+				8447969D1788196600833C1E /* jsonlite_parser.h */,
+				8447969E1788196600833C1E /* jsonlite_token.h */,
+				8447969F1788196600833C1E /* jsonlite_token_pool.h */,
+				844796A01788196600833C1E /* jsonlite_types.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		844796A11788196600833C1E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				844796A21788196600833C1E /* jsonlite_builder.c */,
+				844796A31788196600833C1E /* jsonlite_hash.c */,
+				844796A41788196600833C1E /* jsonlite_parser.c */,
+				844796A51788196600833C1E /* jsonlite_token.c */,
+				844796A61788196600833C1E /* jsonlite_token_pool.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		844796A71788196600833C1E /* objc */ = {
+			isa = PBXGroup;
+			children = (
+				844796A81788196600833C1E /* JsonLiteAccumulator.h */,
+				844796A91788196600833C1E /* JsonLiteAccumulator.m */,
+				844796AA1788196600833C1E /* JsonLiteCollections.h */,
+				844796AB1788196600833C1E /* JsonLiteCollections.m */,
+				844796AC1788196600833C1E /* JsonLiteConverters.h */,
+				844796AD1788196600833C1E /* JsonLiteConverters.m */,
+				844796AE1788196600833C1E /* JsonLiteDeserializer.h */,
+				844796AF1788196600833C1E /* JsonLiteDeserializer.m */,
+				844796B01788196600833C1E /* JsonLiteMetaData.h */,
+				844796B11788196600833C1E /* JsonLiteMetaData.m */,
+				844796B21788196600833C1E /* JsonLiteParser.h */,
+				844796B31788196600833C1E /* JsonLiteParser.m */,
+				844796B41788196600833C1E /* JsonLiteSerializer.h */,
+				844796B51788196600833C1E /* JsonLiteSerializer.m */,
+			);
+			name = objc;
+			path = ../../objc;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		844796861788193D00833C1E /* Chunks */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 844796951788193D00833C1E /* Build configuration list for PBXNativeTarget "Chunks" */;
+			buildPhases = (
+				844796831788193D00833C1E /* Sources */,
+				844796841788193D00833C1E /* Frameworks */,
+				844796851788193D00833C1E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Chunks;
+			productName = Chunks;
+			productReference = 844796871788193D00833C1E /* Chunks */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8447967F1788193D00833C1E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Andrii Mamchur";
+			};
+			buildConfigurationList = 844796821788193D00833C1E /* Build configuration list for PBXProject "Chunks" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 8447967E1788193D00833C1E;
+			productRefGroup = 844796881788193D00833C1E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				844796861788193D00833C1E /* Chunks */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		844796831788193D00833C1E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8447968E1788193D00833C1E /* main.m in Sources */,
+				844796B61788196600833C1E /* jsonlite_builder.c in Sources */,
+				844796B71788196600833C1E /* jsonlite_hash.c in Sources */,
+				844796B81788196600833C1E /* jsonlite_parser.c in Sources */,
+				844796B91788196600833C1E /* jsonlite_token.c in Sources */,
+				844796BA1788196600833C1E /* jsonlite_token_pool.c in Sources */,
+				844796BB1788196600833C1E /* JsonLiteAccumulator.m in Sources */,
+				844796BC1788196600833C1E /* JsonLiteCollections.m in Sources */,
+				844796BD1788196600833C1E /* JsonLiteConverters.m in Sources */,
+				844796BE1788196600833C1E /* JsonLiteDeserializer.m in Sources */,
+				844796BF1788196600833C1E /* JsonLiteMetaData.m in Sources */,
+				844796C01788196600833C1E /* JsonLiteParser.m in Sources */,
+				844796C11788196600833C1E /* JsonLiteSerializer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		844796931788193D00833C1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		844796941788193D00833C1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		844796961788193D00833C1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Chunks/Chunks-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		844796971788193D00833C1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Chunks/Chunks-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		844796821788193D00833C1E /* Build configuration list for PBXProject "Chunks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				844796931788193D00833C1E /* Debug */,
+				844796941788193D00833C1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		844796951788193D00833C1E /* Build configuration list for PBXNativeTarget "Chunks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				844796961788193D00833C1E /* Debug */,
+				844796971788193D00833C1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8447967F1788193D00833C1E /* Project object */;
+}
