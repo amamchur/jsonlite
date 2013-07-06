@@ -22,8 +22,8 @@ char chuck2[] = "ll, 1234567890]";
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {        
-        JsonLiteParser *parser = [JsonLiteParser parserWithDepth:8];
-        JsonLiteAccumulator *acc = [JsonLiteAccumulator accumulatorWithDepth:8];
+        JsonLiteParser *parser = [JsonLiteParser parserWithDepth:4];
+        JsonLiteAccumulator *acc = [JsonLiteAccumulator accumulatorWithDepth:4];
         parser.delegate = acc;
         NSData *data = [[NSData alloc] initWithBytes:chuck1
                                                length:sizeof(chuck1) - 1];
@@ -35,8 +35,7 @@ int main(int argc, const char * argv[]) {
         [parser parse:data];
         [data release];
         
-        NSLog(@"Full object - %@", [acc object]);
-        
+        NSLog(@"Full object - %@", [acc object]);        
     }
     return 0;
 }
