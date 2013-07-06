@@ -89,18 +89,18 @@ The example shows how to quick make JSON pretty. The example is bigger than prev
 Current example shows how to quick tokenize and accumulate results to Cocoa collection.
 
 ``` objc
+#import <Foundation/Foundation.h>
 #import "JsonLiteAccumulator.h"
 
-// ...
-
-- (void)parse {
-    NSString *json = @"[\"hello\", null, 1234567890]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    id result = [JsonLiteAccumulator objectFromData:data withMaxDepth:8];
-    NSLog(@"%@", result);
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        NSString *json = @"[\"hello\", null, 1234567890]";
+        NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+        NSArray *result = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
+        NSLog(@"%@", result);        
+    }
+    return 0;
 }
-
-// ...
 ```
 ###### Chunks
 
