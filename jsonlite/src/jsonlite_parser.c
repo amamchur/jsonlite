@@ -704,37 +704,44 @@ found_token:
 }
 
 JSONLITE_FCS take_true(jsonlite_parser parser) {
-    CHECK_LIMIT(parser->cursor + 3, parser->limit);
-    int res = memcmp("true", parser->cursor, sizeof("true") - 1);
-    if (res == 0) {
-        parser->cursor += sizeof("true") - 1;
-        CALL_STATE_CALLBACK(parser->callbacks, true_found);
-        return -1;
-    }
-    
+    const uint8_t *c = parser->cursor;
+    CHECK_LIMIT(c + 3, parser->limit);
+    if (*c++ != 't') goto error;
+    if (*c++ != 'r') goto error;
+    if (*c++ != 'u') goto error;
+    if (*c != 'e') goto error;
+    parser->cursor += 4;
+    CALL_STATE_CALLBACK(parser->callbacks, true_found);
+    return -1;
+error:
     return set_error(parser, parser->cursor, jsonlite_result_invalid_token);
 }
 
 JSONLITE_FCS take_false(jsonlite_parser parser) {
-    CHECK_LIMIT(parser->cursor + 4, parser->limit);
-    int res = memcmp("false", parser->cursor, sizeof("false") - 1);
-    if (res == 0) {
-        parser->cursor += sizeof("false") - 1;
-        CALL_STATE_CALLBACK(parser->callbacks, false_found);
-        return -1;
-    }
-    
+    const uint8_t *c = parser->cursor;
+    CHECK_LIMIT(c + 4, parser->limit);
+    if (*c++ != 'f') goto error;
+    if (*c++ != 'a') goto error;
+    if (*c++ != 'l') goto error;
+    if (*c++ != 's') goto error;
+    if (*c != 'e') goto error;
+    parser->cursor += 5;
+    CALL_STATE_CALLBACK(parser->callbacks, false_found);
+    return -1;
+error:
     return set_error(parser, parser->cursor, jsonlite_result_invalid_token);
 }
 
 JSONLITE_FCS take_null(jsonlite_parser parser) {
-    CHECK_LIMIT(parser->cursor + 3, parser->limit);
-    int res = memcmp("null", parser->cursor, sizeof("null") - 1);
-    if (res == 0) {
-        parser->cursor += sizeof("null") - 1;
-        CALL_STATE_CALLBACK(parser->callbacks, null_found);
-        return -1;
-    }
-    
+    const uint8_t *c = parser->cursor;
+    CHECK_LIMIT(c + 3, parser->limit);
+    if (*c++ != 'n') goto error;
+    if (*c++ != 'u') goto error;
+    if (*c++ != 'l') goto error;
+    if (*c != 'l') goto error;
+    parser->cursor += 4;
+    CALL_STATE_CALLBACK(parser->callbacks, null_found);
+    return -1;
+error:
     return set_error(parser, parser->cursor, jsonlite_result_invalid_token);
 }
