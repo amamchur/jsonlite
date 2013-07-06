@@ -106,25 +106,32 @@ int main(int argc, const char * argv[]) {
 
 A [chunk](http://en.wikipedia.org/wiki/Chunk_(information) is a fragment of JSON. JsonLite ObjC allows you to process a chunk while other parts of JSON are delivering by network. 'Chunk Oriented' processing style allow developer to improve memory usage and increase program performance, also its' provide ability to work with huge JSON data.
 ``` objc
+#import <Foundation/Foundation.h>
 #import "JsonLiteParser.h"
 #import "JsonLiteAccumulator.h"
 
-// ...
+char chuck1[] = "[\"hello\", nu";
+char chuck2[] = "ll, 1234567890]";
 
-- (void)parseChunks {
-    NSString *json_part1 = @"[\"hello\", nu";
-    NSString *json_part2 = @"ll, 1234567890]";
-    NSData *data1 = [json_part1 dataUsingEncoding:NSUTF8StringEncoding];
-    NSData *data2 = [json_part2 dataUsingEncoding:NSUTF8StringEncoding];
-    JsonLiteParser *parser = [JsonLiteParser parserWithDepth:8];
-    JsonLiteAccumulator *acc = [JsonLiteAccumulator accumulatorWithDepth:8];
-    parser.delegate = acc;
-    [parser parse:data1];
-    [parser parse:data2];    
-    NSLog(@"Full object - %@", [acc object]);
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {        
+        JsonLiteParser *parser = [JsonLiteParser parserWithDepth:4];
+        JsonLiteAccumulator *acc = [JsonLiteAccumulator accumulatorWithDepth:4];
+        parser.delegate = acc;
+        NSData *data = [[NSData alloc] initWithBytes:chuck1
+                                               length:sizeof(chuck1) - 1];
+        [parser parse:data];
+        [data release];
+        
+        data = [[NSData alloc] initWithBytes:chuck2
+                                      length:sizeof(chuck2) - 1];
+        [parser parse:data];
+        [data release];
+        
+        NSLog(@"Full object - %@", [acc object]);        
+    }
+    return 0;
 }
-
-// ...
 ```
 ###### JSON to Model
 
