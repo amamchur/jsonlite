@@ -9,8 +9,7 @@
 * [Getting Started with JsonLite ObjC](#getting-started-with-jsonlite-objc)
   * [Parse to Cocoa Collection(s)](#parse-to-cocoa-collections)
   * [Chunks](#chunks)
-  * [Model to JSON](#model-to-json)
-  * [JSON to Model](#json-to-model)
+  * [JSON And Model](#json--model)
   * [Decimal Number](#decimal-number)
 * [Roadmap](#roadmap)
 * [Code Coverage](#code-caverage)
@@ -133,12 +132,15 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 ```
-###### JSON to Model
+###### JSON & Model
 
 It's really hard to deal with Cocoa collections. The best way is to bind JSON to some model.
+
 ``` objc
+#import <Foundation/Foundation.h>
 #import "JsonLiteParser.h"
 #import "JsonLiteDeserializer.h"
+#import "JsonLiteSerializer.h"
 
 @interface Model : NSObject
 
@@ -158,39 +160,30 @@ It's really hard to deal with Cocoa collections. The best way is to bind JSON to
 }
 
 @end
-// ...
-- (void)parseToModel {
-    NSString *json = @"{\"string\": \"hello\", \"number\" : 100, \"array\": [1, 2, 3]}";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    JsonLiteParser *parser = [JsonLiteParser parserWithDepth:8];
-    JsonLiteDeserializer *des = [JsonLiteDeserializer deserializerWithRootClass:[Model class]];
-    parser.delegate = des;
-    [parser parse:data];
-    
-    Model *model = [des object];
-    NSLog(@"String - %@", model.string);
-    NSLog(@"Number - %@", model.number);
-    NSLog(@"Array - %@", model.array);
-}
-// ...
-```
 
-###### Model to JSON
-
-``` objc
-
-#import "JsonLiteSerializer.h"
-
-- (void)buildFromModel {
-    Model *model = [[[Model alloc] init] autorelease];
-    model.string = @"Hello World";
-    model.number = [NSNumber numberWithInt:256];
-    model.array = [NSArray arrayWithObjects:@"Test", [NSNull null], nil];
-    JsonLiteSerializer *serializer = [JsonLiteSerializer serializer];
-    NSData *data = [serializer serializeObject:model];
-    NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"%@", json);
-    [json release];
+int main(int argc, const char * argv[]) {
+    @autoreleasepool {
+        NSString *json = @"{\"string\": \"hello\", \"number\" : 100, \"array\": [1, 2, 3]}";
+        NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+        JsonLiteParser *parser = [JsonLiteParser parserWithDepth:8];
+        JsonLiteDeserializer *des = [JsonLiteDeserializer deserializerWithRootClass:[Model class]];
+        parser.delegate = des;
+        [parser parse:data];
+        
+        Model *model = [des object];
+        NSLog(@"String - %@", model.string);
+        NSLog(@"Number - %@", model.number);
+        NSLog(@"Array - %@", model.array);
+        
+        model.string = @"Hello World";
+        model.number = [NSNumber numberWithInt:256];
+        model.array = [NSArray arrayWithObjects:@"Test", [NSNull null], nil];
+        JsonLiteSerializer *serializer = [JsonLiteSerializer serializer];
+        data = [serializer serializeObject:model];
+        json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+        NSLog(@"%@", json);     
+    }
+    return 0;
 }
 ```
 ###### Decimal Number
