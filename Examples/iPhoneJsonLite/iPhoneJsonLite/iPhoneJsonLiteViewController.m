@@ -65,7 +65,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {    
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"twitter_public_timeline" ofType:@"json"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"repeat" ofType:@"json"];
     self.data = [NSData dataWithContentsOfFile:filePath];
     [super viewDidLoad];
 }
@@ -92,7 +92,7 @@
     bu = r.ru_utime;
     bs = r.ru_stime;
 
-    const int COUNT = 100;
+    const int COUNT = 1000;
     for (int i = 0; i < COUNT; i++) {
         JsonLiteParser *parser = [[JsonLiteParser alloc] initWithDepth:512];
         JsonLiteAccumulator *acc = [[JsonLiteAccumulator alloc] initWithDepth:512];

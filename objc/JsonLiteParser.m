@@ -151,13 +151,12 @@ static Class class_JsonLiteNumberToken;
 - (id)copyValue {
     jsonlite_token *token = (jsonlite_token *)self;
     NSNumber *number = nil;
-    char *end = NULL;
     if (token->number_type & (jsonlite_number_exp | jsonlite_number_frac)) {
-        double d = strtod((const char *)token->start, &end);
+        double d = strtod((const char *)token->start, NULL);
         number = (NSNumber *)CFNumberCreate(NULL, kCFNumberDoubleType, &d);
     } else {
-        long long i = strtoll((const char *)token->start, &end, 10);
-        number = (NSNumber *)CFNumberCreate(NULL, kCFNumberLongLongType, &i);
+        long i = strtol((const char *)token->start, NULL, 10);
+        number = (NSNumber *)CFNumberCreate(NULL, kCFNumberLongType, &i);
     }
     return number;
 }
