@@ -65,7 +65,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {    
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mesh" ofType:@"json"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"twitter_public_timeline" ofType:@"json"];
     self.data = [NSData dataWithContentsOfFile:filePath];
     [super viewDidLoad];
 }

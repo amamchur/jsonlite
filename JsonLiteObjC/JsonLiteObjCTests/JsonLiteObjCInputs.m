@@ -10,7 +10,6 @@
 #import "JsonLiteSenTestCaseExt.h"
 
 #include "jsonlite.h"
-#include "jsonlite_hash.h"
 
 #import "JsonLiteParser.h"
 #import "JsonLiteAccumulator.h"

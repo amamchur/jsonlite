@@ -452,13 +452,11 @@ static jsonlite_result take_string_token(jsonlite_parser parser, jsonlite_value_
     jsonlite_token jt;
     jsonlite_string_type type = jsonlite_string_ascii;
     int res;
-	uint32_t value;
-    
+	uint32_t value;    
 step:
     if (++c == l)       goto end_of_stream;
     if (*c == '"')      goto done;
-    if (*c == '\\')     goto escaped;
-    
+    if (*c == '\\')     goto escaped;    
     if (*c >= 0x80)     goto utf8;
     if (*c < 0x20)      goto error;
     goto step;   
@@ -474,37 +472,30 @@ escaped:
 		case 110: goto step;
 		case 114: goto step;
 		case 116: goto step;
-		case 117: goto hex1;
+		case 117: goto hex;
 	}
     goto error_escape;
-hex1:
+hex:
     type |= jsonlite_string_unicode_escape;
     if (++c + 3 >= l)           goto end_of_stream;
-CHECK_HEX(*c);
+    CHECK_HEX(*c);
     value = jsonlite_hex_char_to_uint8(*c++);
-hex2:
     CHECK_HEX(*c);
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
-hex3:
     CHECK_HEX(*c);
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
-hex4:
     CHECK_HEX(*c);
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
     if (value < 0xD800 || value > 0xDBFF) goto step;
-hex1_s:
     if (++c + 5 >= l)     goto end_of_stream;
     if (*c++ != '\\')   goto error_escape;
     if (*c++ != 'u')    goto error_escape;
     CHECK_HEX(*c);
     value = jsonlite_hex_char_to_uint8(*c++);
-hex2_s:
     CHECK_HEX(*c);
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
-hex3_s:
     CHECK_HEX(*c);
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
-hex4_s:
     CHECK_HEX(*c);
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
     if (value < 0xDC00 || value > 0xDFFF) goto error_escape;

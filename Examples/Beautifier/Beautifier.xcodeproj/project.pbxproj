@@ -10,7 +10,6 @@
 		84FD6833170E2B9800FCAA29 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6832170E2B9800FCAA29 /* main.c */; };
 		84FD6835170E2B9800FCAA29 /* Beautifier.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84FD6834170E2B9800FCAA29 /* Beautifier.1 */; };
 		84FD6849170E2BCC00FCAA29 /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6844170E2BCC00FCAA29 /* jsonlite_builder.c */; };
-		84FD684A170E2BCC00FCAA29 /* jsonlite_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6845170E2BCC00FCAA29 /* jsonlite_hash.c */; };
 		84FD684B170E2BCC00FCAA29 /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6846170E2BCC00FCAA29 /* jsonlite_parser.c */; };
 		84FD684C170E2BCC00FCAA29 /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6847170E2BCC00FCAA29 /* jsonlite_token.c */; };
 		84FD684D170E2BCC00FCAA29 /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FD6848170E2BCC00FCAA29 /* jsonlite_token_pool.c */; };
@@ -35,13 +34,11 @@
 		84FD6834170E2B9800FCAA29 /* Beautifier.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Beautifier.1; sourceTree = "<group>"; };
 		84FD683C170E2BC000FCAA29 /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
 		84FD683D170E2BC000FCAA29 /* jsonlite_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_builder.h; sourceTree = "<group>"; };
-		84FD683E170E2BC000FCAA29 /* jsonlite_hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_hash.h; sourceTree = "<group>"; };
 		84FD683F170E2BC000FCAA29 /* jsonlite_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_parser.h; sourceTree = "<group>"; };
 		84FD6840170E2BC000FCAA29 /* jsonlite_token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token.h; sourceTree = "<group>"; };
 		84FD6841170E2BC000FCAA29 /* jsonlite_token_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token_pool.h; sourceTree = "<group>"; };
 		84FD6842170E2BC000FCAA29 /* jsonlite_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_types.h; sourceTree = "<group>"; };
 		84FD6844170E2BCC00FCAA29 /* jsonlite_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_builder.c; sourceTree = "<group>"; };
-		84FD6845170E2BCC00FCAA29 /* jsonlite_hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_hash.c; sourceTree = "<group>"; };
 		84FD6846170E2BCC00FCAA29 /* jsonlite_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
 		84FD6847170E2BCC00FCAA29 /* jsonlite_token.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
 		84FD6848170E2BCC00FCAA29 /* jsonlite_token_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
@@ -90,7 +87,6 @@
 			children = (
 				84FD683C170E2BC000FCAA29 /* jsonlite.h */,
 				84FD683D170E2BC000FCAA29 /* jsonlite_builder.h */,
-				84FD683E170E2BC000FCAA29 /* jsonlite_hash.h */,
 				84FD683F170E2BC000FCAA29 /* jsonlite_parser.h */,
 				84FD6840170E2BC000FCAA29 /* jsonlite_token.h */,
 				84FD6841170E2BC000FCAA29 /* jsonlite_token_pool.h */,
@@ -104,7 +100,6 @@
 			isa = PBXGroup;
 			children = (
 				84FD6844170E2BCC00FCAA29 /* jsonlite_builder.c */,
-				84FD6845170E2BCC00FCAA29 /* jsonlite_hash.c */,
 				84FD6846170E2BCC00FCAA29 /* jsonlite_parser.c */,
 				84FD6847170E2BCC00FCAA29 /* jsonlite_token.c */,
 				84FD6848170E2BCC00FCAA29 /* jsonlite_token_pool.c */,
@@ -166,7 +161,6 @@
 			files = (
 				84FD6833170E2B9800FCAA29 /* main.c in Sources */,
 				84FD6849170E2BCC00FCAA29 /* jsonlite_builder.c in Sources */,
-				84FD684A170E2BCC00FCAA29 /* jsonlite_hash.c in Sources */,
 				84FD684B170E2BCC00FCAA29 /* jsonlite_parser.c in Sources */,
 				84FD684C170E2BCC00FCAA29 /* jsonlite_token.c in Sources */,
 				84FD684D170E2BCC00FCAA29 /* jsonlite_token_pool.c in Sources */,
@@ -266,6 +260,7 @@
 				84FD683A170E2B9800FCAA29 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

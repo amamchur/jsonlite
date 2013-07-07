@@ -14,7 +14,6 @@
 //  limitations under the License
 
 #include "../include/jsonlite_token_pool.h"
-#include "../include/jsonlite_hash.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -36,6 +35,7 @@ typedef struct content_pool_size {
 static void jsonlite_extend_capacity(jsonlite_token_pool pool, int index);
 static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *b);
 static int jsonlite_token_compare(const uint8_t *t1, const uint8_t *t2, size_t length);
+static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
 
 jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value_fn release_fn) {
     jsonlite_token_pool pool = (jsonlite_token_pool)calloc(1, sizeof(jsonlite_token_pool_struct));
@@ -197,4 +197,79 @@ static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_b
     int res = b->start < pool->content_pool;
     res |= b->start >= pool->content_pool + pool->content_pool_size;
     return res;
+}
+
+// Used MurmurHash2 function by Austin Appleby
+// http://code.google.com/p/smhasher/ revision 147
+
+//-----------------------------------------------------------------------------
+// MurmurHash2 was written by Austin Appleby, and is placed in the public
+// domain. The author hereby disclaims copyright to this source code.
+
+// Note - This code makes a few assumptions about how your machine behaves -
+
+// 1. We can read a 4-byte value from any address without crashing
+// 2. sizeof(int) == 4
+
+// And it has a few limitations -
+
+// 1. It will not work incrementally.
+// 2. It will not produce the same results on little-endian and big-endian
+//    machines.
+
+static uint32_t MurmurHash2 ( const void * key, int len, uint32_t seed )
+{
+    // 'm' and 'r' are mixing constants generated offline.
+    // They're not really 'magic', they just happen to work well.
+    
+    const uint32_t m = 0x5bd1e995;
+    const int r = 24;
+    
+    // Initialize the hash to a 'random' value
+    
+    uint32_t h = seed ^ len;
+    
+    // Mix 4 bytes at a time into the hash
+    
+    const unsigned char * data = (const unsigned char *)key;
+    
+    while(len >= 4)
+    {
+        uint32_t k = *(uint32_t*)data;
+        
+        k *= m;
+        k ^= k >> r;
+        k *= m;
+        
+        h *= m;
+        h ^= k;
+        
+        data += 4;
+        len -= 4;
+    }
+    
+    // Handle the last few bytes of the input array
+    
+    switch(len)
+    {
+        case 3: h ^= data[2] << 16;
+        case 2: h ^= data[1] << 8;
+        case 1: h ^= data[0];
+            h *= m;
+    };
+    
+    // Do a few final mixes of the hash to ensure the last few
+    // bytes are well-incorporated.
+    
+    h ^= h >> 13;
+    h *= m;
+    h ^= h >> 15;
+    
+    return h;
+}
+
+//-----------------------------------------------------------------------------
+
+static uint32_t jsonlite_hash(const uint8_t *data, size_t len) {
+    return MurmurHash2(data, (int)len, 0);
 }

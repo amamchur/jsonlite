@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8416D5AD1683C880003D166F /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5A81683C880003D166F /* jsonlite_builder.c */; };
-		8416D5AE1683C880003D166F /* jsonlite_hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5A91683C880003D166F /* jsonlite_hash.c */; };
 		8416D5AF1683C880003D166F /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5AA1683C880003D166F /* jsonlite_parser.c */; };
 		8416D5B01683C880003D166F /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5AB1683C880003D166F /* jsonlite_token.c */; };
 		8416D5B11683C880003D166F /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5AC1683C880003D166F /* jsonlite_token_pool.c */; };
@@ -43,13 +42,11 @@
 /* Begin PBXFileReference section */
 		8416D5A01683C880003D166F /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
 		8416D5A11683C880003D166F /* jsonlite_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_builder.h; sourceTree = "<group>"; };
-		8416D5A21683C880003D166F /* jsonlite_hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_hash.h; sourceTree = "<group>"; };
 		8416D5A31683C880003D166F /* jsonlite_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_parser.h; sourceTree = "<group>"; };
 		8416D5A41683C880003D166F /* jsonlite_token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token.h; sourceTree = "<group>"; };
 		8416D5A51683C880003D166F /* jsonlite_token_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token_pool.h; sourceTree = "<group>"; };
 		8416D5A61683C880003D166F /* jsonlite_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_types.h; sourceTree = "<group>"; };
 		8416D5A81683C880003D166F /* jsonlite_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_builder.c; sourceTree = "<group>"; };
-		8416D5A91683C880003D166F /* jsonlite_hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_hash.c; sourceTree = "<group>"; };
 		8416D5AA1683C880003D166F /* jsonlite_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
 		8416D5AB1683C880003D166F /* jsonlite_token.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
 		8416D5AC1683C880003D166F /* jsonlite_token_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
@@ -124,7 +121,6 @@
 			children = (
 				8416D5A01683C880003D166F /* jsonlite.h */,
 				8416D5A11683C880003D166F /* jsonlite_builder.h */,
-				8416D5A21683C880003D166F /* jsonlite_hash.h */,
 				8416D5A31683C880003D166F /* jsonlite_parser.h */,
 				8416D5A41683C880003D166F /* jsonlite_token.h */,
 				8416D5A51683C880003D166F /* jsonlite_token_pool.h */,
@@ -137,7 +133,6 @@
 			isa = PBXGroup;
 			children = (
 				8416D5A81683C880003D166F /* jsonlite_builder.c */,
-				8416D5A91683C880003D166F /* jsonlite_hash.c */,
 				8416D5AA1683C880003D166F /* jsonlite_parser.c */,
 				8416D5AB1683C880003D166F /* jsonlite_token.c */,
 				8416D5AC1683C880003D166F /* jsonlite_token_pool.c */,
@@ -318,7 +313,6 @@
 				87E8A2CD15B9F94200476361 /* JsonLiteConverters.m in Sources */,
 				87EFCA3D1676228D00277DE5 /* JsonLiteCollections.m in Sources */,
 				8416D5AD1683C880003D166F /* jsonlite_builder.c in Sources */,
-				8416D5AE1683C880003D166F /* jsonlite_hash.c in Sources */,
 				8416D5AF1683C880003D166F /* jsonlite_parser.c in Sources */,
 				8416D5B01683C880003D166F /* jsonlite_token.c in Sources */,
 				8416D5B11683C880003D166F /* jsonlite_token_pool.c in Sources */,

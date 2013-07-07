@@ -17,7 +17,6 @@
 #import "JsonLiteSenTestCaseExt.h"
 
 #include "jsonlite.h"
-#include "jsonlite_hash.h"
 
 #import "JsonLiteParser.h"
 #import "JsonLiteAccumulator.h"
@@ -264,14 +263,6 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     NSString *str1 = @"Test_#83410_Collision";
     NSString *str2 = @"Test_#152260_Collision";
     NSString *str3 = @"                u-1(l";
-    const char *ch1 = [str1 UTF8String];
-    const char *ch2 = [str2 UTF8String];
-    const char *ch3 = [str3 UTF8String];
-    uint32_t h1 = jsonlite_hash((const uint8_t*)ch1, strlen(ch1));
-    uint32_t h2 = jsonlite_hash((const uint8_t*)ch2, strlen(ch2));
-    uint32_t h3 = jsonlite_hash((const uint8_t*)ch3, strlen(ch3));
-    STAssertTrue(h1 == h2, @"NO Collision");
-    STAssertTrue(h2 == h3, @"NO Collision");
     
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:3];
     [array addObject:str1];
