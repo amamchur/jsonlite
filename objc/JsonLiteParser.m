@@ -155,8 +155,8 @@ static Class class_JsonLiteNumberToken;
         double d = strtod((const char *)token->start, NULL);
         number = (NSNumber *)CFNumberCreate(NULL, kCFNumberDoubleType, &d);
     } else {
-        long i = strtol((const char *)token->start, NULL, 10);
-        number = (NSNumber *)CFNumberCreate(NULL, kCFNumberLongType, &i);
+        long long i = strtoll((const char *)token->start, NULL, 10);
+        number = (NSNumber *)CFNumberCreate(NULL, kCFNumberLongLongType, &i);
     }
     return number;
 }
