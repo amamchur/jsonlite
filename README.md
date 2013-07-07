@@ -101,6 +101,11 @@ The example shows how to quick make JSON pretty. The example is bigger than prev
 ###### Parse to Cocoa Collection(s)
 Current example shows how to quick tokenize and accumulate results to Cocoa collection.
 
+**What's New?**
+* ***dataUsingEncoding*** - buildin Cocoa method. It converts NSString to NSData object.
+* ***JsonLiteAccumulator*** - convert JSON tokens to Cocoa classes and accumulate results to NSArray or NSDictionary.
+* ***objectFromData*** - class method of JsonLiteAccumulator, it is helper method - incupsulation of full initialization (see next example).
+
 ``` objc
 #import <Foundation/Foundation.h>
 #import "JsonLiteAccumulator.h"
@@ -118,6 +123,13 @@ int main(int argc, const char * argv[]) {
 ###### Chunks
 
 A [chunk](http://en.wikipedia.org/wiki/Chunk_(information) is a fragment of JSON. JsonLite ObjC allows you to process a chunk while other parts of JSON are delivering by network. 'Chunk Oriented' processing style allow developer to improve memory usage and increase program performance, also its' provide ability to work with huge JSON data.
+
+Also this example shows full parsing flow: create parser -> assign delegate -> parse data. 
+
+**What's New?**
+* ***JsonLiteParser*** - sequential access JSON parser. 
+* ***JsonLiteAccumulator*** - implements JsonLiteParserDelegate protocol. Performs token convertion and accululates results to Cocoa collections.
+
 ``` objc
 #import <Foundation/Foundation.h>
 #import "JsonLiteParser.h"
@@ -149,6 +161,11 @@ int main(int argc, const char * argv[]) {
 ###### JSON & Model
 
 It's really hard to deal with Cocoa collections. The best way is to bind JSON to some model.
+
+**What's New?**
+* ***Model*** - declaration of application object. 
+* ***JsonLiteDeserializer*** - implements JsonLiteParserDelegate protocol. Performs token convertion and binds resuls to specified model.
+* ***JsonLiteSerializer*** - serialize Objective-C model or collection to JSON.
 
 ``` objc
 #import <Foundation/Foundation.h>
@@ -203,6 +220,10 @@ int main(int argc, const char * argv[]) {
 ###### Decimal Number
 
 Only JsonLite ObjC can work with NSDecimalNumber object and you can forgot about workaround with strings. It's very important feature for finance project. 
+
+**What's New?**
+* ***NSDecimalNumber*** - class for base-10 arithmetic. 
+* ***JsonLiteDecimal*** - converter used by JsonLiteDeserializer to convert number token to NSDecimalNumber.
 
 ``` objc
 #import <Foundation/Foundation.h>
