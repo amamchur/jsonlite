@@ -99,12 +99,9 @@
         forToken:(JsonLiteToken *)token 
     deserializer:(JsonLiteDeserializer *)deserializer {
     if ([cls isSubclassOfClass:[NSURL class]] && [token isKindOfClass:[JsonLiteStringToken class]]) {
-        jsonlite_token *t = (jsonlite_token *)token;
-        uint8_t *buffer = NULL;
-        size_t size = jsonlite_token_decode_to_uft8(t, &buffer);
-        NSURL *url = (NSURL *)CFURLCreateWithBytes(NULL, (const UInt8 *)buffer, size, kCFStringEncodingUTF8, NULL);
+        NSString *str = [token value];
+        NSURL *url = (NSURL *)CFURLCreateWithString(NULL, (CFStringRef)str, NULL);
         *value = [url autorelease];
-        free(buffer);
         return YES;
     }
     return [nextDeserializerChain getValue:value ofClass:cls forToken:token deserializer:deserializer];

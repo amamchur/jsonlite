@@ -23,6 +23,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    extern const uint32_t jsonlite_utf8_masks[];
     
     struct jsonlite_token;
     struct jsonlite_parser_struct;

@@ -16,10 +16,16 @@
 #import "JsonLiteObjCTokenTests.h"
 #import "jsonlite_token.h"
 #import "JsonLiteSenTestCaseExt.h"
+#import "JsonLiteAccumulator.h"
 
 #include "jsonlite.h"
 
 @implementation JsonLiteObjCTokenTests
+
+- (void)testToken {
+    id obj = [self parseObjectFromFile:@"tokens" inDir:@"tokens"];
+    STAssertNotNil(obj, @"Object is nil");
+}
 
 - (void)testTokenFunctions {
     char token_string = "abc";

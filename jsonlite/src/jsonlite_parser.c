@@ -452,7 +452,7 @@ static jsonlite_result take_string_token(jsonlite_parser parser, jsonlite_value_
     jsonlite_token jt;
     jsonlite_string_type type = jsonlite_string_ascii;
     int res;
-	uint32_t value;    
+	uint32_t value, utf32;
 step:
     if (++c == l)       goto end_of_stream;
     if (*c == '"')      goto done;
@@ -486,10 +486,15 @@ hex:
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
     CHECK_HEX(*c);
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
-    if (value < 0xD800 || value > 0xDBFF) goto step;
-    if (++c + 5 >= l)     goto end_of_stream;
-    if (*c++ != '\\')   goto error_escape;
-    if (*c++ != 'u')    goto error_escape;
+    if ((value & 0xFFFFu) >= 0xFFFEu)           goto error;
+    if (value >= 0xFDD0u && value <= 0xFDEFu)   goto error;
+    if (0xD800 > value || value > 0xDBFF)       goto step;
+    
+    // UTF-16 Surrogate
+    utf32 = (value - 0xD800) << 10;
+    if (++c + 5 >= l)                           goto end_of_stream;
+    if (*c++ != '\\')                           goto error_escape;
+    if (*c++ != 'u')                            goto error_escape;
     CHECK_HEX(*c);
     value = jsonlite_hex_char_to_uint8(*c++);
     CHECK_HEX(*c);
@@ -499,23 +504,25 @@ hex:
     CHECK_HEX(*c);
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
     if (value < 0xDC00 || value > 0xDFFF) goto error_escape;
+    utf32 += value - 0xDC00 + 0x10000;
+    if ((utf32 & 0xFFFFu) >= 0xFFFEu)           goto error;
     goto step;
 utf8:
     res = jsonlite_clz(((*c) ^ 0xFF) << 0x19);
+    utf32 = *c;
     value = 0xAAAAAAAA; // == 1010...
     CHECK_LIMIT(c + res, l);
     switch (res) {
-        case 3: value = (value << 2) | (*++c >> 6);
-        case 2: value = (value << 2) | (*++c >> 6);
-        case 1: value = (value << 2) | (*++c >> 6);
-            if (value != 0xAAAAAAAA) {
-                return set_error(parser, c - res, jsonlite_result_invalid_utf8);
-            }
-            break;
-        default:
-            return set_error(parser, c, jsonlite_result_invalid_utf8);
+        case 3: value = (value << 2) | (*++c >> 6); utf32 = (utf32 << 6) | (*c & 0x3F);
+        case 2: value = (value << 2) | (*++c >> 6); utf32 = (utf32 << 6) | (*c & 0x3F);
+        case 1: value = (value << 2) | (*++c >> 6); utf32 = (utf32 << 6) | (*c & 0x3F);
+            if (value != 0xAAAAAAAA)                    goto error_utf8;
+            if ((utf32 & 0xFFFFu) >= 0xFFFEu)           goto error_utf8;
+            if (utf32 >= 0xFDD0u && utf32 <= 0xFDEFu)   goto error;
     }
     goto step;
+error_utf8:
+    return set_error(parser, c - res, jsonlite_result_invalid_utf8);
 error_escape:
     return set_error(parser, c, jsonlite_result_invalid_escape);
 error:

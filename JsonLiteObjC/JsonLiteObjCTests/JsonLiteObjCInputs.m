@@ -250,7 +250,7 @@
     parser.delegate = del;
     STAssertTrue(parser.delegate == del, @"Delegate is not equal");
     
-    NSData *data = [self dataFromFile:@"sample" inDir:@"success"];
+    NSData *data = [self dataFromFile:@"random" inDir:@"success"];
     STAssertNotNil(data, @"Data is nil");
     
     [parser parse:data];
@@ -293,7 +293,7 @@
     parser.delegate = acc;
     STAssertTrue(parser.delegate == acc, @"Delegate is not equal");
     
-    NSData *data = [self dataFromFile:@"sample" inDir:@"success"];
+    NSData *data = [self dataFromFile:@"random" inDir:@"success"];
     STAssertNotNil(data, @"Data is nil");
     
     [parser parse:data];

@@ -102,7 +102,24 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     result = jsonlite_parser_set_callback(p, &cbs);
     STAssertTrue(result == jsonlite_result_ok, @"Bad error");
 
-    jsonlite_parser_tokenize(p, [data bytes], [data length]);
+    result = jsonlite_parser_tokenize(p, [data bytes], [data length]);
+    STAssertTrue(result == jsonlite_result_ok, @"Bad error");
+    
+    jsonlite_parser_release(p);
+}
+
+- (void)testUnicodeTokens {
+    jsonlite_parser p = jsonlite_parser_init(256);
+    jsonlite_parser_callbacks cbs = jsonlite_default_callbacks;
+    cbs.context.client_state = self;
+    cbs.string_found = string_token_found;
+    
+    jsonlite_result result = jsonlite_parser_set_callback(p, &cbs);
+    STAssertTrue(result == jsonlite_result_ok, @"Bad error");
+    
+    NSData *data = [self dataFromFile:@"tokens" inDir:@"tokens"];
+    result = jsonlite_parser_tokenize(p, [data bytes], [data length]);
+    STAssertTrue(result == jsonlite_result_ok, @"Bad error");
     jsonlite_parser_release(p);
 }
 
@@ -526,33 +543,13 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     }
     
     [parser release];
-};
-
-
-- (void)testCoverUnicodeFull {
-    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"sample"
-                                                                      ofType:@"json"
-                                                                 inDirectory:@"success"];
-    NSError *error = nil;
-    NSData *data = [[NSData alloc] initWithContentsOfFile:path
-                                                  options:0
-                                                   error:&error];
-    STAssertNil(error, @"Cann't read file %@, error - %@.", @"sample", error);
-    
-    
-    jsonlite_parser p = jsonlite_parser_init(512);
-    jsonlite_parser_callbacks cbs = jsonlite_default_callbacks;
-    cbs.context.client_state = self;
-    cbs.string_found = string_token_found;
-    cbs.key_found = string_token_found;
-    jsonlite_parser_set_callback(p, &cbs);
-
-    jsonlite_result result = jsonlite_parser_tokenize(p, [data bytes], [data length]);
-    STAssertTrue(result == jsonlite_result_ok, @"Parse error");
-    jsonlite_parser_release(p);
 }
 
 - (void)fastFails:(BOOL)fail {
+    if (fail) {
+        STAssertFalse(fail, @"Failed test case from C code callback");
+    }
+    
     STAssertFalse(fail, @"Failed test case from C code callback");
 }
 
@@ -585,7 +582,9 @@ static void string_token_found(jsonlite_callback_context *ctx, struct jsonlite_t
     uint16_t *buffer_utf16 = NULL;
     size_t size = jsonlite_token_decode_to_uft8(token, &buffer_utf8);
     
-    NSString *str1 = [[NSString alloc] initWithBytes:buffer_utf8 length:size encoding:NSUTF8StringEncoding];
+    NSString *str1 = [[NSString alloc] initWithBytes:buffer_utf8
+                                              length:size
+                                            encoding:NSUTF8StringEncoding];
     [str1 autorelease];
     free(buffer_utf8);
     
