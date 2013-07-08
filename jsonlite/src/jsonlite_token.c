@@ -31,8 +31,6 @@ static uint32_t __inline jsonlite_clz( uint32_t x ) {
 
 #endif
 
-const uint32_t jsonlite_utf8_masks[] = {0x1F, 0x7FF, 0xFFFF, 0x1FFFFF};
-
 uint8_t jsonlite_hex_char_to_uint8(uint8_t c) {
     uint8_t res = 0xFF;
     if (c >= '0' && c <= '9') {
@@ -74,25 +72,26 @@ size_t jsonlite_token_decode_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
     }
     
     const uint8_t *p = ts->start;
+    const uint8_t *l = ts->end;
     uint32_t value, utf32;
   	uint8_t *c = *buffer = (uint8_t *)malloc(size);
     int res;
 step:
-    if (p == ts->end)   goto done;
+    if (p == l)         goto done;
     if (*p == '\\')     goto escaped;
     if (*p >= 0x80)     goto utf8;
     *c++ = *p++;
     goto step;
 escaped:
     switch (*++p) {
-		case 34:    *c++ = '"';     p++; goto step;
-		case 47:    *c++ = '/';     p++; goto step;
-		case 92:    *c++ = '\\';    p++; goto step;
-		case 98:    *c++ = '\b';    p++; goto step;
-		case 102:   *c++ = '\f';    p++; goto step;
-		case 110:   *c++ = '\n';    p++; goto step;
-		case 114:   *c++ = '\r';    p++; goto step;
-		case 116:   *c++ = '\t';    p++; goto step;
+        case 34:    *c++ = '"';     p++; goto step;
+        case 47:    *c++ = '/';     p++; goto step;
+        case 92:    *c++ = '\\';    p++; goto step;
+        case 98:    *c++ = '\b';    p++; goto step;
+        case 102:   *c++ = '\f';    p++; goto step;
+        case 110:   *c++ = '\n';    p++; goto step;
+        case 114:   *c++ = '\r';    p++; goto step;
+        case 116:   *c++ = '\t';    p++; goto step;
 	}
 hex:
     p++;
@@ -166,63 +165,56 @@ size_t jsonlite_token_decode_to_uft16(jsonlite_token *ts, uint16_t **buffer) {
     
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
-    uint16_t *c = (uint16_t *)malloc(size);
-    *buffer = c;
+    uint32_t utf32;
+    uint16_t *c = *buffer = (uint16_t *)malloc(size);
+    int res;    
+step:
+    if (p == l)         goto done;
+    if (*p == '\\')     goto escaped;
+    if (*p >= 0x80)     goto utf8;
+    *c++ = *p++;
+    goto step;
+escaped:
+    switch (*++p) {
+        case 34:    *c++ = '"';     p++; goto step;
+        case 47:    *c++ = '/';     p++; goto step;
+        case 92:    *c++ = '\\';    p++; goto step;
+        case 98:    *c++ = '\b';    p++; goto step;
+        case 102:   *c++ = '\f';    p++; goto step;
+        case 110:   *c++ = '\n';    p++; goto step;
+        case 114:   *c++ = '\r';    p++; goto step;
+        case 116:   *c++ = '\t';    p++; goto step;
+	}
+hex:
+    p++;
+    utf32 = jsonlite_hex_char_to_uint8(*p++);
+    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    *c++ = utf32;
+    if (0xD800 > utf32 || utf32 > 0xDBFF) goto step;
     
-    for (; p < l;) {
-        uint32_t unichar = *p;
-        if (unichar == '\\') {
-            switch (*++p) {
-                case '"':
-                    *c = '"';
-                    break;
-                case '\\':
-                    *c = '\\';
-                    break;
-                case '/':
-                    *c = '/';
-                    break;
-                case 'b':
-                    *c = '\b';
-                    break;
-                case 'f':
-                    *c = '\f';
-                    break;
-                case 'n':
-                    *c = '\n';
-                    break;
-                case 'r':
-                    *c = '\r';
-                    break;
-                case 't':
-                    *c = '\t';
-                    break;
-                case 'u': {
-                    uint16_t hex = jsonlite_hex_char_to_uint8(*++p);
-                    hex = (uint16_t)(hex << 4) | (uint16_t)jsonlite_hex_char_to_uint8(*++p);
-                    hex = (uint16_t)(hex << 4) | (uint16_t)jsonlite_hex_char_to_uint8(*++p);
-                    hex = (uint16_t)(hex << 4) | (uint16_t)jsonlite_hex_char_to_uint8(*++p);
-                    *c = hex;                
-                    break;
-                }
-            }
-            ++c;
-            ++p;
-        } else if (unichar < 0x80) {
-            *c++ = *p++;
-        } else {
-            int res = jsonlite_clz(((unichar) ^ 0xFF) << 0x19);
-            uint32_t code = unichar;
-            switch (res) {
-                case 3: code = (code << 6) | (*++p & 0x3F);
-                case 2: code = (code << 6) | (*++p & 0x3F);
-                case 1: code = (code << 6) | (*++p & 0x3F);
-                case 0: ++p;
-            }
-            
-            c += unicode_char_to_utf16(code & jsonlite_utf8_masks[res], c);
-        }
+    // UTF-16 Surrogate
+    p += 2;
+    utf32 = jsonlite_hex_char_to_uint8(*p++);
+    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    *c++ = utf32;
+    goto step;
+utf8:
+    res = jsonlite_clz(((*p) ^ 0xFF) << 0x19);
+    uint32_t code = (*p & (0xFF >> (res + 1)));
+    switch (res) {
+        case 3: code = (code << 6) | (*++p & 0x3F);
+        case 2: code = (code << 6) | (*++p & 0x3F);
+        case 1: code = (code << 6) | (*++p & 0x3F);
+        case 0: ++p;
     }
+    
+    c += unicode_char_to_utf16(code, c);
+    goto step;
+done:
     *c = 0;
     return (c - *buffer) * sizeof(uint16_t);
 }
