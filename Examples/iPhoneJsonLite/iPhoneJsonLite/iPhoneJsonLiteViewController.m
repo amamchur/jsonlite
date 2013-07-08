@@ -65,7 +65,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {    
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"repeat" ofType:@"json"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"pass1" ofType:@"json"];
     self.data = [NSData dataWithContentsOfFile:filePath];
     [super viewDidLoad];
 }
@@ -131,7 +131,7 @@
     bu = r.ru_utime;
     bs = r.ru_stime;
     
-    const int COUNT = 500;
+    const int COUNT = 1;
     for (int i = 0; i < COUNT; i++) {
         jsonlite_parser p = jsonlite_parser_init(512);
         jsonlite_parser_tokenize(p, buffer, l);

@@ -267,8 +267,10 @@
 }
 
 - (void)testFail18 {
-    NSError *error = [self parseErrorFromFile:@"fail18" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeDepthLimit, @"Test failed.");
+    JsonLiteParser *parser = [JsonLiteParser parserWithDepth:6];
+    NSData *data = [self dataFromFile:@"fail18" inDir:@"fail"];
+    [parser parse:data];
+    STAssertTrue([parser.parseError code] == JsonLiteCodeDepthLimit, @"Test failed.");
 }
 
 - (void)testFail19 {

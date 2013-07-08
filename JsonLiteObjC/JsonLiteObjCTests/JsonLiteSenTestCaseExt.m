@@ -196,7 +196,7 @@
                                                      error:&error] autorelease];
     STAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
     
-    JsonLiteParser *parser = [[JsonLiteParser alloc] initWithDepth:3];
+    JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteAccumulator *delegate = [[JsonLiteAccumulator alloc] init];
     parser.delegate = delegate;
     [parser parse:data];

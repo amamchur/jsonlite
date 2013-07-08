@@ -93,7 +93,8 @@ escaped:
         case 114:   *c++ = '\r';    p++; goto step;
         case 116:   *c++ = '\t';    p++; goto step;
 	}
-hex:
+
+    // UTF-16    
     p++;
     utf32 = jsonlite_hex_char_to_uint8(*p++);
     utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
@@ -165,7 +166,7 @@ size_t jsonlite_token_decode_to_uft16(jsonlite_token *ts, uint16_t **buffer) {
     
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
-    uint32_t utf32;
+    uint16_t utf16;
     uint16_t *c = *buffer = (uint16_t *)malloc(size);
     int res;    
 step:
@@ -185,22 +186,23 @@ escaped:
         case 114:   *c++ = '\r';    p++; goto step;
         case 116:   *c++ = '\t';    p++; goto step;
 	}
-hex:
+    
+    // UTF-16
     p++;
-    utf32 = jsonlite_hex_char_to_uint8(*p++);
-    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
-    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
-    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
-    *c++ = utf32;
-    if (0xD800 > utf32 || utf32 > 0xDBFF) goto step;
+    utf16 = jsonlite_hex_char_to_uint8(*p++);
+    utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    *c++ = utf16;
+    if (0xD800 > utf16 || utf16 > 0xDBFF) goto step;
     
     // UTF-16 Surrogate
     p += 2;
-    utf32 = jsonlite_hex_char_to_uint8(*p++);
-    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
-    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
-    utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
-    *c++ = utf32;
+    utf16 = jsonlite_hex_char_to_uint8(*p++);
+    utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
+    *c++ = utf16;
     goto step;
 utf8:
     res = jsonlite_clz(((*p) ^ 0xFF) << 0x19);
