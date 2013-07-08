@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "take_string_token:jsonlite_parser.c">
+         <PersistentStrings>
+            <PersistentString
+               value = "0x0FFFEl">
+            </PersistentString>
+            <PersistentString
+               value = "utf32 &amp; 0x0FFFFl">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

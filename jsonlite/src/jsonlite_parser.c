@@ -503,13 +503,13 @@ hex:
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
     CHECK_HEX(*c);
     value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
-    if (value < 0xDC00 || value > 0xDFFF) goto error_escape;
+    if (value < 0xDC00 || value > 0xDFFF)       goto error_escape;
     utf32 += value - 0xDC00 + 0x10000;
-    if ((utf32 & 0xFFFFu) >= 0xFFFEu)           goto error;
+    if ((utf32 & 0x0FFFFu) >= 0x0FFFEu)         goto error;
     goto step;
 utf8:
     res = jsonlite_clz(((*c) ^ 0xFF) << 0x19);
-    utf32 = *c;
+    utf32 = (*c & (0xFF >> (res + 1)));
     value = 0xAAAAAAAA; // == 1010...
     CHECK_LIMIT(c + res, l);
     switch (res) {
@@ -518,7 +518,7 @@ utf8:
         case 1: value = (value << 2) | (*++c >> 6); utf32 = (utf32 << 6) | (*c & 0x3F);
             if (value != 0xAAAAAAAA)                    goto error_utf8;
             if ((utf32 & 0xFFFFu) >= 0xFFFEu)           goto error_utf8;
-            if (utf32 >= 0xFDD0u && utf32 <= 0xFDEFu)   goto error;
+            if (utf32 >= 0xFDD0u && utf32 <= 0xFDEFu)   goto error_utf8;
     }
     goto step;
 error_utf8:
