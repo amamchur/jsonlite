@@ -320,8 +320,8 @@
 - (void)collectKeys {
     NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[binding allKeys]];
     NSMutableArray *propertiesKeys = [NSMutableArray arrayWithArray:[properties allKeys]];
-    NSInteger count = [array count];
-    for (NSInteger i = 0; i < count; i++) {
+    NSUInteger count = [array count];
+    for (NSUInteger i = 0; i < count; i++) {
         id key = [array objectAtIndex:i];
         JsonLiteBindRule *rule = [binding objectForKey:key];
         [propertiesKeys removeObject:rule.property];

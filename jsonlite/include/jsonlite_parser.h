@@ -34,7 +34,7 @@ extern "C" {
     typedef struct {
         /** @brief jsonlite parser object that initiate callback.
          * @note
-         * You can use ::jsonlite_parser_suspend to stop tokenizing.
+         * You can use ::jsonlite_parser_suspend to stop tokenization.
          */
         jsonlite_parser parser;
         

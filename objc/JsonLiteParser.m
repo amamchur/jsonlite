@@ -45,7 +45,7 @@ static void key_found_callback(jsonlite_callback_context *ctx, jsonlite_token *t
 static void string_found_callback(jsonlite_callback_context *ctx, jsonlite_token *token);
 static void number_found_callback(jsonlite_callback_context *ctx, jsonlite_token *token);
 
-NSString * const JsonLiteCodeDomain = @"com.googlecode.jsonlite";
+NSString * const JsonLiteCodeDomain = @"com.github.amamchur.jsonlite";
 
 static const jsonlite_parser_callbacks JsonLiteParserCallbacks = {
     &parse_finish,

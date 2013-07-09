@@ -480,6 +480,7 @@ hex:
     if ((utf32 & 0x0FFFFu) >= 0x0FFFEu)         goto error;
     goto step;
 utf8:
+    type |= jsonlite_string_utf8;
     res = jsonlite_clz(((*c) ^ 0xFF) << 0x19);
     utf32 = (*c & (0xFF >> (res + 1)));
     value = 0xAAAAAAAA; // == 1010...
@@ -521,7 +522,7 @@ static const uint8_t* take_number(jsonlite_parser parser, const uint8_t *c, cons
     switch (*c) {
         case 45: type |= jsonlite_number_negative;      goto test_zero_leading;
         case 48: type |= jsonlite_number_zero_leading;  goto take_exp_frac;
-        default:                                        goto take_digits;
+        default: type |= jsonlite_number_digit_leading; goto take_digits;
     }    
 
 test_zero_leading:

@@ -64,8 +64,8 @@ static int is_float(CFNumberRef number) {
     
     JsonLiteClassMetaData *metaData = [JsonLiteClassMetaData metaDataForClass:[obj class]];
     NSArray *keys = metaData.keys;
-    NSInteger count = [keys count];
-    for (NSInteger i = 0; i < count; i++) {
+    NSUInteger count = [keys count];
+    for (NSUInteger i = 0; i < count; i++) {
         id key = [keys objectAtIndex:i];
         JsonLiteClassProperty *property = [metaData propertyToBindKey:key];
         id value = [property valueOfObject:obj];
@@ -81,8 +81,8 @@ static int is_float(CFNumberRef number) {
     jsonlite_builder_object_begin(bs);
     
     NSArray *keys = [dict allKeys];
-    NSInteger count = [keys count];
-    for (NSInteger i = 0; i < count; i++) {
+    NSUInteger count = [keys count];
+    for (NSUInteger i = 0; i < count; i++) {
         id key = [keys objectAtIndex:i];
         char *buffer = (char *)[key cStringUsingEncoding:NSUTF8StringEncoding];
         jsonlite_builder_key(bs, buffer, strlen(buffer));
@@ -94,9 +94,9 @@ static int is_float(CFNumberRef number) {
 
 - (void)serializeArray:(NSArray *)array {
     jsonlite_builder_array_begin(bs);
-    
-    NSInteger count = [array count];
-    for (NSInteger i = 0; i < count; i++) {
+
+    NSUInteger count = [array count];
+    for (NSUInteger i = 0; i < count; i++) {
         [self serializeValue:[array objectAtIndex:i]];
     }
 
