@@ -57,9 +57,6 @@
     size_t size = jsonlite_parser_estimate_size(0);
     STAssertTrue(size > 0, @"Size can must be greater zero.");
     
-    size = jsonlite_parser_estimate_size(16);
-    STAssertTrue(size == 164, @"Incorrect estimated size");
-    
     // jsonlite_parser_init
     jsonlite_parser parser = jsonlite_parser_init(0);
     STAssertTrue(parser != NULL, @"Parser is NULL");
