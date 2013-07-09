@@ -21,7 +21,8 @@
 #import "TWTimeline.h"
 
 #include "jsonlite.h"
-
+#import <mach/mach.h>
+#import <mach/clock.h>
 #include <sys/resource.h>
 
 @interface iPhoneJsonLiteViewController()<JsonLiteAccumulatorDelegate>
@@ -65,7 +66,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {    
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"pass1" ofType:@"json"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"repeat" ofType:@"json"];
     self.data = [NSData dataWithContentsOfFile:filePath];
     [super viewDidLoad];
 }
@@ -85,12 +86,10 @@
 }
 
 - (IBAction)parse:(id)sender {
-    struct rusage r;
-    struct timeval bu, bs;
-    
-    getrusage(RUSAGE_SELF, &r);
-    bu = r.ru_utime;
-    bs = r.ru_stime;
+    clock_serv_t cclock;
+    mach_timespec_t start, end;
+    host_get_clock_service(mach_host_self(), SYSTEM_CLOCK, &cclock);
+    clock_get_time(cclock, &start);
 
     const int COUNT = 1000;
     for (int i = 0; i < COUNT; i++) {
@@ -103,15 +102,15 @@
         [parser release];
     }
     
-    getrusage(RUSAGE_SELF, &r);
+    clock_get_time(cclock, &end);
+        
+    long long time = (end.tv_sec - start.tv_sec) * 1000000000;
+    time += (end.tv_nsec - start.tv_nsec);
     
-    long time = (r.ru_utime.tv_sec - bu.tv_sec) + (r.ru_stime.tv_sec - bs.tv_sec);
-    time = time * 1000000;
-    time += (r.ru_utime.tv_usec - bu.tv_usec) + (r.ru_stime.tv_usec - bs.tv_usec);
+    size_t l = [data length];
+    double speed = ((double)l * COUNT / 1024 / 1024) / ((double)time / 1000000000.0);
     
-    double speed = ((double)[data length] * COUNT / 1024 / 1024) / ((double)time / 1000000);
-    
-    NSString *jsonlite = [NSString stringWithFormat:@"Time - %ld µs; speed - %.0f MBps", time, speed];
+    NSString *jsonlite = [NSString stringWithFormat:@"Time - %lld µs; speed - %.0f MBps", time, speed];
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
                                                  message:jsonlite
                                                 delegate:nil
@@ -124,29 +123,28 @@
 - (IBAction)parse1:(id)sender {
     const char *buffer = [data bytes];
     size_t l = [data length];
-    struct rusage r;
-    struct timeval bu, bs;
     
-    getrusage(RUSAGE_SELF, &r);
-    bu = r.ru_utime;
-    bs = r.ru_stime;
+    clock_serv_t cclock;
+    mach_timespec_t start, end;
+    host_get_clock_service(mach_host_self(), SYSTEM_CLOCK, &cclock);
+    clock_get_time(cclock, &start);
     
     const int COUNT = 1;
     for (int i = 0; i < COUNT; i++) {
         jsonlite_parser p = jsonlite_parser_init(512);
-        jsonlite_parser_tokenize(p, buffer, l);
+        jsonlite_result res = jsonlite_parser_tokenize(p, buffer, l);
+        NSAssert(res == jsonlite_result_ok, @"");
         jsonlite_parser_release(p);
     }
     
-    getrusage(RUSAGE_SELF, &r);
+    clock_get_time(cclock, &end);
     
-    long time = (r.ru_utime.tv_sec - bu.tv_sec) + (r.ru_stime.tv_sec - bs.tv_sec);
-    time = time * 1000000;
-    time += (r.ru_utime.tv_usec - bu.tv_usec) + (r.ru_stime.tv_usec - bs.tv_usec);
-
-    double speed = ((double)l * COUNT / 1024 / 1024) / ((double)time / 1000000);
+    long long time = (end.tv_sec - start.tv_sec) * 1000000000;
+    time += (end.tv_nsec - start.tv_nsec);
     
-    NSString *jsonlite = [NSString stringWithFormat:@"Time - %ld µs; speed - %.0f MBps", time, speed];
+    double speed = ((double)l * COUNT / 1024 / 1024) / ((double)time / 1000000000.0);
+    
+    NSString *jsonlite = [NSString stringWithFormat:@"Time - %lld µs; speed - %.0f MBps", time, speed];
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
                                                  message:jsonlite
                                                 delegate:nil

@@ -446,7 +446,26 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     id obj1 = [dic objectForKey:@"test4"];
     id obj2 = [dic objectForKey:@"10D789E"];
     STAssertEqualObjects(obj1, obj2, @"");
+}
 
+- (void)testKeyDepthCheck {
+    char json[] = "{\"obj\": {\"obj\": {\"obj\": {}}}}";
+    jsonlite_parser p = jsonlite_parser_init(2);
+    
+    jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));
+    STAssertTrue(result == jsonlite_result_depth_limit, @"Incorrect result");
+    
+    jsonlite_parser_release(p);
+}
+
+- (void)testArrayValueDepthCheck {
+    char json[] = "[1, [1, [1, [1, [0]]]]]";
+    jsonlite_parser p = jsonlite_parser_init(2);
+    
+    jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));
+    STAssertTrue(result == jsonlite_result_depth_limit, @"Incorrect result");
+    
+    jsonlite_parser_release(p);
 }
 
 @end

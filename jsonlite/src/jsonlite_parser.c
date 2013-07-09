@@ -36,14 +36,6 @@ static uint32_t __inline jsonlite_clz( uint32_t x ) {
 #define CALL_VALUE_CALLBACK(cbs, type, jt)  (cbs.type(&cbs.context, jt))
 #define CALL_STATE_CALLBACK(cbs, type)      (cbs.type(&cbs.context))
 
-#define CHECK_LIMIT(c, l)                                   \
-do {                                                        \
-    if ((c) >= (l)) {                                       \
-        parser->result = jsonlite_result_end_of_stream;     \
-        return 0;                                           \
-    }                                                       \
-} while (0)
-
 #define CHECK_HEX(c)                            \
 if ((c) < 48)               goto error_escape;  \
 if ((c) > 102)              goto error_escape;  \
@@ -109,13 +101,13 @@ const jsonlite_parser_callbacks jsonlite_default_callbacks = {
 };
 
 size_t jsonlite_parser_estimate_size(size_t depth) {
-    depth = depth < 4 ? 32 : depth;
+    depth = depth < 1 ? 32 : depth;
     return sizeof(jsonlite_parser_struct) + depth * sizeof(parse_state);
 }
 
 jsonlite_parser jsonlite_parser_init(size_t depth) {
     jsonlite_parser parser;
-    depth = depth < 4 ? 32 : depth;
+    depth = depth < 1 ? 32 : depth;
     
     parser = (jsonlite_parser)malloc(jsonlite_parser_estimate_size(depth));
     parser->cursor = NULL;
@@ -296,8 +288,7 @@ key_checking:
     switch (*c) {
         case '"':
             *state = state_wait_colon;
-            if (++state == last) goto depth_limit;
-            *state = state_wait_key;
+            *++state = state_wait_key;
             goto key_parsing;
         default:
             parser->result = jsonlite_result_expected_key;
@@ -307,8 +298,7 @@ colon_checking:
     switch (*c) {
         case ':':
             *state = state_wait_object_comma_end;
-            if (++state == last) goto depth_limit;
-            *state = state_wait_value;
+            *++state = state_wait_value;
             goto skip_char_and_space;
         default:
             parser->result = jsonlite_result_expected_colon;
@@ -329,8 +319,7 @@ array_value_end_checking:
 array_comma_end_checking:
     switch (*c) {
         case ',':
-            if (++state == last) goto depth_limit;
-            *state = state_wait_value;
+            *++state = state_wait_value;
             goto skip_char_and_space;
         case ']':
             CALL_STATE_CALLBACK(parser->callbacks, array_end);
@@ -494,7 +483,7 @@ utf8:
     res = jsonlite_clz(((*c) ^ 0xFF) << 0x19);
     utf32 = (*c & (0xFF >> (res + 1)));
     value = 0xAAAAAAAA; // == 1010...
-    CHECK_LIMIT(c + res, l);
+    if (c + res >= l) goto end_of_stream;
     switch (res) {
         case 3: value = (value << 2) | (*++c >> 6); utf32 = (utf32 << 6) | (*c & 0x3F);
         case 2: value = (value << 2) | (*++c >> 6); utf32 = (utf32 << 6) | (*c & 0x3F);
