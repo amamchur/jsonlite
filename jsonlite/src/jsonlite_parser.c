@@ -502,8 +502,11 @@ string_token_parsing:
         jt.string_type = type;
         jt.end = c;
         p->cursor = c + 1;
-        if (*state == state_wait_value) CALL_VALUE_CALLBACK(p->callbacks, string_found, &jt);
-        CALL_VALUE_CALLBACK(p->callbacks, key_found, &jt);
+        if (*state == state_wait_value) {
+            CALL_VALUE_CALLBACK(p->callbacks, string_found, &jt);
+        } else {
+            CALL_VALUE_CALLBACK(p->callbacks, key_found, &jt);
+        }
         state--;
         goto skip_char_and_spaces;
     }
