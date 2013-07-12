@@ -185,11 +185,13 @@ static Class class_JsonLiteNumberToken;
 
 @end
 
-@interface JsonLiteParser() {
+@interface JsonLiteParser()<NSStreamDelegate> {
     JsonLiteInternal internal;
 }
 
 @property (nonatomic, retain, readwrite) NSError *parseError;
+@property (nonatomic, retain) NSInputStream *stream;
+@property (nonatomic, retain) NSRunLoop *runLoop;
 
 + (NSError *)errorForCode:(JsonLiteCode)error;
 
@@ -200,6 +202,8 @@ static Class class_JsonLiteNumberToken;
 @synthesize delegate;
 @synthesize depth;
 @synthesize parseError;
+@synthesize stream;
+@synthesize runLoop;
 
 + (void)load {
     class_JsonLiteStringToken = [JsonLiteStringToken class];
@@ -229,12 +233,14 @@ static Class class_JsonLiteNumberToken;
 
 - (void)dealloc {
     self.parseError = nil;
+    self.stream = nil;
+    self.runLoop = nil;
     jsonlite_parser_release(internal.parser);
     [super dealloc];
 }
 
-- (BOOL)parse:(NSData *)data {
-    if (data == nil) {
+- (BOOL)parse:(const uint8_t *)data length:(NSUInteger)length {
+    if (data == nil || length == 0) {
         self.parseError = [JsonLiteParser errorForCode:JsonLiteCodeInvalidArgument];
         return NO;
     }
@@ -249,12 +255,53 @@ static Class class_JsonLiteNumberToken;
             jsonlite_parser_set_callback(jp, &cbs);
         }
     }
-
-    jsonlite_result result = jsonlite_parser_tokenize(jp, [data bytes], [data length]);
-
+    
+    jsonlite_result result = jsonlite_parser_tokenize(jp, data, length);
+    
     self.parseError = [JsonLiteParser errorForCode:(JsonLiteCode)result];
-    return result == jsonlite_result_ok;
+    return result == jsonlite_result_ok;    
 }
+
+- (BOOL)parse:(NSData *)data {
+    return [self parse:[data bytes] length:[data length]];
+}
+
+- (void)stream:(NSInputStream *)aStream handleEvent:(NSStreamEvent)eventCode {
+    uint8_t data[4096];
+    NSInteger read;
+    switch (eventCode) {
+        case NSStreamEventHasBytesAvailable:
+            read = [stream read:data maxLength:sizeof(data)];
+            [self parse:data length:read];
+            if ([self.parseError code] == JsonLiteCodeEndOfStream) {
+                return;
+            }
+        case NSStreamEventErrorOccurred:
+        case NSStreamEventEndEncountered:
+            [stream close];
+            [stream removeFromRunLoop:runLoop forMode:NSDefaultRunLoopMode];
+            self.stream = nil;
+            self.runLoop = nil;
+            break;
+        default:
+            break;
+    }
+}
+
+- (BOOL)parse:(NSInputStream *)theStream inRunLoop:(NSRunLoop *)theRunLoop {
+    if (theStream == nil || theRunLoop == nil) {
+        self.parseError = [JsonLiteParser errorForCode:JsonLiteCodeInvalidArgument];
+        return NO;
+    }
+    
+    self.stream = theStream;
+    self.runLoop = theRunLoop;
+    [self.stream setDelegate:self];
+    [self.stream scheduleInRunLoop:self.runLoop forMode:NSDefaultRunLoopMode];
+    [self.stream open];
+    return YES;
+}
+
 
 - (NSError *)suspend {
     if (internal.parser == NULL) {
@@ -278,6 +325,11 @@ static Class class_JsonLiteNumberToken;
 }
 
 - (void)reset {
+    [stream close];
+    [stream removeFromRunLoop:runLoop forMode:NSDefaultRunLoopMode];
+    self.stream = nil;
+    self.runLoop = nil;
+    
     jsonlite_parser_release(internal.parser);
     internal.parser = NULL;
 }
@@ -372,7 +424,6 @@ static void parse_finish(jsonlite_callback_context *ctx) {
     JsonLiteParser *p = (JsonLiteParser *)jli->parserObj;
     NSError *error = [JsonLiteParser errorForCode:(JsonLiteCode)res];
     p.parseError = error;
-        
     jli->parseFinished(jli->delegate, @selector(parser:didFinishParsingWithError:), jli->parserObj, error);
 }
 

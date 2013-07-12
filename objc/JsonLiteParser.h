@@ -83,7 +83,9 @@ extern NSString * const JsonLiteCodeDomain;
 @property (nonatomic, assign, readonly) NSUInteger depth;
 @property (nonatomic, retain, readonly) NSError *parseError;
 
+- (BOOL)parse:(const uint8_t *)data length:(NSUInteger)length;
 - (BOOL)parse:(NSData *)data;
+- (BOOL)parse:(NSInputStream *)stream inRunLoop:(NSRunLoop *)runloop;
 
 - (NSError *)suspend;
 - (NSError *)resume;
