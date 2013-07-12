@@ -17,7 +17,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "jsonlite.h"
-#include "jsonlite_token.h"
 
 long long sum = 0;
 

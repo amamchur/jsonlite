@@ -94,13 +94,13 @@ const jsonlite_parser_callbacks jsonlite_default_callbacks = {
 };
 
 size_t jsonlite_parser_estimate_size(size_t depth) {
-    depth = depth < 1 ? 32 : depth;
+    depth = depth < 2 ? 32 : depth;
     return sizeof(jsonlite_parser_struct) + depth * sizeof(parse_state);
 }
 
 jsonlite_parser jsonlite_parser_init(size_t depth) {
     jsonlite_parser parser;
-    depth = depth < 1 ? 32 : depth;
+    depth = depth < 2 ? 32 : depth;
     
     parser = (jsonlite_parser)malloc(jsonlite_parser_estimate_size(depth));
     parser->cursor = NULL;
