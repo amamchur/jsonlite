@@ -31,17 +31,10 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
         CFRelease((CFTypeRef)s->values[i]);
     }
     
-    for (NSInteger i = 0; i < s->length; i++) {    
-        id key = s->keys[i];
-        if (key == nil) {
-            break;
-        }
-        
-        CFRelease((CFTypeRef)key);
+    for (NSInteger i = 0; * s->keys != NULL && i < s->length; i++) {
+        CFRelease((CFTypeRef)s->keys[i]);
     }
-    
-    memset(s->values, 0, s->length * sizeof(id)); // LCOV_EXCL_LINE
-    memset(s->keys, 0, s->length * sizeof(id)); // LCOV_EXCL_LINE
+
     s->length = 0;
 }
 
@@ -155,9 +148,9 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     memcpy(newKeys, keys, capacity * sizeof(id)); // LCOV_EXCL_LINE
     memcpy(newHashes, hashes, capacity * sizeof(CFHashCode)); // LCOV_EXCL_LINE
     
-    NSInteger keysOffset = newKeys - keys;
-    NSInteger valuesOffset = newValues - values;
-    NSInteger hashesOffset = newHashes - hashes;
+    ptrdiff_t keysOffset = newKeys - keys;
+    ptrdiff_t valuesOffset = newValues - values;
+    ptrdiff_t hashesOffset = newHashes - hashes;
     for (JsonLiteAccumulatorState *c = state; c <= current; c++) {
         c->keys += keysOffset;
         c->values += valuesOffset;
@@ -185,14 +178,9 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     next->hashes = current->hashes + delta;
     next->capacity = capacity - (next->keys - keys);
     next->length = 0;
+    *next->keys = NULL;
+    *next->values = NULL;
     current++;
-}
-
-- (void)popState {
-    memset(current->values, 0, current->length * sizeof(id)); // LCOV_EXCL_LINE
-    memset(current->keys, 0, current->length * sizeof(id)); // LCOV_EXCL_LINE
-    current->length = 0;
-    current--;
 }
 
 - (void)parser:(JsonLiteParser *)parser didFinishParsingWithError:(NSError *)error {
@@ -219,7 +207,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
         [delegate accumulator:self didAccumulateDictionary:d];
     }
 
-    [self popState];
+    current--;
 }
 
 - (void)parserDidStartArray:(JsonLiteParser *)parser {
@@ -234,7 +222,8 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     if (flags.didAccumulateArray) {
         [delegate accumulator:self didAccumulateArray:a];
     }
-    [self popState];
+    
+    current--;
 }
 
 - (void)parserFoundTrueToken:(JsonLiteParser *)parser {

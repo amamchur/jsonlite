@@ -114,7 +114,7 @@
     host_get_clock_service(mach_host_self(), SYSTEM_CLOCK, &cclock);
     clock_get_time(cclock, &start);
     
-    const int COUNT = 1;
+    const int COUNT = 10000;
     for (int i = 0; i < COUNT; i++) {
         jsonlite_parser p = jsonlite_parser_init(512);
         jsonlite_result res = jsonlite_parser_tokenize(p, buffer, l);
