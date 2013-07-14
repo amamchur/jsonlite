@@ -19,7 +19,7 @@
 
 jsonlite is JSON [tokenizer](http://en.wikipedia.org/wiki/Tokenization). It's lightweight C libary that can be used for low-level JSON processing or parser development.
 
-JsonLite ObjC is JSON parser base on jsonlite. It's the fastest and flexible JSON parser for Objective-C.
+JsonLite ObjC is JSON parser base on jsonlite. It's the [fastest](https://github.com/amamchur/iJSONBenchmark) and flexible JSON parser for Objective-C.
 
 #### Principles
 * **Lightweight is more important than syntax sugar** 
