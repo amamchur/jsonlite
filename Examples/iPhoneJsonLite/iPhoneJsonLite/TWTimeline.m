@@ -13,7 +13,6 @@
 //  limitations under the License
 
 #import "TWTimeline.h"
-#import "JsonLiteMetaData.h"
 
 @implementation TWTimeline
 
@@ -47,7 +46,9 @@
     self.user = nil;
     self.text = nil;
     self.identifier = nil;
+#if !__has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 @end

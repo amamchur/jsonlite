@@ -7,12 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8416D5881683C703003D166F /* jsonlite.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D57B1683C703003D166F /* jsonlite.h */; };
-		8416D5891683C703003D166F /* jsonlite_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D57C1683C703003D166F /* jsonlite_builder.h */; };
-		8416D58B1683C703003D166F /* jsonlite_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D57E1683C703003D166F /* jsonlite_parser.h */; };
-		8416D58C1683C703003D166F /* jsonlite_token.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D57F1683C703003D166F /* jsonlite_token.h */; };
-		8416D58D1683C703003D166F /* jsonlite_token_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D5801683C703003D166F /* jsonlite_token_pool.h */; };
-		8416D58E1683C703003D166F /* jsonlite_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D5811683C703003D166F /* jsonlite_types.h */; };
 		8416D58F1683C703003D166F /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5831683C703003D166F /* jsonlite_builder.c */; };
 		8416D5901683C703003D166F /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5831683C703003D166F /* jsonlite_builder.c */; };
 		8416D5931683C703003D166F /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 8416D5851683C703003D166F /* jsonlite_parser.c */; };
@@ -38,33 +32,53 @@
 		84C478EC172B42CE00C1E798 /* JsonLiteObjCTokenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E12D5D1719E20800DCF3FD /* JsonLiteObjCTokenTests.m */; };
 		84C478EF172B437000C1E798 /* JsonLiteObjCBadToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C478EE172B437000C1E798 /* JsonLiteObjCBadToken.m */; };
 		84C478F1172B445D00C1E798 /* bad_token in Resources */ = {isa = PBXBuildFile; fileRef = 84C478F0172B445D00C1E798 /* bad_token */; };
+		84D8AA5717E91D8100E11185 /* jsonlite.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D57B1683C703003D166F /* jsonlite.h */; };
+		84D8AA5817E91D8100E11185 /* jsonlite_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D57C1683C703003D166F /* jsonlite_builder.h */; };
+		84D8AA5917E91D8100E11185 /* jsonlite_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D57E1683C703003D166F /* jsonlite_parser.h */; };
+		84D8AA5A17E91D8100E11185 /* jsonlite_token.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D57F1683C703003D166F /* jsonlite_token.h */; };
+		84D8AA5B17E91D8100E11185 /* jsonlite_token_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D5801683C703003D166F /* jsonlite_token_pool.h */; };
+		84D8AA5C17E91D8100E11185 /* jsonlite_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 8416D5811683C703003D166F /* jsonlite_types.h */; };
+		84D8AA5D17E91D8100E11185 /* JsonLiteAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D190F15BA9E7700791C72 /* JsonLiteAccumulator.h */; };
+		84D8AA5E17E91D8100E11185 /* JsonLiteCollections.h in Headers */ = {isa = PBXBuildFile; fileRef = 87EFCA351676214C00277DE5 /* JsonLiteCollections.h */; };
+		84D8AA5F17E91D8100E11185 /* JsonLiteConverters.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191315BA9E7700791C72 /* JsonLiteConverters.h */; };
+		84D8AA6017E91D8100E11185 /* JsonLiteDeserializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191515BA9E7700791C72 /* JsonLiteDeserializer.h */; };
+		84D8AA6117E91D8100E11185 /* JsonLiteMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191715BA9E7700791C72 /* JsonLiteMetaData.h */; };
+		84D8AA6217E91D8100E11185 /* JsonLiteParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191915BA9E7700791C72 /* JsonLiteParser.h */; };
+		84D8AA6317E91D8100E11185 /* JsonLiteSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191B15BA9E7700791C72 /* JsonLiteSerializer.h */; };
+		84D8AA6517E91DD500E11185 /* jsonlite.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8416D57B1683C703003D166F /* jsonlite.h */; };
+		84D8AA6617E91DD500E11185 /* jsonlite_builder.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8416D57C1683C703003D166F /* jsonlite_builder.h */; };
+		84D8AA6717E91DD500E11185 /* jsonlite_parser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8416D57E1683C703003D166F /* jsonlite_parser.h */; };
+		84D8AA6817E91DD500E11185 /* jsonlite_token.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8416D57F1683C703003D166F /* jsonlite_token.h */; };
+		84D8AA6917E91DD500E11185 /* jsonlite_token_pool.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8416D5801683C703003D166F /* jsonlite_token_pool.h */; };
+		84D8AA6A17E91DD500E11185 /* jsonlite_types.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8416D5811683C703003D166F /* jsonlite_types.h */; };
+		84D8AA6B17E91DD500E11185 /* JsonLiteAccumulator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 879D190F15BA9E7700791C72 /* JsonLiteAccumulator.h */; };
+		84D8AA6C17E91DD500E11185 /* JsonLiteCollections.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 87EFCA351676214C00277DE5 /* JsonLiteCollections.h */; };
+		84D8AA6D17E91DD500E11185 /* JsonLiteConverters.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 879D191315BA9E7700791C72 /* JsonLiteConverters.h */; };
+		84D8AA6E17E91DD500E11185 /* JsonLiteDeserializer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 879D191515BA9E7700791C72 /* JsonLiteDeserializer.h */; };
+		84D8AA6F17E91DD500E11185 /* JsonLiteMetaData.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 879D191715BA9E7700791C72 /* JsonLiteMetaData.h */; };
+		84D8AA7017E91DD500E11185 /* JsonLiteParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 879D191915BA9E7700791C72 /* JsonLiteParser.h */; };
+		84D8AA7117E91DD500E11185 /* JsonLiteSerializer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 879D191B15BA9E7700791C72 /* JsonLiteSerializer.h */; };
+		84D8AA7617E91F6300E11185 /* JsonLiteObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 84D8AA7517E91EA400E11185 /* JsonLiteObjC.h */; };
+		84D8AA7717E91F6A00E11185 /* JsonLiteObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84D8AA7517E91EA400E11185 /* JsonLiteObjC.h */; };
 		84F54F8A166E900A008C819D /* JsonLiteSenTestCaseExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F54F89166E900A008C819D /* JsonLiteSenTestCaseExt.m */; };
 		879D180C15BA9B1A00791C72 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D180B15BA9B1A00791C72 /* Foundation.framework */; };
 		879D181715BA9B1A00791C72 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D181615BA9B1A00791C72 /* UIKit.framework */; };
 		879D181815BA9B1A00791C72 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D180B15BA9B1A00791C72 /* Foundation.framework */; };
 		879D181D15BA9B1A00791C72 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D180815BA9B1A00791C72 /* libJsonLiteObjC.a */; };
 		879D182315BA9B1A00791C72 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 879D182115BA9B1A00791C72 /* InfoPlist.strings */; };
-		879D182615BA9B1A00791C72 /* JsonLiteObjCTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 879D182515BA9B1A00791C72 /* JsonLiteObjCTests.h */; };
-		879D192A15BA9E7700791C72 /* JsonLiteAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D190F15BA9E7700791C72 /* JsonLiteAccumulator.h */; };
 		879D192B15BA9E7700791C72 /* JsonLiteAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191015BA9E7700791C72 /* JsonLiteAccumulator.m */; };
 		879D192C15BA9E7700791C72 /* JsonLiteAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191015BA9E7700791C72 /* JsonLiteAccumulator.m */; };
-		879D193015BA9E7700791C72 /* JsonLiteConverters.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191315BA9E7700791C72 /* JsonLiteConverters.h */; };
 		879D193115BA9E7700791C72 /* JsonLiteConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191415BA9E7700791C72 /* JsonLiteConverters.m */; };
 		879D193215BA9E7700791C72 /* JsonLiteConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191415BA9E7700791C72 /* JsonLiteConverters.m */; };
-		879D193315BA9E7700791C72 /* JsonLiteDeserializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191515BA9E7700791C72 /* JsonLiteDeserializer.h */; };
 		879D193415BA9E7700791C72 /* JsonLiteDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191615BA9E7700791C72 /* JsonLiteDeserializer.m */; };
 		879D193515BA9E7700791C72 /* JsonLiteDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191615BA9E7700791C72 /* JsonLiteDeserializer.m */; };
-		879D193615BA9E7700791C72 /* JsonLiteMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191715BA9E7700791C72 /* JsonLiteMetaData.h */; };
 		879D193715BA9E7700791C72 /* JsonLiteMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191815BA9E7700791C72 /* JsonLiteMetaData.m */; };
 		879D193815BA9E7700791C72 /* JsonLiteMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191815BA9E7700791C72 /* JsonLiteMetaData.m */; };
-		879D193915BA9E7700791C72 /* JsonLiteParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191915BA9E7700791C72 /* JsonLiteParser.h */; };
 		879D193A15BA9E7700791C72 /* JsonLiteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191A15BA9E7700791C72 /* JsonLiteParser.m */; };
 		879D193B15BA9E7700791C72 /* JsonLiteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191A15BA9E7700791C72 /* JsonLiteParser.m */; };
-		879D193C15BA9E7700791C72 /* JsonLiteSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 879D191B15BA9E7700791C72 /* JsonLiteSerializer.h */; };
 		879D193D15BA9E7700791C72 /* JsonLiteSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191C15BA9E7700791C72 /* JsonLiteSerializer.m */; };
 		879D193E15BA9E7700791C72 /* JsonLiteSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 879D191C15BA9E7700791C72 /* JsonLiteSerializer.m */; };
 		879D196815BB0A7A00791C72 /* fail in Resources */ = {isa = PBXBuildFile; fileRef = 879D196715BB0A7A00791C72 /* fail */; };
-		87EFCA371676214C00277DE5 /* JsonLiteCollections.h in Headers */ = {isa = PBXBuildFile; fileRef = 87EFCA351676214C00277DE5 /* JsonLiteCollections.h */; };
 		87EFCA381676214C00277DE5 /* JsonLiteCollections.m in Sources */ = {isa = PBXBuildFile; fileRef = 87EFCA361676214C00277DE5 /* JsonLiteCollections.m */; };
 		87EFCA391676214C00277DE5 /* JsonLiteCollections.m in Sources */ = {isa = PBXBuildFile; fileRef = 87EFCA361676214C00277DE5 /* JsonLiteCollections.m */; };
 		87FD65191664FE6500FCF9F8 /* deserializer in Resources */ = {isa = PBXBuildFile; fileRef = 87FD65181664FE6500FCF9F8 /* deserializer */; };
@@ -79,6 +93,32 @@
 			remoteInfo = JsonLiteObjC;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		84D8AA6417E91DAE00E11185 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				84D8AA7717E91F6A00E11185 /* JsonLiteObjC.h in CopyFiles */,
+				84D8AA6517E91DD500E11185 /* jsonlite.h in CopyFiles */,
+				84D8AA6617E91DD500E11185 /* jsonlite_builder.h in CopyFiles */,
+				84D8AA6717E91DD500E11185 /* jsonlite_parser.h in CopyFiles */,
+				84D8AA6817E91DD500E11185 /* jsonlite_token.h in CopyFiles */,
+				84D8AA6917E91DD500E11185 /* jsonlite_token_pool.h in CopyFiles */,
+				84D8AA6A17E91DD500E11185 /* jsonlite_types.h in CopyFiles */,
+				84D8AA6B17E91DD500E11185 /* JsonLiteAccumulator.h in CopyFiles */,
+				84D8AA6C17E91DD500E11185 /* JsonLiteCollections.h in CopyFiles */,
+				84D8AA6D17E91DD500E11185 /* JsonLiteConverters.h in CopyFiles */,
+				84D8AA6E17E91DD500E11185 /* JsonLiteDeserializer.h in CopyFiles */,
+				84D8AA6F17E91DD500E11185 /* JsonLiteMetaData.h in CopyFiles */,
+				84D8AA7017E91DD500E11185 /* JsonLiteParser.h in CopyFiles */,
+				84D8AA7117E91DD500E11185 /* JsonLiteSerializer.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8416D57B1683C703003D166F /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
@@ -111,6 +151,7 @@
 		84CA55CB164ECDB000292DE4 /* JsonLiteObjCBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteObjCBuilderTests.m; sourceTree = "<group>"; };
 		84D24A381662EC1D00F48E5C /* JsonLiteObjCPoolTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteObjCPoolTests.h; sourceTree = "<group>"; };
 		84D24A391662EC1D00F48E5C /* JsonLiteObjCPoolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteObjCPoolTests.m; sourceTree = "<group>"; };
+		84D8AA7517E91EA400E11185 /* JsonLiteObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JsonLiteObjC.h; sourceTree = "<group>"; };
 		84E12D5C1719E20800DCF3FD /* JsonLiteObjCTokenTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteObjCTokenTests.h; sourceTree = "<group>"; };
 		84E12D5D1719E20800DCF3FD /* JsonLiteObjCTokenTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteObjCTokenTests.m; sourceTree = "<group>"; };
 		84E18B94164318BA00131D97 /* JsonLiteObjCCoverageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteObjCCoverageTests.h; sourceTree = "<group>"; };
@@ -318,6 +359,7 @@
 				879D191615BA9E7700791C72 /* JsonLiteDeserializer.m */,
 				879D191715BA9E7700791C72 /* JsonLiteMetaData.h */,
 				879D191815BA9E7700791C72 /* JsonLiteMetaData.m */,
+				84D8AA7517E91EA400E11185 /* JsonLiteObjC.h */,
 				879D191915BA9E7700791C72 /* JsonLiteParser.h */,
 				879D191A15BA9E7700791C72 /* JsonLiteParser.m */,
 				879D191B15BA9E7700791C72 /* JsonLiteSerializer.h */,
@@ -330,23 +372,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		879D180615BA9B1A00791C72 /* Headers */ = {
+		84D8AA5617E91D7300E11185 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				879D192A15BA9E7700791C72 /* JsonLiteAccumulator.h in Headers */,
-				879D193015BA9E7700791C72 /* JsonLiteConverters.h in Headers */,
-				879D193315BA9E7700791C72 /* JsonLiteDeserializer.h in Headers */,
-				879D193615BA9E7700791C72 /* JsonLiteMetaData.h in Headers */,
-				879D193915BA9E7700791C72 /* JsonLiteParser.h in Headers */,
-				879D193C15BA9E7700791C72 /* JsonLiteSerializer.h in Headers */,
-				87EFCA371676214C00277DE5 /* JsonLiteCollections.h in Headers */,
-				8416D5881683C703003D166F /* jsonlite.h in Headers */,
-				8416D5891683C703003D166F /* jsonlite_builder.h in Headers */,
-				8416D58B1683C703003D166F /* jsonlite_parser.h in Headers */,
-				8416D58C1683C703003D166F /* jsonlite_token.h in Headers */,
-				8416D58D1683C703003D166F /* jsonlite_token_pool.h in Headers */,
-				8416D58E1683C703003D166F /* jsonlite_types.h in Headers */,
+				84D8AA7617E91F6300E11185 /* JsonLiteObjC.h in Headers */,
+				84D8AA5717E91D8100E11185 /* jsonlite.h in Headers */,
+				84D8AA5817E91D8100E11185 /* jsonlite_builder.h in Headers */,
+				84D8AA5917E91D8100E11185 /* jsonlite_parser.h in Headers */,
+				84D8AA5A17E91D8100E11185 /* jsonlite_token.h in Headers */,
+				84D8AA5B17E91D8100E11185 /* jsonlite_token_pool.h in Headers */,
+				84D8AA5C17E91D8100E11185 /* jsonlite_types.h in Headers */,
+				84D8AA5D17E91D8100E11185 /* JsonLiteAccumulator.h in Headers */,
+				84D8AA5E17E91D8100E11185 /* JsonLiteCollections.h in Headers */,
+				84D8AA5F17E91D8100E11185 /* JsonLiteConverters.h in Headers */,
+				84D8AA6017E91D8100E11185 /* JsonLiteDeserializer.h in Headers */,
+				84D8AA6117E91D8100E11185 /* JsonLiteMetaData.h in Headers */,
+				84D8AA6217E91D8100E11185 /* JsonLiteParser.h in Headers */,
+				84D8AA6317E91D8100E11185 /* JsonLiteSerializer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,7 +402,8 @@
 			buildPhases = (
 				879D180415BA9B1A00791C72 /* Sources */,
 				879D180515BA9B1A00791C72 /* Frameworks */,
-				879D180615BA9B1A00791C72 /* Headers */,
+				84D8AA6417E91DAE00E11185 /* CopyFiles */,
+				84D8AA5617E91D7300E11185 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -422,7 +466,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				879D182315BA9B1A00791C72 /* InfoPlist.strings in Resources */,
-				879D182615BA9B1A00791C72 /* JsonLiteObjCTests.h in Resources */,
 				879D196815BB0A7A00791C72 /* fail in Resources */,
 				84A23983166295CC00CE528C /* success in Resources */,
 				87FD65191664FE6500FCF9F8 /* deserializer in Resources */,

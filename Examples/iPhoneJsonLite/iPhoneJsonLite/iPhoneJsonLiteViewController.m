@@ -13,17 +13,11 @@
 //  limitations under the License
 
 #import "iPhoneJsonLiteViewController.h"
-#import "JsonLiteParser.h"
-#import "JsonLiteAccumulator.h"
-#import "JsonLiteSerializer.h"
-#import "JsonLiteDeserializer.h"
-#import "JsonLiteConverters.h"
 #import "TWTimeline.h"
 
-#include "jsonlite.h"
 #import <mach/mach.h>
 #import <mach/clock.h>
-#include <sys/resource.h>
+#import <sys/resource.h>
 
 @interface iPhoneJsonLiteViewController()<JsonLiteAccumulatorDelegate>
 @end
@@ -49,7 +43,9 @@
 {
     self.obj = nil;
     self.data = nil;
+#if !__has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 - (void)didReceiveMemoryWarning
@@ -78,13 +74,12 @@
 
     const int COUNT = 1000;
     for (int i = 0; i < COUNT; i++) {
-        JsonLiteParser *parser = [[JsonLiteParser alloc] initWithDepth:512];
-        JsonLiteAccumulator *acc = [[JsonLiteAccumulator alloc] initWithDepth:512];
-        parser.delegate = acc;
-        [parser parse:data];
-        // [acc object];
-        [acc release];
-        [parser release];
+        @autoreleasepool {
+            JsonLiteParser *parser = [JsonLiteParser parserWithDepth:512];
+            JsonLiteAccumulator *acc = [JsonLiteAccumulator accumulatorWithDepth:512];
+            parser.delegate = acc;
+            [parser parse:data];
+        }
     }
     
     clock_get_time(cclock, &end);
@@ -102,7 +97,9 @@
                                        cancelButtonTitle:@"OK"
                                        otherButtonTitles:nil];
     [av show];
+#if !__has_feature(objc_arc)
     [av release];
+#endif
 }
 
 - (IBAction)parse1:(id)sender {
@@ -136,7 +133,9 @@
                                        cancelButtonTitle:@"OK"
                                        otherButtonTitles:nil];
     [av show];
+#if !__has_feature(objc_arc)
     [av release];
+#endif
 }
 
 
@@ -145,15 +144,16 @@
         return;
     }
     
-    JsonLiteSerializer *serializer = [[JsonLiteSerializer alloc] init];
+    JsonLiteSerializer *serializer = [JsonLiteSerializer serializer];
     serializer.indentation = 4;
     serializer.converter = [JsonLiteConverter converters];
     NSData *jsonData = [serializer serializeObject:obj];
-    [serializer release];
     
     NSString *str = [[NSString alloc] initWithUTF8String:[jsonData bytes]];
     NSLog(@"\n%@", str);
+#if !__has_feature(objc_arc)
     [str release];
+#endif
 }
 
 @end

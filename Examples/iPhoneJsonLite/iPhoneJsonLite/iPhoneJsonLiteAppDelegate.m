@@ -71,11 +71,12 @@
      */
 }
 
-- (void)dealloc
-{
-    [_window release];
-    [_viewController release];
+- (void)dealloc {
+    self.window = nil;
+    self.viewController = nil;
+#if !__has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 @end

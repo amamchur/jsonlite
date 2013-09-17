@@ -1,4 +1,4 @@
-//  Copyright 2012, Andrii Mamchur
+//  Copyright 2012-2013, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#import <UIKit/UIKit.h>
-
-int main(int argc, char *argv[]) {
-    @autoreleasepool {
-        int retVal = UIApplicationMain(argc, argv, nil, nil);
-        return retVal;
-    }
-}
+#import "jsonlite.h"
+#import "JsonLiteAccumulator.h"
+#import "JsonLiteCollections.h"
+#import "JsonLiteConverters.h"
+#import "JsonLiteDeserializer.h"
+#import "JsonLiteMetaData.h"
+#import "JsonLiteParser.h"
+#import "JsonLiteSerializer.h"

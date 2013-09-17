@@ -13,7 +13,7 @@
 //  limitations under the License
 
 #import "TWUser.h"
-#import "JsonLiteMetaData.h"
+#import "JsonLiteObjC/JsonLiteMetaData.h"
 
 @implementation TWUser
 
@@ -77,7 +77,9 @@
     self.profile_sidebar_border_color = nil;
     self.identifier = nil;
     self.utc_offset = nil;
+#if !__has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 @end
