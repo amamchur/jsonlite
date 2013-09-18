@@ -271,7 +271,7 @@ int main(int argc, const char * argv[]) {
 
 Full function, statement and branch coverage. 
 
-![Image](../master/JsonLiteObjC/cov.png?raw=true)
+![Image](../master/tests/cov.png?raw=true)
 
 #### Roadmap
 
