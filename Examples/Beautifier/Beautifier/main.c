@@ -8,8 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "jsonlite.h"
-#include "jsonlite_token.h"
+#import "JsonLiteObjC/jsonlite.h"
 
 #define JSON_DEPTH (16)
 

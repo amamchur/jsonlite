@@ -13,7 +13,7 @@
 //  limitations under the License
 
 #import <Foundation/Foundation.h>
-#import "JsonLiteAccumulator.h"
+#import "JsonLiteObjC/JsonLiteObjC.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {

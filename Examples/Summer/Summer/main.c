@@ -16,7 +16,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include "jsonlite.h"
+#import "JsonLiteObjC/jsonlite.h"
 
 long long sum = 0;
 

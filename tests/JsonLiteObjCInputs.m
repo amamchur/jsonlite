@@ -251,10 +251,10 @@
     STAssertNotNil(data, @"Data is nil");
     
     [parser parse:NULL length:1];
-    STAssertNotNil([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
+    STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
     
     [parser parse:[data bytes] length:0];
-    STAssertNotNil([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
+    STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
     
     [parser parse:data];
     STAssertNil(parser.parseError, @"Parsing fails %@", parser.parseError);

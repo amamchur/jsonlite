@@ -13,9 +13,7 @@
 //  limitations under the License
 
 #import <Foundation/Foundation.h>
-#import "JsonLiteParser.h"
-#import "JsonLiteDeserializer.h"
-#import "JsonLiteSerializer.h"
+#import "JsonLiteObjC/JsonLiteObjC.h"
 
 @interface Model : NSObject
 

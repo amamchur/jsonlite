@@ -9,11 +9,25 @@
 /* Begin PBXBuildFile section */
 		8447961E1788166800833C1E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 8447961D1788166800833C1E /* main.c */; };
 		844796201788166800833C1E /* Summer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8447961F1788166800833C1E /* Summer.1 */; };
-		844796351788169A00833C1E /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796301788168500833C1E /* jsonlite_builder.c */; };
-		844796371788169A00833C1E /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796321788168500833C1E /* jsonlite_parser.c */; };
-		844796381788169A00833C1E /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796331788168500833C1E /* jsonlite_token.c */; };
-		844796391788169A00833C1E /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 844796341788168500833C1E /* jsonlite_token_pool.c */; };
+		846995DF17EA5E1D00BBB8BA /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 846995DC17EA5E0C00BBB8BA /* libJsonLiteObjC.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		846995DB17EA5E0C00BBB8BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8469945417EA55A700BBB8BA;
+			remoteInfo = JsonLiteObjC;
+		};
+		846995DD17EA5E0C00BBB8BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8469946817EA55A700BBB8BA;
+			remoteInfo = JsonLiteObjCTests;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		844796181788166800833C1E /* CopyFiles */ = {
@@ -32,16 +46,7 @@
 		8447961A1788166800833C1E /* Summer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Summer; sourceTree = BUILT_PRODUCTS_DIR; };
 		8447961D1788166800833C1E /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		8447961F1788166800833C1E /* Summer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Summer.1; sourceTree = "<group>"; };
-		844796281788168500833C1E /* jsonlite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
-		844796291788168500833C1E /* jsonlite_builder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jsonlite_builder.h; sourceTree = "<group>"; };
-		8447962B1788168500833C1E /* jsonlite_parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jsonlite_parser.h; sourceTree = "<group>"; };
-		8447962C1788168500833C1E /* jsonlite_token.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jsonlite_token.h; sourceTree = "<group>"; };
-		8447962D1788168500833C1E /* jsonlite_token_pool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jsonlite_token_pool.h; sourceTree = "<group>"; };
-		8447962E1788168500833C1E /* jsonlite_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jsonlite_types.h; sourceTree = "<group>"; };
-		844796301788168500833C1E /* jsonlite_builder.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = jsonlite_builder.c; sourceTree = "<group>"; };
-		844796321788168500833C1E /* jsonlite_parser.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
-		844796331788168500833C1E /* jsonlite_token.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
-		844796341788168500833C1E /* jsonlite_token_pool.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
+		846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JsonLiteObjC.xcodeproj; path = ../../platform/macosx/JsonLiteObjC.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				846995DF17EA5E1D00BBB8BA /* libJsonLiteObjC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,7 +64,7 @@
 		844796111788166800833C1E = {
 			isa = PBXGroup;
 			children = (
-				844796261788168500833C1E /* jsonlite */,
+				846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */,
 				8447961C1788166800833C1E /* Summer */,
 				8447961B1788166800833C1E /* Products */,
 			);
@@ -81,38 +87,13 @@
 			path = Summer;
 			sourceTree = "<group>";
 		};
-		844796261788168500833C1E /* jsonlite */ = {
+		846995D717EA5E0C00BBB8BA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				844796271788168500833C1E /* include */,
-				8447962F1788168500833C1E /* src */,
+				846995DC17EA5E0C00BBB8BA /* libJsonLiteObjC.a */,
+				846995DE17EA5E0C00BBB8BA /* JsonLiteObjCTests.octest */,
 			);
-			name = jsonlite;
-			path = ../../jsonlite;
-			sourceTree = "<group>";
-		};
-		844796271788168500833C1E /* include */ = {
-			isa = PBXGroup;
-			children = (
-				844796281788168500833C1E /* jsonlite.h */,
-				844796291788168500833C1E /* jsonlite_builder.h */,
-				8447962B1788168500833C1E /* jsonlite_parser.h */,
-				8447962C1788168500833C1E /* jsonlite_token.h */,
-				8447962D1788168500833C1E /* jsonlite_token_pool.h */,
-				8447962E1788168500833C1E /* jsonlite_types.h */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		8447962F1788168500833C1E /* src */ = {
-			isa = PBXGroup;
-			children = (
-				844796301788168500833C1E /* jsonlite_builder.c */,
-				844796321788168500833C1E /* jsonlite_parser.c */,
-				844796331788168500833C1E /* jsonlite_token.c */,
-				844796341788168500833C1E /* jsonlite_token_pool.c */,
-			);
-			path = src;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +135,12 @@
 			mainGroup = 844796111788166800833C1E;
 			productRefGroup = 8447961B1788166800833C1E /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 846995D717EA5E0C00BBB8BA /* Products */;
+					ProjectRef = 846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				844796191788166800833C1E /* Summer */,
@@ -161,16 +148,29 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		846995DC17EA5E0C00BBB8BA /* libJsonLiteObjC.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libJsonLiteObjC.a;
+			remoteRef = 846995DB17EA5E0C00BBB8BA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		846995DE17EA5E0C00BBB8BA /* JsonLiteObjCTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = JsonLiteObjCTests.octest;
+			remoteRef = 846995DD17EA5E0C00BBB8BA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXSourcesBuildPhase section */
 		844796161788166800833C1E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				8447961E1788166800833C1E /* main.c in Sources */,
-				844796351788169A00833C1E /* jsonlite_builder.c in Sources */,
-				844796371788169A00833C1E /* jsonlite_parser.c in Sources */,
-				844796381788169A00833C1E /* jsonlite_token.c in Sources */,
-				844796391788169A00833C1E /* jsonlite_token_pool.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

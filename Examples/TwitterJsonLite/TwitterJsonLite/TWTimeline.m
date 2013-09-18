@@ -13,7 +13,6 @@
 //  limitations under the License
 
 #import "TWTimeline.h"
-#import "JsonLiteMetaData.h"
 
 @implementation TWTimeline
 

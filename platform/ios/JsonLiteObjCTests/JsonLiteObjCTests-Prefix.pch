@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'JsonLiteObjCTests' target in the 'JsonLiteObjCTests' project
+//
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+#endif

@@ -14,8 +14,7 @@
 //  limitations under the License
 
 #import <Foundation/Foundation.h>
-#import "JsonLiteParser.h"
-#import "JsonLiteAccumulator.h"
+#import "JsonLiteObjC/JsonLiteObjC.h"
 
 char chuck1[] = "[\"hello\", nu";
 char chuck2[] = "ll, 1234567890]";

@@ -28,10 +28,10 @@
 }
 
 - (void)testTokenFunctions {
-    char token_string = "abc";
+    char *token_string = "abc";
     jsonlite_token token;
-    token.start = token_string;
-    token.end = token_string + sizeof(token_string) - 1;
+    token.start = (uint8_t *)token_string;
+    token.end = (uint8_t *)token_string + sizeof(token_string) - 1;
     
     uint8_t *uft8_buffer = NULL;
     uint16_t *uft16_buffer = NULL;

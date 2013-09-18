@@ -14,7 +14,7 @@
 //  limitations under the License
 
 #include <assert.h>
-#include "jsonlite.h"
+#include "JsonLiteObjC/jsonlite.h"
 
 int main(int argc, const char * argv[]) {
     const int JSON_DEPTH = 4;                                                   // Limitation of JSON depth
