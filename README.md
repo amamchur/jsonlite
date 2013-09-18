@@ -273,12 +273,6 @@ Full function, statement and branch coverage.
 
 ![Image](../master/tests/cov.png?raw=true)
 
-#### Roadmap
-
-* Create Doxygen documentation
-* Create framework for Xcode projects
-* Create extension for Python
-
 #### Licence
 
 jsonlite and JsonLite ObjC are licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
