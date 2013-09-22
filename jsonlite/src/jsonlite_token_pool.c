@@ -44,13 +44,9 @@ jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value
 }
 
 void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
-    size_t length, size = pool->content_pool_size;
-    uint8_t *buffer, *p;
-    ptrdiff_t offset = 0;
     jsonlite_token_bucket *b;
-	int i;
-
-    for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
+    size_t size = pool->content_pool_size;
+    for (int i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         b = pool->buckets[i];
         if (jsonlite_bucket_not_copied(pool, b)) {
             size += b->end - b->start;
@@ -61,21 +57,22 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
         return;
     }
     
-	buffer = (uint8_t *)malloc(size);
+	uint8_t *buffer = (uint8_t *)malloc(size);
+    ptrdiff_t offset = 0;
     if (pool->content_pool != NULL) {
         offset = buffer - pool->content_pool;
         memcpy(buffer, pool->content_pool, pool->content_pool_size); // LCOV_EXCL_LINE
     }
-    p = buffer + pool->content_pool_size;
     
-    for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
+    uint8_t *p = buffer + pool->content_pool_size;    
+    for (int i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         b = pool->buckets[i];
         if (b == NULL) {
             continue;
         }
         
         if (jsonlite_bucket_not_copied(pool, b)) {
-            length = b->end - b->start;
+            size_t length = b->end - b->start;
             memcpy(p, b->start, length); // LCOV_EXCL_LINE
             b->start = p,
             b->end = p + length,
@@ -92,22 +89,19 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
 }
 
 void jsonlite_token_pool_release(jsonlite_token_pool pool) {
-	ptrdiff_t i, j, count;
-    jsonlite_token_bucket *bucket;
-    
     if (pool == NULL) {
         return;
     }
 
-    for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
-        bucket = pool->buckets[i];
+    for (int i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
+        jsonlite_token_bucket *bucket = pool->buckets[i];
         if (bucket == NULL) {
             continue;
         }
         
         if (pool->release_fn != NULL) {
-            count = pool->buckets_length[i];            
-            for (j = 0; j < count; j++, bucket++) {
+            size_t count = pool->buckets_length[i];
+            for (int j = 0; j < count; j++, bucket++) {
                 pool->release_fn((void *)bucket->value);           
             }
         }
@@ -120,10 +114,6 @@ void jsonlite_token_pool_release(jsonlite_token_pool pool) {
 }
 
 jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, jsonlite_token *token) {
-    size_t length, count;
-    uint32_t hash, index;
-    jsonlite_token_bucket *bucket;
-    
     if (pool == NULL || token == NULL) {
         return NULL;
     }
@@ -132,11 +122,11 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
         return NULL;
     }
     
-    length = token->end - token->start;
-    hash = jsonlite_hash(token->start, length);
-    index = hash & JSONLITE_TOKEN_POOL_FRONT_MASK;
-    bucket = pool->buckets[index];
-    count = pool->buckets_length[index];
+    size_t length = token->end - token->start;
+    uint32_t hash = jsonlite_hash(token->start, length);
+    uint32_t index = hash & JSONLITE_TOKEN_POOL_FRONT_MASK;
+    jsonlite_token_bucket *bucket = pool->buckets[index];
+    size_t count = pool->buckets_length[index];
     for (; count > 0; count--, bucket++) {
         if (bucket->hash != hash) {
             continue;
@@ -168,17 +158,14 @@ static int jsonlite_token_compare(const uint8_t *t1, const uint8_t *t2, size_t l
 }
 
 static void jsonlite_extend_capacity(jsonlite_token_pool pool, int index) {
-    jsonlite_token_bucket *b, *extended;
-    size_t capacity, size;
-    
-    capacity = pool->buckets_capacity[index];
+    size_t capacity = pool->buckets_capacity[index];
     if (capacity == 0) {
         capacity = 0x10;
     }
     
-    size = capacity * sizeof(jsonlite_token_bucket);
-    b = pool->buckets[index];
-	extended = (jsonlite_token_bucket *)malloc(2 * size);
+    size_t size = capacity * sizeof(jsonlite_token_bucket);
+    jsonlite_token_bucket *b = pool->buckets[index];
+	jsonlite_token_bucket *extended = (jsonlite_token_bucket *)malloc(2 * size);
     
     if (b != NULL) {
         memcpy(extended, b, size); // LCOV_EXCL_LINE

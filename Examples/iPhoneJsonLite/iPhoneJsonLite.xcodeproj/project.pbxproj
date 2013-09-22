@@ -10,6 +10,7 @@
 		842F4FA2178976BF000667E5 /* repeat.json in Resources */ = {isa = PBXBuildFile; fileRef = 842F4FA1178976BF000667E5 /* repeat.json */; };
 		8469959C17EA5C4800BBB8BA /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469958E17EA5C2200BBB8BA /* libJsonLiteObjC.a */; };
 		849E831F1776480E00D78592 /* mesh.json in Resources */ = {isa = PBXBuildFile; fileRef = 849E831E1776480E00D78592 /* mesh.json */; };
+		84A2B3D417EF678500F9ADF1 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469958E17EA5C2200BBB8BA /* libJsonLiteObjC.a */; };
 		84D8AA1A17E9175500E11185 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75BDA15828FFA00100333 /* main.m */; };
 		84D8AA1B17E9175500E11185 /* iPhoneJsonLiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75BE315828FFA00100333 /* iPhoneJsonLiteViewController.m */; };
 		84D8AA1C17E9175500E11185 /* iPhoneJsonLiteAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 87E75C171582907700100333 /* iPhoneJsonLiteAppDelegate.m */; };
@@ -109,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A2B3D417EF678500F9ADF1 /* libJsonLiteObjC.a in Frameworks */,
 				87E75BCE15828FFA00100333 /* UIKit.framework in Frameworks */,
 				87E75BD015828FFA00100333 /* Foundation.framework in Frameworks */,
 				87E75BD215828FFA00100333 /* CoreGraphics.framework in Frameworks */,
