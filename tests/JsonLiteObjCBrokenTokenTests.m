@@ -19,7 +19,9 @@
     STAssertTrue([data length] > 0, @"Data is empty");
     
     const void *buffer = [data bytes];
+       
     size_t size = [data length];
+    uint8_t *b = malloc(size);
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     STAssertTrue(result == jsonlite_result_ok, @"Bad error code");
@@ -27,10 +29,15 @@
     
     for (size_t i = size - 1; i > 0; i--) {
         ps = jsonlite_parser_init(4);
-        result = jsonlite_parser_tokenize(ps, buffer, size - i);
+        memset(b, 0, size);
+        memcpy(b, buffer, size - i);
+        
+        result = jsonlite_parser_tokenize(ps, b, size - i);
         STAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
         jsonlite_parser_release(ps);
     }
+    
+    free(b);
 }
 
 - (void)testTrueToken {

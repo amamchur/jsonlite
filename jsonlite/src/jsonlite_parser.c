@@ -21,7 +21,7 @@
 
 #include <intrin.h>
 
-static uint32_t __inline jsonlite_clz( uint32_t x ) {
+static uint32_t __inline jsonlite_clz(uint32_t x) {
    unsigned long r = 0;
    _BitScanForward(&r, x);
    return r;
@@ -41,6 +41,15 @@ if ((c) < 48)               goto error_escape;  \
 if ((c) > 102)              goto error_escape;  \
 if (57 < (c) && (c) < 65)   goto error_escape;  \
 if (70 < (c) && (c) < 97)   goto error_escape
+
+#define CASE_NUMBER_TOKEN_END                   \
+case 9:                 goto found_token;       \
+case 10:                goto found_token;       \
+case 13:                goto found_token;       \
+case 32:                goto found_token;       \
+case 44:                goto found_token;       \
+case 93:                goto found_token;       \
+case 125:               goto found_token
 
 enum {
     state_start,
@@ -126,6 +135,7 @@ jsonlite_result jsonlite_parser_get_result(jsonlite_parser parser) {
     if (parser == NULL) {
         return jsonlite_result_invalid_argument;
     }
+    
     return parser->result;
 }
 
@@ -221,14 +231,14 @@ state_selection:
 
     if (parser->result != jsonlite_result_unknown) goto end;
     switch (*state) {
+        case state_wait_value:              goto value_type_detection;
+        case state_wait_key:                goto string_token_parsing;
         case state_wait_object_key:         goto key_checking;
         case state_wait_object_key_end:     goto key_end_checking;
         case state_wait_colon:              goto colon_checking;
         case state_wait_object_comma_end:   goto object_comma_end_checking;
         case state_wait_array_value_end:    goto array_value_end_checking;
         case state_wait_array_comma_end:    goto array_comma_end_checking;
-        case state_wait_key:                goto string_token_parsing;
-        case state_wait_value:              goto value_type_detection;
     }
     if (*c == '{') goto object_state_machine;
     if (*c == '[') goto array_state_machine;
@@ -260,7 +270,7 @@ key_end_checking:
     switch (*c) {
         case '"':
             *state = state_wait_colon;
-            if (++state == last) goto  error_depth;
+            if (++state == last) goto error_depth;
             *state = state_wait_key;
             goto string_token_parsing;
         case '}':
@@ -287,9 +297,9 @@ array_value_end_checking:
             goto structure_finished;
         default:
             *state = state_wait_array_comma_end;
-            if (++state == last) goto  error_depth;
+            if (++state == last) goto error_depth;
             *state = state_wait_value;
-            goto state_selection;
+            goto value_type_detection;
     }
     
 array_comma_end_checking:
@@ -304,7 +314,7 @@ array_comma_end_checking:
     goto error_exp_coe;
     
 value_type_detection:
-    if (*c == '-' || (*c >= '0' && *c <= '9'))  goto number_parsing;
+    if (*c == '-' || ('0' <= *c && *c <= '9'))  goto number_parsing;
     if (*c == '"')                              goto string_token_parsing;
     if (*c == 't')                              goto true_token_parsing;
     if (*c == 'f')                              goto false_token_paring;
@@ -332,16 +342,10 @@ number_parsing:
     take_exp_frac:
         if (++c == l)               goto end_of_stream;
         switch (*c) {
-            case 9:                 goto found_token;
-            case 10:                goto found_token;
-            case 13:                goto found_token;
-            case 32:                goto found_token;
-            case 44:                goto found_token;
+            CASE_NUMBER_TOKEN_END;
             case 46:                goto found_fraction;
             case 69:                goto take_exponent;
-            case 93:                goto found_token;
             case 101:               goto take_exponent;
-            case 125:               goto found_token;
             default:                goto error_number;
         }
     found_fraction:
@@ -353,15 +357,9 @@ number_parsing:
         if (++c == l)               goto end_of_stream;
         if (48 <= *c && *c <= 57)   goto take_frac_number;
         switch (*c) {
-            case 9:                 goto found_token;
-            case 10:                goto found_token;
-            case 13:                goto found_token;
-            case 32:                goto found_token;
-            case 44:                goto found_token;
+            CASE_NUMBER_TOKEN_END;
             case 69:                goto take_exponent;
-            case 93:                goto found_token;
             case 101:               goto take_exponent;
-            case 125:               goto found_token;
             default:                goto error_number;
         }
     take_exponent:
@@ -381,29 +379,17 @@ number_parsing:
         if (++c == l)               goto end_of_stream;
         if (48 <= *c && *c <= 57)   goto take_exponent_number;
         switch(*c) {
-            case 9:                 goto found_token;
-            case 10:                goto found_token;
-            case 13:                goto found_token;
-            case 32:                goto found_token;
-            case 44:                goto found_token;
-            case 93:                goto found_token;
-            case 125:               goto found_token;
+            CASE_NUMBER_TOKEN_END;
             default:                goto error_number;
         }
     take_digits:
         if (++c == l)               goto end_of_stream;
         if (48 <= *c && *c <= 57)   goto take_digits;
         switch(*c) {
-            case 9:                 goto found_token;
-            case 10:                goto found_token;
-            case 13:                goto found_token;
-            case 32:                goto found_token;
-            case 44:                goto found_token;
+            CASE_NUMBER_TOKEN_END;
             case 46:                goto found_fraction;
             case 69:                goto take_exponent;
-            case 93:                goto found_token;
             case 101:               goto take_exponent;
-            case 125:               goto found_token;
             default:                goto error_number;
         }
     found_token:
@@ -418,7 +404,6 @@ number_parsing:
 string_token_parsing:
     {
         jsonlite_string_type type = jsonlite_string_ascii;
-        int res;
         uint32_t value, utf32;
         token.start = c + 1;
     next_char:
@@ -432,52 +417,46 @@ string_token_parsing:
         type |= jsonlite_string_escape;
         if (++c == l)       goto end_of_stream;
         switch (*c) {
-            case 34: goto next_char;
-            case 47: goto next_char;
-            case 92: goto next_char;
-            case 98: goto next_char;
-            case 102: goto next_char;
-            case 110: goto next_char;
-            case 114: goto next_char;
-            case 116: goto next_char;
-            case 117: goto hex;
+            case 34:        goto next_char;
+            case 47:        goto next_char;
+            case 92:        goto next_char;
+            case 98:        goto next_char;
+            case 102:       goto next_char;
+            case 110:       goto next_char;
+            case 114:       goto next_char;
+            case 116:       goto next_char;
+            case 117:       goto hex;
         }
         goto error_escape;
     hex:
         type |= jsonlite_string_unicode_escape;
-        if (++c + 3 >= l)           goto end_of_stream;
-        CHECK_HEX(*c);
-        value = jsonlite_hex_char_to_uint8(*c++);
-        CHECK_HEX(*c);
-        value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
-        CHECK_HEX(*c);
-        value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
-        CHECK_HEX(*c);
-        value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
+        if (c++ + 4 >= l)           goto end_of_stream;        
+        CHECK_HEX(*c);  value = jsonlite_hex_char_to_uint8(*c++);
+        CHECK_HEX(*c);  value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
+        CHECK_HEX(*c);  value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
+        CHECK_HEX(*c);  value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
+        
         if ((value & 0xFFFFu) >= 0xFFFEu)           goto error_token;
         if (value >= 0xFDD0u && value <= 0xFDEFu)   goto error_token;
         if (0xD800 > value || value > 0xDBFF)       goto next_char;
         
         // UTF-16 Surrogate
         utf32 = (value - 0xD800) << 10;
-        if (++c + 5 >= l)                           goto end_of_stream;
+        if (c++ + 6 >= l)                           goto end_of_stream;
         if (*c++ != '\\')                           goto error_escape;
-        if (*c++ != 'u')                            goto error_escape;
-        CHECK_HEX(*c);
-        value = jsonlite_hex_char_to_uint8(*c++);
-        CHECK_HEX(*c);
-        value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
-        CHECK_HEX(*c);
-        value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
-        CHECK_HEX(*c);
-        value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
+        if (*c++ != 'u')                            goto error_escape;        
+        CHECK_HEX(*c);  value = jsonlite_hex_char_to_uint8(*c++);
+        CHECK_HEX(*c);  value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
+        CHECK_HEX(*c);  value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
+        CHECK_HEX(*c);  value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
+
         if (value < 0xDC00 || value > 0xDFFF)       goto error_escape;
         utf32 += value - 0xDC00 + 0x10000;
         if ((utf32 & 0x0FFFFu) >= 0x0FFFEu)         goto error_token;
         goto next_char;
     utf8:
         type |= jsonlite_string_utf8;
-        res = jsonlite_clz(((*c) ^ 0xFF) << 0x19);
+        int res = jsonlite_clz(((*c) ^ 0xFF) << 0x19);
         utf32 = (*c & (0xFF >> (res + 1)));
         value = 0xAAAAAAAA; // == 1010...
         if (c + res >= l) goto end_of_stream;
@@ -505,7 +484,7 @@ string_token_parsing:
     
 // Primitive tokens states.
 true_token_parsing:
-    if (++c + 2 >= l)   goto end_of_stream;
+    if (c++ + 3 >= l)   goto end_of_stream;
     if (*c++ != 'r')    goto error_token;
     if (*c++ != 'u')    goto error_token;
     if (*c++ != 'e')    goto error_token;
@@ -513,7 +492,7 @@ true_token_parsing:
     state--;
     goto state_selection;
 false_token_paring:
-    if (++c + 3 >= l)   goto end_of_stream;
+    if (c++ + 4 >= l)   goto end_of_stream;
     if (*c++ != 'a')    goto error_token;
     if (*c++ != 'l')    goto error_token;
     if (*c++ != 's')    goto error_token;
@@ -522,7 +501,7 @@ false_token_paring:
     state--;
     goto state_selection;
 null_token_parsing:
-    if (++c + 2 >= l)   goto end_of_stream;
+    if (c++ + 3 >= l)   goto end_of_stream;
     if (*c++ != 'u')    goto error_token;
     if (*c++ != 'l')    goto error_token;
     if (*c++ != 'l')    goto error_token;
