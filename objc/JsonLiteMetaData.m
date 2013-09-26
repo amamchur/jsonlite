@@ -318,8 +318,8 @@
 }
 
 - (void)collectKeys {
-    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[binding allKeys]];
-    NSMutableArray *propertiesKeys = [NSMutableArray arrayWithArray:[properties allKeys]];
+    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self.binding allKeys]];
+    NSMutableArray *propertiesKeys = [NSMutableArray arrayWithArray:[self.properties allKeys]];
     NSUInteger count = [array count];
     for (NSUInteger i = 0; i < count; i++) {
         id key = [array objectAtIndex:i];
