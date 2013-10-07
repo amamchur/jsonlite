@@ -82,7 +82,7 @@
     JsonLiteConvert *obj = [deserializer object];
     
     STAssertNotNil(obj.url, @"URL is null");
-    STAssertTrue([[obj.url absoluteString] isEqual:@"http://code.google.com/p/jsonlite/"], @"Bad url");
+    STAssertTrue([[obj.url absoluteString] isEqual:@"https://github.com/amamchur/jsonlite"], @"Bad url");
     
     STAssertNotNil(obj.decimal, @"decimal is null");
     STAssertTrue([obj.decimal isEqual:[NSDecimalNumber decimalNumberWithString:@"123456789987654321"]], @"Bad decimal");
@@ -108,31 +108,83 @@
     [pool release];
 }
 
-- (void)testEpochTime {
-    JsonLiteEpochDateTime *converter = [[JsonLiteEpochDateTime alloc] init];
+- (void)testEpochTime {    
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"convert_epoch"
+                                                                      ofType:@"json"
+                                                                 inDirectory:@"deserializer"];
+    NSError *error = nil;
+    NSData *data = [[NSData alloc] initWithContentsOfFile:path
+                                                  options:0
+                                                    error:&error];
+    
+    JsonLiteEpochDateTime *epoch = [[JsonLiteEpochDateTime alloc] init];
+    epoch.nextDeserializerChain = [JsonLiteConverter converters];
+    epoch.nextSerializerChain = [JsonLiteConverter converters];
+    
     JsonLiteParser *parser = [JsonLiteParser parser];
     JsonLiteDeserializer *deserializer = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteConvert class]];
     parser.delegate = deserializer;
-    deserializer.converter = converter;
-    
-    NSString *str = @"{\"date\":1234567890}";
-    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+    deserializer.converter = epoch;
+
     [parser parse:data];
-    
     JsonLiteConvert *obj = [deserializer object];
     
-    STAssertEqualObjects(obj.date, [NSDate dateWithTimeIntervalSince1970:1234567890], @"Incorrect date");
+    STAssertNotNil(obj.url, @"URL is null");
+    STAssertTrue([[obj.url absoluteString] isEqual:@"https://github.com/amamchur/jsonlite"], @"Bad url");
+    
+    STAssertNotNil(obj.decimal, @"decimal is null");
+    STAssertTrue([obj.decimal isEqual:[NSDecimalNumber decimalNumberWithString:@"123456789987654321"]], @"Bad decimal");
+    
+    STAssertEqualObjects(obj.date, [NSDate dateWithTimeIntervalSince1970:1234657890], @"");
     
     JsonLiteSerializer *serializer = [JsonLiteSerializer serializer];
-    serializer.converter = converter;
-    NSData *data2 = [serializer serializeObject:obj];
+    serializer.converter = epoch;
+    data = [serializer serializeObject:obj];
+    
     [deserializer reset];
     [parser reset];
-    [parser parse:data2];
-    JsonLiteConvert *obj2 = [deserializer object];
+    [parser parse:data];
+    JsonLiteConvert *obj1 = [deserializer object];
     
-    STAssertEqualObjects(obj.date, obj2.date, @"Incorrect date");
+    STAssertTrue([obj.str isEqual:obj1.str], @"Not equal");
+    STAssertTrue([obj.number isEqual:obj1.number], @"Not equal");
+    STAssertTrue([obj.url isEqual:obj1.url], @"Not equal");
+    STAssertTrue([obj.decimal isEqual:obj1.decimal], @"Not equal");
+    STAssertTrue([obj.date isEqual:obj1.date], @"Not equal");
     
-    [converter release];}
+    [epoch release];
+}
+
+- (void)testEpochTimeIncorrectToken {
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"convert"
+                                                                      ofType:@"json"
+                                                                 inDirectory:@"deserializer"];
+    NSError *error = nil;
+    NSData *data = [[NSData alloc] initWithContentsOfFile:path
+                                                  options:0
+                                                    error:&error];
+    
+    JsonLiteEpochDateTime *epoch = [[JsonLiteEpochDateTime alloc] init];
+    epoch.nextDeserializerChain = [JsonLiteConverter converters];
+    epoch.nextSerializerChain = [JsonLiteConverter converters];
+    
+    JsonLiteParser *parser = [JsonLiteParser parser];
+    JsonLiteDeserializer *deserializer = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteConvert class]];
+    parser.delegate = deserializer;
+    deserializer.converter = epoch;
+    
+    [parser parse:data];
+    JsonLiteConvert *obj = [deserializer object];
+    
+    STAssertNotNil(obj.url, @"URL is null");
+    STAssertTrue([[obj.url absoluteString] isEqual:@"https://github.com/amamchur/jsonlite"], @"Bad url");
+    
+    STAssertNotNil(obj.decimal, @"decimal is null");
+    STAssertTrue([obj.decimal isEqual:[NSDecimalNumber decimalNumberWithString:@"123456789987654321"]], @"Bad decimal");
+    
+    STAssertNotNil(obj.date, @"");
+    
+    [epoch release];
+}
 
 @end

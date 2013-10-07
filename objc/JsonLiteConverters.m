@@ -44,10 +44,13 @@
     JsonLiteDecimal *dec = [[[JsonLiteDecimal alloc] init] autorelease];
     JsonLiteTwitterDate *date = [[[JsonLiteTwitterDate alloc] init] autorelease];
     JsonLiteURL *url = [[[JsonLiteURL alloc] init] autorelease];
+    JsonLiteEpochDateTime *epoch = [[[JsonLiteEpochDateTime alloc] init] autorelease];
     dec.nextDeserializerChain = date;
     dec.nextSerializerChain = date;
     date.nextDeserializerChain = url;
     date.nextSerializerChain = url;
+    url.nextDeserializerChain = epoch;
+    url.nextSerializerChain = epoch;
     return dec;
 }
 
