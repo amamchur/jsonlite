@@ -34,7 +34,7 @@ typedef struct JsonLiteDictionaryBucket {
 #define JsonLiteDictionaryFront     0x10
 #define JsonLiteDictionaryFrontMask 0x0F
 
-@interface JsonLiteDictionary() {
+@interface JsonLiteDictionary : NSDictionary {
 @public
     NSUInteger count;
     JsonLiteDictionaryBucket *buffer;
@@ -43,7 +43,7 @@ typedef struct JsonLiteDictionaryBucket {
 
 @end
 
-@interface JsonLiteArray() {
+@interface JsonLiteArray : NSArray {
 @public
     NSUInteger count;
     id *values;

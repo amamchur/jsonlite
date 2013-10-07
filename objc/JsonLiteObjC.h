@@ -14,7 +14,6 @@
 
 #import "jsonlite.h"
 #import "JsonLiteAccumulator.h"
-#import "JsonLiteCollections.h"
 #import "JsonLiteConverters.h"
 #import "JsonLiteDeserializer.h"
 #import "JsonLiteMetaData.h"
