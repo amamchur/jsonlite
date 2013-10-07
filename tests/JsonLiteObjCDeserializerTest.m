@@ -325,6 +325,10 @@
 }
 
 - (void)testObj2 {
+    JsonLiteClassMetaData *metadata = [JsonLiteClassMetaData metaDataForClass:[JsonLiteTestObj2 class]];
+    NSArray *keys = metadata.keys;
+    STAssertEqualObjects(keys, @[@"array"], @"Incorrect keys");
+    
     NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"obj2"
                                                                       ofType:@"json"
                                                                  inDirectory:@"deserializer"];

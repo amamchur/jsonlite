@@ -318,18 +318,22 @@
 }
 
 - (void)collectKeys {
-    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[self.binding allKeys]];
-    NSMutableArray *propertiesKeys = [NSMutableArray arrayWithArray:[self.properties allKeys]];
+    NSArray *array = [self.binding allKeys];
+    NSMutableArray *propertiesKeys = [[NSMutableArray alloc] initWithArray:[self.properties allKeys]];
     NSUInteger count = [array count];
     for (NSUInteger i = 0; i < count; i++) {
         id key = [array objectAtIndex:i];
         JsonLiteBindRule *rule = [binding objectForKey:key];
         [propertiesKeys removeObject:rule.property];
     }
-    [array addObjectsFromArray:propertiesKeys];
     
-    keys = [[array sortedArrayUsingSelector:@selector(compare:)] retain];
-    [array release];
+    NSMutableSet *keySet = [[NSMutableSet alloc] initWithArray:array];
+    [keySet addObjectsFromArray:propertiesKeys];
+    
+    keys = [[[keySet allObjects] sortedArrayUsingSelector:@selector(compare:)] retain];
+    
+    [keySet release];
+    [propertiesKeys release];
 }
 
 - (JsonLiteClassMetaData *)arrayItemMetaDataForKey:(NSString *)key {
