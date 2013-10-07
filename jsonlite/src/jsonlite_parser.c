@@ -116,8 +116,8 @@ jsonlite_parser jsonlite_parser_init(size_t depth) {
     parser->current = (parse_state *)((uint8_t *)parser + sizeof(jsonlite_parser_struct));
     parser->current[0] = state_end;
     parser->current[1] = state_start;
-    parser->current++;
     parser->last_state = parser->current + depth;
+    parser->current++;
     return parser;
 }
 
