@@ -108,4 +108,31 @@
     [pool release];
 }
 
+- (void)testEpochTime {
+    JsonLiteEpochDateTime *converter = [[JsonLiteEpochDateTime alloc] init];
+    JsonLiteParser *parser = [JsonLiteParser parser];
+    JsonLiteDeserializer *deserializer = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteConvert class]];
+    parser.delegate = deserializer;
+    deserializer.converter = converter;
+    
+    NSString *str = @"{\"date\":1234567890}";
+    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [parser parse:data];
+    
+    JsonLiteConvert *obj = [deserializer object];
+    
+    STAssertEqualObjects(obj.date, [NSDate dateWithTimeIntervalSince1970:1234567890], @"Incorrect date");
+    
+    JsonLiteSerializer *serializer = [JsonLiteSerializer serializer];
+    serializer.converter = converter;
+    NSData *data2 = [serializer serializeObject:obj];
+    [deserializer reset];
+    [parser reset];
+    [parser parse:data2];
+    JsonLiteConvert *obj2 = [deserializer object];
+    
+    STAssertEqualObjects(obj.date, obj2.date, @"Incorrect date");
+    
+    [converter release];}
+
 @end

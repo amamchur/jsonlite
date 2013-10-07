@@ -37,6 +37,9 @@
 @interface JsonLiteURL : JsonLiteConverter
 @end
 
+@interface JsonLiteEpochDateTime : JsonLiteConverter
+@end
+
 @interface JsonLiteTwitterDate : JsonLiteConverter {
     NSDateFormatter *formatter;
 }

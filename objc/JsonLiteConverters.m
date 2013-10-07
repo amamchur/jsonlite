@@ -109,6 +109,36 @@
 
 @end
 
+@implementation JsonLiteEpochDateTime
+
+- (BOOL)getData:(NSData **)data
+       forValue:(id)value
+     serializer:(JsonLiteSerializer *)serializer {
+    if ([value isKindOfClass:[NSDate class]]) {
+        NSString *str = [[NSString alloc] initWithFormat:@"%lld", (long long)[value timeIntervalSince1970]];
+        *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+        [str release];
+        return YES;
+    }
+    return [nextSerializerChain getData:data forValue:value serializer:serializer];
+    
+}
+
+- (BOOL)getValue:(id *)value
+         ofClass:(Class)cls
+        forToken:(JsonLiteToken *)token
+    deserializer:(JsonLiteDeserializer *)deserializer {
+    if ([cls isSubclassOfClass:[NSDate class]] && [token isKindOfClass:[JsonLiteNumberToken class]]) {
+        NSNumber *number = [token copyValue];
+        *value = [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
+        [number release];
+        return YES;
+    }
+    return [nextDeserializerChain getValue:value ofClass:cls forToken:token deserializer:deserializer];
+}
+
+@end
+
 @implementation JsonLiteTwitterDate
 
 - (id)init {
