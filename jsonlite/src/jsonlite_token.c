@@ -13,7 +13,12 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
+#ifdef JSONLITE_SINGLE_FOLDER_LOCATION
+#include "jsonlite_token.h"
+#else
 #include "../include/jsonlite_token.h"
+#endif
+
 #include <stdlib.h>
 
 #ifdef _MSC_VER
