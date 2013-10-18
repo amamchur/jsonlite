@@ -1,0 +1,2 @@
+#define JSONLITE_AMALGAMATED
+#include "jsonlite.h"

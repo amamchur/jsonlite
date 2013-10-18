@@ -13,10 +13,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#ifdef JSONLITE_SINGLE_FOLDER_LOCATION
+#ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_parser.h"
-#else
-#include "../include/jsonlite_parser.h"
 #endif
 
 #include <stdlib.h>

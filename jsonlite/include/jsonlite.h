@@ -18,6 +18,7 @@
 
 #include "jsonlite_parser.h"
 #include "jsonlite_builder.h"
+#include "jsonlite_token_pool.h"
 
 #endif
 

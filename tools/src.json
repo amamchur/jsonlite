@@ -1,0 +1,13 @@
+{
+	"project": "jsonlite.c",
+	"target": "../amalgamated/jsonlite.c",
+	"sources": [
+		"../jsonlite/src/jsonlite_parser.c",
+		"../jsonlite/src/jsonlite_builder.c",
+		"../jsonlite/src/jsonlite_token.c",
+		"../jsonlite/src/jsonlite_token_pool.c"
+	],
+	"include_paths": [
+	]
+}
+

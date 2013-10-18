@@ -1,0 +1,525 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		84E654E21811EDE7000901D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E654E11811EDE7000901D2 /* Foundation.framework */; };
+		84E654E71811EDE7000901D2 /* AmalgamateTest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84E654E61811EDE7000901D2 /* AmalgamateTest.h */; };
+		84E654E91811EDE7000901D2 /* AmalgamateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E654E81811EDE7000901D2 /* AmalgamateTest.m */; };
+		84E654F11811EDE7000901D2 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E654F01811EDE7000901D2 /* SenTestingKit.framework */; };
+		84E654F31811EDE7000901D2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E654F21811EDE7000901D2 /* UIKit.framework */; };
+		84E654F41811EDE7000901D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E654E11811EDE7000901D2 /* Foundation.framework */; };
+		84E654F71811EDE7000901D2 /* libAmalgamateTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84E654DE1811EDE7000901D2 /* libAmalgamateTest.a */; };
+		84E654FD1811EDE7000901D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 84E654FB1811EDE7000901D2 /* InfoPlist.strings */; };
+		84E655001811EDE7000901D2 /* AmalgamateTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E654FF1811EDE7000901D2 /* AmalgamateTestTests.m */; };
+		84E6550C1811EDF4000901D2 /* jsonlite.c in Sources */ = {isa = PBXBuildFile; fileRef = 84E6550A1811EDF4000901D2 /* jsonlite.c */; };
+		84E6550D1811EDF4000901D2 /* jsonlite.c in Sources */ = {isa = PBXBuildFile; fileRef = 84E6550A1811EDF4000901D2 /* jsonlite.c */; };
+		84E6552D1811F202000901D2 /* JsonLiteObjCAcc.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E6550F1811F202000901D2 /* JsonLiteObjCAcc.m */; };
+		84E6552E1811F202000901D2 /* JsonLiteObjCBadToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E655111811F202000901D2 /* JsonLiteObjCBadToken.m */; };
+		84E6552F1811F202000901D2 /* JsonLiteObjCBrokenTokenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E655131811F202000901D2 /* JsonLiteObjCBrokenTokenTests.m */; };
+		84E655301811F202000901D2 /* JsonLiteObjCBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E655151811F202000901D2 /* JsonLiteObjCBuilderTests.m */; };
+		84E655311811F202000901D2 /* JsonLiteObjCConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E655171811F202000901D2 /* JsonLiteObjCConverters.m */; };
+		84E655321811F202000901D2 /* JsonLiteObjCConvertersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E655191811F202000901D2 /* JsonLiteObjCConvertersTests.m */; };
+		84E655331811F202000901D2 /* JsonLiteObjCCoverageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E6551B1811F202000901D2 /* JsonLiteObjCCoverageTests.m */; };
+		84E655341811F202000901D2 /* JsonLiteObjCDeserializerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E6551D1811F202000901D2 /* JsonLiteObjCDeserializerTest.m */; };
+		84E655351811F202000901D2 /* JsonLiteObjCInputs.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E6551F1811F202000901D2 /* JsonLiteObjCInputs.m */; };
+		84E655361811F202000901D2 /* JsonLiteObjCPoolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E655211811F202000901D2 /* JsonLiteObjCPoolTests.m */; };
+		84E655371811F202000901D2 /* JsonLiteObjCStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E655231811F202000901D2 /* JsonLiteObjCStream.m */; };
+		84E655381811F202000901D2 /* JsonLiteObjCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E655261811F202000901D2 /* JsonLiteObjCTests.m */; };
+		84E655391811F202000901D2 /* JsonLiteObjCTokenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E655281811F202000901D2 /* JsonLiteObjCTokenTests.m */; };
+		84E6553A1811F202000901D2 /* JsonLiteObjCUnicodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E6552A1811F202000901D2 /* JsonLiteObjCUnicodeTests.m */; };
+		84E6553B1811F202000901D2 /* JsonLiteSenTestCaseExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E6552C1811F202000901D2 /* JsonLiteSenTestCaseExt.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		84E654F51811EDE7000901D2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 84E654D61811EDE7000901D2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 84E654DD1811EDE7000901D2;
+			remoteInfo = AmalgamateTest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		84E654DC1811EDE7000901D2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				84E654E71811EDE7000901D2 /* AmalgamateTest.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		84E654DE1811EDE7000901D2 /* libAmalgamateTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAmalgamateTest.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		84E654E11811EDE7000901D2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		84E654E51811EDE7000901D2 /* AmalgamateTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmalgamateTest-Prefix.pch"; sourceTree = "<group>"; };
+		84E654E61811EDE7000901D2 /* AmalgamateTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AmalgamateTest.h; sourceTree = "<group>"; };
+		84E654E81811EDE7000901D2 /* AmalgamateTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AmalgamateTest.m; sourceTree = "<group>"; };
+		84E654EF1811EDE7000901D2 /* AmalgamateTestTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmalgamateTestTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		84E654F01811EDE7000901D2 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		84E654F21811EDE7000901D2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		84E654FA1811EDE7000901D2 /* AmalgamateTestTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AmalgamateTestTests-Info.plist"; sourceTree = "<group>"; };
+		84E654FC1811EDE7000901D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		84E654FE1811EDE7000901D2 /* AmalgamateTestTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AmalgamateTestTests.h; sourceTree = "<group>"; };
+		84E654FF1811EDE7000901D2 /* AmalgamateTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AmalgamateTestTests.m; sourceTree = "<group>"; };
+		84E6550A1811EDF4000901D2 /* jsonlite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite.c; sourceTree = "<group>"; };
+		84E6550B1811EDF4000901D2 /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
+		84E6550E1811F202000901D2 /* JsonLiteObjCAcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCAcc.h; path = ../../../tests/JsonLiteObjCAcc.h; sourceTree = "<group>"; };
+		84E6550F1811F202000901D2 /* JsonLiteObjCAcc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCAcc.m; path = ../../../tests/JsonLiteObjCAcc.m; sourceTree = "<group>"; };
+		84E655101811F202000901D2 /* JsonLiteObjCBadToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBadToken.h; path = ../../../tests/JsonLiteObjCBadToken.h; sourceTree = "<group>"; };
+		84E655111811F202000901D2 /* JsonLiteObjCBadToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBadToken.m; path = ../../../tests/JsonLiteObjCBadToken.m; sourceTree = "<group>"; };
+		84E655121811F202000901D2 /* JsonLiteObjCBrokenTokenTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBrokenTokenTests.h; path = ../../../tests/JsonLiteObjCBrokenTokenTests.h; sourceTree = "<group>"; };
+		84E655131811F202000901D2 /* JsonLiteObjCBrokenTokenTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBrokenTokenTests.m; path = ../../../tests/JsonLiteObjCBrokenTokenTests.m; sourceTree = "<group>"; };
+		84E655141811F202000901D2 /* JsonLiteObjCBuilderTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBuilderTests.h; path = ../../../tests/JsonLiteObjCBuilderTests.h; sourceTree = "<group>"; };
+		84E655151811F202000901D2 /* JsonLiteObjCBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBuilderTests.m; path = ../../../tests/JsonLiteObjCBuilderTests.m; sourceTree = "<group>"; };
+		84E655161811F202000901D2 /* JsonLiteObjCConverters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCConverters.h; path = ../../../tests/JsonLiteObjCConverters.h; sourceTree = "<group>"; };
+		84E655171811F202000901D2 /* JsonLiteObjCConverters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCConverters.m; path = ../../../tests/JsonLiteObjCConverters.m; sourceTree = "<group>"; };
+		84E655181811F202000901D2 /* JsonLiteObjCConvertersTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCConvertersTests.h; path = ../../../tests/JsonLiteObjCConvertersTests.h; sourceTree = "<group>"; };
+		84E655191811F202000901D2 /* JsonLiteObjCConvertersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCConvertersTests.m; path = ../../../tests/JsonLiteObjCConvertersTests.m; sourceTree = "<group>"; };
+		84E6551A1811F202000901D2 /* JsonLiteObjCCoverageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCCoverageTests.h; path = ../../../tests/JsonLiteObjCCoverageTests.h; sourceTree = "<group>"; };
+		84E6551B1811F202000901D2 /* JsonLiteObjCCoverageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCCoverageTests.m; path = ../../../tests/JsonLiteObjCCoverageTests.m; sourceTree = "<group>"; };
+		84E6551C1811F202000901D2 /* JsonLiteObjCDeserializerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCDeserializerTest.h; path = ../../../tests/JsonLiteObjCDeserializerTest.h; sourceTree = "<group>"; };
+		84E6551D1811F202000901D2 /* JsonLiteObjCDeserializerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCDeserializerTest.m; path = ../../../tests/JsonLiteObjCDeserializerTest.m; sourceTree = "<group>"; };
+		84E6551E1811F202000901D2 /* JsonLiteObjCInputs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCInputs.h; path = ../../../tests/JsonLiteObjCInputs.h; sourceTree = "<group>"; };
+		84E6551F1811F202000901D2 /* JsonLiteObjCInputs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCInputs.m; path = ../../../tests/JsonLiteObjCInputs.m; sourceTree = "<group>"; };
+		84E655201811F202000901D2 /* JsonLiteObjCPoolTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCPoolTests.h; path = ../../../tests/JsonLiteObjCPoolTests.h; sourceTree = "<group>"; };
+		84E655211811F202000901D2 /* JsonLiteObjCPoolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCPoolTests.m; path = ../../../tests/JsonLiteObjCPoolTests.m; sourceTree = "<group>"; };
+		84E655221811F202000901D2 /* JsonLiteObjCStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCStream.h; path = ../../../tests/JsonLiteObjCStream.h; sourceTree = "<group>"; };
+		84E655231811F202000901D2 /* JsonLiteObjCStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCStream.m; path = ../../../tests/JsonLiteObjCStream.m; sourceTree = "<group>"; };
+		84E655241811F202000901D2 /* JsonLiteObjCTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JsonLiteObjCTests-Prefix.pch"; path = "../../../tests/JsonLiteObjCTests-Prefix.pch"; sourceTree = "<group>"; };
+		84E655251811F202000901D2 /* JsonLiteObjCTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCTests.h; path = ../../../tests/JsonLiteObjCTests.h; sourceTree = "<group>"; };
+		84E655261811F202000901D2 /* JsonLiteObjCTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCTests.m; path = ../../../tests/JsonLiteObjCTests.m; sourceTree = "<group>"; };
+		84E655271811F202000901D2 /* JsonLiteObjCTokenTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCTokenTests.h; path = ../../../tests/JsonLiteObjCTokenTests.h; sourceTree = "<group>"; };
+		84E655281811F202000901D2 /* JsonLiteObjCTokenTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCTokenTests.m; path = ../../../tests/JsonLiteObjCTokenTests.m; sourceTree = "<group>"; };
+		84E655291811F202000901D2 /* JsonLiteObjCUnicodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCUnicodeTests.h; path = ../../../tests/JsonLiteObjCUnicodeTests.h; sourceTree = "<group>"; };
+		84E6552A1811F202000901D2 /* JsonLiteObjCUnicodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCUnicodeTests.m; path = ../../../tests/JsonLiteObjCUnicodeTests.m; sourceTree = "<group>"; };
+		84E6552B1811F202000901D2 /* JsonLiteSenTestCaseExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteSenTestCaseExt.h; path = ../../../tests/JsonLiteSenTestCaseExt.h; sourceTree = "<group>"; };
+		84E6552C1811F202000901D2 /* JsonLiteSenTestCaseExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteSenTestCaseExt.m; path = ../../../tests/JsonLiteSenTestCaseExt.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		84E654DB1811EDE7000901D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84E654E21811EDE7000901D2 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84E654EB1811EDE7000901D2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84E654F11811EDE7000901D2 /* SenTestingKit.framework in Frameworks */,
+				84E654F31811EDE7000901D2 /* UIKit.framework in Frameworks */,
+				84E654F41811EDE7000901D2 /* Foundation.framework in Frameworks */,
+				84E654F71811EDE7000901D2 /* libAmalgamateTest.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		84E654D51811EDE7000901D2 = {
+			isa = PBXGroup;
+			children = (
+				84E654E31811EDE7000901D2 /* AmalgamateTest */,
+				84E654F81811EDE7000901D2 /* AmalgamateTestTests */,
+				84E654E01811EDE7000901D2 /* Frameworks */,
+				84E654DF1811EDE7000901D2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		84E654DF1811EDE7000901D2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				84E654DE1811EDE7000901D2 /* libAmalgamateTest.a */,
+				84E654EF1811EDE7000901D2 /* AmalgamateTestTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		84E654E01811EDE7000901D2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				84E654E11811EDE7000901D2 /* Foundation.framework */,
+				84E654F01811EDE7000901D2 /* SenTestingKit.framework */,
+				84E654F21811EDE7000901D2 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		84E654E31811EDE7000901D2 /* AmalgamateTest */ = {
+			isa = PBXGroup;
+			children = (
+				84E655091811EDF4000901D2 /* amalgamated */,
+				84E654E61811EDE7000901D2 /* AmalgamateTest.h */,
+				84E654E81811EDE7000901D2 /* AmalgamateTest.m */,
+				84E654E41811EDE7000901D2 /* Supporting Files */,
+			);
+			path = AmalgamateTest;
+			sourceTree = "<group>";
+		};
+		84E654E41811EDE7000901D2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				84E654E51811EDE7000901D2 /* AmalgamateTest-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		84E654F81811EDE7000901D2 /* AmalgamateTestTests */ = {
+			isa = PBXGroup;
+			children = (
+				84E6550E1811F202000901D2 /* JsonLiteObjCAcc.h */,
+				84E6550F1811F202000901D2 /* JsonLiteObjCAcc.m */,
+				84E655101811F202000901D2 /* JsonLiteObjCBadToken.h */,
+				84E655111811F202000901D2 /* JsonLiteObjCBadToken.m */,
+				84E655121811F202000901D2 /* JsonLiteObjCBrokenTokenTests.h */,
+				84E655131811F202000901D2 /* JsonLiteObjCBrokenTokenTests.m */,
+				84E655141811F202000901D2 /* JsonLiteObjCBuilderTests.h */,
+				84E655151811F202000901D2 /* JsonLiteObjCBuilderTests.m */,
+				84E655161811F202000901D2 /* JsonLiteObjCConverters.h */,
+				84E655171811F202000901D2 /* JsonLiteObjCConverters.m */,
+				84E655181811F202000901D2 /* JsonLiteObjCConvertersTests.h */,
+				84E655191811F202000901D2 /* JsonLiteObjCConvertersTests.m */,
+				84E6551A1811F202000901D2 /* JsonLiteObjCCoverageTests.h */,
+				84E6551B1811F202000901D2 /* JsonLiteObjCCoverageTests.m */,
+				84E6551C1811F202000901D2 /* JsonLiteObjCDeserializerTest.h */,
+				84E6551D1811F202000901D2 /* JsonLiteObjCDeserializerTest.m */,
+				84E6551E1811F202000901D2 /* JsonLiteObjCInputs.h */,
+				84E6551F1811F202000901D2 /* JsonLiteObjCInputs.m */,
+				84E655201811F202000901D2 /* JsonLiteObjCPoolTests.h */,
+				84E655211811F202000901D2 /* JsonLiteObjCPoolTests.m */,
+				84E655221811F202000901D2 /* JsonLiteObjCStream.h */,
+				84E655231811F202000901D2 /* JsonLiteObjCStream.m */,
+				84E655241811F202000901D2 /* JsonLiteObjCTests-Prefix.pch */,
+				84E655251811F202000901D2 /* JsonLiteObjCTests.h */,
+				84E655261811F202000901D2 /* JsonLiteObjCTests.m */,
+				84E655271811F202000901D2 /* JsonLiteObjCTokenTests.h */,
+				84E655281811F202000901D2 /* JsonLiteObjCTokenTests.m */,
+				84E655291811F202000901D2 /* JsonLiteObjCUnicodeTests.h */,
+				84E6552A1811F202000901D2 /* JsonLiteObjCUnicodeTests.m */,
+				84E6552B1811F202000901D2 /* JsonLiteSenTestCaseExt.h */,
+				84E6552C1811F202000901D2 /* JsonLiteSenTestCaseExt.m */,
+				84E654FE1811EDE7000901D2 /* AmalgamateTestTests.h */,
+				84E654FF1811EDE7000901D2 /* AmalgamateTestTests.m */,
+				84E654F91811EDE7000901D2 /* Supporting Files */,
+			);
+			path = AmalgamateTestTests;
+			sourceTree = "<group>";
+		};
+		84E654F91811EDE7000901D2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				84E654FA1811EDE7000901D2 /* AmalgamateTestTests-Info.plist */,
+				84E654FB1811EDE7000901D2 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		84E655091811EDF4000901D2 /* amalgamated */ = {
+			isa = PBXGroup;
+			children = (
+				84E6550B1811EDF4000901D2 /* jsonlite.h */,
+				84E6550A1811EDF4000901D2 /* jsonlite.c */,
+			);
+			name = amalgamated;
+			path = ../../../amalgamated;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		84E654DD1811EDE7000901D2 /* AmalgamateTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84E655031811EDE7000901D2 /* Build configuration list for PBXNativeTarget "AmalgamateTest" */;
+			buildPhases = (
+				84E654DA1811EDE7000901D2 /* Sources */,
+				84E654DB1811EDE7000901D2 /* Frameworks */,
+				84E654DC1811EDE7000901D2 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AmalgamateTest;
+			productName = AmalgamateTest;
+			productReference = 84E654DE1811EDE7000901D2 /* libAmalgamateTest.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		84E654EE1811EDE7000901D2 /* AmalgamateTestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84E655061811EDE7000901D2 /* Build configuration list for PBXNativeTarget "AmalgamateTestTests" */;
+			buildPhases = (
+				84E654EA1811EDE7000901D2 /* Sources */,
+				84E654EB1811EDE7000901D2 /* Frameworks */,
+				84E654EC1811EDE7000901D2 /* Resources */,
+				84E654ED1811EDE7000901D2 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				84E654F61811EDE7000901D2 /* PBXTargetDependency */,
+			);
+			name = AmalgamateTestTests;
+			productName = AmalgamateTestTests;
+			productReference = 84E654EF1811EDE7000901D2 /* AmalgamateTestTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		84E654D61811EDE7000901D2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Andrii Mamchur";
+			};
+			buildConfigurationList = 84E654D91811EDE7000901D2 /* Build configuration list for PBXProject "AmalgamateTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 84E654D51811EDE7000901D2;
+			productRefGroup = 84E654DF1811EDE7000901D2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				84E654DD1811EDE7000901D2 /* AmalgamateTest */,
+				84E654EE1811EDE7000901D2 /* AmalgamateTestTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		84E654EC1811EDE7000901D2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84E654FD1811EDE7000901D2 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		84E654ED1811EDE7000901D2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		84E654DA1811EDE7000901D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84E654E91811EDE7000901D2 /* AmalgamateTest.m in Sources */,
+				84E6550C1811EDF4000901D2 /* jsonlite.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84E654EA1811EDE7000901D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84E655001811EDE7000901D2 /* AmalgamateTestTests.m in Sources */,
+				84E6550D1811EDF4000901D2 /* jsonlite.c in Sources */,
+				84E6552D1811F202000901D2 /* JsonLiteObjCAcc.m in Sources */,
+				84E6552E1811F202000901D2 /* JsonLiteObjCBadToken.m in Sources */,
+				84E6552F1811F202000901D2 /* JsonLiteObjCBrokenTokenTests.m in Sources */,
+				84E655301811F202000901D2 /* JsonLiteObjCBuilderTests.m in Sources */,
+				84E655311811F202000901D2 /* JsonLiteObjCConverters.m in Sources */,
+				84E655321811F202000901D2 /* JsonLiteObjCConvertersTests.m in Sources */,
+				84E655331811F202000901D2 /* JsonLiteObjCCoverageTests.m in Sources */,
+				84E655341811F202000901D2 /* JsonLiteObjCDeserializerTest.m in Sources */,
+				84E655351811F202000901D2 /* JsonLiteObjCInputs.m in Sources */,
+				84E655361811F202000901D2 /* JsonLiteObjCPoolTests.m in Sources */,
+				84E655371811F202000901D2 /* JsonLiteObjCStream.m in Sources */,
+				84E655381811F202000901D2 /* JsonLiteObjCTests.m in Sources */,
+				84E655391811F202000901D2 /* JsonLiteObjCTokenTests.m in Sources */,
+				84E6553A1811F202000901D2 /* JsonLiteObjCUnicodeTests.m in Sources */,
+				84E6553B1811F202000901D2 /* JsonLiteSenTestCaseExt.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		84E654F61811EDE7000901D2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 84E654DD1811EDE7000901D2 /* AmalgamateTest */;
+			targetProxy = 84E654F51811EDE7000901D2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		84E654FB1811EDE7000901D2 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84E654FC1811EDE7000901D2 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		84E655011811EDE7000901D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		84E655021811EDE7000901D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		84E655041811EDE7000901D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/AmalgamateTest.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AmalgamateTest/AmalgamateTest-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		84E655051811EDE7000901D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/AmalgamateTest.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AmalgamateTest/AmalgamateTest-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		84E655071811EDE7000901D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AmalgamateTest/AmalgamateTest-Prefix.pch";
+				INFOPLIST_FILE = "AmalgamateTestTests/AmalgamateTestTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		84E655081811EDE7000901D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AmalgamateTest/AmalgamateTest-Prefix.pch";
+				INFOPLIST_FILE = "AmalgamateTestTests/AmalgamateTestTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		84E654D91811EDE7000901D2 /* Build configuration list for PBXProject "AmalgamateTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84E655011811EDE7000901D2 /* Debug */,
+				84E655021811EDE7000901D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84E655031811EDE7000901D2 /* Build configuration list for PBXNativeTarget "AmalgamateTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84E655041811EDE7000901D2 /* Debug */,
+				84E655051811EDE7000901D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		84E655061811EDE7000901D2 /* Build configuration list for PBXNativeTarget "AmalgamateTestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84E655071811EDE7000901D2 /* Debug */,
+				84E655081811EDE7000901D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 84E654D61811EDE7000901D2 /* Project object */;
+}
