@@ -14,7 +14,6 @@
 //  limitations under the License
 
 #import "JsonLiteObjCTokenTests.h"
-#import "jsonlite_token.h"
 #import "JsonLiteSenTestCaseExt.h"
 #import "JsonLiteAccumulator.h"
 

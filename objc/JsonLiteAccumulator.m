@@ -14,7 +14,7 @@
 
 #import "JsonLiteAccumulator.h"
 #import "JsonLiteCollections.h"
-#import "jsonlite_token_pool.h"
+#import "jsonlite.h"
 
 #define CHECK_CAPACITY() if (keys + capacity < current->keys + current->length + 1) [self extendCapacity]
 

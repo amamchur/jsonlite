@@ -15,8 +15,7 @@
 
 #import "JsonLiteObjCPoolTests.h"
 #import "JsonLiteSenTestCaseExt.h"
-#include "jsonlite_token.h"
-#include "jsonlite_token_pool.h"
+#include "jsonlite.h"
 
 @implementation JsonLiteObjCPoolTests
 
