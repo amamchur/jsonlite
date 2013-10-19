@@ -1,6 +1,6 @@
 {
 	"project": "jsonlite.h",
-	"target": "../amalgamated/jsonlite.h",
+	"target": "../amalgamated/jsonlite/jsonlite.h",
 	"sources": [
 		"../jsonlite/include/jsonlite.h"
 	],
