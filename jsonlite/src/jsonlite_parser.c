@@ -64,9 +64,7 @@ enum {
     state_array_comma_end,
     state_key,
     state_value,
-    state_end,
-    
-    state_suspend = 1 << 7
+    state_end
 };
 
 typedef uint8_t parse_state;
@@ -220,8 +218,7 @@ static void jsonlite_do_parse(jsonlite_parser parser) {
     parse_state *state = parser->current;
     jsonlite_token token;
     parser->result = jsonlite_result_unknown;
-    goto state_selection;
-    
+    goto state_selection;    
 structure_finished:
     if (*--state == state_end) goto success;
 skip_char_and_spaces:
@@ -244,14 +241,10 @@ state_selection:
         case state_object_comma_end:    goto object_comma_end_checking;
         case state_array_value_end:     goto array_value_end_checking;
         case state_array_comma_end:     goto array_comma_end_checking;
-        case state_start:
-            if (*c == '{') goto object_state_machine;
-            if (*c == '[') goto array_state_machine;
-            goto error_exp_ooa;
-        default:
-            goto suspend;
     }
-    
+    if (*c == '{') goto object_state_machine;
+    if (*c == '[') goto array_state_machine;
+    goto error_exp_ooa;
 object_state_machine:
     *state = state_object_key_end;
     CALL_STATE_CALLBACK(parser->callbacks, object_start);
@@ -340,8 +333,7 @@ number_parsing:
             case 45: type |= jsonlite_number_negative;      goto test_zero_leading;
             case 48: type |= jsonlite_number_zero_leading;  goto take_exp_frac;
             default: type |= jsonlite_number_digit_leading; goto take_digits;
-        }
-        
+        }        
     test_zero_leading:
         if (++c == l)               goto end_of_stream;
         if (49 <= *c && *c <= 57)   goto take_digits;
@@ -444,8 +436,8 @@ string_token_parsing:
         CHECK_HEX(*c);  value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c++);
         CHECK_HEX(*c);  value = (uint32_t)(value << 4) | jsonlite_hex_char_to_uint8(*c);
         
-        if ((value & 0xFFFFu) >= 0xFFFEu)           goto error_token;
-        if (value >= 0xFDD0u && value <= 0xFDEFu)   goto error_token;
+        if ((value & 0xFFFFu) >= 0xFFFEu)           type |= jsonlite_string_unicode_noncharacter;
+        if (value >= 0xFDD0u && value <= 0xFDEFu)   type |= jsonlite_string_unicode_noncharacter;
         if (0xD800 > value || value > 0xDBFF)       goto next_char;
         
         // UTF-16 Surrogate
@@ -460,7 +452,7 @@ string_token_parsing:
 
         if (value < 0xDC00 || value > 0xDFFF)       goto error_escape;
         utf32 += value - 0xDC00 + 0x10000;
-        if ((utf32 & 0x0FFFFu) >= 0x0FFFEu)         goto error_token;
+        if ((utf32 & 0x0FFFFu) >= 0x0FFFEu)         type |= jsonlite_string_unicode_noncharacter;
         goto next_char;
     utf8:
         type |= jsonlite_string_utf8;
@@ -473,8 +465,8 @@ string_token_parsing:
             case 2: value = (value << 2) | (*++c >> 6); utf32 = (utf32 << 6) | (*c & 0x3F);
             case 1: value = (value << 2) | (*++c >> 6); utf32 = (utf32 << 6) | (*c & 0x3F);
                 if (value != 0xAAAAAAAA)                    goto error_utf8;
-                if ((utf32 & 0xFFFFu) >= 0xFFFEu)           goto error_utf8;
-                if (utf32 >= 0xFDD0u && utf32 <= 0xFDEFu)   goto error_utf8;
+                if ((utf32 & 0xFFFFu) >= 0xFFFEu)           type |= jsonlite_string_unicode_noncharacter;
+                if (utf32 >= 0xFDD0u && utf32 <= 0xFDEFu)   type |= jsonlite_string_unicode_noncharacter;
         }
         goto next_char;
     string_parsed:
@@ -529,7 +521,7 @@ error_escape:       parser->result = jsonlite_result_invalid_escape;            
 error_number:       parser->result = jsonlite_result_invalid_number;            goto end;
 error_token:        parser->result = jsonlite_result_invalid_token;             goto end;
 error_utf8:         parser->result = jsonlite_result_invalid_utf8;              goto end;
-suspend:            parser->result = jsonlite_result_suspended;                 goto end;
+
 // End of stream states.
 end_of_stream_space:
     token_start = l;

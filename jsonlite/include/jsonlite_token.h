@@ -114,7 +114,14 @@ extern "C" {
          *
          * This flag will be set if string token has \\uXXXX escape - where (XXXX is an unicode character code)
          */
-        jsonlite_string_unicode_escape = 0x04
+        jsonlite_string_unicode_escape = 0x08,
+        
+        
+        /** @brief Indicates that string token has one or more unicode noncharacter(s).
+         *
+         * This flag will be set if string token has \\uFDD0-\\uFDEF and \\uFFFE-\\uFFFF unicode character
+         */
+        jsonlite_string_unicode_noncharacter = 0x10
     } jsonlite_string_type;
     
     /** @brief Contains information about parsed token.
