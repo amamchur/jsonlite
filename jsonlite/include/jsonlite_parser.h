@@ -199,6 +199,16 @@ extern "C" {
      */
     jsonlite_result jsonlite_parser_suspend(jsonlite_parser parser);
     
+    /** \brief Terminate JSON tokenization.
+     *
+     * @see jsonlite_parser
+     * @see jsonlite_result
+     * @param parser the parser object.
+     * @return jsonlite_result_invalid_argument when parser is NULL or result is jsonlite_result_unknown;
+     * otherwise jsonlite_result_ok.
+     */
+    jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_result result);
+    
     /** \brief Releases parser object.
      *
      * If parser is NULL, jsonlite_parser_release does nothing.

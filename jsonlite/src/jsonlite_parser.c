@@ -200,6 +200,19 @@ jsonlite_result jsonlite_parser_suspend(jsonlite_parser parser) {
     return jsonlite_result_ok;
 }
 
+jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_result result) {
+    if (parser == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    if (result == jsonlite_result_unknown) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    parser->result = result;
+    return jsonlite_result_ok;
+}
+
 void jsonlite_parser_release(jsonlite_parser parser) {
     if (parser == NULL) {
         return;
