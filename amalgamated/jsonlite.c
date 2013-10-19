@@ -1467,7 +1467,8 @@ jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value
 void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     jsonlite_token_bucket *b;
     size_t size = pool->content_pool_size;
-    for (int i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
+    int i;
+    for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         b = pool->buckets[i];
         if (jsonlite_bucket_not_copied(pool, b)) {
             size += b->end - b->start;
@@ -1486,7 +1487,7 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     }
     
     uint8_t *p = buffer + pool->content_pool_size;    
-    for (int i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
+    for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         b = pool->buckets[i];
         if (b == NULL) {
             continue;
@@ -1510,11 +1511,12 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
 }
 
 void jsonlite_token_pool_release(jsonlite_token_pool pool) {
+    int i, j;
     if (pool == NULL) {
         return;
     }
 
-    for (int i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
+    for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         jsonlite_token_bucket *bucket = pool->buckets[i];
         if (bucket == NULL) {
             continue;
@@ -1522,7 +1524,7 @@ void jsonlite_token_pool_release(jsonlite_token_pool pool) {
         
         if (pool->release_fn != NULL) {
             size_t count = pool->buckets_length[i];
-            for (int j = 0; j < count; j++, bucket++) {
+            for (j = 0; j < count; j++, bucket++) {
                 pool->release_fn((void *)bucket->value);           
             }
         }
