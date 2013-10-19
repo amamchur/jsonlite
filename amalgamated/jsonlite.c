@@ -1468,6 +1468,7 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     jsonlite_token_bucket *b;
     size_t size = pool->content_pool_size;
     int i;
+
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         b = pool->buckets[i];
         if (jsonlite_bucket_not_copied(pool, b)) {
