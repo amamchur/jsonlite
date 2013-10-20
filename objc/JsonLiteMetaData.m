@@ -238,12 +238,6 @@
 
 @end
 
-@interface JsonLiteClassMetaData() {
-    NSDictionary *binding;
-    NSArray *keys;
-}
-@end
-
 @implementation JsonLiteClassMetaData
 
 @synthesize properties;
@@ -387,24 +381,18 @@
 
 @end
 
-@interface JsonLiteClassMetaDataPool() {
-    NSMutableDictionary *dict;
-}
-
-@end
-
 @implementation JsonLiteClassMetaDataPool
 
 - (id)init {
     self = [super init];
     if (self != nil) {
-        dict = [[NSMutableDictionary alloc] initWithCapacity:13];
+        pool = [[NSMutableDictionary alloc] initWithCapacity:13];
     }
     return self;
 }
 
 - (void)dealloc {
-    [dict release];
+    [pool release];
     [super dealloc];
 }
 
@@ -413,10 +401,10 @@
         return nil;
     }
     
-    JsonLiteClassMetaData *metaData = [dict objectForKey:cls];
+    JsonLiteClassMetaData *metaData = [pool objectForKey:cls];
     if (metaData == nil) {
         metaData = [[JsonLiteClassMetaData alloc] initWithClass:cls];
-        [dict setObject:metaData forKey:(id<NSCopying>)cls];
+        [pool setObject:metaData forKey:(id<NSCopying>)cls];
         [metaData release];
     }
     return metaData;

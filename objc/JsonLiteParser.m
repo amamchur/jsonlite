@@ -185,9 +185,7 @@ static Class class_JsonLiteNumberToken;
 
 @end
 
-@interface JsonLiteParser()<NSStreamDelegate> {
-    JsonLiteInternal internal;
-}
+@interface JsonLiteParser()<NSStreamDelegate>
 
 @property (nonatomic, retain, readwrite) NSError *parseError;
 @property (nonatomic, retain) NSInputStream *stream;
@@ -214,7 +212,8 @@ static Class class_JsonLiteNumberToken;
     self = [super init];
     if (self != nil) {        
         depth = aDepth < 2 ? 16 : aDepth;
-        internal.parser = NULL;
+        internal = malloc(sizeof(JsonLiteInternal) + jsonlite_parser_estimate_size(depth));
+        internal->parser = NULL;
     }
     return self;
 }
@@ -235,7 +234,8 @@ static Class class_JsonLiteNumberToken;
     self.parseError = nil;
     self.stream = nil;
     self.runLoop = nil;
-    jsonlite_parser_release(internal.parser);
+    jsonlite_parser_cleanup(internal->parser);
+    free(internal);
     [super dealloc];
 }
 
@@ -245,13 +245,15 @@ static Class class_JsonLiteNumberToken;
         return NO;
     }
     
-    jsonlite_parser jp = internal.parser;
+    jsonlite_parser jp = internal->parser;
     if (jp == NULL) {
-        jp = jsonlite_parser_init(depth);
-        internal.parser = jp;
+        void *memory = (uint8_t *)internal + sizeof(JsonLiteInternal);
+        size_t size = jsonlite_parser_estimate_size(depth);
+        jp = jsonlite_parser_init_memory(memory, size);
+        internal->parser = jp;
         if (delegate != nil) {
             jsonlite_parser_callbacks cbs = JsonLiteParserCallbacks;
-            cbs.context.client_state = &internal;
+            cbs.context.client_state = internal;
             jsonlite_parser_set_callback(jp, &cbs);
         }
     }
@@ -304,22 +306,22 @@ static Class class_JsonLiteNumberToken;
 
 
 - (NSError *)suspend {
-    if (internal.parser == NULL) {
+    if (internal->parser == NULL) {
         return [JsonLiteParser errorForCode:JsonLiteCodeNotAllowed];
     }
 
     
-    jsonlite_result result = jsonlite_parser_suspend(internal.parser);
+    jsonlite_result result = jsonlite_parser_suspend(internal->parser);
     self.parseError = [JsonLiteParser errorForCode:(JsonLiteCode)result];
     return parseError;
 }
 
 - (NSError *)resume {
-    if (internal.parser == NULL) {
+    if (internal->parser == NULL) {
         return [JsonLiteParser errorForCode:JsonLiteCodeNotAllowed];
     }
     
-    jsonlite_result result = jsonlite_parser_resume(internal.parser);
+    jsonlite_result result = jsonlite_parser_resume(internal->parser);
     self.parseError = [JsonLiteParser errorForCode:(JsonLiteCode)result];
     return parseError;
 }
@@ -330,8 +332,8 @@ static Class class_JsonLiteNumberToken;
     self.stream = nil;
     self.runLoop = nil;
     
-    jsonlite_parser_release(internal.parser);
-    internal.parser = NULL;
+    jsonlite_parser_cleanup(internal->parser);
+    internal->parser = NULL;
 }
 
 - (void)setDelegate:(id<JsonLiteParserDelegate>)aDelegate {
@@ -340,21 +342,21 @@ static Class class_JsonLiteNumberToken;
         return;
     }
     
-    internal.parserObj = self;
-    internal.delegate = delegate;
+    internal->parserObj = self;
+    internal->delegate = delegate;
     
     Class cls = [delegate class];
-    internal.parseFinished = class_getMethodImplementation(cls, @selector(parser:didFinishParsingWithError:));
-    internal.objectStart = class_getMethodImplementation(cls, @selector(parserDidStartObject:));
-    internal.objectEnd = class_getMethodImplementation(cls, @selector(parserDidEndObject:));
-    internal.arrayStart = class_getMethodImplementation(cls, @selector(parserDidStartArray:));
-    internal.arrayEnd = class_getMethodImplementation(cls, @selector(parserDidEndArray:));
-    internal.trueFound = class_getMethodImplementation(cls, @selector(parserFoundTrueToken:));
-    internal.falseFound = class_getMethodImplementation(cls, @selector(parserFoundFalseToken:));
-    internal.nullFound = class_getMethodImplementation(cls, @selector(parserFoundNullToken:));
-    internal.keyFound = class_getMethodImplementation(cls, @selector(parser:foundKeyToken:));
-    internal.stringFound = class_getMethodImplementation(cls, @selector(parser:foundStringToken:));
-    internal.numberFound = class_getMethodImplementation(cls, @selector(parser:foundNumberToken:));
+    internal->parseFinished = class_getMethodImplementation(cls, @selector(parser:didFinishParsingWithError:));
+    internal->objectStart = class_getMethodImplementation(cls, @selector(parserDidStartObject:));
+    internal->objectEnd = class_getMethodImplementation(cls, @selector(parserDidEndObject:));
+    internal->arrayStart = class_getMethodImplementation(cls, @selector(parserDidStartArray:));
+    internal->arrayEnd = class_getMethodImplementation(cls, @selector(parserDidEndArray:));
+    internal->trueFound = class_getMethodImplementation(cls, @selector(parserFoundTrueToken:));
+    internal->falseFound = class_getMethodImplementation(cls, @selector(parserFoundFalseToken:));
+    internal->nullFound = class_getMethodImplementation(cls, @selector(parserFoundNullToken:));
+    internal->keyFound = class_getMethodImplementation(cls, @selector(parser:foundKeyToken:));
+    internal->stringFound = class_getMethodImplementation(cls, @selector(parser:foundStringToken:));
+    internal->numberFound = class_getMethodImplementation(cls, @selector(parser:foundNumberToken:));
 }
 
 + (NSError *)errorForCode:(JsonLiteCode)error {

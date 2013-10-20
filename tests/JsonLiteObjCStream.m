@@ -12,10 +12,7 @@
 #import "JsonLiteAccumulator.h"
 #import "JsonLiteSerializer.h"
 
-@interface JsonLiteObjCStream()<JsonLiteParserDelegate> {
-    volatile BOOL finished;
-}
-
+@interface JsonLiteObjCStream()<JsonLiteParserDelegate>
 @end
 
 @implementation JsonLiteObjCStream

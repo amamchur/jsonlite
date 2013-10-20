@@ -77,7 +77,16 @@ extern NSString * const JsonLiteCodeDomain;
 
 @end
 
-@interface JsonLiteParser : NSObject
+struct JsonLiteInternal;
+
+@interface JsonLiteParser : NSObject {
+    struct JsonLiteInternal *internal;
+    id<JsonLiteParserDelegate> delegate;
+    NSUInteger depth;
+    NSError *parseError;
+    NSInputStream *stream;
+    NSRunLoop *runLoop;
+}
 
 @property (nonatomic, assign) id<JsonLiteParserDelegate> delegate;
 @property (nonatomic, assign, readonly) NSUInteger depth;

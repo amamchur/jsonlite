@@ -13,13 +13,17 @@
 #import "JsonLiteMetaData.h"
 #import "JsonLiteConverters.h"
 
-@interface DecimalHolder : NSObject
+@interface DecimalHolder : NSObject {
+    NSDecimalNumber *number;
+}
 
 @property (nonatomic, retain) NSDecimalNumber *number;
 
 @end
 
 @implementation DecimalHolder
+
+@synthesize number;
 
 - (void)dealloc {
     self.number = nil;
@@ -28,13 +32,17 @@
 
 @end
 
-@interface URLHolder : NSObject
+@interface URLHolder : NSObject {
+    NSURL *url;
+}
 
 @property (nonatomic, retain) NSURL *url;
 
 @end
 
 @implementation URLHolder
+
+@synthesize url;
 
 - (void)dealloc {
     self.url = nil;
@@ -43,13 +51,17 @@
 
 @end
 
-@interface DateHolder : NSObject
+@interface DateHolder : NSObject {
+    NSDate *date;
+}
 
 @property (nonatomic, retain) NSDate *date;
 
 @end
 
 @implementation DateHolder
+
+@synthesize date;
 
 - (void)dealloc {
     self.date = nil;

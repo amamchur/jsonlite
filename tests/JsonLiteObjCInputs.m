@@ -127,6 +127,13 @@
     // jsonlite_parser_release
     jsonlite_parser_release(parser);
     jsonlite_parser_release(NULL);
+    
+    parser = jsonlite_parser_init_memory(NULL, 123);
+    STAssertTrue(parser == NULL, @"Parser in not NULL");
+    
+    char mem[256];
+    parser = jsonlite_parser_init_memory(mem, 5);
+    STAssertTrue(parser == NULL, @"Parser in not NULL");
 }
 
 - (void)testJsonLiteParserTokenC {

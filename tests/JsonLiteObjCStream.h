@@ -8,6 +8,8 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface JsonLiteObjCStream : SenTestCase
+@interface JsonLiteObjCStream : SenTestCase{
+    volatile BOOL finished;
+}
 
 @end

@@ -38,23 +38,6 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     s->length = 0;
 }
 
-@interface JsonLiteAccumulator() {
-    struct JsonLiteAccumulatorState *current;
-    struct JsonLiteAccumulatorState *state;
-    id *keys;
-    id *values;
-    CFHashCode *hashes;
-    jsonlite_token_pool keyPool;
-    jsonlite_token_pool stringPool;
-    jsonlite_token_pool numberPool;
-    NSUInteger capacity;
-    struct {
-        BOOL didAccumulateArray : 1;
-        BOOL didAccumulateDictionary : 1;
-    } flags;
-}
-@end
-
 @implementation JsonLiteAccumulator
 
 @synthesize depth;

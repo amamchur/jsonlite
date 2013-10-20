@@ -74,7 +74,7 @@
     
     JsonLiteSerializer *jls =[[JsonLiteSerializer alloc] init];
     jls.indentation = 4;
-    STAssertEquals(jls.indentation, 4, @"Indentations are not equal");
+    STAssertEquals(jls.indentation, (NSInteger)4, @"Indentations are not equal");
     NSData *data = [jls serializeObject:object];
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];

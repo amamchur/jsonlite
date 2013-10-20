@@ -21,7 +21,13 @@
 #import "JsonLiteDeserializer.h"
 #import "JsonLiteConverters.h"
 
-@interface JsonLiteConvert : NSObject
+@interface JsonLiteConvert : NSObject {
+   NSString *str;
+   NSNumber *number;
+   NSURL *url;
+   NSDecimalNumber *decimal;
+   NSDate *date;
+}
 
 @property (nonatomic, copy) NSString *str;
 @property (nonatomic, copy) NSNumber *number;
@@ -32,6 +38,12 @@
 @end
 
 @implementation JsonLiteConvert
+
+@synthesize str;
+@synthesize number;
+@synthesize url;
+@synthesize decimal;
+@synthesize date;
 
 - (void)dealloc {
     self.str = nil;

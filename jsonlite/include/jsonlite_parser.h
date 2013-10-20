@@ -124,6 +124,17 @@ extern "C" {
      */
     jsonlite_parser jsonlite_parser_init(size_t depth);
     
+    /** @brief Initializes memory for parser object.
+     *
+     * You should release internal resources using ::jsonlite_parser_cleanup
+     * @see jsonlite_parser
+     * @see jsonlite_parser_reset
+     * @param memory the memory for parser.
+     * @param size the memory size.
+     * @return jsonlite_parser object.
+     */
+    jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size);
+    
     /** \brief Copies provided callbacks structure to parser object.
      * @see jsonlite_parser
      * @see jsonlite_parser_callbacks
@@ -213,10 +224,17 @@ extern "C" {
      *
      * If parser is NULL, jsonlite_parser_release does nothing.
      * @see jsonlite_parser
-     * @see jsonlite_result
      * @param parser the parser object.
      */
     void jsonlite_parser_release(jsonlite_parser parser);
+    
+    /** \brief Releases internal resources and states.
+     *
+     * If parser is NULL, jsonlite_parser_reset does nothing.
+     * @see jsonlite_parser
+     * @param parser the parser object.
+     */
+    void jsonlite_parser_cleanup(jsonlite_parser parser);
 
     /** \brief jsonlite_parser_callbacks structure initialized with callbacks that do nothing.
      */

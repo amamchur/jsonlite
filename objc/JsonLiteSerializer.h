@@ -30,10 +30,12 @@
 
 @interface JsonLiteSerializer : NSObject {
     jsonlite_builder bs;
+    id<JsonLiteSerializerChain> converter;
+    NSInteger indentation;
 }
 
 @property (nonatomic, retain) id<JsonLiteSerializerChain> converter;
-@property (nonatomic, assign) int indentation;
+@property (nonatomic, assign) NSInteger indentation;
 
 - (NSData *)serializeObject:(id)obj;
 

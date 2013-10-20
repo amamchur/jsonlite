@@ -22,6 +22,11 @@
 
 @interface JsonLiteTestGetterSetter : NSObject {
     NSString *someString;
+    NSNumber *number;
+    Class cls;
+    NSString *name;
+    NSString *someOtherVar;
+    NSString *dynamic;
 }
 
 @property (nonatomic, copy, getter = getSomeString, setter = setSomeString:) NSString *str;
@@ -33,7 +38,12 @@
 
 @end
 
-@interface JsonLiteTestObj1 : NSObject
+@interface JsonLiteTestObj1 : NSObject {
+    NSString *strValue;
+    NSNumber *intValue;
+    NSArray *array;
+    JsonLiteTestObj1 *child;
+}
 
 @property (nonatomic, copy) NSString *strValue;
 @property (nonatomic, copy) NSNumber *intValue;
@@ -42,27 +52,39 @@
 
 @end
 
-@interface JsonLiteTestObj2 : NSObject
+@interface JsonLiteTestObj2 : NSObject {
+    NSArray *array;
+}
 
 @property (nonatomic, copy) NSArray *array;
 
 @end
 
-@interface JsonLiteTestObj3 : NSObject
+@interface JsonLiteTestObj3 : NSObject {
+    NSString *identifier;
+    NSArray *array;
+}
 
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic, copy) NSArray *array;
 
 @end
 
-@interface JsonLiteTestMatrix : NSObject
+@interface JsonLiteTestMatrix : NSObject {
+    NSString *name;
+    NSArray *matrix;
+}
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSArray *matrix;
 
 @end
 
-@interface JsonLiteTestMatrix2 : NSObject
+@interface JsonLiteTestMatrix2 : NSObject {
+    NSString *name;
+    NSArray *matrix;
+}
+
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSArray *matrix;
@@ -74,6 +96,7 @@
 @dynamic dynamic;
 @synthesize redefVariable = someOtherVar;
 @synthesize str = someString;
+@synthesize cls;
 
 - (NSString *)name {
     return NSStringFromClass([self class]);
@@ -106,6 +129,11 @@
 
 @implementation JsonLiteTestObj1
 
+@synthesize strValue;
+@synthesize intValue;
+@synthesize array;
+@synthesize child;
+
 - (BOOL)isEqual:(id)object {
     JsonLiteTestObj1 *obj = object;
     BOOL equal = [self.strValue isEqual:obj.strValue];  
@@ -115,10 +143,10 @@
 }
 
 - (void)dealloc {
-    [_strValue release];
-    [_intValue release];
-    [_array release];
-    [_child release];
+    [strValue release];
+    [intValue release];
+    [array release];
+    [child release];
     [super dealloc];
 }
 
@@ -126,18 +154,24 @@
 
 @implementation JsonLiteTestObj2
 
+@synthesize array;
+
+
 + (NSArray *)jsonLiteBindingRules {
     return [NSArray arrayWithObjects:[JsonLiteBindRule ruleForKey:@"array" elementClass:[JsonLiteTestObj1 class]], nil];
 }
 
 - (void)dealloc {
-    [_array release];
+    [array release];
     [super dealloc];
 }
 
 @end
 
 @implementation JsonLiteTestObj3
+
+@synthesize identifier;
+@synthesize array;
 
 + (NSArray *)jsonLiteBindingRules {
     id b1 = [JsonLiteBindRule ruleForKey:@"id" bindTo:@"identifier"];
@@ -146,8 +180,8 @@
 }
 
 - (void)dealloc {
-    [_identifier release];
-    [_array release];
+    [identifier release];
+    [array release];
     [super dealloc];
 }
 
@@ -155,14 +189,17 @@
 
 @implementation JsonLiteTestMatrix
 
+@synthesize matrix;
+@synthesize name;
+
 + (NSArray *)jsonLiteBindingRules {
     id b1 = [JsonLiteBindRule ruleForKey:@"matrix" elementClass:[JsonLiteTestObj1 class]];
     return [NSArray arrayWithObjects:b1, nil];
 }
 
 - (void)dealloc {
-    [_name release];
-    [_matrix release];
+    [name release];
+    [matrix release];
     [super dealloc];
 }
 
@@ -170,14 +207,17 @@
 
 @implementation JsonLiteTestMatrix2
 
+@synthesize matrix;
+@synthesize name;
+
 + (NSArray *)jsonLiteBindingRules {
     id b1 = [JsonLiteBindRule ruleForKey:@"matrix" elementClass:NULL];
     return [NSArray arrayWithObjects:b1, nil];
 }
 
 - (void)dealloc {
-    [_name release];
-    [_matrix release];
+    [name release];
+    [matrix release];
     [super dealloc];
 }
 

@@ -14,9 +14,11 @@
 
 #import <Foundation/Foundation.h>
 #import "JsonLiteParser.h"
+#import "jsonlite.h"
 
 @class JsonLiteToken;
 @class JsonLiteDeserializer;
+@class JsonLiteClassMetaDataPool;
 
 @protocol JsonLiteDeserializerChain <NSObject>
 
@@ -37,7 +39,21 @@
 
 @end
 
-@interface JsonLiteDeserializer : NSObject<JsonLiteParserDelegate>
+@interface JsonLiteDeserializer : NSObject<JsonLiteParserDelegate> {
+    jsonlite_token_pool keyPool;
+    id object;
+    Class rootClass;
+    NSMutableArray *bindingStack;
+    NSMutableArray *metaDataStack;
+    struct {
+        BOOL didDeserializeObject : 1;
+        BOOL didDeserializeArray : 1;
+    } flags;
+    
+    JsonLiteClassMetaDataPool *metaDataPool;
+    id<JsonLiteDeserializerDelegate> delegate;
+    id<JsonLiteDeserializerChain> converter;
+}
 
 @property (nonatomic, assign) id<JsonLiteDeserializerDelegate> delegate;
 @property (nonatomic, retain) id<JsonLiteDeserializerChain> converter;

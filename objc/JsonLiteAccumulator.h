@@ -14,9 +14,9 @@
 
 #import <Foundation/Foundation.h>
 #import "JsonLiteParser.h"
+#include "jsonlite.h"
 
 struct JsonLiteAccumulatorState;
-
 @class JsonLiteAccumulator;
 
 @protocol JsonLiteAccumulatorDelegate <NSObject>
@@ -27,7 +27,24 @@ struct JsonLiteAccumulatorState;
 
 @end
 
-@interface JsonLiteAccumulator : NSObject<JsonLiteParserDelegate>
+@interface JsonLiteAccumulator : NSObject<JsonLiteParserDelegate> {
+    struct JsonLiteAccumulatorState *current;
+    struct JsonLiteAccumulatorState *state;
+    id *keys;
+    id *values;
+    CFHashCode *hashes;
+    jsonlite_token_pool keyPool;
+    jsonlite_token_pool stringPool;
+    jsonlite_token_pool numberPool;
+    NSUInteger capacity;
+    struct {
+        BOOL didAccumulateArray : 1;
+        BOOL didAccumulateDictionary : 1;
+    } flags;
+    
+    NSUInteger depth;
+    id<JsonLiteAccumulatorDelegate> delegate;
+}
 
 @property (nonatomic, readonly) NSUInteger depth;
 @property (nonatomic, readonly) NSUInteger currentDepth;

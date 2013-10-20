@@ -66,27 +66,6 @@ static JsonLiteArrayBinder *arrayBinder = nil;
 @implementation JsonLiteMetaDataState
 @end
 
-@interface JsonLiteDeserializer()  {
-    jsonlite_token_pool keyPool;
-    id object;
-    Class rootClass;
-    NSMutableArray *bindingStack;
-    NSMutableArray *metaDataStack;
-    struct {
-        BOOL didDeserializeObject : 1;
-        BOOL didDeserializeArray : 1;
-    } flags;
-}
-
-@end
-
-@interface JsonLiteDeserializer() {
-    JsonLiteClassMetaDataPool *metaDataPool;
-}
-
-
-@end
-
 @implementation JsonLiteDeserializer
 
 @synthesize delegate;

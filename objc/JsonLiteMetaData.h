@@ -36,6 +36,7 @@
 @interface JsonLiteBindRule : NSObject {
     NSString *key;
     NSString *property;
+    Class elementClass;
 }
 
 @property (nonatomic, readonly) NSString *key;
@@ -69,6 +70,9 @@
         int objectType : 1;
         int classObject : 1;
     } propertyFlags;
+    
+    NSString *name;
+    Class objectClass;
 }
 
 @property (nonatomic, copy, readonly) NSString *name;
@@ -79,7 +83,12 @@
 
 @end
 
-@interface JsonLiteClassMetaData : NSObject<JsonLiteClassInstanceCreator>
+@interface JsonLiteClassMetaData : NSObject<JsonLiteClassInstanceCreator> {
+    NSDictionary *properties;
+    NSDictionary *binding;
+    NSArray *keys;
+    Class objectClass;
+}
 
 @property (nonatomic, readonly) NSDictionary *properties;
 @property (nonatomic, readonly) NSDictionary *binding;
@@ -94,7 +103,9 @@
 
 @end
 
-@interface JsonLiteClassMetaDataPool : NSObject
+@interface JsonLiteClassMetaDataPool : NSObject {
+    NSMutableDictionary *pool;
+}
 
 - (JsonLiteClassMetaData *)metaDataForClass:(Class)cls;
 

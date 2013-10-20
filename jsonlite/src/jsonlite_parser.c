@@ -36,6 +36,7 @@ static uint32_t __inline jsonlite_clz(uint32_t x) {
 
 #endif
 
+#define MIN_DEPTH 2
 #define CALL_VALUE_CALLBACK(cbs, type, token)   (cbs.type(&cbs.context, token))
 #define CALL_STATE_CALLBACK(cbs, type)          (cbs.type(&cbs.context))
 
@@ -106,15 +107,31 @@ const jsonlite_parser_callbacks jsonlite_default_callbacks = {
 };
 
 size_t jsonlite_parser_estimate_size(size_t depth) {
-    depth = depth < 2 ? 32 : depth;
+    depth = depth < MIN_DEPTH ? 32 : depth;
     return sizeof(jsonlite_parser_struct) + depth * sizeof(parse_state);
 }
 
 jsonlite_parser jsonlite_parser_init(size_t depth) {
-    depth = depth < 2 ? 32 : depth;
+    size_t size = jsonlite_parser_estimate_size(depth);
+    void *memory = malloc(size);
+    return jsonlite_parser_init_memory(memory, size);
+}
+
+jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size) {
+    if (memory == NULL) {
+        return NULL;
+    }
     
-    jsonlite_parser parser = (jsonlite_parser)calloc(1, jsonlite_parser_estimate_size(depth));
+    if (size < jsonlite_parser_estimate_size(MIN_DEPTH)) {
+        return NULL;
+    }
+
+    size_t depth = (size - sizeof(jsonlite_parser_struct)) / sizeof(parse_state);
+    jsonlite_parser parser = (jsonlite_parser)memory;
     parser->result = jsonlite_result_unknown;
+    parser->buffer_own = NULL;
+    parser->rest = NULL;
+    parser->rest_size = 0;
     parser->callbacks = jsonlite_default_callbacks;
     parser->current = (parse_state *)((uint8_t *)parser + sizeof(jsonlite_parser_struct));
     parser->current[0] = state_end;
@@ -214,13 +231,17 @@ jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_resul
 }
 
 void jsonlite_parser_release(jsonlite_parser parser) {
+    jsonlite_parser_cleanup(parser);
+    free(parser);
+}
+
+void jsonlite_parser_cleanup(jsonlite_parser parser) {
     if (parser == NULL) {
         return;
     }
     
     free(parser->buffer_own);
     free(parser->rest);
-    free(parser);
 }
 
 static void jsonlite_do_parse(jsonlite_parser parser) {
