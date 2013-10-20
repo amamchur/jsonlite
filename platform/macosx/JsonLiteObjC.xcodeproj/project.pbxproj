@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8445C5DA181421D000EFAC27 /* jsonlite.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84E6553D1811F4DF000901D2 /* jsonlite.h */; };
 		8469945817EA55A700BBB8BA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469945717EA55A700BBB8BA /* Cocoa.framework */; };
 		8469946A17EA55A700BBB8BA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469946917EA55A700BBB8BA /* SenTestingKit.framework */; };
 		8469946B17EA55A700BBB8BA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469945717EA55A700BBB8BA /* Cocoa.framework */; };
@@ -100,6 +101,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 7;
 			files = (
+				8445C5DA181421D000EFAC27 /* jsonlite.h in CopyFiles */,
 				8469957117EA5B6C00BBB8BA /* jsonlite_builder.h in CopyFiles */,
 				8469957217EA5B6C00BBB8BA /* jsonlite_parser.h in CopyFiles */,
 				8469957317EA5B6C00BBB8BA /* jsonlite_token.h in CopyFiles */,

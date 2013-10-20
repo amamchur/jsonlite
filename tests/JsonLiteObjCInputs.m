@@ -97,7 +97,7 @@
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect result");
     
     result = jsonlite_parser_suspend(parser);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    STAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect result");
     
     // jsonlite_parser_tokenize
     result = jsonlite_parser_tokenize(NULL, NULL, 0);

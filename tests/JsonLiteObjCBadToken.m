@@ -149,7 +149,7 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     
     jsonlite_parser parser = jsonlite_parser_init(4);
     result = jsonlite_parser_terminate(parser, jsonlite_result_unknown);
-    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    STAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect error");
     
     jsonlite_parser_callbacks c = jsonlite_default_callbacks;
     c.key_found = &terminate_if_noncharacter;

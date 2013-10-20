@@ -402,11 +402,15 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Bad result");
     
     result = jsonlite_parser_suspend(p);
-    STAssertTrue(result == jsonlite_result_ok, @"Bad result");
+    STAssertTrue(result == jsonlite_result_not_allowed, @"Bad result");
     
     result = jsonlite_parser_tokenize(p, json1, sizeof(json1));
     STAssertTrue(result == jsonlite_result_suspended, @"Bad result");
     
+    result = jsonlite_parser_terminate(p, jsonlite_result_invalid_argument);
+    STAssertTrue(result == jsonlite_result_not_allowed, @"Bad result");
+    
+    result = jsonlite_result_suspended;
     while (result == jsonlite_result_suspended) {
         result = jsonlite_parser_resume(p);
     }

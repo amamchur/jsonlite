@@ -13,6 +13,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8445C5D61814216700EFAC27 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8469945317EA55A700BBB8BA;
+			remoteInfo = JsonLiteObjC;
+		};
 		846995DB17EA5E0C00BBB8BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */;
@@ -110,6 +117,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8445C5D71814216700EFAC27 /* PBXTargetDependency */,
 			);
 			name = Summer;
 			productName = Summer;
@@ -175,6 +183,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8445C5D71814216700EFAC27 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JsonLiteObjC;
+			targetProxy = 8445C5D61814216700EFAC27 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		844796211788166800833C1E /* Debug */ = {
