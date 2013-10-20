@@ -99,7 +99,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/${PRODUCT_NAME}";
-			dstSubfolderSpec = 7;
+			dstSubfolderSpec = 16;
 			files = (
 				8445C5DA181421D000EFAC27 /* jsonlite.h in CopyFiles */,
 				8469957117EA5B6C00BBB8BA /* jsonlite_builder.h in CopyFiles */,

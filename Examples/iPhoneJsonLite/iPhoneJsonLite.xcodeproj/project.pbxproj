@@ -91,7 +91,7 @@
 		87E75C201582907700100333 /* TWUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWUser.h; sourceTree = "<group>"; };
 		87E75C211582907700100333 /* TWUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWUser.m; sourceTree = "<group>"; };
 		87E75C2C1582A18200100333 /* twitter_public_timeline.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = twitter_public_timeline.json; sourceTree = SOURCE_ROOT; };
-		87FFFAB516286E09004AAD06 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		87FFFAB516286E09004AAD06 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,7 +133,6 @@
 			isa = PBXGroup;
 			children = (
 				8469958817EA5C2200BBB8BA /* JsonLiteObjC.xcodeproj */,
-				87FFFAB516286E09004AAD06 /* Default-568h@2x.png */,
 				87E75BD315828FFA00100333 /* iPhoneJsonLite */,
 				87E75BCC15828FFA00100333 /* Frameworks */,
 				87E75BCA15828FFA00100333 /* Products */,
@@ -175,6 +174,7 @@
 				87E75C1F1582907700100333 /* TWTimeline.m */,
 				87E75C201582907700100333 /* TWUser.h */,
 				87E75C211582907700100333 /* TWUser.m */,
+				87FFFAB516286E09004AAD06 /* Default-568h@2x.png */,
 				842F4FA1178976BF000667E5 /* repeat.json */,
 				849E831E1776480E00D78592 /* mesh.json */,
 				87E75C2C1582A18200100333 /* twitter_public_timeline.json */,
