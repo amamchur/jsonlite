@@ -264,13 +264,13 @@ state_selection:
     
     switch (*state) {
         case state_value:               goto value_type_detection;
-        case state_key:                 goto string_token_parsing;
-        case state_object_key:          goto key_checking;
-        case state_object_key_end:      goto key_end_checking;
         case state_colon:               goto colon_checking;
         case state_object_comma_end:    goto object_comma_end_checking;
-        case state_array_value_end:     goto array_value_end_checking;
+        case state_object_key:          goto key_checking;
+        case state_object_key_end:      goto key_end_checking;
         case state_array_comma_end:     goto array_comma_end_checking;
+        case state_array_value_end:     goto array_value_end_checking;
+        case state_key:                 goto string_token_parsing;
         case state_start:
             if (*c == '{')              goto object_state_machine;
             if (*c == '[')              goto array_state_machine;
