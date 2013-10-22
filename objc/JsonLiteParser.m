@@ -113,6 +113,10 @@ static Class class_JsonLiteNumberToken;
 
 - (id)copyValue {
     jsonlite_token *token = (jsonlite_token *)self;
+    if (token->start == token->end) {
+        return @""; // Return empty string singleton;
+    }
+    
     switch (token->string_type) {
         case jsonlite_string_ascii: {
             NSString *str = (NSString *)CFStringCreateWithBytes(NULL,
@@ -129,6 +133,10 @@ static Class class_JsonLiteNumberToken;
 
 - (NSString *)copyStringWithBytesNoCopy {
     jsonlite_token *token = (jsonlite_token *)self;
+    if (token->start == token->end) {
+        return @""; // Return empty string singleton;
+    }
+    
     switch (token->string_type) {
         case jsonlite_string_ascii: {
             NSString *str = (NSString *)CFStringCreateWithBytesNoCopy(NULL,
@@ -150,21 +158,21 @@ static Class class_JsonLiteNumberToken;
 
 - (id)copyValue {
     jsonlite_token *token = (jsonlite_token *)self;
-    NSNumber *number = nil;
+    CFNumberRef number = nil;
     if (token->number_type & (jsonlite_number_exp | jsonlite_number_frac)) {
         double d = strtod((const char *)token->start, NULL);
-        number = (NSNumber *)CFNumberCreate(NULL, kCFNumberDoubleType, &d);
+        number = CFNumberCreate(NULL, kCFNumberDoubleType, &d);
     } else {
         size_t length = token->end - token->start;
         if (length < (size_t)log10(LONG_MAX)) {
             long i = strtol((const char *)token->start, NULL, 10);
-            number = (NSNumber *)CFNumberCreate(NULL, kCFNumberLongType, &i);
+            number = CFNumberCreate(NULL, kCFNumberLongType, &i);
         } else {
             long long i = strtoll((const char *)token->start, NULL, 10);
-            number = (NSNumber *)CFNumberCreate(NULL, kCFNumberLongLongType, &i);
+            number = CFNumberCreate(NULL, kCFNumberLongLongType, &i);
         }
     }
-    return number;
+    return (id)number;
 }
 
 - (NSDecimalNumber *)copyDecimal {

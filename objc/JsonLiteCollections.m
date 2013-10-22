@@ -150,22 +150,26 @@ id JsonLiteCreateDictionary(const id *values, const id *keys, const CFHashCode *
         size = class_getInstanceSize(cls);
     }
 
-    JsonLiteDictionary *dict = class_createInstance(cls, count * sizeof(JsonLiteDictionaryBucket));
-    dict->buffer = (JsonLiteDictionaryBucket *)((uint8_t *)dict  + size);
-    dict->count = count;
-    
-    JsonLiteDictionaryBucket *b = dict->buffer;
-    for (int i = 0; i < count; i++, b++) {
-        CFHashCode hash = hashes[i];
-        int index = hash & JsonLiteDictionaryFrontMask;
-        b->hash = hash;
-        b->key = keys[i];
-        b->value = values[i];
-        b->next = dict->buckets[index];
-        dict->buckets[index] = b;
+    if (count > 0) {
+        JsonLiteDictionary *dict = class_createInstance(cls, count * sizeof(JsonLiteDictionaryBucket));
+        dict->buffer = (JsonLiteDictionaryBucket *)((uint8_t *)dict  + size);
+        dict->count = count;
+        
+        JsonLiteDictionaryBucket *b = dict->buffer;
+        for (int i = 0; i < count; i++, b++) {
+            CFHashCode hash = hashes[i];
+            int index = hash & JsonLiteDictionaryFrontMask;
+            b->hash = hash;
+            b->key = keys[i];
+            b->value = values[i];
+            b->next = dict->buckets[index];
+            dict->buckets[index] = b;
+        }
+        
+        return dict;
     }
     
-    return dict;
+    return [[NSDictionary dictionary] retain]; // Return empty dictionary singleton;
 }
 
 id JsonLiteCreateArray(const id *objects, NSUInteger count) {
@@ -176,13 +180,14 @@ id JsonLiteCreateArray(const id *objects, NSUInteger count) {
         size = class_getInstanceSize(cls);
     }
 
-    JsonLiteArray *array = class_createInstance(cls, count * sizeof(id));
-    array = [array init];
-    array->values = (id *)((uint8_t *)array + size);
-    array->count = count;
     if (count > 0) {
+        JsonLiteArray *array = class_createInstance(cls, count * sizeof(id));
+        array->values = (id *)((uint8_t *)array + size);
+        array->count = count;
         array->values = (id *)((uint8_t *)array + size);
         memcpy(array->values, objects, sizeof(id) * count); // LCOV_EXCL_LINE
+        return array;
     }
-    return array;
+    
+    return [[NSArray array] retain]; // Return empty array singleton;
 }

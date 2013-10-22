@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8445C5DA181421D000EFAC27 /* jsonlite.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84E6553D1811F4DF000901D2 /* jsonlite.h */; };
-		8469945817EA55A700BBB8BA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469945717EA55A700BBB8BA /* Cocoa.framework */; };
 		8469946A17EA55A700BBB8BA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469946917EA55A700BBB8BA /* SenTestingKit.framework */; };
-		8469946B17EA55A700BBB8BA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469945717EA55A700BBB8BA /* Cocoa.framework */; };
 		8469946E17EA55A700BBB8BA /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8469945417EA55A700BBB8BA /* libJsonLiteObjC.a */; };
 		8469947417EA55A700BBB8BA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8469947217EA55A700BBB8BA /* InfoPlist.strings */; };
 		8469949D17EA568400BBB8BA /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 8469948917EA568400BBB8BA /* jsonlite_builder.c */; };
@@ -122,9 +120,6 @@
 
 /* Begin PBXFileReference section */
 		8469945417EA55A700BBB8BA /* libJsonLiteObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJsonLiteObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		8469945717EA55A700BBB8BA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		8469945A17EA55A700BBB8BA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		8469945B17EA55A700BBB8BA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8469945C17EA55A700BBB8BA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8469945F17EA55A700BBB8BA /* JsonLiteObjC-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JsonLiteObjC-Prefix.pch"; sourceTree = "<group>"; };
 		8469946817EA55A700BBB8BA /* JsonLiteObjCTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JsonLiteObjCTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -199,7 +194,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8469945817EA55A700BBB8BA /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,7 +202,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8469946A17EA55A700BBB8BA /* SenTestingKit.framework in Frameworks */,
-				8469946B17EA55A700BBB8BA /* Cocoa.framework in Frameworks */,
 				8469946E17EA55A700BBB8BA /* libJsonLiteObjC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,7 +233,6 @@
 		8469945617EA55A700BBB8BA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8469945717EA55A700BBB8BA /* Cocoa.framework */,
 				8469946917EA55A700BBB8BA /* SenTestingKit.framework */,
 				8469945917EA55A700BBB8BA /* Other Frameworks */,
 			);
@@ -250,8 +242,6 @@
 		8469945917EA55A700BBB8BA /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8469945A17EA55A700BBB8BA /* AppKit.framework */,
-				8469945B17EA55A700BBB8BA /* CoreData.framework */,
 				8469945C17EA55A700BBB8BA /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
