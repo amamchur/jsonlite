@@ -23,7 +23,7 @@ extern "C" {
 #endif
     
 typedef void (*jsonlite_token_pool_release_value_fn)(void *);
-typedef struct content_pool_size* jsonlite_token_pool;
+typedef struct jsonlite_token_pool_struct* jsonlite_token_pool;
     
 typedef struct jsonlite_token_bucket {
     ptrdiff_t hash;
