@@ -597,7 +597,7 @@
     
     prop = [metaData.properties objectForKey:@"cls"];
     [prop setValue:[NSString class] forObject:obj];
-    STAssertTrue([NSString class] == [prop valueOfObject:obj], @"Bad assigment");
+    STAssertNil([prop valueOfObject:obj], @"Bad assigment");
 
     prop = [metaData.properties objectForKey:@"name"];
     NSString *name = [prop valueOfObject:obj];

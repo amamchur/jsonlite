@@ -113,15 +113,16 @@ static Class class_JsonLiteNumberToken;
 
 - (id)copyValue {
     jsonlite_token *token = (jsonlite_token *)self;
-    if (token->start == token->end) {
-        return @""; // Return empty string singleton;
+    size_t size = token->end - token->start;
+    if (size == 0) {
+        return @""; // Return empty string singleton
     }
     
     switch (token->string_type) {
         case jsonlite_string_ascii: {
             NSString *str = (NSString *)CFStringCreateWithBytes(NULL,
                                                                 token->start,
-                                                                token->end - token->start,
+                                                                size,
                                                                 kCFStringEncodingUTF8,
                                                                 NO);
             return str;
@@ -133,15 +134,16 @@ static Class class_JsonLiteNumberToken;
 
 - (NSString *)copyStringWithBytesNoCopy {
     jsonlite_token *token = (jsonlite_token *)self;
-    if (token->start == token->end) {
-        return @""; // Return empty string singleton;
+    size_t size = token->end - token->start;
+    if (size == 0) {
+        return @""; // Return empty string singleton
     }
     
     switch (token->string_type) {
         case jsonlite_string_ascii: {
             NSString *str = (NSString *)CFStringCreateWithBytesNoCopy(NULL,
                                                                 token->start,
-                                                                token->end - token->start,
+                                                                size,
                                                                 kCFStringEncodingUTF8,
                                                                 NO,
                                                                 kCFAllocatorNull);

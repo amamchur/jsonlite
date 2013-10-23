@@ -83,8 +83,7 @@
     STAssertNil(parser.parseError, @"Parse error");
     
     DecimalHolder *holder = [deserializer object];
-    STAssertNotNil(holder.number, @"number is not nil");
-    STAssertTrue([holder.number isKindOfClass:[NSString class]], @"Must be string");
+    STAssertNil(holder.number, @"number is not nil");
     [deserializer release];
     [parser release];
 }
@@ -100,8 +99,7 @@
     STAssertNil(parser.parseError, @"Parse error");
     
     URLHolder *holder = [deserializer object];
-    STAssertNotNil(holder.url, @"url is not nil");
-    STAssertTrue([holder.url isKindOfClass:[NSNumber class]], @"Must be number");
+    STAssertNil(holder.url, @"url is not nil");
     [deserializer release];
     [parser release];
 }
@@ -117,8 +115,7 @@
     STAssertNil(parser.parseError, @"Parse error");
     
     DateHolder *holder = [deserializer object];
-    STAssertNotNil(holder.date, @"date is not nil");
-    STAssertTrue([holder.date isKindOfClass:[NSNumber class]], @"Must be number");
+    STAssertNil(holder.date, @"date is not nil");
     [deserializer release];
     [parser release];
 }

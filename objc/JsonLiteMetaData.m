@@ -79,7 +79,11 @@
 //        NSParameterAssert(value == nil || class_getName(value) != NULL);
 //    }
 //#endif
-    setterImp(obj, setterSelector, value);
+    if (value == nil || [value isKindOfClass:objectClass]) {
+        setterImp(obj, setterSelector, value);
+    } else {
+        NSLog(@"Invalid type mapping %@ != %@!", [value class], objectClass);
+    }
 }
 
 - (id)valueOfObject:(id)obj {
