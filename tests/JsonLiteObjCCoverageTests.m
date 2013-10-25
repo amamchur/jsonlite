@@ -472,4 +472,14 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     jsonlite_parser_release(p);
 }
 
+
+- (void)testMaxLong {
+    NSNumber *number = [NSNumber numberWithLongLong:LONG_MAX];
+    JsonLiteSerializer *ser = [JsonLiteSerializer serializer];
+    NSData *data = [ser serializeObject:@[number]];
+    NSArray *array = [JsonLiteAccumulator objectFromData:data withMaxDepth:16];
+    STAssertEqualObjects(number, array[0], @"Objects are not equal");
+}
+
+
 @end

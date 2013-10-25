@@ -120,4 +120,21 @@
     [parser release];
 }
 
+- (void)testEmptyDate {
+    NSString *json = @"{\"date\": \"\"}";
+    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+    JsonLiteParser *parser = [[JsonLiteParser alloc] init];
+    JsonLiteDeserializer *deserializer = [[JsonLiteDeserializer alloc] initWithRootClass:[DateHolder class]];
+    deserializer.converter = [[[JsonLiteTwitterDate alloc] init] autorelease];
+    parser.delegate = deserializer;
+    [parser parse:data];
+    STAssertNil(parser.parseError, @"Parse error");
+    
+    DateHolder *holder = [deserializer object];
+    STAssertNil(holder.date, @"date is not nil");
+    [deserializer release];
+    [parser release];
+}
+
+
 @end

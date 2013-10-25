@@ -163,7 +163,7 @@ typedef struct jsonlite_static_mem_stream {
 static int jsonlite_static_mem_stream_write(jsonlite_stream stream, const void *data, size_t length) {
     jsonlite_static_mem_stream *mem_stream = CAST_TO_STATIC_MEM_STREAM(stream);
     size_t write_limit = mem_stream->size - mem_stream->written;
-    if (write_limit >= length && mem_stream->enabled) {
+    if (mem_stream->enabled && write_limit >= length) {
         memcpy(mem_stream->buffer + mem_stream->written, data, length); // LCOV_EXCL_LINE
         mem_stream->written += length;
     } else {
