@@ -69,11 +69,9 @@ static void null_callback(jsonlite_callback_context *ctx) {
 
 int main(int argc, const char * argv[]) {
     context ctx;
-    char *data = NULL;
-    size_t size = 0;
     char json[] = "{\"a\":null,\"b\":[1,2,3],\"c\":true,\"d\":{\"a\":1,\"b\":[]},\"e\":false,\"f\":[\"a\",\"a\",\"a\"]}";
     
-    ctx.builder = jsonlite_builder_init(JSON_DEPTH);
+    ctx.builder = jsonlite_builder_init(JSON_DEPTH, jsonlite_stdout_stream);
     jsonlite_builder_set_indentation(ctx.builder, 4);
     
     ctx.parser = jsonlite_parser_init(JSON_DEPTH);
@@ -95,11 +93,8 @@ int main(int argc, const char * argv[]) {
     };
     jsonlite_parser_set_callback(ctx.parser, &cbs);
     jsonlite_parser_tokenize(ctx.parser, json, sizeof(json));
-    jsonlite_builder_data(ctx.builder, &data, &size);
-    printf("%.*s", (int)size, data);
     jsonlite_parser_release(ctx.parser);
     jsonlite_builder_release(ctx.builder);
-    free(data);
     return 0;
 }
 

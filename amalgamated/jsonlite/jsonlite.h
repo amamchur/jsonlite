@@ -573,6 +573,11 @@ extern "C" {
     
     jsonlite_stream jsonlite_mem_stream_init(size_t block_size);
     size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data);
+    
+    jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size);
+    size_t jsonlite_static_mem_stream_written_bytes(jsonlite_stream stream);
+    
+    jsonlite_stream jsonlite_file_stream_init(FILE *file);
    
     extern jsonlite_stream jsonlite_null_stream;
     extern jsonlite_stream jsonlite_stdout_stream;
