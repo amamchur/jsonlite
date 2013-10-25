@@ -156,7 +156,7 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
         }
     }
 
-    if (count >= capacity) {
+    if (count + 1 >= capacity) {
         jsonlite_extend_capacity(pool, index);
     }
     

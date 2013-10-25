@@ -309,8 +309,8 @@
     [parser parse:data];
     STAssertNil(parser.parseError, @"Parsing fails %@", parser.parseError);
     
-    [del release];
     [acc release];
+    [del release];
     [parser release];
 }
 
