@@ -16,6 +16,558 @@
 //  limitations under the License
 
 #ifndef JSONLITE_AMALGAMATED
+#include "../include/jsonlite_builder.h"
+#endif
+
+#include <stdlib.h>
+#include <string.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#define jsonlite_builder_check_depth()                                  \
+do {                                                                    \
+    if (builder->state - builder->stack >= builder->stack_depth - 1) {  \
+        return jsonlite_result_depth_limit;                             \
+    }                                                                   \
+} while (0)                                             
+
+typedef enum {
+    jsonlite_accept_object_begin = 0x0001,
+    jsonlite_accept_object_end = 0x0002,
+    jsonlite_accept_array_begin = 0x0004,
+    jsonlite_accept_array_end = 0x0008,
+    
+    jsonlite_accept_key = 0x0010,
+    jsonlite_accept_string = 0x0020,
+    jsonlite_accept_number = 0x0040,
+    jsonlite_accept_boolean = 0x0080,
+    jsonlite_accept_null = 0x0100,
+    jsonlite_accept_values_only = 0x0200,
+    jsonlite_accept_next = 0x0400,
+    
+    jsonlite_accept_value = 0
+    | jsonlite_accept_object_begin
+    | jsonlite_accept_array_begin
+    | jsonlite_accept_string
+    | jsonlite_accept_number
+    | jsonlite_accept_boolean
+    | jsonlite_accept_null,
+    
+    jsonlite_accept_continue_object = 0
+    | jsonlite_accept_next
+    | jsonlite_accept_key
+    | jsonlite_accept_object_end,
+    jsonlite_accept_continue_array = 0
+    | jsonlite_accept_next
+    | jsonlite_accept_values_only
+    | jsonlite_accept_value
+    | jsonlite_accept_array_end
+    
+} jsonlite_accept;
+
+typedef struct jsonlite_write_state {
+    int accept;
+} jsonlite_write_state;
+
+typedef struct jsonlite_builder_buffer {
+    char data[2048];
+    char *cursor;
+    char *limit;
+    struct jsonlite_builder_buffer *next;
+} jsonlite_builder_buffer;
+
+typedef struct jsonlite_builder_struct {
+    jsonlite_stream stream;
+    jsonlite_write_state *stack;
+    jsonlite_write_state *state;
+    ptrdiff_t stack_depth;
+    
+    char *doubleFormat;
+    
+    size_t indentation;
+} jsonlite_builder_struct;
+
+static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_accept a);
+static void jsonlite_builder_pop_state(jsonlite_builder builder);
+static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder);
+static void jsonlite_builder_raw_char(jsonlite_builder builder, char data);
+static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length);
+static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length);
+static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count);
+
+jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
+    jsonlite_builder builder;
+    
+    depth = depth < 2 ? 2 : depth;
+    
+    builder = (jsonlite_builder)calloc(1, sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state));
+    builder->stream = stream;
+   
+    builder->stack = (jsonlite_write_state *)((uint8_t *)builder + sizeof(jsonlite_builder_struct));
+    builder->stack_depth = depth;
+    builder->state = builder->stack;
+    builder->state->accept = jsonlite_accept_object_begin | jsonlite_accept_array_begin;
+    
+    builder->indentation = 0;
+    jsonlite_builder_set_double_format(builder, "%.16g");
+    return builder;
+}
+
+jsonlite_result jsonlite_builder_release(jsonlite_builder builder) {
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+
+    free(builder->doubleFormat);
+    free(builder);
+    return jsonlite_result_ok;
+}
+
+jsonlite_result jsonlite_builder_set_indentation(jsonlite_builder builder, size_t indentation) {
+    if (builder != NULL) {
+        builder->indentation = indentation;
+        return jsonlite_result_ok;
+    }
+    return jsonlite_result_invalid_argument;
+}
+
+jsonlite_result jsonlite_builder_set_double_format(jsonlite_builder builder, const char *format) {
+    if (builder != NULL && format != NULL) {
+        builder->doubleFormat = strdup(format);
+        return jsonlite_result_ok;
+    }
+    return jsonlite_result_invalid_argument;
+}
+
+static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_accept a) {
+    return (builder->state->accept & a) == a;
+}
+
+static void jsonlite_builder_push_state(jsonlite_builder builder) {
+    builder->state++;
+}
+
+static void jsonlite_builder_pop_state(jsonlite_builder builder) {
+    jsonlite_write_state *ws = --builder->state;
+    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+        ws->accept = jsonlite_accept_continue_array;
+    } else {
+        ws->accept = jsonlite_accept_continue_object;
+    }
+}
+
+static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder) {
+    jsonlite_write_state *ws = builder->state;
+    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+        if (jsonlite_builder_accept(builder, jsonlite_accept_next) ) {
+            jsonlite_builder_raw_char(builder, ',');
+        }
+        if (builder->indentation != 0) {
+            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
+        }
+    } else {
+        ws->accept &= ~jsonlite_accept_value;
+        ws->accept |= jsonlite_accept_key;
+    }
+    ws->accept |= jsonlite_accept_next;
+}
+
+jsonlite_result jsonlite_builder_object_begin(jsonlite_builder builder) {
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    jsonlite_builder_check_depth();
+
+    if (jsonlite_builder_accept(builder, jsonlite_accept_object_begin)) {
+        jsonlite_builder_prepare_value_writing(builder);
+        jsonlite_builder_push_state(builder);
+        builder->state->accept = jsonlite_accept_object_end | jsonlite_accept_key;
+        jsonlite_builder_raw_char(builder, '{');
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+jsonlite_result jsonlite_builder_object_end(jsonlite_builder builder) {
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+
+    if (jsonlite_builder_accept(builder, jsonlite_accept_object_end)) {
+        jsonlite_builder_pop_state(builder);
+        if (builder->indentation != 0) {
+            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
+        }
+        jsonlite_builder_raw_char(builder, '}');
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+jsonlite_result jsonlite_builder_array_begin(jsonlite_builder builder) {
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    jsonlite_builder_check_depth();
+    
+    if (jsonlite_builder_accept(builder, jsonlite_accept_array_begin)) {
+        jsonlite_builder_prepare_value_writing(builder);
+        jsonlite_builder_push_state(builder);
+        builder->state->accept = jsonlite_accept_array_end 
+            | jsonlite_accept_value 
+            | jsonlite_accept_values_only;
+        jsonlite_builder_raw_char(builder, '[');
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+jsonlite_result jsonlite_builder_array_end(jsonlite_builder builder) {
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+
+    if (jsonlite_builder_accept(builder, jsonlite_accept_array_end)) {
+        jsonlite_builder_pop_state(builder);
+        if (builder->indentation != 0) {
+            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
+        }
+        jsonlite_builder_raw_char(builder, ']');
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length) {
+    size_t i;
+    jsonlite_builder_raw_char(builder, '\"');
+    for (i = 0; i < length; i++) {
+        switch (data[i]) {
+            case '"':
+                jsonlite_builder_raw(builder, "\\\"", 2);
+                break;
+            case '\\':
+                jsonlite_builder_raw(builder, "\\\\", 2);
+                break;
+            case '\b':
+                jsonlite_builder_raw(builder, "\\b", 2);
+                break;
+            case '\f':
+                jsonlite_builder_raw(builder, "\\f", 2);
+                break;
+            case '\n':
+                jsonlite_builder_raw(builder, "\\n", 2);
+                break;
+            case '\r':
+                jsonlite_builder_raw(builder, "\\r", 2);
+                break;
+            case '\t':
+                jsonlite_builder_raw(builder, "\\t", 2);
+                break;
+            default:
+                jsonlite_builder_raw_char(builder, data[i]);
+                break;
+        }
+    }
+    jsonlite_builder_raw_char(builder, '\"');
+}
+
+jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const char *data, size_t length) {
+	jsonlite_write_state *ws;
+
+    if (builder == NULL || data == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    ws = builder->state;
+
+    if (jsonlite_builder_accept(builder, jsonlite_accept_key) ) {
+        if (jsonlite_builder_accept(builder, jsonlite_accept_next) ) {
+            jsonlite_builder_raw_char(builder, ',');
+        }
+        if (builder->indentation != 0) {
+            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
+        }
+        jsonlite_builder_write_uft8(builder, data, length);
+        if (builder->indentation != 0) {
+            jsonlite_builder_raw(builder, ": ", 2);
+        } else {
+            jsonlite_builder_raw_char(builder, ':');
+        }
+        ws->accept = jsonlite_accept_value;
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+jsonlite_result jsonlite_builder_string(jsonlite_builder builder, const char *data, size_t length) {
+	jsonlite_write_state *ws;
+
+    if (builder == NULL || data == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    ws = builder->state;
+
+    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
+        jsonlite_builder_prepare_value_writing(builder);
+        jsonlite_builder_write_uft8(builder, data, length);
+        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+            ws->accept = jsonlite_accept_continue_array;
+        } else {
+            ws->accept = jsonlite_accept_continue_object;
+        }
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+jsonlite_result jsonlite_builder_int(jsonlite_builder builder, long long value) {
+	jsonlite_write_state *ws;
+	char buff[128];
+	int size = 0;
+
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    ws = builder->state;
+
+    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
+        jsonlite_builder_prepare_value_writing(builder);
+        size = sprintf(buff, "%lld", value);
+        jsonlite_builder_raw(builder, buff, size);
+        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+            ws->accept = jsonlite_accept_continue_array;
+        } else {
+            ws->accept = jsonlite_accept_continue_object;
+        }
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+jsonlite_result jsonlite_builder_double(jsonlite_builder builder, double value) {
+	jsonlite_write_state *ws;
+	char buff[128];
+	int size = 0;
+
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    ws = builder->state;
+
+    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
+        jsonlite_builder_prepare_value_writing(builder);
+        size = sprintf(buff, builder->doubleFormat, value);
+        jsonlite_builder_raw(builder, buff, size);
+        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+            ws->accept = jsonlite_accept_continue_array;
+        } else {
+            ws->accept = jsonlite_accept_continue_object;
+        }
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+jsonlite_result jsonlite_builder_true(jsonlite_builder builder) {
+	static const char value[] = "true";
+    jsonlite_write_state *ws;
+
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+	ws = builder->state;
+    if (!(jsonlite_builder_accept(builder, jsonlite_accept_value) )) {
+        
+        return jsonlite_result_not_allowed;
+    }
+    
+    jsonlite_builder_prepare_value_writing(builder);
+    jsonlite_builder_raw(builder, (char *)value, sizeof(value) - 1);
+    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+        ws->accept = jsonlite_accept_continue_array;
+    } else {
+        ws->accept = jsonlite_accept_continue_object;
+    }
+    return jsonlite_result_ok;
+}
+
+jsonlite_result jsonlite_builder_false(jsonlite_builder builder) {
+	static const char value[] = "false";
+	jsonlite_write_state *ws;
+
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    ws = builder->state;
+    if (!(jsonlite_builder_accept(builder, jsonlite_accept_value) )) {
+        
+        return jsonlite_result_not_allowed;
+    }
+
+    jsonlite_builder_prepare_value_writing(builder);
+    jsonlite_builder_raw(builder, (char *)value, sizeof(value) - 1);
+    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+        ws->accept = jsonlite_accept_continue_array;
+    } else {
+        ws->accept = jsonlite_accept_continue_object;
+    }
+    return jsonlite_result_ok;
+}
+
+jsonlite_result jsonlite_builder_null(jsonlite_builder builder) {
+	static const char value[] = "null";
+    jsonlite_write_state *ws;
+
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+	ws = builder->state;
+    if (!(jsonlite_builder_accept(builder, jsonlite_accept_value) )) {
+        
+        return jsonlite_result_not_allowed;
+    }
+    
+    jsonlite_builder_prepare_value_writing(builder);
+    jsonlite_builder_raw(builder, (char *)value, sizeof(value) - 1);
+    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+        ws->accept = jsonlite_accept_continue_array;
+    } else {
+        ws->accept = jsonlite_accept_continue_object;
+    }
+    return jsonlite_result_ok;
+}
+ 
+static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length) {
+    jsonlite_stream_write(builder->stream, data, length);
+}
+
+static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count) {
+    int i = 0;
+    for (; i < count; i++) {
+        jsonlite_stream_write(builder->stream, &ch, 1);
+    }
+}
+
+static  void jsonlite_builder_raw_char(jsonlite_builder builder, char data) {
+    jsonlite_stream_write(builder->stream, &data, 1);
+}
+
+jsonlite_result jsonlite_builder_raw_key(jsonlite_builder builder, const void *data, size_t length) {
+	jsonlite_write_state *ws;
+
+    if (builder == NULL || data == NULL || length == 0) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    ws = builder->state;
+    if (jsonlite_builder_accept(builder, jsonlite_accept_key) ) {
+        if (jsonlite_builder_accept(builder, jsonlite_accept_next) ) {
+            jsonlite_builder_raw(builder, ",", 1);
+        }
+        
+        if (builder->indentation != 0) {
+            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
+        }
+        jsonlite_builder_raw_char(builder, '\"');
+        jsonlite_builder_raw(builder, data, length);
+        jsonlite_builder_raw_char(builder, '\"');
+        if (builder->indentation != 0) {
+            jsonlite_builder_raw(builder, ": ", 2);
+        } else {
+            jsonlite_builder_raw_char(builder, ':');
+        }
+        ws->accept = jsonlite_accept_value;
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+jsonlite_result jsonlite_builder_raw_string(jsonlite_builder builder, const void *data, size_t length) {
+    jsonlite_write_state *ws;
+    
+    if (builder == NULL || data == NULL || length == 0) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    ws = builder->state;
+    
+    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
+        jsonlite_builder_prepare_value_writing(builder);
+        jsonlite_builder_raw_char(builder, '\"');
+        jsonlite_builder_raw(builder, data, length);
+        jsonlite_builder_raw_char(builder, '\"');
+        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+            ws->accept = jsonlite_accept_continue_array;
+        } else {
+            ws->accept = jsonlite_accept_continue_object;
+        }
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+
+jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void *data, size_t length) {
+	jsonlite_write_state *ws;
+
+    if (builder == NULL || data == NULL || length == 0) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    ws = builder->state;
+
+    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
+        jsonlite_builder_prepare_value_writing(builder);
+        jsonlite_builder_raw(builder, data, length);
+        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
+            ws->accept = jsonlite_accept_continue_array;
+        } else {
+            ws->accept = jsonlite_accept_continue_object;
+        }
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+}
+//
+//  Copyright 2012-2013, Andrii Mamchur
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License
+
+#ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_parser.h"
 #endif
 
@@ -594,618 +1146,158 @@ end:
 //  limitations under the License
 
 #ifndef JSONLITE_AMALGAMATED
-#include "../include/jsonlite_builder.h"
+#include "../include/jsonlite_stream.h"
 #endif
 
 #include <stdlib.h>
 #include <string.h>
-#include <stddef.h>
-#include <stdint.h>
 
-#define jsonlite_builder_check_depth()                                  \
-do {                                                                    \
-    if (builder->state - builder->stack >= builder->stack_depth - 1) {  \
-        return jsonlite_result_depth_limit;                             \
-    }                                                                   \
-} while (0)                                             
+#define CAST_TO_MEM_STREAM(S)   (jsonlite_mem_stream *)((uint8_t *)(S) + sizeof(jsonlite_stream_struct))
+#define SIZE_OF_MEM_STREAM()    (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_mem_stream))
 
-typedef enum {
-    jsonlite_accept_object_begin = 0x0001,
-    jsonlite_accept_object_end = 0x0002,
-    jsonlite_accept_array_begin = 0x0004,
-    jsonlite_accept_array_end = 0x0008,
-    
-    jsonlite_accept_key = 0x0010,
-    jsonlite_accept_string = 0x0020,
-    jsonlite_accept_number = 0x0040,
-    jsonlite_accept_boolean = 0x0080,
-    jsonlite_accept_null = 0x0100,
-    jsonlite_accept_values_only = 0x0200,
-    jsonlite_accept_next = 0x0400,
-    
-    jsonlite_accept_value = 0
-    | jsonlite_accept_object_begin
-    | jsonlite_accept_array_begin
-    | jsonlite_accept_string
-    | jsonlite_accept_number
-    | jsonlite_accept_boolean
-    | jsonlite_accept_null,
-    
-    jsonlite_accept_continue_object = 0
-    | jsonlite_accept_next
-    | jsonlite_accept_key
-    | jsonlite_accept_object_end,
-    jsonlite_accept_continue_array = 0
-    | jsonlite_accept_next
-    | jsonlite_accept_values_only
-    | jsonlite_accept_value
-    | jsonlite_accept_array_end
-    
-} jsonlite_accept;
+struct jsonlite_stream_struct {
+    jsonlite_stream_write_fn write;
+    jsonlite_stream_release_fn release;
+} jsonlite_stream_struct;
 
-typedef struct jsonlite_write_state {
-    int accept;
-} jsonlite_write_state;
+typedef struct jsonlite_mem_stream_block {
+    struct jsonlite_mem_stream_block *next;
+    uint8_t *data;
+} jsonlite_mem_stream_block;
 
-typedef struct jsonlite_builder_buffer {
-    char data[2048];
-    char *cursor;
-    char *limit;
-    struct jsonlite_builder_buffer *next;
-} jsonlite_builder_buffer;
+typedef struct jsonlite_mem_stream {
+    size_t block_size;
+    uint8_t *cursor;
+    uint8_t *limit;
+    struct jsonlite_mem_stream_block *first;
+    struct jsonlite_mem_stream_block *current;
+} jsonlite_mem_stream;
 
-typedef struct jsonlite_builder_struct {
-    jsonlite_builder_buffer *first;
-    jsonlite_builder_buffer *buffer;
+int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    if (stream == NULL) {
+        return -1;
+    }
     
-    jsonlite_write_state *stack;
-    jsonlite_write_state *state;
-    ptrdiff_t stack_depth;
+    if (data == NULL) {
+        return -1;
+    }
     
-    char *doubleFormat;
-    
-    size_t indentation;
-} jsonlite_builder_struct;
-
-static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_accept a);
-static void jsonlite_builder_pop_state(jsonlite_builder builder);
-static void jsonlite_builder_push_buffer(jsonlite_builder builder);
-static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder);
-static void jsonlite_builder_raw_char(jsonlite_builder builder, char data);
-static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length);
-static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length);
-static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count);
-
-jsonlite_builder jsonlite_builder_init(size_t depth) {
-    jsonlite_builder builder;
-    
-    depth = depth < 2 ? 2 : depth;
-    
-    builder = (jsonlite_builder)calloc(1, sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state));
-    builder->first = (jsonlite_builder_buffer *)malloc(sizeof(jsonlite_builder_buffer));
-    builder->buffer = builder->first;
-    builder->buffer->cursor = builder->buffer->data;
-    builder->buffer->limit = builder->buffer->data + sizeof(builder->buffer->data);
-    builder->buffer->next = NULL;
-    
-    builder->stack = (jsonlite_write_state *)((uint8_t *)builder + sizeof(jsonlite_builder_struct));
-    builder->stack_depth = depth;
-    builder->state = builder->stack;
-    builder->state->accept = jsonlite_accept_object_begin | jsonlite_accept_array_begin;
-    
-    builder->indentation = 0;
-    jsonlite_builder_set_double_format(builder, "%.16g");
-    return builder;
+    return stream->write(stream, data, length);
 }
 
-jsonlite_result jsonlite_builder_release(jsonlite_builder builder) {
-	jsonlite_builder_buffer *b = NULL;
-    void *prev;
-    
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
+void jsonlite_stream_release(jsonlite_stream stream) {
+    if (stream == NULL) {
+        return;
     }
+    
+    if (stream->release != NULL) {
+        stream->release(stream);
+    }
+}
 
-    for (b = builder->first; b != NULL;) {
-        prev = b;        
-        b = b->next;
+static int jsonlite_mem_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
+    size_t write_limit = mem_stream->limit - mem_stream->cursor;
+    if (write_limit >= length) {
+        memcpy(mem_stream->cursor, data, length); // LCOV_EXCL_LINE
+        mem_stream->cursor += length;
+    } else {
+        memcpy(mem_stream->cursor, data, write_limit); // LCOV_EXCL_LINE
+        mem_stream->cursor += write_limit;
+        
+        size_t size = sizeof(jsonlite_mem_stream_block) + mem_stream->block_size;
+        jsonlite_mem_stream_block *block = malloc(size);
+        mem_stream->current->next = block;
+        mem_stream->current = block;
+        block->data = (uint8_t *)block + sizeof(jsonlite_mem_stream_block);
+        block->next = NULL;
+        mem_stream->cursor = block->data;
+        mem_stream->limit = block->data + mem_stream->block_size;
+        
+        jsonlite_mem_stream_write(stream, (char *)data + write_limit, length - write_limit);
+    }
+    
+    return (int)length;
+}
+
+static void jsonlite_mem_stream_release(jsonlite_stream stream) {
+    jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
+    jsonlite_mem_stream_block *block = mem_stream->first;
+    void *prev;
+    for (; block != NULL;) {
+        prev = block;
+        block = block->next;
         free(prev);
     }
-
-    free(builder->doubleFormat);
-    free(builder);
-    return jsonlite_result_ok;
-}
-
-jsonlite_result jsonlite_builder_set_indentation(jsonlite_builder builder, size_t indentation) {
-    if (builder != NULL) {
-        builder->indentation = indentation;
-        return jsonlite_result_ok;
-    }
-    return jsonlite_result_invalid_argument;
-}
-
-jsonlite_result jsonlite_builder_set_double_format(jsonlite_builder builder, const char *format) {
-    if (builder != NULL && format != NULL) {
-        builder->doubleFormat = strdup(format);
-        return jsonlite_result_ok;
-    }
-    return jsonlite_result_invalid_argument;
-}
-
-static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_accept a) {
-    return (builder->state->accept & a) == a;
-}
-
-static void jsonlite_builder_push_state(jsonlite_builder builder) {
-    builder->state++;
-}
-
-static void jsonlite_builder_pop_state(jsonlite_builder builder) {
-    jsonlite_write_state *ws = --builder->state;
-    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-        ws->accept = jsonlite_accept_continue_array;
-    } else {
-        ws->accept = jsonlite_accept_continue_object;
-    }
-}
-
-static void jsonlite_builder_push_buffer(jsonlite_builder builder) {
-    jsonlite_builder_buffer *buffer = builder->buffer;
-    buffer->next = malloc(sizeof(jsonlite_builder_buffer));
-    buffer = builder->buffer = buffer->next;
     
-    buffer->cursor = buffer->data;
-    buffer->limit = buffer->data + sizeof(buffer->data);
-    buffer->next = NULL;
+    free((void *)stream);
 }
 
-static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder) {
-    jsonlite_write_state *ws = builder->state;
-    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-        if (jsonlite_builder_accept(builder, jsonlite_accept_next) ) {
-            jsonlite_builder_raw_char(builder, ',');
-        }
-        if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
-            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
-        }
-    } else {
-        ws->accept &= ~jsonlite_accept_value;
-        ws->accept |= jsonlite_accept_key;
-    }
-    ws->accept |= jsonlite_accept_next;
+jsonlite_stream jsonlite_mem_stream_init(size_t block_size) {
+    size_t size = SIZE_OF_MEM_STREAM();
+    
+    struct jsonlite_stream_struct *stream = malloc(size);
+    stream->write = jsonlite_mem_stream_write;
+    stream->release = jsonlite_mem_stream_release;
+
+    jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
+    jsonlite_mem_stream_block *first = malloc(sizeof(jsonlite_mem_stream_block) + block_size);
+    first->data = (uint8_t *)first + sizeof(jsonlite_mem_stream_block);
+    first->next = NULL;
+
+    mem_stream->block_size = block_size;
+    mem_stream->first = first;
+    mem_stream->current = first;
+    mem_stream->cursor = first->data;
+    mem_stream->limit = first->data + block_size;
+    return stream;
 }
 
-jsonlite_result jsonlite_builder_object_begin(jsonlite_builder builder) {
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
+size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data) {
+    jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
+    jsonlite_mem_stream_block *block = NULL;
+    uint8_t *buff = NULL;
+    size_t size = 0;
     
-    jsonlite_builder_check_depth();
-
-    if (jsonlite_builder_accept(builder, jsonlite_accept_object_begin)) {
-        jsonlite_builder_prepare_value_writing(builder);
-        jsonlite_builder_push_state(builder);
-        builder->state->accept = jsonlite_accept_object_end | jsonlite_accept_key;
-        jsonlite_builder_raw_char(builder, '{');
-        return jsonlite_result_ok;
-    }
-    
-    return jsonlite_result_not_allowed;
-}
-
-jsonlite_result jsonlite_builder_object_end(jsonlite_builder builder) {
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-
-    if (jsonlite_builder_accept(builder, jsonlite_accept_object_end)) {
-        jsonlite_builder_pop_state(builder);
-        if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
-            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
-        }
-        jsonlite_builder_raw_char(builder, '}');
-        return jsonlite_result_ok;
-    }
-    
-    return jsonlite_result_not_allowed;
-}
-
-jsonlite_result jsonlite_builder_array_begin(jsonlite_builder builder) {
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    jsonlite_builder_check_depth();
-    
-    if (jsonlite_builder_accept(builder, jsonlite_accept_array_begin)) {
-        jsonlite_builder_prepare_value_writing(builder);
-        jsonlite_builder_push_state(builder);
-        builder->state->accept = jsonlite_accept_array_end 
-            | jsonlite_accept_value 
-            | jsonlite_accept_values_only;
-        jsonlite_builder_raw_char(builder, '[');
-        return jsonlite_result_ok;
-    }
-    
-    return jsonlite_result_not_allowed;
-}
-
-jsonlite_result jsonlite_builder_array_end(jsonlite_builder builder) {
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-
-    if (jsonlite_builder_accept(builder, jsonlite_accept_array_end)) {
-        jsonlite_builder_pop_state(builder);
-        if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
-            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
-        }
-        jsonlite_builder_raw_char(builder, ']');
-        return jsonlite_result_ok;
-    }
-    
-    return jsonlite_result_not_allowed;
-}
-
-static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length) {
-    size_t i;
-    jsonlite_builder_raw_char(builder, '\"');
-    for (i = 0; i < length; i++) {
-        switch (data[i]) {
-            case '"':
-                jsonlite_builder_raw(builder, "\\\"", 2);
-                break;
-            case '\\':
-                jsonlite_builder_raw(builder, "\\\\", 2);
-                break;
-            case '\b':
-                jsonlite_builder_raw(builder, "\\b", 2);
-                break;
-            case '\f':
-                jsonlite_builder_raw(builder, "\\f", 2);
-                break;
-            case '\n':
-                jsonlite_builder_raw(builder, "\\n", 2);
-                break;
-            case '\r':
-                jsonlite_builder_raw(builder, "\\r", 2);
-                break;
-            case '\t':
-                jsonlite_builder_raw(builder, "\\t", 2);
-                break;
-            default:
-                jsonlite_builder_raw_char(builder, data[i]);
-                break;
-        }
-    }
-    jsonlite_builder_raw_char(builder, '\"');
-}
-
-jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const char *data, size_t length) {
-	jsonlite_write_state *ws;
-
-    if (builder == NULL || data == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    ws = builder->state;
-
-    if (jsonlite_builder_accept(builder, jsonlite_accept_key) ) {
-        if (jsonlite_builder_accept(builder, jsonlite_accept_next) ) {
-            jsonlite_builder_raw_char(builder, ',');
-        }
-        if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
-            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
-        }
-        jsonlite_builder_write_uft8(builder, data, length);
-        if (builder->indentation != 0) {
-            jsonlite_builder_raw(builder, ": ", 2);
+    for (block = mem_stream->first; block != NULL; block = block->next) {
+        if (block->next != NULL) {
+            size += mem_stream->block_size;
         } else {
-            jsonlite_builder_raw_char(builder, ':');
+            size += mem_stream->cursor - block->data;
         }
-        ws->accept = jsonlite_accept_value;
-        return jsonlite_result_ok;
     }
     
-    return jsonlite_result_not_allowed;
-}
-
-jsonlite_result jsonlite_builder_string(jsonlite_builder builder, const char *data, size_t length) {
-	jsonlite_write_state *ws;
-
-    if (builder == NULL || data == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    ws = builder->state;
-
-    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
-        jsonlite_builder_prepare_value_writing(builder);
-        jsonlite_builder_write_uft8(builder, data, length);
-        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-            ws->accept = jsonlite_accept_continue_array;
-        } else {
-            ws->accept = jsonlite_accept_continue_object;
-        }
-        return jsonlite_result_ok;
-    }
-    
-    return jsonlite_result_not_allowed;
-}
-
-jsonlite_result jsonlite_builder_int(jsonlite_builder builder, long long value) {
-	jsonlite_write_state *ws;
-	char buff[128];
-	int size = 0;
-
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    ws = builder->state;
-
-    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
-        jsonlite_builder_prepare_value_writing(builder);
-        size = sprintf(buff, "%lld", value);
-        jsonlite_builder_raw(builder, buff, size);
-        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-            ws->accept = jsonlite_accept_continue_array;
-        } else {
-            ws->accept = jsonlite_accept_continue_object;
-        }
-        return jsonlite_result_ok;
-    }
-    
-    return jsonlite_result_not_allowed;
-}
-
-jsonlite_result jsonlite_builder_double(jsonlite_builder builder, double value) {
-	jsonlite_write_state *ws;
-	char buff[128];
-	int size = 0;
-
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    ws = builder->state;
-
-    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
-        jsonlite_builder_prepare_value_writing(builder);
-        size = sprintf(buff, builder->doubleFormat, value);
-        jsonlite_builder_raw(builder, buff, size);
-        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-            ws->accept = jsonlite_accept_continue_array;
-        } else {
-            ws->accept = jsonlite_accept_continue_object;
-        }
-        return jsonlite_result_ok;
-    }
-    
-    return jsonlite_result_not_allowed;
-}
-
-jsonlite_result jsonlite_builder_true(jsonlite_builder builder) {
-	static const char value[] = "true";
-    jsonlite_write_state *ws;
-
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-	ws = builder->state;
-    if (!(jsonlite_builder_accept(builder, jsonlite_accept_value) )) {
-        
-        return jsonlite_result_not_allowed;
-    }
-    
-    jsonlite_builder_prepare_value_writing(builder);
-    jsonlite_builder_raw(builder, (char *)value, sizeof(value) - 1);
-    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-        ws->accept = jsonlite_accept_continue_array;
+    if (size == 0) {
+        *data = NULL;
     } else {
-        ws->accept = jsonlite_accept_continue_object;
-    }
-    return jsonlite_result_ok;
-}
-
-jsonlite_result jsonlite_builder_false(jsonlite_builder builder) {
-	static const char value[] = "false";
-	jsonlite_write_state *ws;
-
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    ws = builder->state;
-    if (!(jsonlite_builder_accept(builder, jsonlite_accept_value) )) {
-        
-        return jsonlite_result_not_allowed;
-    }
-
-    jsonlite_builder_prepare_value_writing(builder);
-    jsonlite_builder_raw(builder, (char *)value, sizeof(value) - 1);
-    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-        ws->accept = jsonlite_accept_continue_array;
-    } else {
-        ws->accept = jsonlite_accept_continue_object;
-    }
-    return jsonlite_result_ok;
-}
-
-jsonlite_result jsonlite_builder_null(jsonlite_builder builder) {
-	static const char value[] = "null";
-    jsonlite_write_state *ws;
-
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-	ws = builder->state;
-    if (!(jsonlite_builder_accept(builder, jsonlite_accept_value) )) {
-        
-        return jsonlite_result_not_allowed;
-    }
-    
-    jsonlite_builder_prepare_value_writing(builder);
-    jsonlite_builder_raw(builder, (char *)value, sizeof(value) - 1);
-    if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-        ws->accept = jsonlite_accept_continue_array;
-    } else {
-        ws->accept = jsonlite_accept_continue_object;
-    }
-    return jsonlite_result_ok;
-}
- 
-static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length) {
-    jsonlite_builder_buffer *buffer = builder->buffer;
-    size_t write_limit = buffer->limit - buffer->cursor;
-    if (write_limit >= length) {
-        memcpy(buffer->cursor, data, length); // LCOV_EXCL_LINE
-        buffer->cursor += length;
-    } else {
-        memcpy(buffer->cursor, data, write_limit); // LCOV_EXCL_LINE
-        buffer->cursor += write_limit;
-        
-        jsonlite_builder_push_buffer(builder);
-        jsonlite_builder_raw(builder, (char *)data + write_limit, length - write_limit);
-    }
-}
-
-static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count) {
-    jsonlite_builder_buffer *buffer = builder->buffer;
-    size_t write_limit = buffer->limit - buffer->cursor;
-    if (write_limit >= count) {
-        memset(buffer->cursor, ch, count); // LCOV_EXCL_LINE
-        buffer->cursor += count;
-    } else {
-        memset(buffer->cursor, ch, write_limit); // LCOV_EXCL_LINE
-        buffer->cursor += write_limit;
-        
-        jsonlite_builder_push_buffer(builder);
-        jsonlite_builder_repeat(builder, ch, count - write_limit);
-    }
-}
-
-static  void jsonlite_builder_raw_char(jsonlite_builder builder, char data) {
-    jsonlite_builder_buffer *buffer = builder->buffer;
-    if (buffer->cursor >= buffer->limit) {
-        jsonlite_builder_push_buffer(builder);
-    }
-    *builder->buffer->cursor++ = data;
-}
-
-jsonlite_result jsonlite_builder_raw_key(jsonlite_builder builder, const void *data, size_t length) {
-	jsonlite_write_state *ws;
-
-    if (builder == NULL || data == NULL || length == 0) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    ws = builder->state;
-    if (jsonlite_builder_accept(builder, jsonlite_accept_key) ) {
-        if (jsonlite_builder_accept(builder, jsonlite_accept_next) ) {
-            jsonlite_builder_raw(builder, ",", 1);
+        *data = (uint8_t *)malloc(size);
+        buff = *data;
+        for (block = mem_stream->first; block != NULL; block = block->next) {
+            if (block->next != NULL) {
+                memcpy(buff, block->data, mem_stream->block_size); // LCOV_EXCL_LINE
+                buff += mem_stream->block_size;
+            } else {
+                memcpy(buff, block->data, mem_stream->cursor - block->data); // LCOV_EXCL_LINE
+            }
         }
-        
-        if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
-            jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
-        }
-        jsonlite_builder_raw_char(builder, '\"');
-        jsonlite_builder_raw(builder, data, length);
-        jsonlite_builder_raw_char(builder, '\"');
-        if (builder->indentation != 0) {
-            jsonlite_builder_raw(builder, ": ", 2);
-        } else {
-            jsonlite_builder_raw_char(builder, ':');
-        }
-        ws->accept = jsonlite_accept_value;
-        return jsonlite_result_ok;
     }
-    
-    return jsonlite_result_not_allowed;
+
+    return size;
 }
 
-jsonlite_result jsonlite_builder_raw_string(jsonlite_builder builder, const void *data, size_t length) {
-    jsonlite_write_state *ws;
-    
-    if (builder == NULL || data == NULL || length == 0) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    ws = builder->state;
-    
-    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
-        jsonlite_builder_prepare_value_writing(builder);
-        jsonlite_builder_raw_char(builder, '\"');
-        jsonlite_builder_raw(builder, data, length);
-        jsonlite_builder_raw_char(builder, '\"');
-        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-            ws->accept = jsonlite_accept_continue_array;
-        } else {
-            ws->accept = jsonlite_accept_continue_object;
-        }
-        return jsonlite_result_ok;
-    }
-    
-    return jsonlite_result_not_allowed;
+static int jsonlite_null_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    return (int)length;
 }
 
-jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void *data, size_t length) {
-	jsonlite_write_state *ws;
-
-    if (builder == NULL || data == NULL || length == 0) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    ws = builder->state;
-
-    if (jsonlite_builder_accept(builder, jsonlite_accept_value) ) {
-        jsonlite_builder_prepare_value_writing(builder);
-        jsonlite_builder_raw(builder, data, length);
-        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only) ) {
-            ws->accept = jsonlite_accept_continue_array;
-        } else {
-            ws->accept = jsonlite_accept_continue_object;
-        }
-        return jsonlite_result_ok;
-    }
-    
-    return jsonlite_result_not_allowed;
+static int jsonlite_stdout_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    return (int)fwrite(data, 1, length, stdout);
 }
 
-jsonlite_result jsonlite_builder_data(jsonlite_builder builder, char **data, size_t *size) {
-	jsonlite_builder_buffer *b;
-	char *buff = NULL;
+static struct jsonlite_stream_struct jsonlit_stdout_stream_struct = {jsonlite_stdout_stream_write, NULL};
+static struct jsonlite_stream_struct jsonlit_null_stream_struct = {jsonlite_null_stream_write, NULL};
 
-    if (builder == NULL || data == NULL || size == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
- 
-	*size = 0;
-    for (b = builder->first; b != NULL; b = b->next) {
-        *size +=  b->cursor - b->data;
-    }
-    
-    if (*size == 0) {
-        return jsonlite_result_not_allowed;
-    }
-    
-    *data = (char*)calloc(*size, 1);
-    buff = *data; 
-    for (b = builder->first; b != NULL; b = b->next) {
-        size_t s = b->cursor - b->data;
-        memcpy(buff, b->data, s); // LCOV_EXCL_LINE
-        buff += s;
-    }
-    return jsonlite_result_ok;
-}
+jsonlite_stream jsonlite_null_stream = &jsonlit_null_stream_struct;
+jsonlite_stream jsonlite_stdout_stream = &jsonlit_stdout_stream_struct;
 //
 //  Copyright 2012-2013, Andrii Mamchur
 //
@@ -1456,14 +1548,15 @@ done:
 #define JSONLITE_TOKEN_POOL_FRONT 0x80
 #define JSONLITE_TOKEN_POOL_FRONT_MASK (JSONLITE_TOKEN_POOL_FRONT - 1)
 
-typedef struct content_pool_size {
-    jsonlite_token_bucket *buckets[JSONLITE_TOKEN_POOL_FRONT];
-    size_t buckets_length[JSONLITE_TOKEN_POOL_FRONT];
-    size_t buckets_capacity[JSONLITE_TOKEN_POOL_FRONT];
-    
+typedef struct jsonlite_token_block {
+    jsonlite_token_bucket *buckets;
+    size_t capacity;
+} jsonlite_token_block;
+
+typedef struct jsonlite_token_pool_struct {
+    jsonlite_token_block blocks[JSONLITE_TOKEN_POOL_FRONT];    
     uint8_t *content_pool;
-    size_t content_pool_size;
-    
+    size_t content_pool_size;    
     jsonlite_token_pool_release_value_fn release_fn;
     
 } jsonlite_token_pool_struct;
@@ -1472,22 +1565,30 @@ static void jsonlite_extend_capacity(jsonlite_token_pool pool, int index);
 static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *b);
 static int jsonlite_token_compare(const uint8_t *t1, const uint8_t *t2, size_t length);
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
+static jsonlite_token_bucket terminate_backet = {0, NULL, NULL, NULL, 0};
 
 jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value_fn release_fn) {
-    jsonlite_token_pool pool = (jsonlite_token_pool)calloc(1, sizeof(jsonlite_token_pool_struct));
+    jsonlite_token_pool pool = (jsonlite_token_pool)malloc(sizeof(jsonlite_token_pool_struct));
+    int i;
+    for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
+        pool->blocks[i].buckets = &terminate_backet;
+        pool->blocks[i].capacity = 0;
+    }
     pool->release_fn = release_fn;
+    pool->content_pool = NULL;
+    pool->content_pool_size = 0;
     return pool;
 }
 
 void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
-    jsonlite_token_bucket *b;
+    jsonlite_token_bucket *bucket;
     size_t size = pool->content_pool_size;
     int i;
 
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
-        b = pool->buckets[i];
-        if (jsonlite_bucket_not_copied(pool, b)) {
-            size += b->end - b->start;
+        bucket = pool->blocks[i].buckets;
+        if (jsonlite_bucket_not_copied(pool, bucket)) {
+            size += bucket->end - bucket->start;
         }
     }
     
@@ -1504,20 +1605,20 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     
     uint8_t *p = buffer + pool->content_pool_size;    
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
-        b = pool->buckets[i];
-        if (b == NULL) {
+        bucket = pool->blocks[i].buckets;
+        if (bucket->start == NULL) {
             continue;
         }
         
-        if (jsonlite_bucket_not_copied(pool, b)) {
-            size_t length = b->end - b->start;
-            memcpy(p, b->start, length); // LCOV_EXCL_LINE
-            b->start = p,
-            b->end = p + length,
+        if (jsonlite_bucket_not_copied(pool, bucket)) {
+            size_t length = bucket->end - bucket->start;
+            memcpy(p, bucket->start, length); // LCOV_EXCL_LINE
+            bucket->start = p,
+            bucket->end = p + length,
             p += length;
         } else {
-            b->start += offset;
-            b->end += offset;
+            bucket->start += offset;
+            bucket->end += offset;
         }
     }
     
@@ -1527,25 +1628,24 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
 }
 
 void jsonlite_token_pool_release(jsonlite_token_pool pool) {
-    int i, j;
+    int i;
     if (pool == NULL) {
         return;
     }
 
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
-        jsonlite_token_bucket *bucket = pool->buckets[i];
-        if (bucket == NULL) {
+        jsonlite_token_bucket *bucket = pool->blocks[i].buckets;
+        if (bucket->start == NULL) {
             continue;
         }
         
         if (pool->release_fn != NULL) {
-            size_t count = pool->buckets_length[i];
-            for (j = 0; j < count; j++, bucket++) {
+            for (; bucket->start != NULL; bucket++) {
                 pool->release_fn((void *)bucket->value);           
             }
         }
 
-        free(pool->buckets[i]);
+        free(pool->blocks[i].buckets);
     }
     
     free(pool->content_pool);
@@ -1564,9 +1664,10 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
     size_t length = token->end - token->start;
     uint32_t hash = jsonlite_hash(token->start, length);
     uint32_t index = hash & JSONLITE_TOKEN_POOL_FRONT_MASK;
-    jsonlite_token_bucket *bucket = pool->buckets[index];
-    size_t count = pool->buckets_length[index];
-    for (; count > 0; count--, bucket++) {
+    jsonlite_token_bucket *bucket = pool->blocks[index].buckets;
+    size_t capacity = pool->blocks[index].capacity;
+    size_t count = 0;
+    for (; bucket->start != NULL; count++, bucket++) {
         if (bucket->hash != hash) {
             continue;
         }
@@ -1580,15 +1681,16 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
         }
     }
 
-    if (pool->buckets_length[index] >= pool->buckets_capacity[index]) {
+    if (count + 1 >= capacity) {
         jsonlite_extend_capacity(pool, index);
     }
     
-    bucket = pool->buckets[index] + pool->buckets_length[index]++;
+    bucket = pool->blocks[index].buckets + count;
     bucket->hash = hash;
     bucket->start = token->start;
     bucket->end = token->end;
     bucket->value = NULL;
+    bucket[1].start = NULL;
     return bucket;
 }
 
@@ -1597,31 +1699,31 @@ static int jsonlite_token_compare(const uint8_t *t1, const uint8_t *t2, size_t l
 }
 
 static void jsonlite_extend_capacity(jsonlite_token_pool pool, int index) {
-    size_t capacity = pool->buckets_capacity[index];
+    size_t capacity = pool->blocks[index].capacity;
     if (capacity == 0) {
         capacity = 0x10;
     }
     
     size_t size = capacity * sizeof(jsonlite_token_bucket);
-    jsonlite_token_bucket *b = pool->buckets[index];
+    jsonlite_token_bucket *buckets = pool->blocks[index].buckets;
 	jsonlite_token_bucket *extended = (jsonlite_token_bucket *)malloc(2 * size);
     
-    if (b != NULL) {
-        memcpy(extended, b, size); // LCOV_EXCL_LINE
-        free(b);
+    if (buckets->start != NULL) {
+        memcpy(extended, buckets, size); // LCOV_EXCL_LINE
+        free(buckets);
     }
     
-    pool->buckets[index] = extended;
-    pool->buckets_capacity[index] = 2 * capacity;
+    pool->blocks[index].buckets = extended;
+    pool->blocks[index].capacity = 2 * capacity;
 }
 
-static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *b) {
-    if (b == NULL) {
+static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *bucket) {
+    if (bucket->start == NULL) {
         return 0;
     }
     
-    int res = b->start < pool->content_pool;
-    res |= b->start >= pool->content_pool + pool->content_pool_size;
+    int res = bucket->start < pool->content_pool;
+    res |= bucket->start >= pool->content_pool + pool->content_pool_size;
     return res;
 }
 
@@ -1643,7 +1745,7 @@ static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_b
 // 2. It will not produce the same results on little-endian and big-endian
 //    machines.
 
-static uint32_t MurmurHash2 ( const void * key, int len, uint32_t seed )
+static uint32_t MurmurHash2 ( const void * key, int len)
 {
     // 'm' and 'r' are mixing constants generated offline.
     // They're not really 'magic', they just happen to work well.
@@ -1653,7 +1755,7 @@ static uint32_t MurmurHash2 ( const void * key, int len, uint32_t seed )
     
     // Initialize the hash to a 'random' value
     
-    uint32_t h = seed ^ len;
+    uint32_t h = len;
     
     // Mix 4 bytes at a time into the hash
     
@@ -1697,5 +1799,5 @@ static uint32_t MurmurHash2 ( const void * key, int len, uint32_t seed )
 //-----------------------------------------------------------------------------
 
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len) {
-    return MurmurHash2(data, (int)len, 0);
+    return MurmurHash2(data, (int)len);
 }

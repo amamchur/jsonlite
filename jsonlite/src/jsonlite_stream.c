@@ -20,64 +20,110 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CAST_TO_MEM_STREAM(S)   (jsonlite_mem_out_stream *)((uint8_t *)(S) + sizeof(jsonlite_out_stream_struct))
-#define SIZE_OF_MEM_STREAM()    (sizeof(jsonlite_out_stream_struct) + sizeof(jsonlite_out_stream_struct))
+#define CAST_TO_MEM_STREAM(S)   (jsonlite_mem_stream *)((uint8_t *)(S) + sizeof(jsonlite_stream_struct))
+#define SIZE_OF_MEM_STREAM()    (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_mem_stream))
 
-typedef struct jsonlite_mem_out_stream_block {
-    struct jsonlite_mem_out_stream_block *next;
+struct jsonlite_stream_struct {
+    jsonlite_stream_write_fn write;
+    jsonlite_stream_release_fn release;
+} jsonlite_stream_struct;
+
+typedef struct jsonlite_mem_stream_block {
+    struct jsonlite_mem_stream_block *next;
     uint8_t *data;
-} jsonlite_mem_out_stream_block;
+} jsonlite_mem_stream_block;
 
-typedef struct jsonlite_mem_out_stream {
+typedef struct jsonlite_mem_stream {
     size_t block_size;
     uint8_t *cursor;
     uint8_t *limit;
-    struct jsonlite_mem_out_stream_block *first;
-    struct jsonlite_mem_out_stream_block *current;
-} jsonlite_mem_out_stream;
+    struct jsonlite_mem_stream_block *first;
+    struct jsonlite_mem_stream_block *current;
+} jsonlite_mem_stream;
 
-int jsonlite_out_stream_write(jsonlite_out_stream stream, const void *data, size_t length) {
+int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t length) {
     if (stream == NULL) {
+        return -1;
+    }
+    
+    if (data == NULL) {
         return -1;
     }
     
     return stream->write(stream, data, length);
 }
 
-static int jsonlite_mem_stream_write(jsonlite_out_stream stream, const void *data, size_t length) {
-    jsonlite_mem_out_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
+void jsonlite_stream_release(jsonlite_stream stream) {
+    if (stream == NULL) {
+        return;
+    }
+    
+    if (stream->release != NULL) {
+        stream->release(stream);
+    }
+}
+
+static int jsonlite_mem_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
     size_t write_limit = mem_stream->limit - mem_stream->cursor;
     if (write_limit >= length) {
         memcpy(mem_stream->cursor, data, length); // LCOV_EXCL_LINE
         mem_stream->cursor += length;
-        return (int)length;
+    } else {
+        memcpy(mem_stream->cursor, data, write_limit); // LCOV_EXCL_LINE
+        mem_stream->cursor += write_limit;
+        
+        size_t size = sizeof(jsonlite_mem_stream_block) + mem_stream->block_size;
+        jsonlite_mem_stream_block *block = malloc(size);
+        mem_stream->current->next = block;
+        mem_stream->current = block;
+        block->data = (uint8_t *)block + sizeof(jsonlite_mem_stream_block);
+        block->next = NULL;
+        mem_stream->cursor = block->data;
+        mem_stream->limit = block->data + mem_stream->block_size;
+        
+        jsonlite_mem_stream_write(stream, (char *)data + write_limit, length - write_limit);
     }
     
-    return -1;
+    return (int)length;
 }
 
-jsonlite_out_stream jsonlite_mem_stream_init(size_t block_size) {
+static void jsonlite_mem_stream_release(jsonlite_stream stream) {
+    jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
+    jsonlite_mem_stream_block *block = mem_stream->first;
+    void *prev;
+    for (; block != NULL;) {
+        prev = block;
+        block = block->next;
+        free(prev);
+    }
+    
+    free((void *)stream);
+}
+
+jsonlite_stream jsonlite_mem_stream_init(size_t block_size) {
     size_t size = SIZE_OF_MEM_STREAM();
     
-    jsonlite_out_stream stream = malloc(size);
+    struct jsonlite_stream_struct *stream = malloc(size);
     stream->write = jsonlite_mem_stream_write;
-    
-    jsonlite_mem_out_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
-    jsonlite_mem_out_stream_block *first = malloc(sizeof(jsonlite_mem_out_stream_block) + block_size);
-    first->data = (uint8_t *)first + sizeof(jsonlite_mem_out_stream_block);
+    stream->release = jsonlite_mem_stream_release;
+
+    jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
+    jsonlite_mem_stream_block *first = malloc(sizeof(jsonlite_mem_stream_block) + block_size);
+    first->data = (uint8_t *)first + sizeof(jsonlite_mem_stream_block);
     first->next = NULL;
-    
+
     mem_stream->block_size = block_size;
     mem_stream->first = first;
-    mem_stream->current = NULL;
+    mem_stream->current = first;
     mem_stream->cursor = first->data;
     mem_stream->limit = first->data + block_size;
     return stream;
 }
 
-size_t jsonlite_mem_stream_data(jsonlite_out_stream stream, uint8_t **data) {
-    jsonlite_mem_out_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
-    jsonlite_mem_out_stream_block *block = NULL;
+size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data) {
+    jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
+    jsonlite_mem_stream_block *block = NULL;
     uint8_t *buff = NULL;
     size_t size = 0;
     
@@ -96,10 +142,10 @@ size_t jsonlite_mem_stream_data(jsonlite_out_stream stream, uint8_t **data) {
         buff = *data;
         for (block = mem_stream->first; block != NULL; block = block->next) {
             if (block->next != NULL) {
-                memcpy(buff, block->data, mem_stream->block_size);
+                memcpy(buff, block->data, mem_stream->block_size); // LCOV_EXCL_LINE
                 buff += mem_stream->block_size;
             } else {
-                memcpy(buff, block->data, mem_stream->cursor - block->data);
+                memcpy(buff, block->data, mem_stream->cursor - block->data); // LCOV_EXCL_LINE
             }
         }
     }
@@ -107,15 +153,16 @@ size_t jsonlite_mem_stream_data(jsonlite_out_stream stream, uint8_t **data) {
     return size;
 }
 
-void jsonlite_mem_stream_release(jsonlite_out_stream stream) {
-    jsonlite_mem_out_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
-    jsonlite_mem_out_stream_block *block = mem_stream->first;
-    void *prev;
-    for (; block != NULL;) {
-        prev = block;
-        block = block->next;
-        free(prev);
-    }
-    
-    free(stream);
+static int jsonlite_null_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    return (int)length;
 }
+
+static int jsonlite_stdout_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    return (int)fwrite(data, 1, length, stdout);
+}
+
+static struct jsonlite_stream_struct jsonlit_stdout_stream_struct = {jsonlite_stdout_stream_write, NULL};
+static struct jsonlite_stream_struct jsonlit_null_stream_struct = {jsonlite_null_stream_write, NULL};
+
+jsonlite_stream jsonlite_null_stream = &jsonlit_null_stream_struct;
+jsonlite_stream jsonlite_stdout_stream = &jsonlit_stdout_stream_struct;

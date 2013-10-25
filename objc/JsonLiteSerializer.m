@@ -158,7 +158,8 @@ static int is_float(CFNumberRef number) {
         jsonlite_builder_release(bs);        
     }    
     
-    bs = jsonlite_builder_init(16);
+    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    bs = jsonlite_builder_init(16, stream);
     jsonlite_builder_set_indentation(bs, indentation > 0 ? (size_t)indentation : 0);
     
     if ([obj isKindOfClass:[NSArray class]]) {
@@ -169,9 +170,8 @@ static int is_float(CFNumberRef number) {
         [self serializeProperties:obj];
     }
 
-    char *data = NULL;
-    size_t size = 0;
-    jsonlite_builder_data(bs, &data, &size);    
+    uint8_t *data = NULL;
+    size_t size = jsonlite_mem_stream_data(stream, &data);  
     NSData *result = [[NSData alloc] initWithBytesNoCopy:data length:size freeWhenDone:YES];
     return [result autorelease];
 }

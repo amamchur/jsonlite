@@ -19,21 +19,27 @@
 #include <stdio.h>
 #include <stdint.h>
 
-struct jsonlite_out_stream_struct;
-typedef struct jsonlite_out_stream_struct* jsonlite_out_stream;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-typedef int (*jsonlite_out_stream_write_fn)(jsonlite_out_stream stream, const void *data, size_t length);
+    struct jsonlite_stream_struct;
+    typedef struct jsonlite_stream_struct const * jsonlite_stream;
 
-struct jsonlite_out_stream_struct {
-    void *internal;
+    typedef int (*jsonlite_stream_write_fn)(jsonlite_stream stream, const void *data, size_t length);
+    typedef void (*jsonlite_stream_release_fn)(jsonlite_stream stream);
+
+    int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t length);
+    void jsonlite_stream_release(jsonlite_stream stream);
     
-    jsonlite_out_stream_write_fn write;
-} jsonlite_out_stream_struct;
+    jsonlite_stream jsonlite_mem_stream_init(size_t block_size);
+    size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data);
+   
+    extern jsonlite_stream jsonlite_null_stream;
+    extern jsonlite_stream jsonlite_stdout_stream;
 
-int jsonlite_out_stream_write(jsonlite_out_stream stream, const void *data, size_t length);
-
-jsonlite_out_stream jsonlite_mem_stream_init(size_t block_size);
-size_t jsonlite_mem_stream_data(jsonlite_out_stream stream, uint8_t **data);
-void jsonlite_mem_stream_release(jsonlite_out_stream stream);
+#ifdef __cplusplus
+}
+#endif
 
 #endif

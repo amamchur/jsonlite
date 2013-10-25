@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include "jsonlite_types.h"
+#include "jsonlite_stream.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,7 +35,7 @@ extern "C" {
      * @param depth the builder depth
      * @return jsonlite_builder object
      */
-    jsonlite_builder jsonlite_builder_init(size_t depth);
+    jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream);
     
     /** \brief Releases builder object.
      *
@@ -244,20 +245,6 @@ extern "C" {
      * otherwise jsonlite_result_ok.
      */
     jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void *data, size_t length);
-    
-    /** \brief Gets buffer data.
-     *
-     * You are responsible to free buffer using free function.
-     * @see jsonlite_builder
-     * @see jsonlite_result
-     * @param builder the builder object
-     * @param[out] buffer the output buffer
-     * @param[out] size the buffer size
-     * @return jsonlite_result_invalid_argument when builder, buffer or size are NULL;
-     * jsonlite_result_not_allowed when operation is not allowed;
-     * otherwise jsonlite_result_ok.
-     */
-    jsonlite_result jsonlite_builder_data(jsonlite_builder builder, char **buffer, size_t *size);
 
 #ifdef __cplusplus
 }

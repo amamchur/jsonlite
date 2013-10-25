@@ -75,9 +75,7 @@ typedef struct jsonlite_builder_buffer {
 } jsonlite_builder_buffer;
 
 typedef struct jsonlite_builder_struct {
-    jsonlite_builder_buffer *first;
-    jsonlite_builder_buffer *buffer;
-    
+    jsonlite_stream stream;
     jsonlite_write_state *stack;
     jsonlite_write_state *state;
     ptrdiff_t stack_depth;
@@ -89,25 +87,20 @@ typedef struct jsonlite_builder_struct {
 
 static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_accept a);
 static void jsonlite_builder_pop_state(jsonlite_builder builder);
-static void jsonlite_builder_push_buffer(jsonlite_builder builder);
 static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder);
 static void jsonlite_builder_raw_char(jsonlite_builder builder, char data);
 static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length);
 static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length);
 static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count);
 
-jsonlite_builder jsonlite_builder_init(size_t depth) {
+jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
     jsonlite_builder builder;
     
     depth = depth < 2 ? 2 : depth;
     
     builder = (jsonlite_builder)calloc(1, sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state));
-    builder->first = (jsonlite_builder_buffer *)malloc(sizeof(jsonlite_builder_buffer));
-    builder->buffer = builder->first;
-    builder->buffer->cursor = builder->buffer->data;
-    builder->buffer->limit = builder->buffer->data + sizeof(builder->buffer->data);
-    builder->buffer->next = NULL;
-    
+    builder->stream = stream;
+   
     builder->stack = (jsonlite_write_state *)((uint8_t *)builder + sizeof(jsonlite_builder_struct));
     builder->stack_depth = depth;
     builder->state = builder->stack;
@@ -119,17 +112,8 @@ jsonlite_builder jsonlite_builder_init(size_t depth) {
 }
 
 jsonlite_result jsonlite_builder_release(jsonlite_builder builder) {
-	jsonlite_builder_buffer *b = NULL;
-    void *prev;
-    
     if (builder == NULL) {
         return jsonlite_result_invalid_argument;
-    }
-
-    for (b = builder->first; b != NULL;) {
-        prev = b;        
-        b = b->next;
-        free(prev);
     }
 
     free(builder->doubleFormat);
@@ -168,16 +152,6 @@ static void jsonlite_builder_pop_state(jsonlite_builder builder) {
     } else {
         ws->accept = jsonlite_accept_continue_object;
     }
-}
-
-static void jsonlite_builder_push_buffer(jsonlite_builder builder) {
-    jsonlite_builder_buffer *buffer = builder->buffer;
-    buffer->next = malloc(sizeof(jsonlite_builder_buffer));
-    buffer = builder->buffer = buffer->next;
-    
-    buffer->cursor = buffer->data;
-    buffer->limit = buffer->data + sizeof(buffer->data);
-    buffer->next = NULL;
 }
 
 static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder) {
@@ -483,41 +457,18 @@ jsonlite_result jsonlite_builder_null(jsonlite_builder builder) {
 }
  
 static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length) {
-    jsonlite_builder_buffer *buffer = builder->buffer;
-    size_t write_limit = buffer->limit - buffer->cursor;
-    if (write_limit >= length) {
-        memcpy(buffer->cursor, data, length); // LCOV_EXCL_LINE
-        buffer->cursor += length;
-    } else {
-        memcpy(buffer->cursor, data, write_limit); // LCOV_EXCL_LINE
-        buffer->cursor += write_limit;
-        
-        jsonlite_builder_push_buffer(builder);
-        jsonlite_builder_raw(builder, (char *)data + write_limit, length - write_limit);
-    }
+    jsonlite_stream_write(builder->stream, data, length);
 }
 
 static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count) {
-    jsonlite_builder_buffer *buffer = builder->buffer;
-    size_t write_limit = buffer->limit - buffer->cursor;
-    if (write_limit >= count) {
-        memset(buffer->cursor, ch, count); // LCOV_EXCL_LINE
-        buffer->cursor += count;
-    } else {
-        memset(buffer->cursor, ch, write_limit); // LCOV_EXCL_LINE
-        buffer->cursor += write_limit;
-        
-        jsonlite_builder_push_buffer(builder);
-        jsonlite_builder_repeat(builder, ch, count - write_limit);
+    int i = 0;
+    for (; i < count; i++) {
+        jsonlite_stream_write(builder->stream, &ch, 1);
     }
 }
 
 static  void jsonlite_builder_raw_char(jsonlite_builder builder, char data) {
-    jsonlite_builder_buffer *buffer = builder->buffer;
-    if (buffer->cursor >= buffer->limit) {
-        jsonlite_builder_push_buffer(builder);
-    }
-    *builder->buffer->cursor++ = data;
+    jsonlite_stream_write(builder->stream, &data, 1);
 }
 
 jsonlite_result jsonlite_builder_raw_key(jsonlite_builder builder, const void *data, size_t length) {
@@ -598,31 +549,4 @@ jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void 
     }
     
     return jsonlite_result_not_allowed;
-}
-
-jsonlite_result jsonlite_builder_data(jsonlite_builder builder, char **data, size_t *size) {
-	jsonlite_builder_buffer *b;
-	char *buff = NULL;
-
-    if (builder == NULL || data == NULL || size == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
- 
-	*size = 0;
-    for (b = builder->first; b != NULL; b = b->next) {
-        *size +=  b->cursor - b->data;
-    }
-    
-    if (*size == 0) {
-        return jsonlite_result_not_allowed;
-    }
-    
-    *data = (char*)calloc(*size, 1);
-    buff = *data; 
-    for (b = builder->first; b != NULL; b = b->next) {
-        size_t s = b->cursor - b->data;
-        memcpy(buff, b->data, s); // LCOV_EXCL_LINE
-        buff += s;
-    }
-    return jsonlite_result_ok;
 }

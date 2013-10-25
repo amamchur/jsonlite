@@ -536,6 +536,53 @@ extern "C" {
 #include <stdio.h>
 // #include "jsonlite_types.h"
 
+// #include "jsonlite_stream.h"
+//
+//  Copyright 2012-2013, Andrii Mamchur
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License
+
+#ifndef JSONLITE_STREAM_H
+#define JSONLITE_STREAM_H
+
+#include <stdio.h>
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+    struct jsonlite_stream_struct;
+    typedef struct jsonlite_stream_struct const * jsonlite_stream;
+
+    typedef int (*jsonlite_stream_write_fn)(jsonlite_stream stream, const void *data, size_t length);
+    typedef void (*jsonlite_stream_release_fn)(jsonlite_stream stream);
+
+    int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t length);
+    void jsonlite_stream_release(jsonlite_stream stream);
+    
+    jsonlite_stream jsonlite_mem_stream_init(size_t block_size);
+    size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data);
+   
+    extern jsonlite_stream jsonlite_null_stream;
+    extern jsonlite_stream jsonlite_stdout_stream;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -552,7 +599,7 @@ extern "C" {
      * @param depth the builder depth
      * @return jsonlite_builder object
      */
-    jsonlite_builder jsonlite_builder_init(size_t depth);
+    jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream);
     
     /** \brief Releases builder object.
      *
@@ -762,20 +809,6 @@ extern "C" {
      * otherwise jsonlite_result_ok.
      */
     jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void *data, size_t length);
-    
-    /** \brief Gets buffer data.
-     *
-     * You are responsible to free buffer using free function.
-     * @see jsonlite_builder
-     * @see jsonlite_result
-     * @param builder the builder object
-     * @param[out] buffer the output buffer
-     * @param[out] size the buffer size
-     * @return jsonlite_result_invalid_argument when builder, buffer or size are NULL;
-     * jsonlite_result_not_allowed when operation is not allowed;
-     * otherwise jsonlite_result_ok.
-     */
-    jsonlite_result jsonlite_builder_data(jsonlite_builder builder, char **buffer, size_t *size);
 
 #ifdef __cplusplus
 }
@@ -810,7 +843,7 @@ extern "C" {
 #endif
     
 typedef void (*jsonlite_token_pool_release_value_fn)(void *);
-typedef struct content_pool_size* jsonlite_token_pool;
+typedef struct jsonlite_token_pool_struct* jsonlite_token_pool;
     
 typedef struct jsonlite_token_bucket {
     ptrdiff_t hash;

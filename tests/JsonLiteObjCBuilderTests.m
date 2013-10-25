@@ -94,19 +94,20 @@
 - (void)testBuilderInitialization {
     jsonlite_builder bs = NULL;
     jsonlite_builder_release(bs);
-    bs = jsonlite_builder_init(2);
-    char *buffer = NULL;
-    size_t size = 0;
-    jsonlite_result result = jsonlite_builder_data(bs, &buffer, &size);
-    STAssertTrue(result == jsonlite_result_not_allowed, @"Bad result");
+    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    bs = jsonlite_builder_init(2, stream);
+    uint8_t *buffer = NULL;
+    size_t size = jsonlite_mem_stream_data(stream, &buffer);
+    
     STAssertTrue(buffer == NULL, @"Buffer not null");
     STAssertTrue(size == 0, @"Size not 0");
     jsonlite_builder_release(bs);
+    jsonlite_stream_release(stream);
 }
 
 - (void)manualBuildingWithIndentation:(int)indentation {
-    
-    jsonlite_builder bs = jsonlite_builder_init(32);
+    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_builder bs = jsonlite_builder_init(32, stream);
     STAssertTrue(bs != NULL, @"Builder not created");
     
     jsonlite_result result = jsonlite_result_ok;
@@ -288,31 +289,22 @@
     result = jsonlite_builder_object_end(bs);
     STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
     
-    char *buffer = NULL;
-    size_t size = 0;
+    uint8_t *buffer = NULL;
+    size_t size = jsonlite_mem_stream_data(stream, &buffer);
     
-    result = jsonlite_builder_data(NULL, &buffer, &size);
-    STAssertTrue(result == jsonlite_result_invalid_argument, @"Bad result");
-    
-    result = jsonlite_builder_data(bs, NULL, &size);
-    STAssertTrue(result == jsonlite_result_invalid_argument, @"Bad result");
-    
-    result = jsonlite_builder_data(bs, &buffer, NULL);
-    STAssertTrue(result == jsonlite_result_invalid_argument, @"Bad result");
-    
-    result = jsonlite_builder_data(bs, &buffer, &size);
-    STAssertTrue(result == jsonlite_result_ok, @"Bad result");
-    STAssertTrue(buffer != NULL, @"Buffer not null");
-    STAssertTrue(size > 0, @"Size not 0");
+    STAssertTrue(buffer != NULL, @"Buffer is NULL");
+    STAssertTrue(size != 0, @"Size is zero");
     
     free(buffer);
     
     result = jsonlite_builder_release(bs);
+    jsonlite_stream_release(stream);
     STAssertTrue(result == jsonlite_result_ok, @"Release error");
 }
 
 - (void)testDepth {
-    jsonlite_builder bs = jsonlite_builder_init(2);
+    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_builder bs = jsonlite_builder_init(2, stream);
     jsonlite_result result = jsonlite_builder_object_begin(bs);
     STAssertTrue(result == jsonlite_result_ok, @"Bad result");
     result = jsonlite_builder_key(bs, "a", sizeof("a"));
@@ -320,8 +312,10 @@
     result = jsonlite_builder_object_begin(bs);
     STAssertTrue(result == jsonlite_result_depth_limit, @"Bad result");
     jsonlite_builder_release(bs);
+    jsonlite_stream_release(stream);
     
-    bs = jsonlite_builder_init(3);
+    stream = jsonlite_mem_stream_init(0x100);
+    bs = jsonlite_builder_init(3, stream);
     result = jsonlite_builder_array_begin(bs);
     STAssertTrue(result == jsonlite_result_ok, @"Bad result");
     result = jsonlite_builder_array_begin(bs);
@@ -329,6 +323,7 @@
     result = jsonlite_builder_array_begin(bs);
     STAssertTrue(result == jsonlite_result_depth_limit, @"Bad result");
     jsonlite_builder_release(bs);
+    jsonlite_stream_release(stream);
 }
 
 - (void)testManualBuildingBeautifier {

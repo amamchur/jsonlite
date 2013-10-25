@@ -80,6 +80,7 @@
 		8469957C17EA5B6C00BBB8BA /* JsonLiteParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8469949917EA568400BBB8BA /* JsonLiteParser.h */; };
 		8469957D17EA5B6C00BBB8BA /* JsonLiteSerializer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8469949B17EA568400BBB8BA /* JsonLiteSerializer.h */; };
 		84E6553E1811F4DF000901D2 /* jsonlite.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E6553D1811F4DF000901D2 /* jsonlite.h */; };
+		84F80D32181B11E3006AB5FD /* jsonlite_stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 87737D77181ABDF900D0F12C /* jsonlite_stream.c */; };
 		87737D78181ABDF900D0F12C /* jsonlite_stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 87737D77181ABDF900D0F12C /* jsonlite_stream.c */; };
 		87737D7B181AC0DF00D0F12C /* JsonLiteObjCOutStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 87737D7A181AC0DF00D0F12C /* JsonLiteObjCOutStream.m */; };
 /* End PBXBuildFile section */
@@ -557,6 +558,7 @@
 				8469954117EA59E800BBB8BA /* JsonLiteObjCTokenTests.m in Sources */,
 				8469954217EA59E800BBB8BA /* JsonLiteObjCUnicodeTests.m in Sources */,
 				8469954317EA59E800BBB8BA /* JsonLiteSenTestCaseExt.m in Sources */,
+				84F80D32181B11E3006AB5FD /* jsonlite_stream.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
