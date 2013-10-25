@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D63A362B-C764-43BF-9491-4768C95E09B4</string>
+	<key>IDESourceControlProjectName</key>
+	<string>iPhoneJsonLite</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>1CEE246C-7620-45FD-ADAF-6E77D57AA75F</key>
+		<string>https://github.com/amamchur/jsonlite.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Examples/iPhoneJsonLite/iPhoneJsonLite.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>1CEE246C-7620-45FD-ADAF-6E77D57AA75F</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/amamchur/jsonlite.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>1CEE246C-7620-45FD-ADAF-6E77D57AA75F</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1CEE246C-7620-45FD-ADAF-6E77D57AA75F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>jsonlite</string>
+		</dict>
+	</array>
+</dict>
+</plist>

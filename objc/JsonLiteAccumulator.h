@@ -30,8 +30,8 @@ struct JsonLiteAccumulatorState;
 @interface JsonLiteAccumulator : NSObject<JsonLiteParserDelegate> {
     struct JsonLiteAccumulatorState *current;
     struct JsonLiteAccumulatorState *state;
-    id *keys;
-    id *values;
+    id __unsafe_unretained *keys;
+    id __unsafe_unretained *values;
     CFHashCode *hashes;
     jsonlite_token_pool keyPool;
     jsonlite_token_pool stringPool;
