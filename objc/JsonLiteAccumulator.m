@@ -27,11 +27,11 @@ typedef struct JsonLiteAccumulatorState {
 } JsonLiteAccumulatorState;
 
 static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
-    for (NSInteger i = 0; i < s->length; i++) {
+    for (size_t i = 0; i < s->length; i++) {
         CFRelease((CFTypeRef)s->values[i]);
     }
     
-    for (NSInteger i = 0; * s->keys != NULL && i < s->length; i++) {
+    for (size_t i = 0; * s->keys != NULL && i < s->length; i++) {
         CFRelease((CFTypeRef)s->keys[i]);
     }
 
@@ -44,7 +44,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 @synthesize delegate;
 
 - (NSUInteger)currentDepth {
-    return current - state;
+    return (NSUInteger)(current - state);
 }
 
 + (id)accumulatorWithDepth:(NSUInteger)depth {

@@ -148,12 +148,12 @@ extern "C" {
         union {
             /** @brief Contains the hints for number token parsing.
              */
-            jsonlite_number_type number_type;
+            jsonlite_number_type number;
             
             /** @brief Contains the hints for string token parsing.
              */
-            jsonlite_string_type string_type;
-        };
+            jsonlite_string_type string;
+        } type;
     } jsonlite_token;
 
     

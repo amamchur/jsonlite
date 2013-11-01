@@ -144,25 +144,11 @@
     jsonlite_token token;
     token.start = str;
     token.end = str + sizeof(str) - 1;
-    token.string_type = jsonlite_string_ascii;
+    token.type.string = jsonlite_string_ascii;
     
-    size_t size = jsonlite_token_decode_size_for_uft8(NULL);
-    STAssertTrue(size == 0, @"Size is not zero");
-    
-    size = jsonlite_token_decode_size_for_uft8(&token);
+    size_t size = jsonlite_token_decode_size_for_uft8(&token);
     STAssertTrue(size == sizeof(str), @"Incorrect size - %d", size);
-    
-    size = jsonlite_token_decode_to_uft8(NULL, NULL);
-    STAssertTrue(size == 0, @"Size is not zero");
-    
-    size = jsonlite_token_decode_to_uft8(NULL, &buffer);
-    STAssertTrue(size == 0, @"Size is not zero");
-    free(buffer);
-    buffer = NULL;
-    
-    size = jsonlite_token_decode_to_uft8(&token, NULL);
-    STAssertTrue(size == 0, @"Size is not zero");
-    
+        
     size = jsonlite_token_decode_to_uft8(&token, &buffer);
     STAssertTrue(buffer != NULL, @"Buffer is null");
     STAssertTrue(size == strlen((char *)str), @"Size is not zero");
@@ -171,20 +157,9 @@
     free(buffer);
     buffer = NULL;
     
-    size = jsonlite_token_decode_size_for_uft16(NULL);
-    STAssertTrue(size == 0, @"Size is not zero");
-    
     size = jsonlite_token_decode_size_for_uft16(&token);
     STAssertTrue(size == sizeof(str) * 2, @"Incorrect size - %d", size);
-    
-    size = jsonlite_token_decode_to_uft16(NULL, NULL);
-    STAssertTrue(size == 0, @"Size is not zero");
-    
-    size = jsonlite_token_decode_to_uft16(NULL, &unicode);
-    STAssertTrue(size == 0, @"Size is not zero");
-    free(unicode);
-    unicode = NULL;
-    
+        
     size = jsonlite_token_decode_to_uft16(&token, &unicode);
     STAssertTrue(unicode != NULL, @"Buffer is null");
     STAssertTrue(size == sizeof(str16) - sizeof(uint16_t), @"Size is not zero");

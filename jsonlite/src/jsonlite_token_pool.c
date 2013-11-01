@@ -38,9 +38,8 @@ typedef struct jsonlite_token_pool_struct {
 
 static void jsonlite_extend_capacity(jsonlite_token_pool pool, int index);
 static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *b);
-static int jsonlite_token_compare(const uint8_t *t1, const uint8_t *t2, size_t length);
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
-static jsonlite_token_bucket terminate_backet = {0, NULL, NULL, NULL, 0};
+static jsonlite_token_bucket terminate_backet = {NULL, NULL, 0, 0, NULL};
 
 jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value_fn release_fn) {
     jsonlite_token_pool pool = (jsonlite_token_pool)malloc(sizeof(jsonlite_token_pool_struct));
@@ -59,7 +58,6 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     jsonlite_token_bucket *bucket;
     size_t size = pool->content_pool_size;
     int i;
-
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         bucket = pool->blocks[i].buckets;
         if (jsonlite_bucket_not_copied(pool, bucket)) {
@@ -104,10 +102,6 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
 
 void jsonlite_token_pool_release(jsonlite_token_pool pool) {
     int i;
-    if (pool == NULL) {
-        return;
-    }
-
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         jsonlite_token_bucket *bucket = pool->blocks[i].buckets;
         if (bucket->start == NULL) {
@@ -128,20 +122,11 @@ void jsonlite_token_pool_release(jsonlite_token_pool pool) {
 }
 
 jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, jsonlite_token *token) {
-    if (pool == NULL || token == NULL) {
-        return NULL;
-    }
-    
-    if (token->start == NULL || token->end == NULL) {
-        return NULL;
-    }
-    
-    size_t length = token->end - token->start;
-    uint32_t hash = jsonlite_hash(token->start, length);
-    uint32_t index = hash & JSONLITE_TOKEN_POOL_FRONT_MASK;
-    jsonlite_token_bucket *bucket = pool->blocks[index].buckets;
-    size_t capacity = pool->blocks[index].capacity;
+    ptrdiff_t length = token->end - token->start;
+    ptrdiff_t hash = jsonlite_hash(token->start, length);
+    ptrdiff_t index = hash & JSONLITE_TOKEN_POOL_FRONT_MASK;
     size_t count = 0;
+    jsonlite_token_bucket *bucket = pool->blocks[index].buckets;
     for (; bucket->start != NULL; count++, bucket++) {
         if (bucket->hash != hash) {
             continue;
@@ -151,11 +136,12 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
             continue;
         }
         
-        if (jsonlite_token_compare(token->start, bucket->start, length)) {
+        if (memcmp(token->start, bucket->start, length) == 0) {
             return bucket;
         }
     }
 
+    size_t capacity = pool->blocks[index].capacity;
     if (count + 1 >= capacity) {
         jsonlite_extend_capacity(pool, index);
     }
@@ -167,10 +153,6 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
     bucket->value = NULL;
     bucket[1].start = NULL;
     return bucket;
-}
-
-static int jsonlite_token_compare(const uint8_t *t1, const uint8_t *t2, size_t length) {
-    return memcmp(t1, t2, length) == 0 ? 1 : 0;
 }
 
 static void jsonlite_extend_capacity(jsonlite_token_pool pool, int index) {

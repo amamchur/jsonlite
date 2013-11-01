@@ -24,8 +24,8 @@ typedef struct JsonLiteDictionaryBucket {
 } JsonLiteDictionaryBucket;
 
 @interface JsonLiteDictionaryEnumerator : NSEnumerator {
-    NSInteger index;
-    NSInteger count;
+    NSUInteger index;
+    NSUInteger count;
     JsonLiteDictionaryBucket *buffer;
 }
 
@@ -65,7 +65,7 @@ typedef struct JsonLiteDictionaryBucket {
 
 - (NSArray *)allObjects {
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:(NSUInteger)count];
-    for (int i = 0; i < count; i++) {
+    for (NSUInteger i = 0; i < count; i++) {
         [array addObject:(buffer + i)->key];
     }
     return array;
@@ -83,7 +83,7 @@ typedef struct JsonLiteDictionaryBucket {
 @implementation JsonLiteDictionary
 
 - (void)dealloc {
-    for (int i = 0; i < count; i++) {
+    for (NSUInteger i = 0; i < count; i++) {
         CFRelease(buffer[i].key);
         CFRelease(buffer[i].value);
     }
@@ -134,7 +134,7 @@ typedef struct JsonLiteDictionaryBucket {
 }
 
 - (void)dealloc {
-    for (int i = 0; i < count; i++) {
+    for (NSUInteger i = 0; i < count; i++) {
         CFRelease(values[i]);
     }
     [super dealloc];
@@ -156,7 +156,7 @@ id JsonLiteCreateDictionary(const id *values, const id *keys, const CFHashCode *
         dict->count = count;
         
         JsonLiteDictionaryBucket *b = dict->buffer;
-        for (int i = 0; i < count; i++, b++) {
+        for (NSUInteger i = 0; i < count; i++, b++) {
             CFHashCode hash = hashes[i];
             int index = hash & JsonLiteDictionaryFrontMask;
             b->hash = hash;

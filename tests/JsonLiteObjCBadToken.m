@@ -14,14 +14,14 @@
 static int noncharacters_count = 0;
 
 static void check_noncharacters(jsonlite_callback_context *ctx, jsonlite_token *t) {
-    if ((t->string_type & jsonlite_string_unicode_noncharacter) != 0) {
+    if ((t->type.string & jsonlite_string_unicode_noncharacter) != 0) {
         noncharacters_count++;
     }
 }
 
 
 static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_token *t) {
-    if ((t->string_type & jsonlite_string_unicode_noncharacter) != 0) {
+    if ((t->type.string & jsonlite_string_unicode_noncharacter) != 0) {
         jsonlite_parser_terminate(ctx->parser, jsonlite_result_invalid_token);
     }
 }

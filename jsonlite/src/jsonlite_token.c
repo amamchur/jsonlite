@@ -61,19 +61,11 @@ static int unicode_char_to_utf16(uint32_t ch, uint16_t *utf16) {
 }
 
 size_t jsonlite_token_decode_size_for_uft8(jsonlite_token *ts) {
-    if (ts == NULL) {
-        return 0;
-    }
-    
-    return ts->end - ts->start + 1;
+    return (size_t)(ts->end - ts->start + 1);
 }
 
 size_t jsonlite_token_decode_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
     size_t size = jsonlite_token_decode_size_for_uft8(ts);
-    if (size == 0 || buffer == NULL) {
-        return 0;
-    }
-    
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint32_t value, utf32;
@@ -154,19 +146,11 @@ done:
 }
 
 size_t jsonlite_token_decode_size_for_uft16(jsonlite_token *ts) {
-    if (ts == NULL) {
-        return 0;
-    }
-    
     return (ts->end - ts->start + 1) * sizeof(uint16_t);
 }
 
 size_t jsonlite_token_decode_to_uft16(jsonlite_token *ts, uint16_t **buffer) {
     size_t size = jsonlite_token_decode_size_for_uft16(ts);
-    if (size == 0 || buffer == NULL) {
-        return 0;
-    }
-    
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint16_t utf16;

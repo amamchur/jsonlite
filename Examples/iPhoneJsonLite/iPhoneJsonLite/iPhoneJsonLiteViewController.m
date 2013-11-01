@@ -63,7 +63,7 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {    
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"twitter_public_timeline" ofType:@"json"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mesh" ofType:@"json"];
     self.data = [NSData dataWithContentsOfFile:filePath];
     [super viewDidLoad];
 }
@@ -74,6 +74,7 @@
     host_get_clock_service(mach_host_self(), SYSTEM_CLOCK, &cclock);
     clock_get_time(cclock, &start);
 
+    size_t l = [data length];
     const int COUNT = 100;
     for (int i = 0; i < COUNT; i++) {
         @autoreleasepool {
@@ -86,13 +87,11 @@
     
     clock_get_time(cclock, &end);
         
-    long long time = (end.tv_sec - start.tv_sec) * 1000000000;
-    time += (end.tv_nsec - start.tv_nsec);
+    double time = (double)(end.tv_sec - start.tv_sec);
+    time += (double)(end.tv_nsec - start.tv_nsec) / 1000000000;
+    double speed = (double)l * COUNT / 1024 / 1024 / time;
     
-    size_t l = [data length];
-    double speed = ((double)l * COUNT / 1024 / 1024) / ((double)time / 1000000000.0);
-    
-    NSString *jsonlite = [NSString stringWithFormat:@"Time - %lld µs; speed - %.0f MBps", time, speed];
+    NSString *jsonlite = [NSString stringWithFormat:@"Time - %f µs\nSpeed - %.2f MBps", time, speed];
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
                                                  message:jsonlite
                                                 delegate:nil
@@ -114,21 +113,20 @@
     clock_get_time(cclock, &start);
     
     const int COUNT = 100;
+    char parser[1024];
     for (int i = 0; i < COUNT; i++) {
-        jsonlite_parser p = jsonlite_parser_init(512);
-        jsonlite_result res = jsonlite_parser_tokenize(p, buffer, l);
-        NSAssert(res == jsonlite_result_ok, @"");
-        jsonlite_parser_release(p);
+        jsonlite_parser p = jsonlite_parser_init_memory(parser, sizeof(parser));
+        jsonlite_parser_tokenize(p, buffer, l);
+        jsonlite_parser_cleanup(p);
     }
     
     clock_get_time(cclock, &end);
     
-    long long time = (end.tv_sec - start.tv_sec) * 1000000000;
-    time += (end.tv_nsec - start.tv_nsec);
+    double time = (double)(end.tv_sec - start.tv_sec);
+    time += (double)(end.tv_nsec - start.tv_nsec) / 1000000000;
+    double speed = (double)l * COUNT / 1024 / 1024 / time;
     
-    double speed = ((double)l * COUNT / 1024 / 1024) / ((double)time / 1000000000.0);
-    
-    NSString *jsonlite = [NSString stringWithFormat:@"Time - %lld µs; speed - %.0f MBps", time, speed];
+    NSString *jsonlite = [NSString stringWithFormat:@"Time - %f µs\nSpeed - %.2f MBps", time, speed];
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
                                                  message:jsonlite
                                                 delegate:nil

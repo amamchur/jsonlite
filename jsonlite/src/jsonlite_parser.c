@@ -113,21 +113,7 @@ size_t jsonlite_parser_estimate_size(size_t depth) {
     return sizeof(jsonlite_parser_struct) + depth * sizeof(parse_state);
 }
 
-jsonlite_parser jsonlite_parser_init(size_t depth) {
-    size_t size = jsonlite_parser_estimate_size(depth);
-    void *memory = malloc(size);
-    return jsonlite_parser_init_memory(memory, size);
-}
-
-jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size) {
-    if (memory == NULL) {
-        return NULL;
-    }
-    
-    if (size < jsonlite_parser_estimate_size(MIN_DEPTH)) {
-        return NULL;
-    }
-
+static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size) {
     size_t depth = (size - sizeof(jsonlite_parser_struct)) / sizeof(parse_state);
     jsonlite_parser parser = (jsonlite_parser)memory;
     parser->result = jsonlite_result_unknown;
@@ -142,6 +128,24 @@ jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size) {
     parser->last = parser->current + depth;
     parser->current++;
     return parser;
+}
+
+jsonlite_parser jsonlite_parser_init(size_t depth) {
+    size_t size = jsonlite_parser_estimate_size(depth);
+    void *memory = malloc(size);
+    return jsonlite_parser_configure(memory, size);
+}
+
+jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size) {
+    if (memory == NULL) {
+        return NULL;
+    }
+    
+    if (size < jsonlite_parser_estimate_size(MIN_DEPTH)) {
+        return NULL;
+    }
+
+    return jsonlite_parser_configure(memory, size);
 }
 
 jsonlite_result jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs) {
@@ -429,7 +433,7 @@ number_parsing:
         }
     found_token:
         token.end = c;
-        token.number_type = type;
+        token.type.number = type;
         state--;
         CALL_VALUE_CALLBACK(parser->callbacks, number_found, &token);
         goto state_selection;
@@ -491,7 +495,7 @@ string_token_parsing:
         goto next_char;
     utf8:
         type |= jsonlite_string_utf8;
-        int res = jsonlite_clz(((*c) ^ 0xFF) << 0x19);
+        int res = jsonlite_clz((unsigned int)((*c) ^ 0xFF) << 0x19);
         utf32 = (*c & (0xFF >> (res + 1)));
         value = 0xAAAAAAAA; // == 1010...
         if (c + res >= l) goto end_of_stream;
@@ -505,7 +509,7 @@ string_token_parsing:
         }
         goto next_char;
     string_parsed:
-        token.string_type = type;
+        token.type.string = type;
         token.end = c;
         parser->cursor = c + 1;
         if (*state-- == state_value) {
@@ -561,7 +565,7 @@ end_of_stream_space:
     token_start = l;
 end_of_stream:
     parser->result = jsonlite_result_end_of_stream;
-    parser->rest_size = parser->limit - token_start;
+    parser->rest_size = (size_t)(parser->limit - token_start);
     if (parser->rest_size > 0) {
         parser->rest = malloc(parser->rest_size);
         memcpy(parser->rest, token_start, parser->rest_size); // LCOV_EXCL_LINE

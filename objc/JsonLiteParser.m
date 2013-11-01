@@ -65,6 +65,44 @@ static const jsonlite_parser_callbacks JsonLiteParserCallbacks = {
 static Class class_JsonLiteStringToken;
 static Class class_JsonLiteNumberToken;
 
+static long token_to_long(jsonlite_token *token) {
+    long res = 0;
+    int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;
+    ptrdiff_t len = token->end - token->start - negative;
+    const uint8_t *c = token->start + negative;
+    switch (len & 3) {
+            for (; len > 0; len -= 4) {
+            case 0: res = res * 10 + *c++ - '0';
+            case 3: res = res * 10 + *c++ - '0';
+            case 2: res = res * 10 + *c++ - '0';
+            case 1: res = res * 10 + *c++ - '0';
+            }
+    }
+    
+    return negative ? -res : res;
+}
+
+static long long token_to_long_long(jsonlite_token *token) {
+    long long res = 0;
+    int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;
+    ptrdiff_t len = token->end - token->start - negative;
+    const uint8_t *c = token->start + negative;
+    switch (len & 7) {
+            for (; len > 0; len -= 8) {
+            case 0: res = res * 10 + *c++ - '0';
+            case 7: res = res * 10 + *c++ - '0';
+            case 6: res = res * 10 + *c++ - '0';
+            case 5: res = res * 10 + *c++ - '0';
+            case 4: res = res * 10 + *c++ - '0';
+            case 3: res = res * 10 + *c++ - '0';
+            case 2: res = res * 10 + *c++ - '0';
+            case 1: res = res * 10 + *c++ - '0';
+            }
+    }
+    
+    return negative ? -res : res;
+}
+
 @implementation JsonLiteToken 
 
 - (id)copyValue {
@@ -118,7 +156,7 @@ static Class class_JsonLiteNumberToken;
         return @""; // Return empty string singleton
     }
     
-    switch (token->string_type) {
+    switch (token->type.string) {
         case jsonlite_string_ascii: {
             NSString *str = (NSString *)CFStringCreateWithBytes(NULL,
                                                                 token->start,
@@ -139,7 +177,7 @@ static Class class_JsonLiteNumberToken;
         return @""; // Return empty string singleton
     }
     
-    switch (token->string_type) {
+    switch (token->type.string) {
         case jsonlite_string_ascii: {
             NSString *str = (NSString *)CFStringCreateWithBytesNoCopy(NULL,
                                                                 token->start,
@@ -161,16 +199,16 @@ static Class class_JsonLiteNumberToken;
 - (id)copyValue {
     jsonlite_token *token = (jsonlite_token *)self;
     CFNumberRef number = nil;
-    if (token->number_type & (jsonlite_number_exp | jsonlite_number_frac)) {
+    if (token->type.number & (jsonlite_number_exp | jsonlite_number_frac)) {
         double d = strtod((const char *)token->start, NULL);
         number = CFNumberCreate(NULL, kCFNumberDoubleType, &d);
     } else {
-        size_t length = token->end - token->start;
-        if (length < (size_t)log10(LONG_MAX)) {
-            long i = strtol((const char *)token->start, NULL, 10);
+        ptrdiff_t length = token->end - token->start;
+        if (length < (ptrdiff_t)log10(LONG_MAX)) {
+            long i = token_to_long(token);
             number = CFNumberCreate(NULL, kCFNumberLongType, &i);
         } else {
-            long long i = strtoll((const char *)token->start, NULL, 10);
+            long long i = token_to_long_long(token);
             number = CFNumberCreate(NULL, kCFNumberLongLongType, &i);
         }
     }

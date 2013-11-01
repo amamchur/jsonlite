@@ -22,11 +22,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define jsonlite_builder_check_depth()                                  \
-do {                                                                    \
-    if (builder->state - builder->stack >= builder->stack_depth - 1) {  \
-        return jsonlite_result_depth_limit;                             \
-    }                                                                   \
+#define jsonlite_builder_check_depth()                                              \
+do {                                                                                \
+    if (builder->state - builder->stack >= (ptrdiff_t)builder->stack_depth - 1) {   \
+        return jsonlite_result_depth_limit;                                         \
+    }                                                                               \
 } while (0)                                             
 
 typedef enum {
@@ -64,7 +64,7 @@ typedef enum {
 } jsonlite_accept;
 
 typedef struct jsonlite_write_state {
-    int accept;
+    jsonlite_accept accept;
 } jsonlite_write_state;
 
 typedef struct jsonlite_builder_buffer {
@@ -78,7 +78,7 @@ typedef struct jsonlite_builder_struct {
     jsonlite_stream stream;
     jsonlite_write_state *stack;
     jsonlite_write_state *state;
-    ptrdiff_t stack_depth;
+    size_t stack_depth;
     
     char *doubleFormat;
     
@@ -90,8 +90,8 @@ static void jsonlite_builder_pop_state(jsonlite_builder builder);
 static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder);
 static void jsonlite_builder_raw_char(jsonlite_builder builder, char data);
 static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length);
-static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length);
-static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count);
+static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, ptrdiff_t length);
+static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, ptrdiff_t count);
 
 jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
     jsonlite_builder builder;
@@ -456,12 +456,12 @@ jsonlite_result jsonlite_builder_null(jsonlite_builder builder) {
     return jsonlite_result_ok;
 }
  
-static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length) {
+static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, ptrdiff_t length) {
     jsonlite_stream_write(builder->stream, data, length);
 }
 
-static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count) {
-    int i = 0;
+static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, ptrdiff_t count) {
+    ptrdiff_t i = 0;
     for (; i < count; i++) {
         jsonlite_stream_write(builder->stream, &ch, 1);
     }
