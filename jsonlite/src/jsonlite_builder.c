@@ -224,36 +224,31 @@ jsonlite_result jsonlite_builder_array_end(jsonlite_builder builder) {
 }
 
 static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length) {
-    size_t i;
+    char b[2] = "\\?";
+    const char *c = data;
+    const char *p = data;
+    const char *l = data + length;
+    
     jsonlite_builder_raw_char(builder, '\"');
-    for (i = 0; i < length; i++) {
-        switch (data[i]) {
-            case '"':
-                jsonlite_builder_raw(builder, "\\\"", 2);
-                break;
-            case '\\':
-                jsonlite_builder_raw(builder, "\\\\", 2);
-                break;
-            case '\b':
-                jsonlite_builder_raw(builder, "\\b", 2);
-                break;
-            case '\f':
-                jsonlite_builder_raw(builder, "\\f", 2);
-                break;
-            case '\n':
-                jsonlite_builder_raw(builder, "\\n", 2);
-                break;
-            case '\r':
-                jsonlite_builder_raw(builder, "\\r", 2);
-                break;
-            case '\t':
-                jsonlite_builder_raw(builder, "\\t", 2);
-                break;
-            default:
-                jsonlite_builder_raw_char(builder, data[i]);
-                break;
-        }
+next:
+    if (c == l)                     goto end;
+    switch (*c) {
+        case '"':   b[1] = '"';     goto flush;
+        case '\\':  b[1] = '\\';    goto flush;
+        case '\b':  b[1] = 'b';     goto flush;
+        case '\f':  b[1] = 'f';     goto flush;
+        case '\n':  b[1] = 'n';     goto flush;
+        case '\r':  b[1] = 'r';     goto flush;
+        case '\t':  b[1] = 't';     goto flush;
+        default:    c++;            goto next;
     }
+flush:
+    jsonlite_stream_write(builder->stream, p, c - p);
+    jsonlite_stream_write(builder->stream, b, 2);
+    p = ++c;
+    goto next;
+end:
+    jsonlite_stream_write(builder->stream, p, c - p);
     jsonlite_builder_raw_char(builder, '\"');
 }
 

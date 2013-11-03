@@ -36,16 +36,16 @@ typedef struct jsonlite_token_pool_struct {
     
 } jsonlite_token_pool_struct;
 
-static void jsonlite_extend_capacity(jsonlite_token_pool pool, int index);
+static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index);
 static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *b);
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
-static jsonlite_token_bucket terminate_backet = {NULL, NULL, 0, 0, NULL};
+static jsonlite_token_bucket terminate_bucket = {NULL, NULL, 0, 0, NULL};
 
 jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value_fn release_fn) {
     jsonlite_token_pool pool = (jsonlite_token_pool)malloc(sizeof(jsonlite_token_pool_struct));
     int i;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
-        pool->blocks[i].buckets = &terminate_backet;
+        pool->blocks[i].buckets = &terminate_bucket;
         pool->blocks[i].capacity = 0;
     }
     pool->release_fn = release_fn;
@@ -155,7 +155,7 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
     return bucket;
 }
 
-static void jsonlite_extend_capacity(jsonlite_token_pool pool, int index) {
+static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index) {
     size_t capacity = pool->blocks[index].capacity;
     if (capacity == 0) {
         capacity = 0x10;
