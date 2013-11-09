@@ -189,12 +189,12 @@ extern "C" {
         union {
             /** @brief Contains the hints for number token parsing.
              */
-            jsonlite_number_type number_type;
+            jsonlite_number_type number;
             
             /** @brief Contains the hints for string token parsing.
              */
-            jsonlite_string_type string_type;
-        };
+            jsonlite_string_type string;
+        } type;
     } jsonlite_token;
 
     
@@ -851,11 +851,13 @@ typedef void (*jsonlite_token_pool_release_value_fn)(void *);
 typedef struct jsonlite_token_pool_struct* jsonlite_token_pool;
     
 typedef struct jsonlite_token_bucket {
-    ptrdiff_t hash;
     const uint8_t *start;
     const uint8_t *end;
-    const void *value;
+    
+    ptrdiff_t hash;
     ptrdiff_t value_hash;
+    
+    const void *value;
 } jsonlite_token_bucket;
     
 jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value_fn release_fn);
