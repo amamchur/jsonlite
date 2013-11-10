@@ -65,44 +65,6 @@ static const jsonlite_parser_callbacks JsonLiteParserCallbacks = {
 static Class class_JsonLiteStringToken;
 static Class class_JsonLiteNumberToken;
 
-static long token_to_long(jsonlite_token *token) {
-    long res = 0;
-    int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;
-    ptrdiff_t len = token->end - token->start - negative;
-    const uint8_t *c = token->start + negative;
-    switch (len & 3) {
-            for (; len > 0; len -= 4) {
-            case 0: res = res * 10 + *c++ - '0';
-            case 3: res = res * 10 + *c++ - '0';
-            case 2: res = res * 10 + *c++ - '0';
-            case 1: res = res * 10 + *c++ - '0';
-            }
-    }
-    
-    return negative ? -res : res;
-}
-
-static long long token_to_long_long(jsonlite_token *token) {
-    long long res = 0;
-    int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;
-    ptrdiff_t len = token->end - token->start - negative;
-    const uint8_t *c = token->start + negative;
-    switch (len & 7) {
-            for (; len > 0; len -= 8) {
-            case 0: res = res * 10 + *c++ - '0';
-            case 7: res = res * 10 + *c++ - '0';
-            case 6: res = res * 10 + *c++ - '0';
-            case 5: res = res * 10 + *c++ - '0';
-            case 4: res = res * 10 + *c++ - '0';
-            case 3: res = res * 10 + *c++ - '0';
-            case 2: res = res * 10 + *c++ - '0';
-            case 1: res = res * 10 + *c++ - '0';
-            }
-    }
-    
-    return negative ? -res : res;
-}
-
 @implementation JsonLiteToken 
 
 - (id)copyValue {
@@ -139,7 +101,7 @@ static long long token_to_long_long(jsonlite_token *token) {
 
 - (NSString *)allocEscapedString:(jsonlite_token *)ts {
     void *buffer = NULL;
-    size_t size = jsonlite_token_decode_to_uft16(ts, (uint16_t **)&buffer);
+    size_t size = jsonlite_token_to_uft16(ts, (uint16_t **)&buffer);
     NSString *str = (NSString *)CFStringCreateWithBytesNoCopy(NULL, 
                                                               (const UInt8 *)buffer,
                                                               size,
@@ -205,10 +167,10 @@ static long long token_to_long_long(jsonlite_token *token) {
     } else {
         ptrdiff_t length = token->end - token->start;
         if (length < (ptrdiff_t)log10(LONG_MAX)) {
-            long i = token_to_long(token);
+            long i = jsonlite_token_to_long(token);
             number = CFNumberCreate(NULL, kCFNumberLongType, &i);
         } else {
-            long long i = token_to_long_long(token);
+            long long i = jsonlite_token_to_long_long(token);
             number = CFNumberCreate(NULL, kCFNumberLongLongType, &i);
         }
     }

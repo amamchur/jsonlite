@@ -63,7 +63,7 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {    
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"mesh" ofType:@"json"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"twitter_public_timeline" ofType:@"json"];
     self.data = [NSData dataWithContentsOfFile:filePath];
     [super viewDidLoad];
 }
@@ -75,7 +75,7 @@
     clock_get_time(cclock, &start);
 
     size_t l = [data length];
-    const int COUNT = 100;
+    const int COUNT = 1000;
     for (int i = 0; i < COUNT; i++) {
         @autoreleasepool {
             JsonLiteParser *parser = [JsonLiteParser parserWithDepth:512];
@@ -91,7 +91,7 @@
     time += (double)(end.tv_nsec - start.tv_nsec) / 1000000000;
     double speed = (double)l * COUNT / 1024 / 1024 / time;
     
-    NSString *jsonlite = [NSString stringWithFormat:@"Time - %f µs\nSpeed - %.2f MBps", time, speed];
+    NSString *jsonlite = [NSString stringWithFormat:@"Time - %f s\nSpeed - %.2f MBps", time, speed];
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
                                                  message:jsonlite
                                                 delegate:nil
@@ -112,7 +112,7 @@
     host_get_clock_service(mach_host_self(), SYSTEM_CLOCK, &cclock);
     clock_get_time(cclock, &start);
     
-    const int COUNT = 100;
+    const int COUNT = 1000;
     char parser[1024];
     for (int i = 0; i < COUNT; i++) {
         jsonlite_parser p = jsonlite_parser_init_memory(parser, sizeof(parser));
@@ -126,7 +126,7 @@
     time += (double)(end.tv_nsec - start.tv_nsec) / 1000000000;
     double speed = (double)l * COUNT / 1024 / 1024 / time;
     
-    NSString *jsonlite = [NSString stringWithFormat:@"Time - %f µs\nSpeed - %.2f MBps", time, speed];
+    NSString *jsonlite = [NSString stringWithFormat:@"Time - %f s\nSpeed - %.2f MBps", time, speed];
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@""
                                                  message:jsonlite
                                                 delegate:nil

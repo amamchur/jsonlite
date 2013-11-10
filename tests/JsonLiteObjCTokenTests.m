@@ -28,25 +28,6 @@
     STAssertNotNil(obj, @"Object is nil");
 }
 
-- (void)testTokenFunctions {
-    char *token_string = "abc";
-    jsonlite_token token;
-    token.start = (uint8_t *)token_string;
-    token.end = (uint8_t *)token_string + sizeof(token_string) - 1;
-    
-    size_t size = jsonlite_hex_char_to_uint8('Q');
-    STAssertTrue(size == 0xFF, @"Is not 0XFF");
-
-    size = jsonlite_hex_char_to_uint8('7');
-    STAssertTrue(size == 7, @"Is not 7");
-    
-    size = jsonlite_hex_char_to_uint8('a');
-    STAssertTrue(size == 10, @"Is not 10");
-    
-    size = jsonlite_hex_char_to_uint8('A');
-    STAssertTrue(size == 10, @"Is not 10");
-}
-
 - (void)testZeroTerminatedByTab {
     NSString *json = @"[0\t]";
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];

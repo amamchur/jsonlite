@@ -17,6 +17,7 @@
 #include "../include/jsonlite_token.h"
 #endif
 
+#include <math.h>
 #include <stdlib.h>
 
 #ifdef _MSC_VER
@@ -34,16 +35,16 @@ static uint32_t __inline jsonlite_clz( uint32_t x ) {
 
 #endif
 
-uint8_t jsonlite_hex_char_to_uint8(uint8_t c) {
-    uint8_t res = 0xFF;
-    if (c >= '0' && c <= '9') {
-        res = c - '0';
-    } else if (c >= 'a' && c <= 'f') {
-        res = c - 'a' + 10;
-    } else if (c >= 'A' && c <= 'F') {
-        res = c - 'A' + 10;
+static uint8_t jsonlite_hex_char_to_uint8(uint8_t c) {
+    if (c >= 'a') {
+        return c - 'a' + 10;
     }
-    return res;
+    
+    if (c >= 'A') {
+        return c - 'A' + 10;
+    }
+    
+    return c - '0';
 }
 
 static int unicode_char_to_utf16(uint32_t ch, uint16_t *utf16) {
@@ -60,12 +61,12 @@ static int unicode_char_to_utf16(uint32_t ch, uint16_t *utf16) {
     return 2;
 }
 
-size_t jsonlite_token_decode_size_for_uft8(jsonlite_token *ts) {
+size_t jsonlite_token_size_of_uft8(jsonlite_token *ts) {
     return (size_t)(ts->end - ts->start + 1);
 }
 
-size_t jsonlite_token_decode_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
-    size_t size = jsonlite_token_decode_size_for_uft8(ts);
+size_t jsonlite_token_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
+    size_t size = jsonlite_token_size_of_uft8(ts);
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint32_t value, utf32;
@@ -145,12 +146,12 @@ done:
     return c - *buffer;
 }
 
-size_t jsonlite_token_decode_size_for_uft16(jsonlite_token *ts) {
+size_t jsonlite_token_size_of_uft16(jsonlite_token *ts) {
     return (ts->end - ts->start + 1) * sizeof(uint16_t);
 }
 
-size_t jsonlite_token_decode_to_uft16(jsonlite_token *ts, uint16_t **buffer) {
-    size_t size = jsonlite_token_decode_size_for_uft16(ts);
+size_t jsonlite_token_to_uft16(jsonlite_token *ts, uint16_t **buffer) {
+    size_t size = jsonlite_token_size_of_uft16(ts);
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint16_t utf16;
@@ -206,4 +207,42 @@ utf8:
 done:
     *c = 0;
     return (c - *buffer) * sizeof(uint16_t);
+}
+
+long jsonlite_token_to_long(jsonlite_token *token) {
+    long res = 0;
+    int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;
+    int length = token->end - token->start - negative;
+    const uint8_t *c = token->start + negative;
+    switch (length & 3) {
+        for (; length > 0; length -= 4) {
+            case 0: res = res * 10 + *c++ - '0';
+            case 3: res = res * 10 + *c++ - '0';
+            case 2: res = res * 10 + *c++ - '0';
+            case 1: res = res * 10 + *c++ - '0';
+        }
+    }
+    
+    return negative ? -res : res;
+}
+
+long long jsonlite_token_to_long_long(jsonlite_token *token) {
+    long long res = 0;
+    int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;
+    int length = token->end - token->start - negative;
+    const uint8_t *c = token->start + negative;
+    switch (length & 7) {
+        for (; length > 0; length -= 8) {
+            case 0: res = res * 10 + *c++ - '0';
+            case 7: res = res * 10 + *c++ - '0';
+            case 6: res = res * 10 + *c++ - '0';
+            case 5: res = res * 10 + *c++ - '0';
+            case 4: res = res * 10 + *c++ - '0';
+            case 3: res = res * 10 + *c++ - '0';
+            case 2: res = res * 10 + *c++ - '0';
+            case 1: res = res * 10 + *c++ - '0';
+        }
+    }
+    
+    return negative ? -res : res;
 }

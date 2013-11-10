@@ -146,10 +146,10 @@
     token.end = str + sizeof(str) - 1;
     token.type.string = jsonlite_string_ascii;
     
-    size_t size = jsonlite_token_decode_size_for_uft8(&token);
+    size_t size = jsonlite_token_size_of_uft8(&token);
     STAssertTrue(size == sizeof(str), @"Incorrect size - %d", size);
         
-    size = jsonlite_token_decode_to_uft8(&token, &buffer);
+    size = jsonlite_token_to_uft8(&token, &buffer);
     STAssertTrue(buffer != NULL, @"Buffer is null");
     STAssertTrue(size == strlen((char *)str), @"Size is not zero");
     STAssertTrue(memcmp(str, buffer, sizeof(str)) == 0, @"String are not equal");
@@ -157,53 +157,16 @@
     free(buffer);
     buffer = NULL;
     
-    size = jsonlite_token_decode_size_for_uft16(&token);
+    size = jsonlite_token_size_of_uft16(&token);
     STAssertTrue(size == sizeof(str) * 2, @"Incorrect size - %d", size);
         
-    size = jsonlite_token_decode_to_uft16(&token, &unicode);
+    size = jsonlite_token_to_uft16(&token, &unicode);
     STAssertTrue(unicode != NULL, @"Buffer is null");
     STAssertTrue(size == sizeof(str16) - sizeof(uint16_t), @"Size is not zero");
     STAssertTrue(memcmp(str16, unicode, sizeof(str16)) == 0, @"String are not equal");
     
     free(unicode);
     unicode = NULL;
-    
-    uint8_t n = jsonlite_hex_char_to_uint8('0');
-    STAssertTrue(n == 0, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('9');
-    STAssertTrue(n == 9, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('5');
-    STAssertTrue(n == 5, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('a');
-    STAssertTrue(n == 10, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('f');
-    STAssertTrue(n == 15, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('c');
-    STAssertTrue(n == 12, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('A');
-    STAssertTrue(n == 10, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('F');
-    STAssertTrue(n == 15, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('C');
-    STAssertTrue(n == 12, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('\0');
-    STAssertTrue(n == 0xFF, @"Incorrect value");
-
-    n = jsonlite_hex_char_to_uint8('z');
-    STAssertTrue(n == 0xFF, @"Incorrect value");
-    
-    n = jsonlite_hex_char_to_uint8('Z');
-    STAssertTrue(n == 0xFF, @"Incorrect value");
-
 }
 
 - (void)testJsonLiteParserObjC {
