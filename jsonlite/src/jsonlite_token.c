@@ -212,7 +212,7 @@ done:
 long jsonlite_token_to_long(jsonlite_token *token) {
     long res = 0;
     int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;
-    int length = token->end - token->start - negative;
+    ptrdiff_t length = token->end - token->start - negative;
     const uint8_t *c = token->start + negative;
     switch (length & 3) {
         for (; length > 0; length -= 4) {
@@ -229,7 +229,7 @@ long jsonlite_token_to_long(jsonlite_token *token) {
 long long jsonlite_token_to_long_long(jsonlite_token *token) {
     long long res = 0;
     int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;
-    int length = token->end - token->start - negative;
+    ptrdiff_t length = token->end - token->start - negative;
     const uint8_t *c = token->start + negative;
     switch (length & 7) {
         for (; length > 0; length -= 8) {

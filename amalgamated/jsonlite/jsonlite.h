@@ -202,7 +202,7 @@ extern "C" {
      * @param ts jsonlite token
      * @return 0 if ts is NULL; otherwise required size of for token conversion.
      */
-    size_t jsonlite_token_decode_size_for_uft8(jsonlite_token *ts);
+    size_t jsonlite_token_size_of_uft8(jsonlite_token *ts);
     
     /** @brief Converts specified token to UTF-8 string.
      *
@@ -213,13 +213,13 @@ extern "C" {
      * @param ts jsonlite token
      * @return length in bytes  of converted string.
      */
-    size_t jsonlite_token_decode_to_uft8(jsonlite_token *ts, uint8_t **buffer);
+    size_t jsonlite_token_to_uft8(jsonlite_token *ts, uint8_t **buffer);
     
     /** @brief Returns a size of memory that is required for token conversion to UTF-16 string.
      * @param ts jsonlite token
      * @return 0  if ts is NULL; otherwise required size of for token conversion.
      */
-    size_t jsonlite_token_decode_size_for_uft16(jsonlite_token *ts);
+    size_t jsonlite_token_size_of_uft16(jsonlite_token *ts);
     
     /** @brief Converts specified token to UTF-16 string.
      *
@@ -230,15 +230,10 @@ extern "C" {
      * @param ts jsonlite token
      * @return length in bytes of converted string.
      */
-    size_t jsonlite_token_decode_to_uft16(jsonlite_token *ts, uint16_t **buffer);
-
-    /** @brief Converts hex digit to integer value.
-     *
-     * @param c a ASCII character.
-     * @return integer value of hex character, 
-     * if character belongs to set [0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,a,b,c,d,e,f]; otherwise 0xFF.
-     */
-    uint8_t jsonlite_hex_char_to_uint8(uint8_t c);
+    size_t jsonlite_token_to_uft16(jsonlite_token *ts, uint16_t **buffer);
+    
+    long jsonlite_token_to_long(jsonlite_token *token);
+    long long jsonlite_token_to_long_long(jsonlite_token *token);
     
 #ifdef __cplusplus
 }
