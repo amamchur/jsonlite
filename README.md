@@ -13,11 +13,11 @@
   * [Decimal Number](#decimal-number)
 * [Roadmap](#roadmap)
 * [Code Coverage](#code-caverage)
-* [Licence](#licence)
+* [License](#license)
 
 #### What is jsonlite and JsonLite ObjC
 
-jsonlite is JSON [tokenizer](http://en.wikipedia.org/wiki/Tokenization). It's lightweight C libary that can be used for low-level JSON processing or parser development.
+jsonlite is JSON [tokenizer](http://en.wikipedia.org/wiki/Tokenization). It's lightweight C library that can be used for low-level JSON processing or parser development.
 
 JsonLite ObjC is JSON parser base on jsonlite. It's the [fastest](https://github.com/amamchur/iJSONBenchmark) and flexible JSON parser for Objective-C.
 
@@ -104,7 +104,7 @@ Current example shows how to quick tokenize and accumulate results to Cocoa coll
 **What's New?**
 * ***dataUsingEncoding*** - buildin Cocoa method. It converts NSString to NSData object.
 * ***JsonLiteAccumulator*** - convert JSON tokens to Cocoa classes and accumulate results to NSArray or NSDictionary.
-* ***objectFromData*** - class method of JsonLiteAccumulator, it is helper method - incupsulation of full initialization (see next example).
+* ***objectFromData*** - class method of JsonLiteAccumulator, it is helper method - encapsulation of full initialization (see next example).
 
 ``` objc
 #import <Foundation/Foundation.h>
@@ -128,7 +128,7 @@ Also this example shows full parsing flow: create parser -> assign delegate -> p
 
 **What's New?**
 * ***JsonLiteParser*** - sequential access JSON parser. 
-* ***JsonLiteAccumulator*** - implements JsonLiteParserDelegate protocol. Performs token convertion and accululates results to Cocoa collections.
+* ***JsonLiteAccumulator*** - implements JsonLiteParserDelegate protocol. Performs token conversion and accumulates results to Cocoa collections.
 
 ``` objc
 #import <Foundation/Foundation.h>
@@ -164,7 +164,7 @@ It's really hard to deal with Cocoa collections. The best way is to bind JSON to
 
 **What's New?**
 * ***Model*** - declaration of application object. 
-* ***JsonLiteDeserializer*** - implements JsonLiteParserDelegate protocol. Performs token convertion and binds resuls to specified model.
+* ***JsonLiteDeserializer*** - implements JsonLiteParserDelegate protocol. Performs token conversion and binds results to specified model.
 * ***JsonLiteSerializer*** - serialize Objective-C model or collection to JSON.
 
 ``` objc
@@ -219,7 +219,7 @@ int main(int argc, const char * argv[]) {
 ```
 ###### Decimal Number
 
-Only JsonLite ObjC can work with NSDecimalNumber object and you can forgot about workaround with strings. It's very important feature for finance project. 
+Only JsonLite ObjC can work with NSDecimalNumber object and you can forget about workaround with strings. It's very important feature for finance project.
 
 **What's New?**
 * ***NSDecimalNumber*** - class for base-10 arithmetic. 
@@ -273,7 +273,7 @@ Full function, statement and branch coverage.
 
 ![Image](../master/tests/cov.png?raw=true)
 
-#### Licence
+#### License
 
 jsonlite and JsonLite ObjC are licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
