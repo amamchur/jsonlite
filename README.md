@@ -269,7 +269,9 @@ int main(int argc, const char * argv[]) {
 
 #### Code Coverage
 
-Full function, statement and branch coverage. 
+* 100% Function coverage
+* 100% Statement coverage
+* 100% Branch coverage. 
 
 See [Code coverage configuration](https://github.com/amamchur/jsonlite/wiki/Code-coverage-configuration)
 
