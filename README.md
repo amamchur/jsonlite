@@ -271,6 +271,8 @@ int main(int argc, const char * argv[]) {
 
 Full function, statement and branch coverage. 
 
+See [Code coverage configuration](https://github.com/amamchur/jsonlite/wiki/Code-coverage-configuration)
+
 ![Image](../master/tests/cov.png?raw=true)
 
 #### License
