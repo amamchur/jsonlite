@@ -148,7 +148,7 @@
     self = [super init];
     if (self != nil) {
         formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"EEE MMM d H:m:s Z Y"];
+        [formatter setDateFormat:@"eee MMM dd HH:mm:ss ZZZZ yyyy"];
     }
     return self;
 }
