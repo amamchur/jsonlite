@@ -122,7 +122,9 @@ int main(int argc, const char * argv[]) {
 ```
 ###### Chunks
 
-A [chunk](http://en.wikipedia.org/wiki/Chunk_(information) is a fragment of JSON. JsonLite ObjC allows you to process a chunk while other parts of JSON are delivering by network. 'Chunk Oriented' processing style allow developer to improve memory usage and increase program performance, also its' provide ability to work with huge JSON data.
+A [chunk] is a fragment of JSON. JsonLite ObjC allows you to process a chunk while other parts of JSON are delivering by network. 'Chunk Oriented' processing style allow developer to improve memory usage and increase program performance, also its' provide ability to work with huge JSON data.
+
+  [chunk]: http://en.wikipedia.org/wiki/Chunk_(information)  "Chunk (information) - Wikipedia, the free encyclopedia"
 
 Also this example shows full parsing flow: create parser -> assign delegate -> parse data. 
 
