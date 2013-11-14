@@ -209,6 +209,63 @@ done:
     return (c - *buffer) * sizeof(uint16_t);
 }
 
+size_t jsonlite_token_size_of_base64_binary(jsonlite_token *ts) {
+    return (((ts->end - ts->start) * 3) / 4 + 3) & ~3;
+}
+
+size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void **buffer) {
+    size_t length = 0;
+    size_t size = jsonlite_token_size_of_base64_binary(ts);
+    const uint8_t *p = ts->start;
+    const uint8_t *l = ts->end;
+    uint8_t *c = *buffer = NULL;
+    uint32_t bytes = 0;
+    int i;
+    if (size > 0) {
+        c = *buffer = (uint16_t *)malloc(size);
+    } else {
+        goto error;
+    }
+next:
+    bytes = i = 0;
+    do {
+        if (p == l) goto error;
+        i++;
+        bytes <<= 6;
+        if (0x41 <= *p && *p <= 0x5A) { bytes |= *p++ - 0x41; continue; }
+        if (0x61 <= *p && *p <= 0x7A) { bytes |= *p++ - 0x47; continue; }
+        if (0x30 <= *p && *p <= 0x39) { bytes |= *p++ + 0x04; continue; }
+        if (*p == 0x2B) { bytes |= 0x3E; p++; continue; }
+        if (*p == 0x2F) { bytes |= 0x3F; p++; continue; }
+        if (*p == '=') {
+            switch (l - p) {
+                case 1:
+                    *c++ = (bytes >> 16)    & 0x000000FF;
+                    *c++ = (bytes >> 8)     & 0x000000FF;
+                    return length + 2;
+                case 2:
+                    *c++ = (bytes >> 10)    & 0x000000FF;
+                    return length + 1;
+            }
+        }
+        goto error;
+    } while (i < 4);
+    
+    *c++ = (bytes >> 16)    & 0x000000FF;
+    *c++ = (bytes >> 8)     & 0x000000FF;
+    *c++ = (bytes)          & 0x000000FF;
+    length += 3;
+    
+    if (p == l) goto done;
+    goto next;
+error:
+    free(*buffer);
+    *buffer = NULL;
+    length = 0;
+done:
+    return length;
+}
+
 long jsonlite_token_to_long(jsonlite_token *token) {
     long res = 0;
     int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;

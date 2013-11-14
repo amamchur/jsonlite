@@ -469,4 +469,96 @@
     STAssertEqualObjects(n1, n2, @"Object not equals");
 }
 
+- (void)testBase64 {
+    jsonlite_token token;
+    token.start = (uint8_t *)"TWFu";
+    token.end = token.start + 4;
+    
+    char *buffer = NULL;
+    size_t size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 3, @"Incorrect size");
+    STAssertTrue(memcmp(buffer, "Man", 3) == 0, @"Incorect decoding");    
+    free(buffer);
+    buffer = NULL;
+    
+    token.start = (uint8_t *)"SGVsbG8=";
+    token.end = token.start + 8;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 5, @"Incorrect size");
+    STAssertTrue(memcmp(buffer, "Hello", 5) == 0, @"Incorect decoding");
+    free(buffer);
+    buffer = NULL;
+    
+    token.start = (uint8_t *)"SGVsbG8hIQ==";
+    token.end = token.start + 12;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 7, @"Incorrect size");
+    STAssertTrue(memcmp(buffer, "Hello!!", 7) == 0, @"Incorect decoding");
+    free(buffer);
+    buffer = NULL;
+    
+    char img[] = "iVBORw0KGgoAAAANSUhEUgA"
+    "AAAoAAAAKCAYAAACNMs+9AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJ"
+    "TUUH1ggDCwMADQ4NnwAAAFVJREFUGJWNkMEJADEIBEcbSDkXUnfSg"
+    "nBVeZ8LSAjiwjyEQXSFEIcHGP9oAi+H0Bymgx9MhxbFdZE2a0s9kT"
+    "Zdw01ZhhYkABSwgmf1Z6r1SNyfFf4BZ+ZUExcNUQUAAAAASUVORK5"
+    "CYII=";
+    
+    token.start = (uint8_t *)img;
+    token.end = token.start + sizeof(img) - 1;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 179, @"Incorrect size");
+    
+    free(buffer);
+    buffer = NULL;
+    
+    token.start = (uint8_t *)"";
+    token.end = token.start + 0;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 0, @"Incorrect size");
+    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    
+    token.start = (uint8_t *)"=";
+    token.end = token.start + 1;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 0, @"Incorrect size");
+    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    
+    token.start = (uint8_t *)" ";
+    token.end = token.start + 1;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 0, @"Incorrect size");
+    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    
+    token.start = (uint8_t *)"}";
+    token.end = token.start + 1;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 0, @"Incorrect size");
+    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    
+    token.start = (uint8_t *)"TWF";
+    token.end = token.start + 3;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 0, @"Incorrect size");
+    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    
+    token.start = (uint8_t *)"TWF{";
+    token.end = token.start + 4;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 0, @"Incorrect size");
+    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    
+    token.start = (uint8_t *)"TWF ";
+    token.end = token.start + 4;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 0, @"Incorrect size");
+    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    
+    token.start = (uint8_t *)"SGVsbG8===";
+    token.end = token.start + 10;
+    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    STAssertTrue(size == 0, @"Incorrect size");
+    STAssertTrue(buffer == NULL, @"Incorect decoding");
+}
+
 @end
