@@ -70,6 +70,20 @@
 			remoteGlobalIDString = 844795F1178815F600833C1E;
 			remoteInfo = Validator;
 		};
+		87A70F7518355DDA000B0AE9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 87A70F7118355DD9000B0AE9 /* Base64.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 87A70F6018355DD9000B0AE9;
+			remoteInfo = Base64;
+		};
+		87A70F7D18355DDA000B0AE9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 842F4F7817896786000667E5 /* iPhoneJsonLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 84D8AA3317E9175600E11185;
+			remoteInfo = iPhoneJsonLiteARC;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -82,12 +96,14 @@
 		842F4F841789678F000667E5 /* Summer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Summer.xcodeproj; path = Summer/Summer.xcodeproj; sourceTree = "<group>"; };
 		842F4F8A17896793000667E5 /* TwitterJsonLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TwitterJsonLite.xcodeproj; path = TwitterJsonLite/TwitterJsonLite.xcodeproj; sourceTree = "<group>"; };
 		842F4F9017896797000667E5 /* Validator.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Validator.xcodeproj; path = Validator/Validator.xcodeproj; sourceTree = "<group>"; };
+		87A70F7118355DD9000B0AE9 /* Base64.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Base64.xcodeproj; path = Base64/Base64.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		842F4F531789673A000667E5 = {
 			isa = PBXGroup;
 			children = (
+				87A70F7118355DD9000B0AE9 /* Base64.xcodeproj */,
 				842F4F9017896797000667E5 /* Validator.xcodeproj */,
 				842F4F8A17896793000667E5 /* TwitterJsonLite.xcodeproj */,
 				842F4F841789678F000667E5 /* Summer.xcodeproj */,
@@ -136,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				842F4F7D17896786000667E5 /* iPhoneJsonLite.app */,
+				87A70F7E18355DDA000B0AE9 /* iPhoneJsonLiteARC.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -172,6 +189,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		87A70F7218355DD9000B0AE9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				87A70F7618355DDA000B0AE9 /* Base64 */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXProject section */
@@ -190,6 +215,10 @@
 			mainGroup = 842F4F531789673A000667E5;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 87A70F7218355DD9000B0AE9 /* Products */;
+					ProjectRef = 87A70F7118355DD9000B0AE9 /* Base64.xcodeproj */;
+				},
 				{
 					ProductGroup = 842F4F5B17896762000667E5 /* Products */;
 					ProjectRef = 842F4F5A17896762000667E5 /* Beautifier.xcodeproj */;
@@ -295,6 +324,20 @@
 			fileType = "compiled.mach-o.executable";
 			path = Validator;
 			remoteRef = 842F4F9417896797000667E5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		87A70F7618355DDA000B0AE9 /* Base64 */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = Base64;
+			remoteRef = 87A70F7518355DDA000B0AE9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		87A70F7E18355DDA000B0AE9 /* iPhoneJsonLiteARC.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = iPhoneJsonLiteARC.app;
+			remoteRef = 87A70F7D18355DDA000B0AE9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
