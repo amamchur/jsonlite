@@ -48,6 +48,8 @@ extern NSString * const JsonLiteCodeDomain;
 @interface JsonLiteStringToken : JsonLiteToken
 
 - (NSString *)copyStringWithBytesNoCopy;
+- (NSData *)copyBase64Data;
+- (NSData *)base64Data;
 
 @end
 

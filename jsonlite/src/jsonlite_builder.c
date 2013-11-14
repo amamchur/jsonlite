@@ -77,6 +77,7 @@ static void jsonlite_builder_raw_char(jsonlite_builder builder, char data);
 static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length);
 static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, ptrdiff_t length);
 static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, ptrdiff_t count);
+static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length);
 
 jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
     jsonlite_builder builder;
@@ -498,4 +499,70 @@ jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void 
     }
 
     return jsonlite_result_not_allowed;
+}
+
+static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length) {
+    static const char encode[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    char buffer[5] = {0};
+    const uint8_t *c = data;
+    const uint8_t *l = data + length;
+    uint32_t bits;
+    jsonlite_stream_write(builder->stream, "\"", 1);
+next:
+    switch (l - c) {
+        case 0:
+            goto done;
+        case 1:
+            bits = *c++ << 16;
+            buffer[0] = encode[(bits & 0x00FC0000) >> 18];
+            buffer[1] = encode[(bits & 0x0003F000) >> 12];
+            buffer[2] = '=';
+            buffer[3] = '=';
+            l = c;
+            goto write;
+        case 2:
+            bits = *c++ << 16;
+            bits |= *c++ << 8;
+            buffer[0] = encode[(bits & 0x00FC0000) >> 18];
+            buffer[1] = encode[(bits & 0x0003F000) >> 12];
+            buffer[2] = encode[(bits & 0x00000FC0) >> 6];
+            buffer[3] = '=';
+            l = c;
+            goto write;
+        default:
+            bits = *c++ << 16;
+            bits |= *c++ << 8;
+            bits |= *c++;
+            buffer[0] = encode[(bits & 0x00FC0000) >> 18];
+            buffer[1] = encode[(bits & 0x0003F000) >> 12];
+            buffer[2] = encode[(bits & 0x00000FC0) >> 6];
+            buffer[3] = encode[(bits & 0x0000003F)];
+            goto write;
+    }
+write:
+    jsonlite_stream_write(builder->stream, buffer, 4);
+    goto next;
+done:
+    jsonlite_stream_write(builder->stream, "\"", 1);
+}
+
+jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const void *data, size_t length) {
+    if (builder == NULL || data == NULL || length == 0) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    jsonlite_write_state *ws = builder->state;
+    if (jsonlite_builder_accept(builder, jsonlite_accept_value)) {
+        jsonlite_builder_prepare_value_writing(builder);
+        jsonlite_builder_write_base64(builder, data, length);
+        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only)) {
+            *ws = jsonlite_accept_continue_array;
+        } else {
+            *ws = jsonlite_accept_continue_object;
+        }
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+
 }

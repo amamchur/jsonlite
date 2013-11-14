@@ -40,6 +40,9 @@
 @interface JsonLiteEpochDateTime : JsonLiteConverter
 @end
 
+@interface JsonLiteBase64 : JsonLiteConverter
+@end
+
 @interface JsonLiteTwitterDate : JsonLiteConverter {
     NSDateFormatter *formatter;
 }

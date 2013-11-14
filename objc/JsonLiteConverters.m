@@ -20,11 +20,8 @@
 @synthesize nextDeserializerChain;
 @synthesize nextSerializerChain;
 
-- (BOOL)getData:(NSData **)data
-       forValue:(id)value 
-     serializer:(JsonLiteSerializer *)serializer {
-    return [nextSerializerChain getData:data forValue:value serializer:serializer];
-    
+- (BOOL)writeConvertedValue:(id)value serializer:(JsonLiteSerializer *)serializer {
+    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value
@@ -58,16 +55,14 @@
 
 @implementation JsonLiteDecimal
 
-- (BOOL)getData:(NSData **)data 
-       forValue:(id)value 
-     serializer:(JsonLiteSerializer *)serializer {
+- (BOOL)writeConvertedValue:(id)value serializer:(JsonLiteSerializer *)serializer {
     if ([value isKindOfClass:[NSDecimalNumber class]]) {
         NSString *str = [value stringValue];
-        *data = [str dataUsingEncoding:NSUTF8StringEncoding]; 
+        const char *c_str = [str UTF8String];
+        jsonlite_builder_raw_value(serializer.builder, c_str, strlen(c_str));
         return YES;
     }
-    return [nextSerializerChain getData:data forValue:value serializer:serializer];
-    
+    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value
@@ -85,16 +80,14 @@
 
 @implementation JsonLiteURL
 
-- (BOOL)getData:(NSData **)data 
-       forValue:(id)value 
-     serializer:(JsonLiteSerializer *)serializer {
+- (BOOL)writeConvertedValue:(id)value serializer:(JsonLiteSerializer *)serializer {
     if ([value isKindOfClass:[NSURL class]]) {
-        NSString *str = [[NSString alloc] initWithFormat:@"\"%@\"", [value absoluteString]];
-        *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-        [str release];
+        NSString *str = [value absoluteString];
+        const char *c_str = [str UTF8String];
+        jsonlite_builder_string(serializer.builder, c_str, strlen(c_str));
         return YES;
     }
-    return [nextSerializerChain getData:data forValue:value serializer:serializer];    
+    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer]; 
 }
 
 - (BOOL)getValue:(id *)value
@@ -114,17 +107,13 @@
 
 @implementation JsonLiteEpochDateTime
 
-- (BOOL)getData:(NSData **)data
-       forValue:(id)value
-     serializer:(JsonLiteSerializer *)serializer {
+- (BOOL)writeConvertedValue:(id)value serializer:(JsonLiteSerializer *)serializer {
     if ([value isKindOfClass:[NSDate class]]) {
-        NSString *str = [[NSString alloc] initWithFormat:@"%lld", (long long)[value timeIntervalSince1970]];
-        *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-        [str release];
+        long long epoch = (long long)[value timeIntervalSince1970];
+        jsonlite_builder_int(serializer.builder, epoch);
         return YES;
     }
-    return [nextSerializerChain getData:data forValue:value serializer:serializer];
-    
+    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value
@@ -135,6 +124,30 @@
         NSNumber *number = [token copyValue];
         *value = [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
         [number release];
+        return YES;
+    }
+    return [nextDeserializerChain getValue:value ofClass:cls forToken:token deserializer:deserializer];
+}
+
+@end
+
+@implementation JsonLiteBase64
+
+- (BOOL)writeConvertedValue:(id)value serializer:(JsonLiteSerializer *)serializer {
+    if ([value isKindOfClass:[NSData class]]) {
+        NSData *data = value;
+        jsonlite_builder_base64_value(serializer.builder, [data bytes], [data length]);
+        return YES;
+    }
+    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
+}
+
+- (BOOL)getValue:(id *)value
+         ofClass:(Class)cls
+        forToken:(JsonLiteToken *)token
+    deserializer:(JsonLiteDeserializer *)deserializer {
+    if ([cls isSubclassOfClass:[NSData class]] && [token isKindOfClass:[JsonLiteStringToken class]]) {
+        *value = [(JsonLiteStringToken *)token base64Data];
         return YES;
     }
     return [nextDeserializerChain getValue:value ofClass:cls forToken:token deserializer:deserializer];
@@ -158,17 +171,14 @@
     [super dealloc];
 }
 
-- (BOOL)getData:(NSData **)data 
-       forValue:(id)value 
-     serializer:(JsonLiteSerializer *)serializer {
+- (BOOL)writeConvertedValue:(id)value serializer:(JsonLiteSerializer *)serializer {
     if ([value isKindOfClass:[NSDate class]]) {
-        NSString *str = [[NSString alloc] initWithFormat:@"\"%@\"", [formatter stringFromDate:value]];
-        *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-        [str release];
+        NSString *str = [formatter stringFromDate:value];
+        const char *c_str = [str UTF8String];
+        jsonlite_builder_string(serializer.builder, c_str, strlen(c_str));
         return YES;
     }
-    return [nextSerializerChain getData:data forValue:value serializer:serializer];
-    
+    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value

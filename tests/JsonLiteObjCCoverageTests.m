@@ -478,7 +478,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     JsonLiteSerializer *ser = [JsonLiteSerializer serializer];
     NSData *data = [ser serializeObject:@[number]];
     NSArray *array = [JsonLiteAccumulator objectFromData:data withMaxDepth:16];
-    STAssertEqualObjects(number, array[0], @"Objects are not equal");
+    STAssertEqualObjects(number, [array lastObject], @"Objects are not equal");
 }
 
 

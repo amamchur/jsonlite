@@ -22,18 +22,17 @@
 
 @property (nonatomic, retain) id<JsonLiteSerializerChain> nextSerializerChain;
 
-- (BOOL)getData:(NSData **)data 
-       forValue:(id)value 
-     serializer:(JsonLiteSerializer *)serializer;
+- (BOOL)writeConvertedValue:(id)value serializer:(JsonLiteSerializer *)serializer;
 
 @end
 
 @interface JsonLiteSerializer : NSObject {
-    jsonlite_builder bs;
+    jsonlite_builder builder;
     id<JsonLiteSerializerChain> converter;
     NSInteger indentation;
 }
 
+@property (nonatomic, readonly) jsonlite_builder builder;
 @property (nonatomic, retain) id<JsonLiteSerializerChain> converter;
 @property (nonatomic, assign) NSInteger indentation;
 

@@ -248,6 +248,7 @@ next:
                     return length + 1;
             }
         }
+        if (*p == 0x5C && *++p == 0x2F) { bytes |= 0x3F; p++; continue; }
         goto error;
     } while (i < 4);
     

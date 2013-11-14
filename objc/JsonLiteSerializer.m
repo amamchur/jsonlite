@@ -38,11 +38,12 @@ static int is_float(CFNumberRef number) {
 
 @synthesize indentation;
 @synthesize converter;
+@synthesize builder;
 
 - (id)init {
     self = [super init];
     if (self != nil) {
-        bs = NULL;
+        builder = NULL;
     }
     return self;
 }
@@ -53,14 +54,14 @@ static int is_float(CFNumberRef number) {
 
 - (void)dealloc {
     self.converter = nil;
-    if (bs != NULL) {
-        jsonlite_builder_release(bs);        
+    if (builder != NULL) {
+        jsonlite_builder_release(builder);        
     }
     [super dealloc];
 }
 
 - (void)serializeProperties:(NSObject *)obj {
-    jsonlite_builder_object_begin(bs);
+    jsonlite_builder_object_begin(builder);
     
     JsonLiteClassMetaData *metaData = [JsonLiteClassMetaData metaDataForClass:[obj class]];
     NSArray *keys = metaData.keys;
@@ -70,72 +71,71 @@ static int is_float(CFNumberRef number) {
         JsonLiteClassProperty *property = [metaData propertyToBindKey:key];
         id value = [property valueOfObject:obj];
         char *buffer = (char *)[key cStringUsingEncoding:NSUTF8StringEncoding];
-        jsonlite_builder_key(bs, buffer, strlen(buffer));
+        jsonlite_builder_key(builder, buffer, strlen(buffer));
         [self serializeValue:value];
     }
 
-    jsonlite_builder_object_end(bs);
+    jsonlite_builder_object_end(builder);
 }
 
 - (void)serializeDictionary:(NSDictionary *)dict {
-    jsonlite_builder_object_begin(bs);
+    jsonlite_builder_object_begin(builder);
     
     NSArray *keys = [dict allKeys];
     NSUInteger count = [keys count];
     for (NSUInteger i = 0; i < count; i++) {
         id key = [keys objectAtIndex:i];
         char *buffer = (char *)[key cStringUsingEncoding:NSUTF8StringEncoding];
-        jsonlite_builder_key(bs, buffer, strlen(buffer));
+        jsonlite_builder_key(builder, buffer, strlen(buffer));
         [self serializeValue:[dict objectForKey:key]];
     }
     
-    jsonlite_builder_object_end(bs);
+    jsonlite_builder_object_end(builder);
 }
 
 - (void)serializeArray:(NSArray *)array {
-    jsonlite_builder_array_begin(bs);
+    jsonlite_builder_array_begin(builder);
 
     NSUInteger count = [array count];
     for (NSUInteger i = 0; i < count; i++) {
         [self serializeValue:[array objectAtIndex:i]];
     }
 
-    jsonlite_builder_array_end(bs);
+    jsonlite_builder_array_end(builder);
 }
 
 - (void)serializeValue:(id)obj {
     if (obj == nil || [obj isKindOfClass:[NSNull class]]) {
-        jsonlite_builder_null(bs);
+        jsonlite_builder_null(builder);
         return;
     }
     
-    NSData *data = nil;
-    if ([converter getData:&data forValue:obj serializer:self]) {
-        jsonlite_builder_raw_value(bs, [data bytes], [data length]);
+    BOOL written = [converter writeConvertedValue:obj serializer:self];
+    if (written) {
         return;
     }
     
     if ([obj isKindOfClass:[NSString class]]) {
         char *buffer = (char *)[obj cStringUsingEncoding:NSUTF8StringEncoding];
-        jsonlite_builder_string(bs, buffer, strlen(buffer));
+        jsonlite_builder_string(builder, buffer, strlen(buffer));
         return;
     }
     
     if ([obj isKindOfClass:[NSNumber class]]) {
         if ((CFBooleanRef)obj == kCFBooleanTrue) {
-            jsonlite_builder_true(bs);
+            jsonlite_builder_true(builder);
             return;
         }
         
         if ((CFBooleanRef)obj == kCFBooleanFalse) {
-            jsonlite_builder_false(bs);
+            jsonlite_builder_false(builder);
             return;
         }
         
         if (is_float((CFNumberRef)obj)) {
-            jsonlite_builder_double(bs, [obj doubleValue]);
+            jsonlite_builder_double(builder, [obj doubleValue]);
         } else {
-            jsonlite_builder_int(bs, [obj longLongValue]);
+            jsonlite_builder_int(builder, [obj longLongValue]);
         }
         return;
     }
@@ -154,13 +154,13 @@ static int is_float(CFNumberRef number) {
 }
 
 - (NSData *)serializeObject:(id)obj {
-    if (bs != NULL) {
-        jsonlite_builder_release(bs);        
+    if (builder != NULL) {
+        jsonlite_builder_release(builder);        
     }    
     
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
-    bs = jsonlite_builder_init(16, stream);
-    jsonlite_builder_set_indentation(bs, indentation > 0 ? (size_t)indentation : 0);
+    builder = jsonlite_builder_init(16, stream);
+    jsonlite_builder_set_indentation(builder, indentation > 0 ? (size_t)indentation : 0);
     
     if ([obj isKindOfClass:[NSArray class]]) {
         [self serializeArray:obj];

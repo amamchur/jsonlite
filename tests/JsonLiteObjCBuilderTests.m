@@ -166,6 +166,15 @@
     result = jsonlite_builder_raw_string(bs, "key", 0);
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
+    result = jsonlite_builder_base64_value(NULL, "key", 3);
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
+    result = jsonlite_builder_base64_value(bs, NULL, 3);
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
+    result = jsonlite_builder_base64_value(bs, "key", 0);
+    STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
+    
     result = jsonlite_builder_string(NULL, "key", strlen("key"));
     STAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
@@ -209,6 +218,9 @@
     STAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect error");
     
     result = jsonlite_builder_raw_string(bs, "key", strlen("key"));
+    STAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect error");
+    
+    result = jsonlite_builder_base64_value(bs, "base64", strlen("base64"));
     STAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect error");
     
     result = jsonlite_builder_null(bs);

@@ -245,6 +245,8 @@ extern "C" {
      * otherwise jsonlite_result_ok.
      */
     jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void *data, size_t length);
+    
+    jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const void *data, size_t length);
 
 #ifdef __cplusplus
 }

@@ -191,6 +191,7 @@ extern "C" {
      */
     size_t jsonlite_token_to_uft16(jsonlite_token *ts, uint16_t **buffer);
     
+    size_t jsonlite_token_size_of_base64_binary(jsonlite_token *ts);
     size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void **buffer);
     
     long jsonlite_token_to_long(jsonlite_token *token);
