@@ -10,7 +10,15 @@
 
 jsonlite is JSON [tokenizer](http://en.wikipedia.org/wiki/Tokenization). It's lightweight C library that can be used for low-level JSON processing or parser development.
 
-JsonLite ObjC is JSON parser base on jsonlite. It's the [fastest](https://github.com/amamchur/iJSONBenchmark) and flexible JSON parser for Objective-C.
+JsonLite for Objective-C is JSON parser base on jsonlite. It's the [high performance](https://github.com/amamchur/iJSONBenchmark) and flexible JSON parser for Objective-C.
+You may use JsonLiteObj instead of <a href="http://developer.apple.com/library/ios/#documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html">NSJSONSerialization</a>
+when your application needs:
+* Avoid duplicates of key & value 
+* Binding/mapping JSON to model
+* Serialization model to JSON 
+* Working with NSURL, NSDate, NSDecimal or base64
+* Chunk processing
+* Custom converters
 
 #### Design Principles
 
@@ -18,7 +26,7 @@ _jsonlite_ designed as goto driven finite state machine. This approach provides 
 
 * Very very fast parsing
 * Low memory footprint
-* Streaming parsong
+* Streaming parsing
 * Depth checking
 * Size of JSON payload doesn't influence memory usage
 * Recursion free
@@ -26,11 +34,11 @@ _jsonlite_ designed as goto driven finite state machine. This approach provides 
 
 ##### Lightweight
 
-jsonlite is super lite parser. It's perfect works on micro-controllers with 2k RAM.
+jsonlite is super lite parser. It's perfect works on microcontrollers with 2k RAM.
 
 Memory usage for parsing depth 32:
-* *64-bit platform* - 216 bytes
-* *32-bit platform* - 124 bytes
+* *64-bit platform* - **216 bytes**
+* *32-bit platform* - **124 bytes**
 
 ##### Divide and Rule (divide et impera)
 
@@ -50,8 +58,8 @@ token.type.string == jsonlite_string_ascii | jsonlite_string_unicode_escape; // 
 ```
 
 And now is your turn, you may:
-* Decode token (jsonlite_token_to_uft8 or jsonlite_token_size_of_uft16) 
-* Pass as raw value to jsonlite_builder (see [Beautifier example](https://github.com/amamchur/jsonlite/blob/master/Examples/Beautifier/Beautifier/main.c)) 
+* Decode token (jsonlite_token_to_uft8 or jsonlite_token_to_uft16)
+* Pass it as raw value to jsonlite_builder (see [Beautifier example](https://github.com/amamchur/jsonlite/blob/master/Examples/Beautifier/Beautifier/main.c)) 
 * Terminate parsing using jsonlite_parser_terminate
 * Or something else
 
