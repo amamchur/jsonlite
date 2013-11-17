@@ -78,16 +78,12 @@ typedef uint8_t parse_state;
 struct jsonlite_parser_struct {
     const uint8_t *cursor;
     const uint8_t *limit;
-    const uint8_t *token_start;
-    const uint8_t *buffer;
-    
+    const uint8_t *buffer;    
     uint8_t *buffer_own;
-    uint8_t *rest;
-    size_t rest_size;
-    
+ 
     parse_state *current;
+    parse_state *last;
     parse_state **control;
-    const parse_state *last;
     
     jsonlite_result result;
     jsonlite_parser_callbacks callbacks;
@@ -122,8 +118,6 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size) {
     jsonlite_parser parser = (jsonlite_parser)memory;
     parser->result = jsonlite_result_unknown;
     parser->buffer_own = NULL;
-    parser->rest = NULL;
-    parser->rest_size = 0;
     parser->callbacks = jsonlite_default_callbacks;
     parser->control = NULL;
     parser->current = (parse_state *)((uint8_t *)parser + sizeof(jsonlite_parser_struct));
@@ -175,21 +169,18 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
         return jsonlite_result_invalid_argument;
     }
     
-    if (parser->rest != NULL) {
-        size_t total_size = size + parser->rest_size;
+    if (parser->buffer_own != NULL) {
+        size_t total_size = size + parser->limit - parser->buffer_own;
         uint8_t *b = (uint8_t *)malloc(total_size);
-        memcpy(b, parser->rest, parser->rest_size);  // LCOV_EXCL_LINE
-        memcpy(b + parser->rest_size, buffer, size); // LCOV_EXCL_LINE
+        memcpy(b, parser->buffer_own, parser->limit - parser->buffer_own);  // LCOV_EXCL_LINE
+        memcpy(b + (parser->limit - parser->buffer_own), buffer, size);     // LCOV_EXCL_LINE
         
         free(parser->buffer_own);
-        free(parser->rest);
         
         parser->buffer = b;
         parser->buffer_own = b;
-        parser->cursor = parser->buffer;
-        parser->limit = parser->buffer + total_size;
-        parser->rest = NULL;
-        parser->rest_size = 0;        
+        parser->cursor = b;
+        parser->limit = b + total_size;
     } else {
         parser->buffer = buffer;
         parser->cursor = parser->buffer;
@@ -242,7 +233,6 @@ void jsonlite_parser_cleanup(jsonlite_parser parser) {
     }
     
     free(parser->buffer_own);
-    free(parser->rest);
 }
 
 static void jsonlite_do_parse(jsonlite_parser parser) {
@@ -559,16 +549,26 @@ end_of_stream_whitespaces:
     token_start = l;
 end_of_stream:
     parser->result = jsonlite_result_end_of_stream;
-    parser->rest_size = (size_t)(parser->limit - token_start);
-    if (parser->rest_size > 0) {
-        parser->rest = malloc(parser->rest_size);
-        memcpy(parser->rest, token_start, parser->rest_size); // LCOV_EXCL_LINE
+    res = parser->buffer_own != NULL;
+    if ((parser->limit - token_start) > 0) {
+        parser->buffer_own = malloc(parser->limit - token_start);               // LCOV_EXCL_LINE
+        parser->limit = parser->buffer_own + (parser->limit - token_start);
+        memcpy(parser->buffer_own, token_start, parser->limit - parser->buffer_own);
+        if (res) {
+            free((void *)parser->buffer);
+            parser->buffer = parser->buffer_own;
+        }
+    } else {
+        if (res) {
+            free((void *)parser->buffer_own);
+            parser->buffer = NULL;
+            parser->buffer_own = NULL;
+        }
     }
     goto end;
 success:
     parser->result = jsonlite_result_ok;
 end:
-    parser->token_start = token_start;
     parser->current = state;
     parser->control = NULL;
     parser->cursor = c;
