@@ -33,7 +33,7 @@ extern "C" {
     void jsonlite_stream_release(jsonlite_stream stream);
     
     jsonlite_stream jsonlite_mem_stream_init(size_t block_size);
-    size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data);
+    size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data, size_t extra_bytes);
     
     jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size);
     size_t jsonlite_static_mem_stream_written_bytes(jsonlite_stream stream);

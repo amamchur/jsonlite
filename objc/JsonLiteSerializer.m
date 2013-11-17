@@ -171,7 +171,7 @@ static int is_float(CFNumberRef number) {
     }
 
     uint8_t *data = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &data);  
+    size_t size = jsonlite_mem_stream_data(stream, &data, 0);
     NSData *result = [[NSData alloc] initWithBytesNoCopy:data length:size freeWhenDone:YES];
     return [result autorelease];
 }

@@ -147,7 +147,7 @@
     STAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
     
     uint8_t *data = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &data);
+    size_t size = jsonlite_mem_stream_data(stream, &data, 0);
     STAssertTrue(data == NULL, @"Data is not NULL");
     STAssertTrue(size == 0, @"Size is not zero");
 
@@ -164,7 +164,7 @@
     STAssertTrue(written == sizeof(hello), @"Incorrect size");
     
     uint8_t *data = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &data);
+    size_t size = jsonlite_mem_stream_data(stream, &data, 0);
     STAssertTrue(data != NULL, @"Data is NULL");
     STAssertTrue(size == sizeof(hello), @"Size is not sizeof(hello)");
     
@@ -184,7 +184,7 @@
     STAssertTrue(written == sizeof(hello), @"Incorrect size");
     
     uint8_t *data = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &data);
+    size_t size = jsonlite_mem_stream_data(stream, &data, 0);
     STAssertTrue(data != NULL, @"Data is NULL");
     STAssertTrue(size == sizeof(hello), @"Size is not sizeof(hello)");
     

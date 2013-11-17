@@ -117,7 +117,7 @@ jsonlite_stream jsonlite_mem_stream_init(size_t block_size) {
     return stream;
 }
 
-size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data) {
+size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data, size_t extra_bytes) {
     jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
     jsonlite_mem_stream_block *block = NULL;
     uint8_t *buff = NULL;
@@ -134,7 +134,7 @@ size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data) {
     if (size == 0) {
         *data = NULL;
     } else {
-        *data = (uint8_t *)malloc(size);
+        *data = (uint8_t *)malloc(size + extra_bytes);
         buff = *data;
         for (block = mem_stream->first; block != NULL; block = block->next) {
             if (block->next != NULL) {

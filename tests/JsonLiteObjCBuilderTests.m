@@ -97,7 +97,7 @@
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
     bs = jsonlite_builder_init(2, stream);
     uint8_t *buffer = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &buffer);
+    size_t size = jsonlite_mem_stream_data(stream, &buffer, 0);
     
     STAssertTrue(buffer == NULL, @"Buffer not null");
     STAssertTrue(size == 0, @"Size not 0");
@@ -302,7 +302,7 @@
     STAssertTrue(result == jsonlite_result_ok, @"Parse state error");
     
     uint8_t *buffer = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &buffer);
+    size_t size = jsonlite_mem_stream_data(stream, &buffer, 0);
     
     STAssertTrue(buffer != NULL, @"Buffer is NULL");
     STAssertTrue(size != 0, @"Size is zero");

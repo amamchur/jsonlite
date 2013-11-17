@@ -188,10 +188,10 @@ static uint8_t img_bytes[] = {
     STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &json);
+    size_t size = jsonlite_mem_stream_data(stream, &json, 1);
     STAssertTrue(json != NULL, @"Json is null");
     STAssertTrue(size != 0, @"Size is zero");
-    json[size - 1] = 0;
+    json[size] = 0;
     
     char *pos =  strstr((char *)json, "TWFu");
     STAssertTrue(pos != NULL, @"Encoding fails");
@@ -214,10 +214,10 @@ static uint8_t img_bytes[] = {
     STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &json);
+    size_t size = jsonlite_mem_stream_data(stream, &json, 1);
     STAssertTrue(json != NULL, @"Json is null");
     STAssertTrue(size != 0, @"Size is zero");
-    json[size - 1] = 0;
+    json[size] = 0;
     
     char *pos =  strstr((char *)json, "SGVsbG8=");
     STAssertTrue(pos != NULL, @"Encoding fails");
@@ -240,10 +240,10 @@ static uint8_t img_bytes[] = {
     STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &json);
+    size_t size = jsonlite_mem_stream_data(stream, &json, 1);
     STAssertTrue(json != NULL, @"Json is null");
     STAssertTrue(size != 0, @"Size is zero");
-    json[size - 1] = 0;
+    json[size] = 0;
     
     char *pos =  strstr((char *)json, "SGVsbG8hIQ==");
     STAssertTrue(pos != NULL, @"Encoding fails");
@@ -269,10 +269,10 @@ static uint8_t img_bytes[] = {
     STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &json);
+    size_t size = jsonlite_mem_stream_data(stream, &json, 1);
     STAssertTrue(json != NULL, @"Json is null");
     STAssertTrue(size != 0, @"Size is zero");
-    json[size - 1] = 0;
+    json[size] = 0;
     
     char *pos =  strstr((char *)json, img);
     STAssertTrue(pos != NULL, @"Encoding fails");
@@ -304,7 +304,7 @@ static uint8_t img_bytes[] = {
     STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &json);
+    size_t size = jsonlite_mem_stream_data(stream, &json, 0);
     STAssertTrue(json != NULL, @"Json is null");
     STAssertTrue(size != 0, @"Size is zero");
     
@@ -341,7 +341,7 @@ static uint8_t img_bytes[] = {
     STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &json);
+    size_t size = jsonlite_mem_stream_data(stream, &json, 0);
     STAssertTrue(json != NULL, @"Json is null");
     STAssertTrue(size != 0, @"Size is zero");
     
@@ -375,7 +375,7 @@ static uint8_t img_bytes[] = {
     STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
-    size_t size = jsonlite_mem_stream_data(stream, &json);
+    size_t size = jsonlite_mem_stream_data(stream, &json, 0);
     STAssertTrue(json != NULL, @"Json is null");
     STAssertTrue(size != 0, @"Size is zero");
     
