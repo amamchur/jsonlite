@@ -37,8 +37,8 @@ _jsonlite_ designed as goto driven finite state machine. This approach provides 
 jsonlite is super lite parser. It's perfect works on microcontrollers with 2k RAM.
 
 Memory usage for parsing depth 32:
-* *64-bit platform* - **216 bytes**
-* *32-bit platform* - **124 bytes**
+* *64-bit platform* - **200 bytes**
+* *32-bit platform* - **116 bytes**
 
 ##### Divide and Rule (divide et impera)
 
