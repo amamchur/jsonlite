@@ -37,7 +37,6 @@ typedef struct jsonlite_token_pool_struct {
 } jsonlite_token_pool_struct;
 
 static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index);
-static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *b);
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
 static jsonlite_token_bucket terminate_bucket = {NULL, NULL, 0, 0, NULL};
 
@@ -56,12 +55,13 @@ jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value
 
 void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     jsonlite_token_bucket *bucket;
-    size_t size = pool->content_pool_size;
+    size_t size = 0;
     int i;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         bucket = pool->blocks[i].buckets;
-        if (jsonlite_bucket_not_copied(pool, bucket)) {
+        while (bucket->start != NULL) {
             size += bucket->end - bucket->start;
+            bucket++;
         }
     }
     
@@ -70,28 +70,16 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     }
     
 	uint8_t *buffer = (uint8_t *)malloc(size);
-    ptrdiff_t offset = 0;
-    if (pool->content_pool != NULL) {
-        offset = buffer - pool->content_pool;
-        memcpy(buffer, pool->content_pool, pool->content_pool_size); // LCOV_EXCL_LINE
-    }
-    
-    uint8_t *p = buffer + pool->content_pool_size;    
+    uint8_t *p = buffer;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         bucket = pool->blocks[i].buckets;
-        if (bucket->start == NULL) {
-            continue;
-        }
-        
-        if (jsonlite_bucket_not_copied(pool, bucket)) {
+        while (bucket->start != NULL) {
             size_t length = bucket->end - bucket->start;
             memcpy(p, bucket->start, length); // LCOV_EXCL_LINE
-            bucket->start = p,
-            bucket->end = p + length,
+            bucket->start = p;
+            bucket->end = p + length;
             p += length;
-        } else {
-            bucket->start += offset;
-            bucket->end += offset;
+            bucket++;
         }
     }
     
@@ -172,16 +160,6 @@ static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index) 
     
     pool->blocks[index].buckets = extended;
     pool->blocks[index].capacity = 2 * capacity;
-}
-
-static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *bucket) {
-    if (bucket->start == NULL) {
-        return 0;
-    }
-    
-    int res = bucket->start < pool->content_pool;
-    res |= bucket->start >= pool->content_pool + pool->content_pool_size;
-    return res;
 }
 
 // Used MurmurHash2 function by Austin Appleby
