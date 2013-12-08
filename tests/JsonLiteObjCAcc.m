@@ -85,4 +85,28 @@
     STAssertTrue([obj count] == 1001, @"Incorrect count");
 }
 
+- (void)testChunks {
+    char json1[] = "[{\"key1\" : 1},{\"key2";
+    char json2[] = "\" : 2},{\"key3\" : 3},{\"key";
+    char json3[] = "4\" : 4}]";
+    
+    JsonLiteParser *parser = [JsonLiteParser parserWithDepth:32];
+    JsonLiteAccumulator *acc = [JsonLiteAccumulator accumulatorWithDepth:32];
+    parser.delegate = acc;
+    [parser parse:[NSData dataWithBytes:json1 length:sizeof(json1) - 1]];
+    [parser parse:[NSData dataWithBytes:json2 length:sizeof(json2) - 1]];
+    [parser parse:[NSData dataWithBytes:json3 length:sizeof(json3) - 1]];
+    
+    NSMutableArray *array = [NSMutableArray array];
+    [array addObject:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:1]
+                                                 forKey:@"key1"]];
+    [array addObject:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:2]
+                                                 forKey:@"key2"]];
+    [array addObject:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:3]
+                                                 forKey:@"key3"]];
+    [array addObject:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:4]
+                                                 forKey:@"key4"]];
+    STAssertEqualObjects(array, [acc object], @"Not equal!");
+}
+
 @end

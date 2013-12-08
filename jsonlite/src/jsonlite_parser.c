@@ -549,6 +549,11 @@ end_of_stream_whitespaces:
     token_start = l;
 end_of_stream:
     parser->result = jsonlite_result_end_of_stream;
+    parser->current = state;
+    parser->control = NULL;
+    parser->cursor = c;
+    parser->callbacks.parse_finished(&parser->callbacks.context);
+    
     res = parser->buffer_own != NULL;
     if ((parser->limit - token_start) > 0) {
         parser->buffer_own = malloc(parser->limit - token_start);               // LCOV_EXCL_LINE
@@ -565,7 +570,7 @@ end_of_stream:
             parser->buffer_own = NULL;
         }
     }
-    goto end;
+    return;
 success:
     parser->result = jsonlite_result_ok;
 end:
