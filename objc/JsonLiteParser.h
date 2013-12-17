@@ -109,4 +109,3 @@ struct JsonLiteInternal;
 + (id)parserWithDepth:(NSUInteger)aDepth;
 
 @end
-

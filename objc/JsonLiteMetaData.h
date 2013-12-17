@@ -110,4 +110,3 @@
 - (JsonLiteClassMetaData *)metaDataForClass:(Class)cls;
 
 @end
-

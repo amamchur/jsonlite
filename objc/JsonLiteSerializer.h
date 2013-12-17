@@ -42,4 +42,3 @@
 + (id)serializer;
 
 @end
-
