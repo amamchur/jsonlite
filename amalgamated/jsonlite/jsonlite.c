@@ -79,6 +79,7 @@ static void jsonlite_builder_raw_char(jsonlite_builder builder, char data);
 static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length);
 static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, ptrdiff_t length);
 static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, ptrdiff_t count);
+static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length);
 
 jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
     jsonlite_builder builder;
@@ -501,6 +502,72 @@ jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void 
 
     return jsonlite_result_not_allowed;
 }
+
+static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length) {
+    static const char encode[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    char buffer[5] = {0};
+    const uint8_t *c = data;
+    const uint8_t *l = data + length;
+    uint32_t bits;
+    jsonlite_stream_write(builder->stream, "\"", 1);
+next:
+    switch (l - c) {
+        case 0:
+            goto done;
+        case 1:
+            bits = *c++ << 16;
+            buffer[0] = encode[(bits & 0x00FC0000) >> 18];
+            buffer[1] = encode[(bits & 0x0003F000) >> 12];
+            buffer[2] = '=';
+            buffer[3] = '=';
+            l = c;
+            goto write;
+        case 2:
+            bits = *c++ << 16;
+            bits |= *c++ << 8;
+            buffer[0] = encode[(bits & 0x00FC0000) >> 18];
+            buffer[1] = encode[(bits & 0x0003F000) >> 12];
+            buffer[2] = encode[(bits & 0x00000FC0) >> 6];
+            buffer[3] = '=';
+            l = c;
+            goto write;
+        default:
+            bits = *c++ << 16;
+            bits |= *c++ << 8;
+            bits |= *c++;
+            buffer[0] = encode[(bits & 0x00FC0000) >> 18];
+            buffer[1] = encode[(bits & 0x0003F000) >> 12];
+            buffer[2] = encode[(bits & 0x00000FC0) >> 6];
+            buffer[3] = encode[(bits & 0x0000003F)];
+            goto write;
+    }
+write:
+    jsonlite_stream_write(builder->stream, buffer, 4);
+    goto next;
+done:
+    jsonlite_stream_write(builder->stream, "\"", 1);
+}
+
+jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const void *data, size_t length) {
+    if (builder == NULL || data == NULL || length == 0) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    jsonlite_write_state *ws = builder->state;
+    if (jsonlite_builder_accept(builder, jsonlite_accept_value)) {
+        jsonlite_builder_prepare_value_writing(builder);
+        jsonlite_builder_write_base64(builder, data, length);
+        if (jsonlite_builder_accept(builder, jsonlite_accept_values_only)) {
+            *ws = jsonlite_accept_continue_array;
+        } else {
+            *ws = jsonlite_accept_continue_object;
+        }
+        return jsonlite_result_ok;
+    }
+    
+    return jsonlite_result_not_allowed;
+
+}
 //
 //  Copyright 2012-2013, Andrii Mamchur
 //
@@ -581,16 +648,12 @@ typedef uint8_t parse_state;
 struct jsonlite_parser_struct {
     const uint8_t *cursor;
     const uint8_t *limit;
-    const uint8_t *token_start;
-    const uint8_t *buffer;
-    
+    const uint8_t *buffer;    
     uint8_t *buffer_own;
-    uint8_t *rest;
-    size_t rest_size;
-    
+ 
     parse_state *current;
+    parse_state *last;
     parse_state **control;
-    const parse_state *last;
     
     jsonlite_result result;
     jsonlite_parser_callbacks callbacks;
@@ -625,8 +688,6 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size) {
     jsonlite_parser parser = (jsonlite_parser)memory;
     parser->result = jsonlite_result_unknown;
     parser->buffer_own = NULL;
-    parser->rest = NULL;
-    parser->rest_size = 0;
     parser->callbacks = jsonlite_default_callbacks;
     parser->control = NULL;
     parser->current = (parse_state *)((uint8_t *)parser + sizeof(jsonlite_parser_struct));
@@ -678,21 +739,18 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
         return jsonlite_result_invalid_argument;
     }
     
-    if (parser->rest != NULL) {
-        size_t total_size = size + parser->rest_size;
+    if (parser->buffer_own != NULL) {
+        size_t total_size = size + parser->limit - parser->buffer_own;
         uint8_t *b = (uint8_t *)malloc(total_size);
-        memcpy(b, parser->rest, parser->rest_size);  // LCOV_EXCL_LINE
-        memcpy(b + parser->rest_size, buffer, size); // LCOV_EXCL_LINE
+        memcpy(b, parser->buffer_own, parser->limit - parser->buffer_own);  // LCOV_EXCL_LINE
+        memcpy(b + (parser->limit - parser->buffer_own), buffer, size);     // LCOV_EXCL_LINE
         
         free(parser->buffer_own);
-        free(parser->rest);
         
         parser->buffer = b;
         parser->buffer_own = b;
-        parser->cursor = parser->buffer;
-        parser->limit = parser->buffer + total_size;
-        parser->rest = NULL;
-        parser->rest_size = 0;        
+        parser->cursor = b;
+        parser->limit = b + total_size;
     } else {
         parser->buffer = buffer;
         parser->cursor = parser->buffer;
@@ -745,7 +803,6 @@ void jsonlite_parser_cleanup(jsonlite_parser parser) {
     }
     
     free(parser->buffer_own);
-    free(parser->rest);
 }
 
 static void jsonlite_do_parse(jsonlite_parser parser) {
@@ -1062,16 +1119,31 @@ end_of_stream_whitespaces:
     token_start = l;
 end_of_stream:
     parser->result = jsonlite_result_end_of_stream;
-    parser->rest_size = (size_t)(parser->limit - token_start);
-    if (parser->rest_size > 0) {
-        parser->rest = malloc(parser->rest_size);
-        memcpy(parser->rest, token_start, parser->rest_size); // LCOV_EXCL_LINE
+    parser->current = state;
+    parser->control = NULL;
+    parser->cursor = c;
+    parser->callbacks.parse_finished(&parser->callbacks.context);
+    
+    res = parser->buffer_own != NULL;
+    if ((parser->limit - token_start) > 0) {
+        parser->buffer_own = malloc(parser->limit - token_start);               // LCOV_EXCL_LINE
+        parser->limit = parser->buffer_own + (parser->limit - token_start);
+        memcpy(parser->buffer_own, token_start, parser->limit - parser->buffer_own);
+        if (res) {
+            free((void *)parser->buffer);
+            parser->buffer = parser->buffer_own;
+        }
+    } else {
+        if (res) {
+            free((void *)parser->buffer_own);
+            parser->buffer = NULL;
+            parser->buffer_own = NULL;
+        }
     }
-    goto end;
+    return;
 success:
     parser->result = jsonlite_result_ok;
 end:
-    parser->token_start = token_start;
     parser->current = state;
     parser->control = NULL;
     parser->cursor = c;
@@ -1196,7 +1268,7 @@ jsonlite_stream jsonlite_mem_stream_init(size_t block_size) {
     return stream;
 }
 
-size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data) {
+size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data, size_t extra_bytes) {
     jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
     jsonlite_mem_stream_block *block = NULL;
     uint8_t *buff = NULL;
@@ -1213,7 +1285,7 @@ size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data) {
     if (size == 0) {
         *data = NULL;
     } else {
-        *data = (uint8_t *)malloc(size);
+        *data = (uint8_t *)malloc(size + extra_bytes);
         buff = *data;
         for (block = mem_stream->first; block != NULL; block = block->next) {
             if (block->next != NULL) {
@@ -1519,6 +1591,64 @@ done:
     return (c - *buffer) * sizeof(uint16_t);
 }
 
+size_t jsonlite_token_size_of_base64_binary(jsonlite_token *ts) {
+    return (((ts->end - ts->start) * 3) / 4 + 3) & ~3;
+}
+
+size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void **buffer) {
+    size_t length = 0;
+    size_t size = jsonlite_token_size_of_base64_binary(ts);
+    const uint8_t *p = ts->start;
+    const uint8_t *l = ts->end;
+    uint8_t *c = *buffer = NULL;
+    uint32_t bytes = 0;
+    int i;
+    if (size > 0) {
+        c = *buffer = (uint16_t *)malloc(size);
+    } else {
+        goto error;
+    }
+next:
+    bytes = i = 0;
+    do {
+        if (p == l) goto error;
+        i++;
+        bytes <<= 6;
+        if (0x41 <= *p && *p <= 0x5A) { bytes |= *p++ - 0x41; continue; }
+        if (0x61 <= *p && *p <= 0x7A) { bytes |= *p++ - 0x47; continue; }
+        if (0x30 <= *p && *p <= 0x39) { bytes |= *p++ + 0x04; continue; }
+        if (*p == 0x2B) { bytes |= 0x3E; p++; continue; }
+        if (*p == 0x2F) { bytes |= 0x3F; p++; continue; }
+        if (*p == '=') {
+            switch (l - p) {
+                case 1:
+                    *c++ = (bytes >> 16)    & 0x000000FF;
+                    *c++ = (bytes >> 8)     & 0x000000FF;
+                    return length + 2;
+                case 2:
+                    *c++ = (bytes >> 10)    & 0x000000FF;
+                    return length + 1;
+            }
+        }
+        if (*p == 0x5C && *++p == 0x2F) { bytes |= 0x3F; p++; continue; }
+        goto error;
+    } while (i < 4);
+    
+    *c++ = (bytes >> 16)    & 0x000000FF;
+    *c++ = (bytes >> 8)     & 0x000000FF;
+    *c++ = (bytes)          & 0x000000FF;
+    length += 3;
+    
+    if (p == l) goto done;
+    goto next;
+error:
+    free(*buffer);
+    *buffer = NULL;
+    length = 0;
+done:
+    return length;
+}
+
 long jsonlite_token_to_long(jsonlite_token *token) {
     long res = 0;
     int negative = (token->type.number & jsonlite_number_negative) == jsonlite_number_negative;
@@ -1595,7 +1725,6 @@ typedef struct jsonlite_token_pool_struct {
 } jsonlite_token_pool_struct;
 
 static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index);
-static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *b);
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
 static jsonlite_token_bucket terminate_bucket = {NULL, NULL, 0, 0, NULL};
 
@@ -1614,12 +1743,13 @@ jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value
 
 void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     jsonlite_token_bucket *bucket;
-    size_t size = pool->content_pool_size;
+    size_t size = 0;
     int i;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         bucket = pool->blocks[i].buckets;
-        if (jsonlite_bucket_not_copied(pool, bucket)) {
+        while (bucket->start != NULL) {
             size += bucket->end - bucket->start;
+            bucket++;
         }
     }
     
@@ -1628,28 +1758,16 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     }
     
 	uint8_t *buffer = (uint8_t *)malloc(size);
-    ptrdiff_t offset = 0;
-    if (pool->content_pool != NULL) {
-        offset = buffer - pool->content_pool;
-        memcpy(buffer, pool->content_pool, pool->content_pool_size); // LCOV_EXCL_LINE
-    }
-    
-    uint8_t *p = buffer + pool->content_pool_size;    
+    uint8_t *p = buffer;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         bucket = pool->blocks[i].buckets;
-        if (bucket->start == NULL) {
-            continue;
-        }
-        
-        if (jsonlite_bucket_not_copied(pool, bucket)) {
+        while (bucket->start != NULL) {
             size_t length = bucket->end - bucket->start;
             memcpy(p, bucket->start, length); // LCOV_EXCL_LINE
-            bucket->start = p,
-            bucket->end = p + length,
+            bucket->start = p;
+            bucket->end = p + length;
             p += length;
-        } else {
-            bucket->start += offset;
-            bucket->end += offset;
+            bucket++;
         }
     }
     
@@ -1730,16 +1848,6 @@ static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index) 
     
     pool->blocks[index].buckets = extended;
     pool->blocks[index].capacity = 2 * capacity;
-}
-
-static int jsonlite_bucket_not_copied(jsonlite_token_pool pool, jsonlite_token_bucket *bucket) {
-    if (bucket->start == NULL) {
-        return 0;
-    }
-    
-    int res = bucket->start < pool->content_pool;
-    res |= bucket->start >= pool->content_pool + pool->content_pool_size;
-    return res;
 }
 
 // Used MurmurHash2 function by Austin Appleby

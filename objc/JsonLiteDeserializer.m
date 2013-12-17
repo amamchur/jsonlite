@@ -102,6 +102,8 @@ static JsonLiteArrayBinder *arrayBinder = nil;
         rootClass = cls;
         metaDataPool = [[JsonLiteClassMetaDataPool alloc] init];
         keyPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
+        stringPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
+        numberPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
     }
     return self;
 }
@@ -114,6 +116,9 @@ static JsonLiteArrayBinder *arrayBinder = nil;
     self.converter = nil;
     
     jsonlite_token_pool_release(keyPool);
+    jsonlite_token_pool_release(stringPool);
+    jsonlite_token_pool_release(numberPool);
+    
     [bindingStack release];
     [metaDataStack release];
     [object release];
@@ -128,7 +133,7 @@ static JsonLiteArrayBinder *arrayBinder = nil;
     }
 }
 
-- (void)bindToken:(JsonLiteToken *)token {
+- (void)bindToken:(JsonLiteToken *)token usingPool:(jsonlite_token_pool)pool {
     JsonLiteBindingState *state = [bindingStack lastObject];
     if (state != nil) {
         id value = nil;
@@ -136,8 +141,13 @@ static JsonLiteArrayBinder *arrayBinder = nil;
                          ofClass:[state->binder valueClass] 
                         forToken:token
                     deserializer:self]) {
-            value = [token value];
+            jsonlite_token_bucket *item = jsonlite_token_pool_get_bucket(pool, (jsonlite_token *)token);
+            if (item->value == nil) {
+                item->value = [token copyValue];
+            }
+            value = (id)CFRetain((CFTypeRef)item->value);
         }
+        
         [state->binder setValue:value forObject:state->obj];
     }
 }
@@ -145,6 +155,8 @@ static JsonLiteArrayBinder *arrayBinder = nil;
 - (void)parser:(JsonLiteParser *)parser didFinishParsingWithError:(NSError *)error {
     if ([error code] == JsonLiteCodeEndOfStream) {
         jsonlite_token_pool_copy_tokens(keyPool);
+        jsonlite_token_pool_copy_tokens(stringPool);
+        jsonlite_token_pool_copy_tokens(numberPool);
     }
 }
 
@@ -256,11 +268,11 @@ static JsonLiteArrayBinder *arrayBinder = nil;
 }
 
 - (void)parser:(JsonLiteParser *)parser foundStringToken:(JsonLiteStringToken *)token {
-    [self bindToken:token];
+    [self bindToken:token usingPool:stringPool];
 }
 
 - (void)parser:(JsonLiteParser *)parser foundNumberToken:(JsonLiteNumberToken *)token {
-    [self bindToken:token];
+    [self bindToken:token usingPool:numberPool];
 }
 
 @end
