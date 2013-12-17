@@ -7,425 +7,346 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		846994C517EA57DA00BBB8BA /* jsonlite.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994AA17EA57DA00BBB8BA /* jsonlite.h */; };
-		846994C617EA57DA00BBB8BA /* jsonlite_builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994AB17EA57DA00BBB8BA /* jsonlite_builder.h */; };
-		846994C717EA57DA00BBB8BA /* jsonlite_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994AC17EA57DA00BBB8BA /* jsonlite_parser.h */; };
-		846994C817EA57DA00BBB8BA /* jsonlite_token.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994AD17EA57DA00BBB8BA /* jsonlite_token.h */; };
-		846994C917EA57DA00BBB8BA /* jsonlite_token_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994AE17EA57DA00BBB8BA /* jsonlite_token_pool.h */; };
-		846994CA17EA57DA00BBB8BA /* jsonlite_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994AF17EA57DA00BBB8BA /* jsonlite_types.h */; };
-		846994CB17EA57DA00BBB8BA /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 846994B117EA57DA00BBB8BA /* jsonlite_builder.c */; };
-		846994CC17EA57DA00BBB8BA /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 846994B217EA57DA00BBB8BA /* jsonlite_parser.c */; };
-		846994CD17EA57DA00BBB8BA /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 846994B317EA57DA00BBB8BA /* jsonlite_token.c */; };
-		846994CE17EA57DA00BBB8BA /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 846994B417EA57DA00BBB8BA /* jsonlite_token_pool.c */; };
-		846994CF17EA57DA00BBB8BA /* JsonLiteAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994B617EA57DA00BBB8BA /* JsonLiteAccumulator.h */; };
-		846994D017EA57DA00BBB8BA /* JsonLiteAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994B717EA57DA00BBB8BA /* JsonLiteAccumulator.m */; };
-		846994D117EA57DA00BBB8BA /* JsonLiteCollections.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994B817EA57DA00BBB8BA /* JsonLiteCollections.h */; };
-		846994D217EA57DA00BBB8BA /* JsonLiteCollections.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994B917EA57DA00BBB8BA /* JsonLiteCollections.m */; };
-		846994D317EA57DA00BBB8BA /* JsonLiteConverters.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994BA17EA57DA00BBB8BA /* JsonLiteConverters.h */; };
-		846994D417EA57DA00BBB8BA /* JsonLiteConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994BB17EA57DA00BBB8BA /* JsonLiteConverters.m */; };
-		846994D517EA57DA00BBB8BA /* JsonLiteDeserializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994BC17EA57DA00BBB8BA /* JsonLiteDeserializer.h */; };
-		846994D617EA57DA00BBB8BA /* JsonLiteDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994BD17EA57DA00BBB8BA /* JsonLiteDeserializer.m */; };
-		846994D717EA57DA00BBB8BA /* JsonLiteMetaData.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994BE17EA57DA00BBB8BA /* JsonLiteMetaData.h */; };
-		846994D817EA57DA00BBB8BA /* JsonLiteMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994BF17EA57DA00BBB8BA /* JsonLiteMetaData.m */; };
-		846994D917EA57DA00BBB8BA /* JsonLiteObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994C017EA57DA00BBB8BA /* JsonLiteObjC.h */; };
-		846994DA17EA57DA00BBB8BA /* JsonLiteParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994C117EA57DA00BBB8BA /* JsonLiteParser.h */; };
-		846994DB17EA57DA00BBB8BA /* JsonLiteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994C217EA57DA00BBB8BA /* JsonLiteParser.m */; };
-		846994DC17EA57DA00BBB8BA /* JsonLiteSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 846994C317EA57DA00BBB8BA /* JsonLiteSerializer.h */; };
-		846994DD17EA57DA00BBB8BA /* JsonLiteSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994C417EA57DA00BBB8BA /* JsonLiteSerializer.m */; };
-		846994FD17EA598900BBB8BA /* JsonLiteObjCAcc.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994DF17EA598800BBB8BA /* JsonLiteObjCAcc.m */; };
-		846994FE17EA598900BBB8BA /* JsonLiteObjCBadToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994E117EA598800BBB8BA /* JsonLiteObjCBadToken.m */; };
-		846994FF17EA598900BBB8BA /* JsonLiteObjCBrokenTokenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994E317EA598800BBB8BA /* JsonLiteObjCBrokenTokenTests.m */; };
-		8469950017EA598900BBB8BA /* JsonLiteObjCBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994E517EA598800BBB8BA /* JsonLiteObjCBuilderTests.m */; };
-		8469950117EA598900BBB8BA /* JsonLiteObjCConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994E717EA598900BBB8BA /* JsonLiteObjCConverters.m */; };
-		8469950217EA598900BBB8BA /* JsonLiteObjCConvertersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994E917EA598900BBB8BA /* JsonLiteObjCConvertersTests.m */; };
-		8469950317EA598900BBB8BA /* JsonLiteObjCCoverageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994EB17EA598900BBB8BA /* JsonLiteObjCCoverageTests.m */; };
-		8469950417EA598900BBB8BA /* JsonLiteObjCDeserializerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994ED17EA598900BBB8BA /* JsonLiteObjCDeserializerTest.m */; };
-		8469950517EA598900BBB8BA /* JsonLiteObjCInputs.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994EF17EA598900BBB8BA /* JsonLiteObjCInputs.m */; };
-		8469950617EA598900BBB8BA /* JsonLiteObjCPoolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994F117EA598900BBB8BA /* JsonLiteObjCPoolTests.m */; };
-		8469950717EA598900BBB8BA /* JsonLiteObjCStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994F317EA598900BBB8BA /* JsonLiteObjCStream.m */; };
-		8469950817EA598900BBB8BA /* JsonLiteObjCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994F617EA598900BBB8BA /* JsonLiteObjCTests.m */; };
-		8469950917EA598900BBB8BA /* JsonLiteObjCTokenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994F817EA598900BBB8BA /* JsonLiteObjCTokenTests.m */; };
-		8469950A17EA598900BBB8BA /* JsonLiteObjCUnicodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994FA17EA598900BBB8BA /* JsonLiteObjCUnicodeTests.m */; };
-		8469950B17EA598900BBB8BA /* JsonLiteSenTestCaseExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994FC17EA598900BBB8BA /* JsonLiteSenTestCaseExt.m */; };
-		8469950F17EA599F00BBB8BA /* bad_token in Resources */ = {isa = PBXBuildFile; fileRef = 8469950C17EA599F00BBB8BA /* bad_token */; };
-		8469951017EA599F00BBB8BA /* deserializer in Resources */ = {isa = PBXBuildFile; fileRef = 8469950D17EA599F00BBB8BA /* deserializer */; };
-		8469951117EA599F00BBB8BA /* fail in Resources */ = {isa = PBXBuildFile; fileRef = 8469950E17EA599F00BBB8BA /* fail */; };
-		8469951417EA59A900BBB8BA /* success in Resources */ = {isa = PBXBuildFile; fileRef = 8469951217EA59A900BBB8BA /* success */; };
-		8469951517EA59A900BBB8BA /* tokens in Resources */ = {isa = PBXBuildFile; fileRef = 8469951317EA59A900BBB8BA /* tokens */; };
-		8469959117EA5C3400BBB8BA /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = 846994B117EA57DA00BBB8BA /* jsonlite_builder.c */; };
-		8469959217EA5C3400BBB8BA /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 846994B217EA57DA00BBB8BA /* jsonlite_parser.c */; };
-		8469959317EA5C3400BBB8BA /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = 846994B317EA57DA00BBB8BA /* jsonlite_token.c */; };
-		8469959417EA5C3400BBB8BA /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 846994B417EA57DA00BBB8BA /* jsonlite_token_pool.c */; };
-		8469959517EA5C4000BBB8BA /* JsonLiteAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994B717EA57DA00BBB8BA /* JsonLiteAccumulator.m */; };
-		8469959617EA5C4000BBB8BA /* JsonLiteCollections.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994B917EA57DA00BBB8BA /* JsonLiteCollections.m */; };
-		8469959717EA5C4000BBB8BA /* JsonLiteConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994BB17EA57DA00BBB8BA /* JsonLiteConverters.m */; };
-		8469959817EA5C4000BBB8BA /* JsonLiteDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994BD17EA57DA00BBB8BA /* JsonLiteDeserializer.m */; };
-		8469959917EA5C4000BBB8BA /* JsonLiteMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994BF17EA57DA00BBB8BA /* JsonLiteMetaData.m */; };
-		8469959A17EA5C4000BBB8BA /* JsonLiteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994C217EA57DA00BBB8BA /* JsonLiteParser.m */; };
-		8469959B17EA5C4000BBB8BA /* JsonLiteSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 846994C417EA57DA00BBB8BA /* JsonLiteSerializer.m */; };
-		846995ED17EA5F2300BBB8BA /* jsonlite.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994AA17EA57DA00BBB8BA /* jsonlite.h */; };
-		846995EE17EA5F2300BBB8BA /* jsonlite_builder.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994AB17EA57DA00BBB8BA /* jsonlite_builder.h */; };
-		846995EF17EA5F2300BBB8BA /* jsonlite_parser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994AC17EA57DA00BBB8BA /* jsonlite_parser.h */; };
-		846995F017EA5F2300BBB8BA /* jsonlite_token.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994AD17EA57DA00BBB8BA /* jsonlite_token.h */; };
-		846995F117EA5F2300BBB8BA /* jsonlite_token_pool.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994AE17EA57DA00BBB8BA /* jsonlite_token_pool.h */; };
-		846995F217EA5F2300BBB8BA /* jsonlite_types.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994AF17EA57DA00BBB8BA /* jsonlite_types.h */; };
-		846995F317EA5F2300BBB8BA /* JsonLiteAccumulator.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994B617EA57DA00BBB8BA /* JsonLiteAccumulator.h */; };
-		846995F417EA5F2300BBB8BA /* JsonLiteCollections.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994B817EA57DA00BBB8BA /* JsonLiteCollections.h */; };
-		846995F517EA5F2300BBB8BA /* JsonLiteConverters.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994BA17EA57DA00BBB8BA /* JsonLiteConverters.h */; };
-		846995F617EA5F2300BBB8BA /* JsonLiteDeserializer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994BC17EA57DA00BBB8BA /* JsonLiteDeserializer.h */; };
-		846995F717EA5F2300BBB8BA /* JsonLiteMetaData.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994BE17EA57DA00BBB8BA /* JsonLiteMetaData.h */; };
-		846995F817EA5F2300BBB8BA /* JsonLiteObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994C017EA57DA00BBB8BA /* JsonLiteObjC.h */; };
-		846995F917EA5F2300BBB8BA /* JsonLiteParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994C117EA57DA00BBB8BA /* JsonLiteParser.h */; };
-		846995FA17EA5F2300BBB8BA /* JsonLiteSerializer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 846994C317EA57DA00BBB8BA /* JsonLiteSerializer.h */; };
-		84FC6F17181B18EA0087DABC /* jsonlite_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = 84FC6F16181B18EA0087DABC /* jsonlite_stream.h */; };
-		84FC6F19181B18F30087DABC /* jsonlite_stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FC6F18181B18F30087DABC /* jsonlite_stream.c */; };
-		84FC6F1A181B18F30087DABC /* jsonlite_stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 84FC6F18181B18F30087DABC /* jsonlite_stream.c */; };
-		84FC6F1D181B19270087DABC /* JsonLiteObjCOutStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FC6F1C181B19270087DABC /* JsonLiteObjCOutStream.m */; };
-		84FC6F37181B2C6B0087DABC /* jsonlite_stream.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84FC6F16181B18EA0087DABC /* jsonlite_stream.h */; };
-		8794B0C618352C7700AA7CFC /* JsonLiteObjCBase64Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8794B0C518352C7700AA7CFC /* JsonLiteObjCBase64Tests.m */; };
-		879D180C15BA9B1A00791C72 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D180B15BA9B1A00791C72 /* Foundation.framework */; };
-		879D181715BA9B1A00791C72 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D181615BA9B1A00791C72 /* UIKit.framework */; };
-		879D181815BA9B1A00791C72 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D180B15BA9B1A00791C72 /* Foundation.framework */; };
-		879D181D15BA9B1A00791C72 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 879D180815BA9B1A00791C72 /* libJsonLiteObjC.a */; };
-		879D182315BA9B1A00791C72 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 879D182115BA9B1A00791C72 /* InfoPlist.strings */; };
+		B5A2EABD186024A400293619 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A2EABC186024A400293619 /* Foundation.framework */; };
+		B5A2EACB186024A400293619 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A2EACA186024A400293619 /* XCTest.framework */; };
+		B5A2EACC186024A400293619 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A2EABC186024A400293619 /* Foundation.framework */; };
+		B5A2EAD1186024A400293619 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A2EAB9186024A400293619 /* libJsonLiteObjC.a */; };
+		B5A2EAD7186024A400293619 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B5A2EAD5186024A400293619 /* InfoPlist.strings */; };
+		B5A2EAF2186025D800293619 /* jsonlite.c in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EAEC186025D800293619 /* jsonlite.c */; };
+		B5A2EAF3186025D800293619 /* jsonlite_builder.c in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EAED186025D800293619 /* jsonlite_builder.c */; };
+		B5A2EAF4186025D800293619 /* jsonlite_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EAEE186025D800293619 /* jsonlite_parser.c */; };
+		B5A2EAF5186025D800293619 /* jsonlite_stream.c in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EAEF186025D800293619 /* jsonlite_stream.c */; };
+		B5A2EAF6186025D800293619 /* jsonlite_token.c in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EAF0186025D800293619 /* jsonlite_token.c */; };
+		B5A2EAF7186025D800293619 /* jsonlite_token_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EAF1186025D800293619 /* jsonlite_token_pool.c */; };
+		B5A2EB09186025E400293619 /* JsonLiteAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EAFA186025E400293619 /* JsonLiteAccumulator.m */; };
+		B5A2EB0A186025E400293619 /* JsonLiteCollections.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EAFC186025E400293619 /* JsonLiteCollections.m */; };
+		B5A2EB0B186025E400293619 /* JsonLiteConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EAFE186025E400293619 /* JsonLiteConverters.m */; };
+		B5A2EB0C186025E400293619 /* JsonLiteDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB00186025E400293619 /* JsonLiteDeserializer.m */; };
+		B5A2EB0D186025E400293619 /* JsonLiteMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB02186025E400293619 /* JsonLiteMetaData.m */; };
+		B5A2EB0E186025E400293619 /* JsonLiteObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB04186025E400293619 /* JsonLiteObjC.m */; };
+		B5A2EB0F186025E400293619 /* JsonLiteParser.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB06186025E400293619 /* JsonLiteParser.m */; };
+		B5A2EB10186025E400293619 /* JsonLiteSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB08186025E400293619 /* JsonLiteSerializer.m */; };
+		B5A2EB34186025F900293619 /* JsonLiteObjCAcc.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB12186025F900293619 /* JsonLiteObjCAcc.m */; };
+		B5A2EB35186025F900293619 /* JsonLiteObjCBadToken.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB14186025F900293619 /* JsonLiteObjCBadToken.m */; };
+		B5A2EB36186025F900293619 /* JsonLiteObjCBase64Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB16186025F900293619 /* JsonLiteObjCBase64Tests.m */; };
+		B5A2EB37186025F900293619 /* JsonLiteObjCBrokenTokenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB18186025F900293619 /* JsonLiteObjCBrokenTokenTests.m */; };
+		B5A2EB38186025F900293619 /* JsonLiteObjCBuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB1A186025F900293619 /* JsonLiteObjCBuilderTests.m */; };
+		B5A2EB39186025F900293619 /* JsonLiteObjCConverters.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB1C186025F900293619 /* JsonLiteObjCConverters.m */; };
+		B5A2EB3A186025F900293619 /* JsonLiteObjCConvertersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB1E186025F900293619 /* JsonLiteObjCConvertersTests.m */; };
+		B5A2EB3B186025F900293619 /* JsonLiteObjCCoverageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB20186025F900293619 /* JsonLiteObjCCoverageTests.m */; };
+		B5A2EB3C186025F900293619 /* JsonLiteObjCDeserializerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB22186025F900293619 /* JsonLiteObjCDeserializerTest.m */; };
+		B5A2EB3D186025F900293619 /* JsonLiteObjCInputs.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB24186025F900293619 /* JsonLiteObjCInputs.m */; };
+		B5A2EB3E186025F900293619 /* JsonLiteObjCOutStream.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB26186025F900293619 /* JsonLiteObjCOutStream.m */; };
+		B5A2EB3F186025F900293619 /* JsonLiteObjCPoolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB28186025F900293619 /* JsonLiteObjCPoolTests.m */; };
+		B5A2EB40186025F900293619 /* JsonLiteObjCStream.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB2A186025F900293619 /* JsonLiteObjCStream.m */; };
+		B5A2EB41186025F900293619 /* JsonLiteObjCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB2D186025F900293619 /* JsonLiteObjCTests.m */; };
+		B5A2EB42186025F900293619 /* JsonLiteObjCTokenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB2F186025F900293619 /* JsonLiteObjCTokenTests.m */; };
+		B5A2EB43186025F900293619 /* JsonLiteObjCUnicodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB31186025F900293619 /* JsonLiteObjCUnicodeTests.m */; };
+		B5A2EB44186025F900293619 /* JsonLiteSenTestCaseExt.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A2EB33186025F900293619 /* JsonLiteSenTestCaseExt.m */; };
+		B5A2EB481860260500293619 /* bad_token in Resources */ = {isa = PBXBuildFile; fileRef = B5A2EB451860260500293619 /* bad_token */; };
+		B5A2EB491860260500293619 /* deserializer in Resources */ = {isa = PBXBuildFile; fileRef = B5A2EB461860260500293619 /* deserializer */; };
+		B5A2EB4A1860260500293619 /* fail in Resources */ = {isa = PBXBuildFile; fileRef = B5A2EB471860260500293619 /* fail */; };
+		B5A2EB4D1860262400293619 /* success in Resources */ = {isa = PBXBuildFile; fileRef = B5A2EB4B1860262400293619 /* success */; };
+		B5A2EB4E1860262400293619 /* tokens in Resources */ = {isa = PBXBuildFile; fileRef = B5A2EB4C1860262400293619 /* tokens */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		879D181B15BA9B1A00791C72 /* PBXContainerItemProxy */ = {
+		B5A2EACF186024A400293619 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 879D17FF15BA9B1A00791C72 /* Project object */;
+			containerPortal = B5A2EAB1186024A400293619 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 879D180715BA9B1A00791C72;
+			remoteGlobalIDString = B5A2EAB8186024A400293619;
 			remoteInfo = JsonLiteObjC;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		84D8AA6417E91DAE00E11185 /* CopyFiles */ = {
+		B5A2EAB7186024A400293619 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/${PRODUCT_NAME}";
+			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				84FC6F37181B2C6B0087DABC /* jsonlite_stream.h in CopyFiles */,
-				846995ED17EA5F2300BBB8BA /* jsonlite.h in CopyFiles */,
-				846995EE17EA5F2300BBB8BA /* jsonlite_builder.h in CopyFiles */,
-				846995EF17EA5F2300BBB8BA /* jsonlite_parser.h in CopyFiles */,
-				846995F017EA5F2300BBB8BA /* jsonlite_token.h in CopyFiles */,
-				846995F117EA5F2300BBB8BA /* jsonlite_token_pool.h in CopyFiles */,
-				846995F217EA5F2300BBB8BA /* jsonlite_types.h in CopyFiles */,
-				846995F317EA5F2300BBB8BA /* JsonLiteAccumulator.h in CopyFiles */,
-				846995F417EA5F2300BBB8BA /* JsonLiteCollections.h in CopyFiles */,
-				846995F517EA5F2300BBB8BA /* JsonLiteConverters.h in CopyFiles */,
-				846995F617EA5F2300BBB8BA /* JsonLiteDeserializer.h in CopyFiles */,
-				846995F717EA5F2300BBB8BA /* JsonLiteMetaData.h in CopyFiles */,
-				846995F817EA5F2300BBB8BA /* JsonLiteObjC.h in CopyFiles */,
-				846995F917EA5F2300BBB8BA /* JsonLiteParser.h in CopyFiles */,
-				846995FA17EA5F2300BBB8BA /* JsonLiteSerializer.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		846994AA17EA57DA00BBB8BA /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
-		846994AB17EA57DA00BBB8BA /* jsonlite_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_builder.h; sourceTree = "<group>"; };
-		846994AC17EA57DA00BBB8BA /* jsonlite_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_parser.h; sourceTree = "<group>"; };
-		846994AD17EA57DA00BBB8BA /* jsonlite_token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token.h; sourceTree = "<group>"; };
-		846994AE17EA57DA00BBB8BA /* jsonlite_token_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token_pool.h; sourceTree = "<group>"; };
-		846994AF17EA57DA00BBB8BA /* jsonlite_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_types.h; sourceTree = "<group>"; };
-		846994B117EA57DA00BBB8BA /* jsonlite_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_builder.c; sourceTree = "<group>"; };
-		846994B217EA57DA00BBB8BA /* jsonlite_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
-		846994B317EA57DA00BBB8BA /* jsonlite_token.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
-		846994B417EA57DA00BBB8BA /* jsonlite_token_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
-		846994B617EA57DA00BBB8BA /* JsonLiteAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteAccumulator.h; sourceTree = "<group>"; };
-		846994B717EA57DA00BBB8BA /* JsonLiteAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteAccumulator.m; sourceTree = "<group>"; };
-		846994B817EA57DA00BBB8BA /* JsonLiteCollections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteCollections.h; sourceTree = "<group>"; };
-		846994B917EA57DA00BBB8BA /* JsonLiteCollections.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteCollections.m; sourceTree = "<group>"; };
-		846994BA17EA57DA00BBB8BA /* JsonLiteConverters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteConverters.h; sourceTree = "<group>"; };
-		846994BB17EA57DA00BBB8BA /* JsonLiteConverters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteConverters.m; sourceTree = "<group>"; };
-		846994BC17EA57DA00BBB8BA /* JsonLiteDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteDeserializer.h; sourceTree = "<group>"; };
-		846994BD17EA57DA00BBB8BA /* JsonLiteDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteDeserializer.m; sourceTree = "<group>"; };
-		846994BE17EA57DA00BBB8BA /* JsonLiteMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteMetaData.h; sourceTree = "<group>"; };
-		846994BF17EA57DA00BBB8BA /* JsonLiteMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteMetaData.m; sourceTree = "<group>"; };
-		846994C017EA57DA00BBB8BA /* JsonLiteObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteObjC.h; sourceTree = "<group>"; };
-		846994C117EA57DA00BBB8BA /* JsonLiteParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteParser.h; sourceTree = "<group>"; };
-		846994C217EA57DA00BBB8BA /* JsonLiteParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteParser.m; sourceTree = "<group>"; };
-		846994C317EA57DA00BBB8BA /* JsonLiteSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteSerializer.h; sourceTree = "<group>"; };
-		846994C417EA57DA00BBB8BA /* JsonLiteSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteSerializer.m; sourceTree = "<group>"; };
-		846994DE17EA598800BBB8BA /* JsonLiteObjCAcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCAcc.h; path = ../../../tests/JsonLiteObjCAcc.h; sourceTree = "<group>"; };
-		846994DF17EA598800BBB8BA /* JsonLiteObjCAcc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCAcc.m; path = ../../../tests/JsonLiteObjCAcc.m; sourceTree = "<group>"; };
-		846994E017EA598800BBB8BA /* JsonLiteObjCBadToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBadToken.h; path = ../../../tests/JsonLiteObjCBadToken.h; sourceTree = "<group>"; };
-		846994E117EA598800BBB8BA /* JsonLiteObjCBadToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBadToken.m; path = ../../../tests/JsonLiteObjCBadToken.m; sourceTree = "<group>"; };
-		846994E217EA598800BBB8BA /* JsonLiteObjCBrokenTokenTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBrokenTokenTests.h; path = ../../../tests/JsonLiteObjCBrokenTokenTests.h; sourceTree = "<group>"; };
-		846994E317EA598800BBB8BA /* JsonLiteObjCBrokenTokenTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBrokenTokenTests.m; path = ../../../tests/JsonLiteObjCBrokenTokenTests.m; sourceTree = "<group>"; };
-		846994E417EA598800BBB8BA /* JsonLiteObjCBuilderTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBuilderTests.h; path = ../../../tests/JsonLiteObjCBuilderTests.h; sourceTree = "<group>"; };
-		846994E517EA598800BBB8BA /* JsonLiteObjCBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBuilderTests.m; path = ../../../tests/JsonLiteObjCBuilderTests.m; sourceTree = "<group>"; };
-		846994E617EA598900BBB8BA /* JsonLiteObjCConverters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCConverters.h; path = ../../../tests/JsonLiteObjCConverters.h; sourceTree = "<group>"; };
-		846994E717EA598900BBB8BA /* JsonLiteObjCConverters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCConverters.m; path = ../../../tests/JsonLiteObjCConverters.m; sourceTree = "<group>"; };
-		846994E817EA598900BBB8BA /* JsonLiteObjCConvertersTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCConvertersTests.h; path = ../../../tests/JsonLiteObjCConvertersTests.h; sourceTree = "<group>"; };
-		846994E917EA598900BBB8BA /* JsonLiteObjCConvertersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCConvertersTests.m; path = ../../../tests/JsonLiteObjCConvertersTests.m; sourceTree = "<group>"; };
-		846994EA17EA598900BBB8BA /* JsonLiteObjCCoverageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCCoverageTests.h; path = ../../../tests/JsonLiteObjCCoverageTests.h; sourceTree = "<group>"; };
-		846994EB17EA598900BBB8BA /* JsonLiteObjCCoverageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCCoverageTests.m; path = ../../../tests/JsonLiteObjCCoverageTests.m; sourceTree = "<group>"; };
-		846994EC17EA598900BBB8BA /* JsonLiteObjCDeserializerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCDeserializerTest.h; path = ../../../tests/JsonLiteObjCDeserializerTest.h; sourceTree = "<group>"; };
-		846994ED17EA598900BBB8BA /* JsonLiteObjCDeserializerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCDeserializerTest.m; path = ../../../tests/JsonLiteObjCDeserializerTest.m; sourceTree = "<group>"; };
-		846994EE17EA598900BBB8BA /* JsonLiteObjCInputs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCInputs.h; path = ../../../tests/JsonLiteObjCInputs.h; sourceTree = "<group>"; };
-		846994EF17EA598900BBB8BA /* JsonLiteObjCInputs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCInputs.m; path = ../../../tests/JsonLiteObjCInputs.m; sourceTree = "<group>"; };
-		846994F017EA598900BBB8BA /* JsonLiteObjCPoolTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCPoolTests.h; path = ../../../tests/JsonLiteObjCPoolTests.h; sourceTree = "<group>"; };
-		846994F117EA598900BBB8BA /* JsonLiteObjCPoolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCPoolTests.m; path = ../../../tests/JsonLiteObjCPoolTests.m; sourceTree = "<group>"; };
-		846994F217EA598900BBB8BA /* JsonLiteObjCStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCStream.h; path = ../../../tests/JsonLiteObjCStream.h; sourceTree = "<group>"; };
-		846994F317EA598900BBB8BA /* JsonLiteObjCStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCStream.m; path = ../../../tests/JsonLiteObjCStream.m; sourceTree = "<group>"; };
-		846994F417EA598900BBB8BA /* JsonLiteObjCTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JsonLiteObjCTests-Prefix.pch"; path = "../../../tests/JsonLiteObjCTests-Prefix.pch"; sourceTree = "<group>"; };
-		846994F517EA598900BBB8BA /* JsonLiteObjCTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCTests.h; path = ../../../tests/JsonLiteObjCTests.h; sourceTree = "<group>"; };
-		846994F617EA598900BBB8BA /* JsonLiteObjCTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCTests.m; path = ../../../tests/JsonLiteObjCTests.m; sourceTree = "<group>"; };
-		846994F717EA598900BBB8BA /* JsonLiteObjCTokenTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCTokenTests.h; path = ../../../tests/JsonLiteObjCTokenTests.h; sourceTree = "<group>"; };
-		846994F817EA598900BBB8BA /* JsonLiteObjCTokenTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCTokenTests.m; path = ../../../tests/JsonLiteObjCTokenTests.m; sourceTree = "<group>"; };
-		846994F917EA598900BBB8BA /* JsonLiteObjCUnicodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCUnicodeTests.h; path = ../../../tests/JsonLiteObjCUnicodeTests.h; sourceTree = "<group>"; };
-		846994FA17EA598900BBB8BA /* JsonLiteObjCUnicodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCUnicodeTests.m; path = ../../../tests/JsonLiteObjCUnicodeTests.m; sourceTree = "<group>"; };
-		846994FB17EA598900BBB8BA /* JsonLiteSenTestCaseExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteSenTestCaseExt.h; path = ../../../tests/JsonLiteSenTestCaseExt.h; sourceTree = "<group>"; };
-		846994FC17EA598900BBB8BA /* JsonLiteSenTestCaseExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteSenTestCaseExt.m; path = ../../../tests/JsonLiteSenTestCaseExt.m; sourceTree = "<group>"; };
-		8469950C17EA599F00BBB8BA /* bad_token */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bad_token; path = ../../../tests/bad_token; sourceTree = "<group>"; };
-		8469950D17EA599F00BBB8BA /* deserializer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = deserializer; path = ../../../tests/deserializer; sourceTree = "<group>"; };
-		8469950E17EA599F00BBB8BA /* fail */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fail; path = ../../../tests/fail; sourceTree = "<group>"; };
-		8469951217EA59A900BBB8BA /* success */ = {isa = PBXFileReference; lastKnownFileType = folder; name = success; path = ../../../tests/success; sourceTree = "<group>"; };
-		8469951317EA59A900BBB8BA /* tokens */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tokens; path = ../../../tests/tokens; sourceTree = "<group>"; };
-		84FC6F16181B18EA0087DABC /* jsonlite_stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_stream.h; sourceTree = "<group>"; };
-		84FC6F18181B18F30087DABC /* jsonlite_stream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_stream.c; sourceTree = "<group>"; };
-		84FC6F1B181B19270087DABC /* JsonLiteObjCOutStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCOutStream.h; path = ../../../tests/JsonLiteObjCOutStream.h; sourceTree = "<group>"; };
-		84FC6F1C181B19270087DABC /* JsonLiteObjCOutStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCOutStream.m; path = ../../../tests/JsonLiteObjCOutStream.m; sourceTree = "<group>"; };
-		8794B0C418352C7700AA7CFC /* JsonLiteObjCBase64Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBase64Tests.h; path = ../../../tests/JsonLiteObjCBase64Tests.h; sourceTree = "<group>"; };
-		8794B0C518352C7700AA7CFC /* JsonLiteObjCBase64Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBase64Tests.m; path = ../../../tests/JsonLiteObjCBase64Tests.m; sourceTree = "<group>"; };
-		879D180815BA9B1A00791C72 /* libJsonLiteObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJsonLiteObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		879D180B15BA9B1A00791C72 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		879D180F15BA9B1A00791C72 /* JsonLiteObjC-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JsonLiteObjC-Prefix.pch"; sourceTree = "<group>"; };
-		879D181515BA9B1A00791C72 /* JsonLiteObjCTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JsonLiteObjCTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		879D181615BA9B1A00791C72 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		879D182015BA9B1A00791C72 /* JsonLiteObjCTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JsonLiteObjCTests-Info.plist"; sourceTree = "<group>"; };
-		879D182215BA9B1A00791C72 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		879D182415BA9B1A00791C72 /* JsonLiteObjCTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JsonLiteObjCTests-Prefix.pch"; sourceTree = "<group>"; };
+		B5A2EAB9186024A400293619 /* libJsonLiteObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJsonLiteObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5A2EABC186024A400293619 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		B5A2EAC0186024A400293619 /* JsonLiteObjC-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JsonLiteObjC-Prefix.pch"; sourceTree = "<group>"; };
+		B5A2EAC9186024A400293619 /* JsonLiteObjCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JsonLiteObjCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5A2EACA186024A400293619 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		B5A2EAD4186024A400293619 /* JsonLiteObjCTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JsonLiteObjCTests-Info.plist"; sourceTree = "<group>"; };
+		B5A2EAD6186024A400293619 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B5A2EAE4186025D800293619 /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
+		B5A2EAE5186025D800293619 /* jsonlite_builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_builder.h; sourceTree = "<group>"; };
+		B5A2EAE6186025D800293619 /* jsonlite_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_parser.h; sourceTree = "<group>"; };
+		B5A2EAE7186025D800293619 /* jsonlite_stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_stream.h; sourceTree = "<group>"; };
+		B5A2EAE8186025D800293619 /* jsonlite_token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token.h; sourceTree = "<group>"; };
+		B5A2EAE9186025D800293619 /* jsonlite_token_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_token_pool.h; sourceTree = "<group>"; };
+		B5A2EAEA186025D800293619 /* jsonlite_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite_types.h; sourceTree = "<group>"; };
+		B5A2EAEC186025D800293619 /* jsonlite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite.c; sourceTree = "<group>"; };
+		B5A2EAED186025D800293619 /* jsonlite_builder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_builder.c; sourceTree = "<group>"; };
+		B5A2EAEE186025D800293619 /* jsonlite_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_parser.c; sourceTree = "<group>"; };
+		B5A2EAEF186025D800293619 /* jsonlite_stream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_stream.c; sourceTree = "<group>"; };
+		B5A2EAF0186025D800293619 /* jsonlite_token.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token.c; sourceTree = "<group>"; };
+		B5A2EAF1186025D800293619 /* jsonlite_token_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_token_pool.c; sourceTree = "<group>"; };
+		B5A2EAF9186025E400293619 /* JsonLiteAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteAccumulator.h; sourceTree = "<group>"; };
+		B5A2EAFA186025E400293619 /* JsonLiteAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteAccumulator.m; sourceTree = "<group>"; };
+		B5A2EAFB186025E400293619 /* JsonLiteCollections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteCollections.h; sourceTree = "<group>"; };
+		B5A2EAFC186025E400293619 /* JsonLiteCollections.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteCollections.m; sourceTree = "<group>"; };
+		B5A2EAFD186025E400293619 /* JsonLiteConverters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteConverters.h; sourceTree = "<group>"; };
+		B5A2EAFE186025E400293619 /* JsonLiteConverters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteConverters.m; sourceTree = "<group>"; };
+		B5A2EAFF186025E400293619 /* JsonLiteDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteDeserializer.h; sourceTree = "<group>"; };
+		B5A2EB00186025E400293619 /* JsonLiteDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteDeserializer.m; sourceTree = "<group>"; };
+		B5A2EB01186025E400293619 /* JsonLiteMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteMetaData.h; sourceTree = "<group>"; };
+		B5A2EB02186025E400293619 /* JsonLiteMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteMetaData.m; sourceTree = "<group>"; };
+		B5A2EB03186025E400293619 /* JsonLiteObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteObjC.h; sourceTree = "<group>"; };
+		B5A2EB04186025E400293619 /* JsonLiteObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteObjC.m; sourceTree = "<group>"; };
+		B5A2EB05186025E400293619 /* JsonLiteParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteParser.h; sourceTree = "<group>"; };
+		B5A2EB06186025E400293619 /* JsonLiteParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteParser.m; sourceTree = "<group>"; };
+		B5A2EB07186025E400293619 /* JsonLiteSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteSerializer.h; sourceTree = "<group>"; };
+		B5A2EB08186025E400293619 /* JsonLiteSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteSerializer.m; sourceTree = "<group>"; };
+		B5A2EB11186025F900293619 /* JsonLiteObjCAcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCAcc.h; path = ../../../tests/JsonLiteObjCAcc.h; sourceTree = "<group>"; };
+		B5A2EB12186025F900293619 /* JsonLiteObjCAcc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCAcc.m; path = ../../../tests/JsonLiteObjCAcc.m; sourceTree = "<group>"; };
+		B5A2EB13186025F900293619 /* JsonLiteObjCBadToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBadToken.h; path = ../../../tests/JsonLiteObjCBadToken.h; sourceTree = "<group>"; };
+		B5A2EB14186025F900293619 /* JsonLiteObjCBadToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBadToken.m; path = ../../../tests/JsonLiteObjCBadToken.m; sourceTree = "<group>"; };
+		B5A2EB15186025F900293619 /* JsonLiteObjCBase64Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBase64Tests.h; path = ../../../tests/JsonLiteObjCBase64Tests.h; sourceTree = "<group>"; };
+		B5A2EB16186025F900293619 /* JsonLiteObjCBase64Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBase64Tests.m; path = ../../../tests/JsonLiteObjCBase64Tests.m; sourceTree = "<group>"; };
+		B5A2EB17186025F900293619 /* JsonLiteObjCBrokenTokenTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBrokenTokenTests.h; path = ../../../tests/JsonLiteObjCBrokenTokenTests.h; sourceTree = "<group>"; };
+		B5A2EB18186025F900293619 /* JsonLiteObjCBrokenTokenTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBrokenTokenTests.m; path = ../../../tests/JsonLiteObjCBrokenTokenTests.m; sourceTree = "<group>"; };
+		B5A2EB19186025F900293619 /* JsonLiteObjCBuilderTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCBuilderTests.h; path = ../../../tests/JsonLiteObjCBuilderTests.h; sourceTree = "<group>"; };
+		B5A2EB1A186025F900293619 /* JsonLiteObjCBuilderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCBuilderTests.m; path = ../../../tests/JsonLiteObjCBuilderTests.m; sourceTree = "<group>"; };
+		B5A2EB1B186025F900293619 /* JsonLiteObjCConverters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCConverters.h; path = ../../../tests/JsonLiteObjCConverters.h; sourceTree = "<group>"; };
+		B5A2EB1C186025F900293619 /* JsonLiteObjCConverters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCConverters.m; path = ../../../tests/JsonLiteObjCConverters.m; sourceTree = "<group>"; };
+		B5A2EB1D186025F900293619 /* JsonLiteObjCConvertersTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCConvertersTests.h; path = ../../../tests/JsonLiteObjCConvertersTests.h; sourceTree = "<group>"; };
+		B5A2EB1E186025F900293619 /* JsonLiteObjCConvertersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCConvertersTests.m; path = ../../../tests/JsonLiteObjCConvertersTests.m; sourceTree = "<group>"; };
+		B5A2EB1F186025F900293619 /* JsonLiteObjCCoverageTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCCoverageTests.h; path = ../../../tests/JsonLiteObjCCoverageTests.h; sourceTree = "<group>"; };
+		B5A2EB20186025F900293619 /* JsonLiteObjCCoverageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCCoverageTests.m; path = ../../../tests/JsonLiteObjCCoverageTests.m; sourceTree = "<group>"; };
+		B5A2EB21186025F900293619 /* JsonLiteObjCDeserializerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCDeserializerTest.h; path = ../../../tests/JsonLiteObjCDeserializerTest.h; sourceTree = "<group>"; };
+		B5A2EB22186025F900293619 /* JsonLiteObjCDeserializerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCDeserializerTest.m; path = ../../../tests/JsonLiteObjCDeserializerTest.m; sourceTree = "<group>"; };
+		B5A2EB23186025F900293619 /* JsonLiteObjCInputs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCInputs.h; path = ../../../tests/JsonLiteObjCInputs.h; sourceTree = "<group>"; };
+		B5A2EB24186025F900293619 /* JsonLiteObjCInputs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCInputs.m; path = ../../../tests/JsonLiteObjCInputs.m; sourceTree = "<group>"; };
+		B5A2EB25186025F900293619 /* JsonLiteObjCOutStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCOutStream.h; path = ../../../tests/JsonLiteObjCOutStream.h; sourceTree = "<group>"; };
+		B5A2EB26186025F900293619 /* JsonLiteObjCOutStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCOutStream.m; path = ../../../tests/JsonLiteObjCOutStream.m; sourceTree = "<group>"; };
+		B5A2EB27186025F900293619 /* JsonLiteObjCPoolTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCPoolTests.h; path = ../../../tests/JsonLiteObjCPoolTests.h; sourceTree = "<group>"; };
+		B5A2EB28186025F900293619 /* JsonLiteObjCPoolTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCPoolTests.m; path = ../../../tests/JsonLiteObjCPoolTests.m; sourceTree = "<group>"; };
+		B5A2EB29186025F900293619 /* JsonLiteObjCStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCStream.h; path = ../../../tests/JsonLiteObjCStream.h; sourceTree = "<group>"; };
+		B5A2EB2A186025F900293619 /* JsonLiteObjCStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCStream.m; path = ../../../tests/JsonLiteObjCStream.m; sourceTree = "<group>"; };
+		B5A2EB2B186025F900293619 /* JsonLiteObjCTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "JsonLiteObjCTests-Prefix.pch"; path = "../../../tests/JsonLiteObjCTests-Prefix.pch"; sourceTree = "<group>"; };
+		B5A2EB2C186025F900293619 /* JsonLiteObjCTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCTests.h; path = ../../../tests/JsonLiteObjCTests.h; sourceTree = "<group>"; };
+		B5A2EB2D186025F900293619 /* JsonLiteObjCTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCTests.m; path = ../../../tests/JsonLiteObjCTests.m; sourceTree = "<group>"; };
+		B5A2EB2E186025F900293619 /* JsonLiteObjCTokenTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCTokenTests.h; path = ../../../tests/JsonLiteObjCTokenTests.h; sourceTree = "<group>"; };
+		B5A2EB2F186025F900293619 /* JsonLiteObjCTokenTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCTokenTests.m; path = ../../../tests/JsonLiteObjCTokenTests.m; sourceTree = "<group>"; };
+		B5A2EB30186025F900293619 /* JsonLiteObjCUnicodeTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCUnicodeTests.h; path = ../../../tests/JsonLiteObjCUnicodeTests.h; sourceTree = "<group>"; };
+		B5A2EB31186025F900293619 /* JsonLiteObjCUnicodeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteObjCUnicodeTests.m; path = ../../../tests/JsonLiteObjCUnicodeTests.m; sourceTree = "<group>"; };
+		B5A2EB32186025F900293619 /* JsonLiteSenTestCaseExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteSenTestCaseExt.h; path = ../../../tests/JsonLiteSenTestCaseExt.h; sourceTree = "<group>"; };
+		B5A2EB33186025F900293619 /* JsonLiteSenTestCaseExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JsonLiteSenTestCaseExt.m; path = ../../../tests/JsonLiteSenTestCaseExt.m; sourceTree = "<group>"; };
+		B5A2EB451860260500293619 /* bad_token */ = {isa = PBXFileReference; lastKnownFileType = folder; name = bad_token; path = ../../../tests/bad_token; sourceTree = "<group>"; };
+		B5A2EB461860260500293619 /* deserializer */ = {isa = PBXFileReference; lastKnownFileType = folder; name = deserializer; path = ../../../tests/deserializer; sourceTree = "<group>"; };
+		B5A2EB471860260500293619 /* fail */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fail; path = ../../../tests/fail; sourceTree = "<group>"; };
+		B5A2EB4B1860262400293619 /* success */ = {isa = PBXFileReference; lastKnownFileType = folder; name = success; path = ../../../tests/success; sourceTree = "<group>"; };
+		B5A2EB4C1860262400293619 /* tokens */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tokens; path = ../../../tests/tokens; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		879D180515BA9B1A00791C72 /* Frameworks */ = {
+		B5A2EAB6186024A400293619 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				879D180C15BA9B1A00791C72 /* Foundation.framework in Frameworks */,
+				B5A2EABD186024A400293619 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		879D181115BA9B1A00791C72 /* Frameworks */ = {
+		B5A2EAC6186024A400293619 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				879D181715BA9B1A00791C72 /* UIKit.framework in Frameworks */,
-				879D181815BA9B1A00791C72 /* Foundation.framework in Frameworks */,
-				879D181D15BA9B1A00791C72 /* libJsonLiteObjC.a in Frameworks */,
+				B5A2EACB186024A400293619 /* XCTest.framework in Frameworks */,
+				B5A2EAD1186024A400293619 /* libJsonLiteObjC.a in Frameworks */,
+				B5A2EACC186024A400293619 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		846994A817EA57DA00BBB8BA /* jsonlite */ = {
+		B5A2EAB0186024A400293619 = {
 			isa = PBXGroup;
 			children = (
-				846994A917EA57DA00BBB8BA /* include */,
-				846994B017EA57DA00BBB8BA /* src */,
-			);
-			name = jsonlite;
-			path = ../../jsonlite;
-			sourceTree = "<group>";
-		};
-		846994A917EA57DA00BBB8BA /* include */ = {
-			isa = PBXGroup;
-			children = (
-				846994AA17EA57DA00BBB8BA /* jsonlite.h */,
-				846994AB17EA57DA00BBB8BA /* jsonlite_builder.h */,
-				846994AC17EA57DA00BBB8BA /* jsonlite_parser.h */,
-				84FC6F16181B18EA0087DABC /* jsonlite_stream.h */,
-				846994AD17EA57DA00BBB8BA /* jsonlite_token.h */,
-				846994AE17EA57DA00BBB8BA /* jsonlite_token_pool.h */,
-				846994AF17EA57DA00BBB8BA /* jsonlite_types.h */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		846994B017EA57DA00BBB8BA /* src */ = {
-			isa = PBXGroup;
-			children = (
-				846994B117EA57DA00BBB8BA /* jsonlite_builder.c */,
-				846994B217EA57DA00BBB8BA /* jsonlite_parser.c */,
-				84FC6F18181B18F30087DABC /* jsonlite_stream.c */,
-				846994B317EA57DA00BBB8BA /* jsonlite_token.c */,
-				846994B417EA57DA00BBB8BA /* jsonlite_token_pool.c */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		846994B517EA57DA00BBB8BA /* objc */ = {
-			isa = PBXGroup;
-			children = (
-				846994B617EA57DA00BBB8BA /* JsonLiteAccumulator.h */,
-				846994B717EA57DA00BBB8BA /* JsonLiteAccumulator.m */,
-				846994B817EA57DA00BBB8BA /* JsonLiteCollections.h */,
-				846994B917EA57DA00BBB8BA /* JsonLiteCollections.m */,
-				846994BA17EA57DA00BBB8BA /* JsonLiteConverters.h */,
-				846994BB17EA57DA00BBB8BA /* JsonLiteConverters.m */,
-				846994BC17EA57DA00BBB8BA /* JsonLiteDeserializer.h */,
-				846994BD17EA57DA00BBB8BA /* JsonLiteDeserializer.m */,
-				846994BE17EA57DA00BBB8BA /* JsonLiteMetaData.h */,
-				846994BF17EA57DA00BBB8BA /* JsonLiteMetaData.m */,
-				846994C017EA57DA00BBB8BA /* JsonLiteObjC.h */,
-				846994C117EA57DA00BBB8BA /* JsonLiteParser.h */,
-				846994C217EA57DA00BBB8BA /* JsonLiteParser.m */,
-				846994C317EA57DA00BBB8BA /* JsonLiteSerializer.h */,
-				846994C417EA57DA00BBB8BA /* JsonLiteSerializer.m */,
-			);
-			name = objc;
-			path = ../../objc;
-			sourceTree = "<group>";
-		};
-		879D17FD15BA9B1A00791C72 = {
-			isa = PBXGroup;
-			children = (
-				846994A817EA57DA00BBB8BA /* jsonlite */,
-				846994B517EA57DA00BBB8BA /* objc */,
-				879D180D15BA9B1A00791C72 /* JsonLiteObjC */,
-				879D181E15BA9B1A00791C72 /* JsonLiteObjCTests */,
-				879D180A15BA9B1A00791C72 /* Frameworks */,
-				879D180915BA9B1A00791C72 /* Products */,
+				B5A2EABE186024A400293619 /* JsonLiteObjC */,
+				B5A2EAD2186024A400293619 /* JsonLiteObjCTests */,
+				B5A2EABB186024A400293619 /* Frameworks */,
+				B5A2EABA186024A400293619 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		879D180915BA9B1A00791C72 /* Products */ = {
+		B5A2EABA186024A400293619 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				879D180815BA9B1A00791C72 /* libJsonLiteObjC.a */,
-				879D181515BA9B1A00791C72 /* JsonLiteObjCTests.octest */,
+				B5A2EAB9186024A400293619 /* libJsonLiteObjC.a */,
+				B5A2EAC9186024A400293619 /* JsonLiteObjCTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		879D180A15BA9B1A00791C72 /* Frameworks */ = {
+		B5A2EABB186024A400293619 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				879D180B15BA9B1A00791C72 /* Foundation.framework */,
-				879D181615BA9B1A00791C72 /* UIKit.framework */,
+				B5A2EABC186024A400293619 /* Foundation.framework */,
+				B5A2EACA186024A400293619 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		879D180D15BA9B1A00791C72 /* JsonLiteObjC */ = {
+		B5A2EABE186024A400293619 /* JsonLiteObjC */ = {
 			isa = PBXGroup;
 			children = (
-				879D180E15BA9B1A00791C72 /* Supporting Files */,
+				B5A2EAE2186025D800293619 /* jsonlite */,
+				B5A2EAF8186025E400293619 /* objc */,
+				B5A2EABF186024A400293619 /* Supporting Files */,
 			);
 			path = JsonLiteObjC;
 			sourceTree = "<group>";
 		};
-		879D180E15BA9B1A00791C72 /* Supporting Files */ = {
+		B5A2EABF186024A400293619 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				879D180F15BA9B1A00791C72 /* JsonLiteObjC-Prefix.pch */,
+				B5A2EAC0186024A400293619 /* JsonLiteObjC-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		879D181E15BA9B1A00791C72 /* JsonLiteObjCTests */ = {
+		B5A2EAD2186024A400293619 /* JsonLiteObjCTests */ = {
 			isa = PBXGroup;
 			children = (
-				8469950C17EA599F00BBB8BA /* bad_token */,
-				8469950D17EA599F00BBB8BA /* deserializer */,
-				8469950E17EA599F00BBB8BA /* fail */,
-				846994DE17EA598800BBB8BA /* JsonLiteObjCAcc.h */,
-				846994DF17EA598800BBB8BA /* JsonLiteObjCAcc.m */,
-				846994E017EA598800BBB8BA /* JsonLiteObjCBadToken.h */,
-				846994E117EA598800BBB8BA /* JsonLiteObjCBadToken.m */,
-				8794B0C418352C7700AA7CFC /* JsonLiteObjCBase64Tests.h */,
-				8794B0C518352C7700AA7CFC /* JsonLiteObjCBase64Tests.m */,
-				846994E217EA598800BBB8BA /* JsonLiteObjCBrokenTokenTests.h */,
-				846994E317EA598800BBB8BA /* JsonLiteObjCBrokenTokenTests.m */,
-				846994E417EA598800BBB8BA /* JsonLiteObjCBuilderTests.h */,
-				846994E517EA598800BBB8BA /* JsonLiteObjCBuilderTests.m */,
-				846994E617EA598900BBB8BA /* JsonLiteObjCConverters.h */,
-				846994E717EA598900BBB8BA /* JsonLiteObjCConverters.m */,
-				846994E817EA598900BBB8BA /* JsonLiteObjCConvertersTests.h */,
-				846994E917EA598900BBB8BA /* JsonLiteObjCConvertersTests.m */,
-				846994EA17EA598900BBB8BA /* JsonLiteObjCCoverageTests.h */,
-				846994EB17EA598900BBB8BA /* JsonLiteObjCCoverageTests.m */,
-				846994EC17EA598900BBB8BA /* JsonLiteObjCDeserializerTest.h */,
-				846994ED17EA598900BBB8BA /* JsonLiteObjCDeserializerTest.m */,
-				846994EE17EA598900BBB8BA /* JsonLiteObjCInputs.h */,
-				846994EF17EA598900BBB8BA /* JsonLiteObjCInputs.m */,
-				84FC6F1B181B19270087DABC /* JsonLiteObjCOutStream.h */,
-				84FC6F1C181B19270087DABC /* JsonLiteObjCOutStream.m */,
-				846994F017EA598900BBB8BA /* JsonLiteObjCPoolTests.h */,
-				846994F117EA598900BBB8BA /* JsonLiteObjCPoolTests.m */,
-				846994F217EA598900BBB8BA /* JsonLiteObjCStream.h */,
-				846994F317EA598900BBB8BA /* JsonLiteObjCStream.m */,
-				846994F417EA598900BBB8BA /* JsonLiteObjCTests-Prefix.pch */,
-				846994F517EA598900BBB8BA /* JsonLiteObjCTests.h */,
-				846994F617EA598900BBB8BA /* JsonLiteObjCTests.m */,
-				846994F717EA598900BBB8BA /* JsonLiteObjCTokenTests.h */,
-				846994F817EA598900BBB8BA /* JsonLiteObjCTokenTests.m */,
-				846994F917EA598900BBB8BA /* JsonLiteObjCUnicodeTests.h */,
-				846994FA17EA598900BBB8BA /* JsonLiteObjCUnicodeTests.m */,
-				846994FB17EA598900BBB8BA /* JsonLiteSenTestCaseExt.h */,
-				846994FC17EA598900BBB8BA /* JsonLiteSenTestCaseExt.m */,
-				8469951217EA59A900BBB8BA /* success */,
-				879D181F15BA9B1A00791C72 /* Supporting Files */,
-				8469951317EA59A900BBB8BA /* tokens */,
+				B5A2EB451860260500293619 /* bad_token */,
+				B5A2EB461860260500293619 /* deserializer */,
+				B5A2EB471860260500293619 /* fail */,
+				B5A2EB4B1860262400293619 /* success */,
+				B5A2EB4C1860262400293619 /* tokens */,
+				B5A2EB11186025F900293619 /* JsonLiteObjCAcc.h */,
+				B5A2EB12186025F900293619 /* JsonLiteObjCAcc.m */,
+				B5A2EB13186025F900293619 /* JsonLiteObjCBadToken.h */,
+				B5A2EB14186025F900293619 /* JsonLiteObjCBadToken.m */,
+				B5A2EB15186025F900293619 /* JsonLiteObjCBase64Tests.h */,
+				B5A2EB16186025F900293619 /* JsonLiteObjCBase64Tests.m */,
+				B5A2EB17186025F900293619 /* JsonLiteObjCBrokenTokenTests.h */,
+				B5A2EB18186025F900293619 /* JsonLiteObjCBrokenTokenTests.m */,
+				B5A2EB19186025F900293619 /* JsonLiteObjCBuilderTests.h */,
+				B5A2EB1A186025F900293619 /* JsonLiteObjCBuilderTests.m */,
+				B5A2EB1B186025F900293619 /* JsonLiteObjCConverters.h */,
+				B5A2EB1C186025F900293619 /* JsonLiteObjCConverters.m */,
+				B5A2EB1D186025F900293619 /* JsonLiteObjCConvertersTests.h */,
+				B5A2EB1E186025F900293619 /* JsonLiteObjCConvertersTests.m */,
+				B5A2EB1F186025F900293619 /* JsonLiteObjCCoverageTests.h */,
+				B5A2EB20186025F900293619 /* JsonLiteObjCCoverageTests.m */,
+				B5A2EB21186025F900293619 /* JsonLiteObjCDeserializerTest.h */,
+				B5A2EB22186025F900293619 /* JsonLiteObjCDeserializerTest.m */,
+				B5A2EB23186025F900293619 /* JsonLiteObjCInputs.h */,
+				B5A2EB24186025F900293619 /* JsonLiteObjCInputs.m */,
+				B5A2EB25186025F900293619 /* JsonLiteObjCOutStream.h */,
+				B5A2EB26186025F900293619 /* JsonLiteObjCOutStream.m */,
+				B5A2EB27186025F900293619 /* JsonLiteObjCPoolTests.h */,
+				B5A2EB28186025F900293619 /* JsonLiteObjCPoolTests.m */,
+				B5A2EB29186025F900293619 /* JsonLiteObjCStream.h */,
+				B5A2EB2A186025F900293619 /* JsonLiteObjCStream.m */,
+				B5A2EB2B186025F900293619 /* JsonLiteObjCTests-Prefix.pch */,
+				B5A2EB2C186025F900293619 /* JsonLiteObjCTests.h */,
+				B5A2EB2D186025F900293619 /* JsonLiteObjCTests.m */,
+				B5A2EB2E186025F900293619 /* JsonLiteObjCTokenTests.h */,
+				B5A2EB2F186025F900293619 /* JsonLiteObjCTokenTests.m */,
+				B5A2EB30186025F900293619 /* JsonLiteObjCUnicodeTests.h */,
+				B5A2EB31186025F900293619 /* JsonLiteObjCUnicodeTests.m */,
+				B5A2EB32186025F900293619 /* JsonLiteSenTestCaseExt.h */,
+				B5A2EB33186025F900293619 /* JsonLiteSenTestCaseExt.m */,
+				B5A2EAD3186024A400293619 /* Supporting Files */,
 			);
 			path = JsonLiteObjCTests;
 			sourceTree = "<group>";
 		};
-		879D181F15BA9B1A00791C72 /* Supporting Files */ = {
+		B5A2EAD3186024A400293619 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				879D182015BA9B1A00791C72 /* JsonLiteObjCTests-Info.plist */,
-				879D182115BA9B1A00791C72 /* InfoPlist.strings */,
-				879D182415BA9B1A00791C72 /* JsonLiteObjCTests-Prefix.pch */,
+				B5A2EAD4186024A400293619 /* JsonLiteObjCTests-Info.plist */,
+				B5A2EAD5186024A400293619 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		B5A2EAE2186025D800293619 /* jsonlite */ = {
+			isa = PBXGroup;
+			children = (
+				B5A2EAE3186025D800293619 /* include */,
+				B5A2EAEB186025D800293619 /* src */,
+			);
+			name = jsonlite;
+			path = ../../../jsonlite;
+			sourceTree = "<group>";
+		};
+		B5A2EAE3186025D800293619 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				B5A2EAE4186025D800293619 /* jsonlite.h */,
+				B5A2EAE5186025D800293619 /* jsonlite_builder.h */,
+				B5A2EAE6186025D800293619 /* jsonlite_parser.h */,
+				B5A2EAE7186025D800293619 /* jsonlite_stream.h */,
+				B5A2EAE8186025D800293619 /* jsonlite_token.h */,
+				B5A2EAE9186025D800293619 /* jsonlite_token_pool.h */,
+				B5A2EAEA186025D800293619 /* jsonlite_types.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		B5A2EAEB186025D800293619 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				B5A2EAEC186025D800293619 /* jsonlite.c */,
+				B5A2EAED186025D800293619 /* jsonlite_builder.c */,
+				B5A2EAEE186025D800293619 /* jsonlite_parser.c */,
+				B5A2EAEF186025D800293619 /* jsonlite_stream.c */,
+				B5A2EAF0186025D800293619 /* jsonlite_token.c */,
+				B5A2EAF1186025D800293619 /* jsonlite_token_pool.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		B5A2EAF8186025E400293619 /* objc */ = {
+			isa = PBXGroup;
+			children = (
+				B5A2EAF9186025E400293619 /* JsonLiteAccumulator.h */,
+				B5A2EAFA186025E400293619 /* JsonLiteAccumulator.m */,
+				B5A2EAFB186025E400293619 /* JsonLiteCollections.h */,
+				B5A2EAFC186025E400293619 /* JsonLiteCollections.m */,
+				B5A2EAFD186025E400293619 /* JsonLiteConverters.h */,
+				B5A2EAFE186025E400293619 /* JsonLiteConverters.m */,
+				B5A2EAFF186025E400293619 /* JsonLiteDeserializer.h */,
+				B5A2EB00186025E400293619 /* JsonLiteDeserializer.m */,
+				B5A2EB01186025E400293619 /* JsonLiteMetaData.h */,
+				B5A2EB02186025E400293619 /* JsonLiteMetaData.m */,
+				B5A2EB03186025E400293619 /* JsonLiteObjC.h */,
+				B5A2EB04186025E400293619 /* JsonLiteObjC.m */,
+				B5A2EB05186025E400293619 /* JsonLiteParser.h */,
+				B5A2EB06186025E400293619 /* JsonLiteParser.m */,
+				B5A2EB07186025E400293619 /* JsonLiteSerializer.h */,
+				B5A2EB08186025E400293619 /* JsonLiteSerializer.m */,
+			);
+			name = objc;
+			path = ../../../objc;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		84D8AA5617E91D7300E11185 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				846994C517EA57DA00BBB8BA /* jsonlite.h in Headers */,
-				846994C617EA57DA00BBB8BA /* jsonlite_builder.h in Headers */,
-				846994C717EA57DA00BBB8BA /* jsonlite_parser.h in Headers */,
-				846994C817EA57DA00BBB8BA /* jsonlite_token.h in Headers */,
-				846994C917EA57DA00BBB8BA /* jsonlite_token_pool.h in Headers */,
-				846994CA17EA57DA00BBB8BA /* jsonlite_types.h in Headers */,
-				846994CF17EA57DA00BBB8BA /* JsonLiteAccumulator.h in Headers */,
-				846994D117EA57DA00BBB8BA /* JsonLiteCollections.h in Headers */,
-				846994D317EA57DA00BBB8BA /* JsonLiteConverters.h in Headers */,
-				846994D517EA57DA00BBB8BA /* JsonLiteDeserializer.h in Headers */,
-				846994D717EA57DA00BBB8BA /* JsonLiteMetaData.h in Headers */,
-				846994D917EA57DA00BBB8BA /* JsonLiteObjC.h in Headers */,
-				846994DA17EA57DA00BBB8BA /* JsonLiteParser.h in Headers */,
-				846994DC17EA57DA00BBB8BA /* JsonLiteSerializer.h in Headers */,
-				84FC6F17181B18EA0087DABC /* jsonlite_stream.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		879D180715BA9B1A00791C72 /* JsonLiteObjC */ = {
+		B5A2EAB8186024A400293619 /* JsonLiteObjC */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 879D182B15BA9B1A00791C72 /* Build configuration list for PBXNativeTarget "JsonLiteObjC" */;
+			buildConfigurationList = B5A2EADC186024A400293619 /* Build configuration list for PBXNativeTarget "JsonLiteObjC" */;
 			buildPhases = (
-				879D180415BA9B1A00791C72 /* Sources */,
-				879D180515BA9B1A00791C72 /* Frameworks */,
-				84D8AA6417E91DAE00E11185 /* CopyFiles */,
-				84D8AA5617E91D7300E11185 /* Headers */,
+				B5A2EAB5186024A400293619 /* Sources */,
+				B5A2EAB6186024A400293619 /* Frameworks */,
+				B5A2EAB7186024A400293619 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -433,158 +354,131 @@
 			);
 			name = JsonLiteObjC;
 			productName = JsonLiteObjC;
-			productReference = 879D180815BA9B1A00791C72 /* libJsonLiteObjC.a */;
+			productReference = B5A2EAB9186024A400293619 /* libJsonLiteObjC.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		879D181415BA9B1A00791C72 /* JsonLiteObjCTests */ = {
+		B5A2EAC8186024A400293619 /* JsonLiteObjCTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 879D182E15BA9B1A00791C72 /* Build configuration list for PBXNativeTarget "JsonLiteObjCTests" */;
+			buildConfigurationList = B5A2EADF186024A400293619 /* Build configuration list for PBXNativeTarget "JsonLiteObjCTests" */;
 			buildPhases = (
-				879D181015BA9B1A00791C72 /* Sources */,
-				879D181115BA9B1A00791C72 /* Frameworks */,
-				879D181215BA9B1A00791C72 /* Resources */,
-				879D181315BA9B1A00791C72 /* ShellScript */,
+				B5A2EAC5186024A400293619 /* Sources */,
+				B5A2EAC6186024A400293619 /* Frameworks */,
+				B5A2EAC7186024A400293619 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				879D181C15BA9B1A00791C72 /* PBXTargetDependency */,
+				B5A2EAD0186024A400293619 /* PBXTargetDependency */,
 			);
 			name = JsonLiteObjCTests;
 			productName = JsonLiteObjCTests;
-			productReference = 879D181515BA9B1A00791C72 /* JsonLiteObjCTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = B5A2EAC9186024A400293619 /* JsonLiteObjCTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		879D17FF15BA9B1A00791C72 /* Project object */ = {
+		B5A2EAB1186024A400293619 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Andrii Mamchur";
 			};
-			buildConfigurationList = 879D180215BA9B1A00791C72 /* Build configuration list for PBXProject "JsonLiteObjC" */;
+			buildConfigurationList = B5A2EAB4186024A400293619 /* Build configuration list for PBXProject "JsonLiteObjC" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 879D17FD15BA9B1A00791C72;
-			productRefGroup = 879D180915BA9B1A00791C72 /* Products */;
+			mainGroup = B5A2EAB0186024A400293619;
+			productRefGroup = B5A2EABA186024A400293619 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				879D180715BA9B1A00791C72 /* JsonLiteObjC */,
-				879D181415BA9B1A00791C72 /* JsonLiteObjCTests */,
+				B5A2EAB8186024A400293619 /* JsonLiteObjC */,
+				B5A2EAC8186024A400293619 /* JsonLiteObjCTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		879D181215BA9B1A00791C72 /* Resources */ = {
+		B5A2EAC7186024A400293619 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				879D182315BA9B1A00791C72 /* InfoPlist.strings in Resources */,
-				8469950F17EA599F00BBB8BA /* bad_token in Resources */,
-				8469951017EA599F00BBB8BA /* deserializer in Resources */,
-				8469951117EA599F00BBB8BA /* fail in Resources */,
-				8469951417EA59A900BBB8BA /* success in Resources */,
-				8469951517EA59A900BBB8BA /* tokens in Resources */,
+				B5A2EB4E1860262400293619 /* tokens in Resources */,
+				B5A2EB4A1860260500293619 /* fail in Resources */,
+				B5A2EB4D1860262400293619 /* success in Resources */,
+				B5A2EB481860260500293619 /* bad_token in Resources */,
+				B5A2EAD7186024A400293619 /* InfoPlist.strings in Resources */,
+				B5A2EB491860260500293619 /* deserializer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		879D181315BA9B1A00791C72 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		879D180415BA9B1A00791C72 /* Sources */ = {
+		B5A2EAB5186024A400293619 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				846994CB17EA57DA00BBB8BA /* jsonlite_builder.c in Sources */,
-				846994CC17EA57DA00BBB8BA /* jsonlite_parser.c in Sources */,
-				846994CD17EA57DA00BBB8BA /* jsonlite_token.c in Sources */,
-				846994CE17EA57DA00BBB8BA /* jsonlite_token_pool.c in Sources */,
-				846994D017EA57DA00BBB8BA /* JsonLiteAccumulator.m in Sources */,
-				846994D217EA57DA00BBB8BA /* JsonLiteCollections.m in Sources */,
-				846994D417EA57DA00BBB8BA /* JsonLiteConverters.m in Sources */,
-				846994D617EA57DA00BBB8BA /* JsonLiteDeserializer.m in Sources */,
-				846994D817EA57DA00BBB8BA /* JsonLiteMetaData.m in Sources */,
-				846994DB17EA57DA00BBB8BA /* JsonLiteParser.m in Sources */,
-				846994DD17EA57DA00BBB8BA /* JsonLiteSerializer.m in Sources */,
-				84FC6F19181B18F30087DABC /* jsonlite_stream.c in Sources */,
+				B5A2EAF2186025D800293619 /* jsonlite.c in Sources */,
+				B5A2EB09186025E400293619 /* JsonLiteAccumulator.m in Sources */,
+				B5A2EAF7186025D800293619 /* jsonlite_token_pool.c in Sources */,
+				B5A2EB0D186025E400293619 /* JsonLiteMetaData.m in Sources */,
+				B5A2EAF5186025D800293619 /* jsonlite_stream.c in Sources */,
+				B5A2EAF4186025D800293619 /* jsonlite_parser.c in Sources */,
+				B5A2EAF3186025D800293619 /* jsonlite_builder.c in Sources */,
+				B5A2EAF6186025D800293619 /* jsonlite_token.c in Sources */,
+				B5A2EB0B186025E400293619 /* JsonLiteConverters.m in Sources */,
+				B5A2EB0F186025E400293619 /* JsonLiteParser.m in Sources */,
+				B5A2EB0C186025E400293619 /* JsonLiteDeserializer.m in Sources */,
+				B5A2EB10186025E400293619 /* JsonLiteSerializer.m in Sources */,
+				B5A2EB0A186025E400293619 /* JsonLiteCollections.m in Sources */,
+				B5A2EB0E186025E400293619 /* JsonLiteObjC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		879D181015BA9B1A00791C72 /* Sources */ = {
+		B5A2EAC5186024A400293619 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				846994FD17EA598900BBB8BA /* JsonLiteObjCAcc.m in Sources */,
-				846994FE17EA598900BBB8BA /* JsonLiteObjCBadToken.m in Sources */,
-				8794B0C618352C7700AA7CFC /* JsonLiteObjCBase64Tests.m in Sources */,
-				846994FF17EA598900BBB8BA /* JsonLiteObjCBrokenTokenTests.m in Sources */,
-				8469950017EA598900BBB8BA /* JsonLiteObjCBuilderTests.m in Sources */,
-				8469950117EA598900BBB8BA /* JsonLiteObjCConverters.m in Sources */,
-				8469950217EA598900BBB8BA /* JsonLiteObjCConvertersTests.m in Sources */,
-				8469950317EA598900BBB8BA /* JsonLiteObjCCoverageTests.m in Sources */,
-				8469950417EA598900BBB8BA /* JsonLiteObjCDeserializerTest.m in Sources */,
-				8469950517EA598900BBB8BA /* JsonLiteObjCInputs.m in Sources */,
-				8469950617EA598900BBB8BA /* JsonLiteObjCPoolTests.m in Sources */,
-				8469950717EA598900BBB8BA /* JsonLiteObjCStream.m in Sources */,
-				8469950817EA598900BBB8BA /* JsonLiteObjCTests.m in Sources */,
-				8469950917EA598900BBB8BA /* JsonLiteObjCTokenTests.m in Sources */,
-				8469950A17EA598900BBB8BA /* JsonLiteObjCUnicodeTests.m in Sources */,
-				8469950B17EA598900BBB8BA /* JsonLiteSenTestCaseExt.m in Sources */,
-				8469959117EA5C3400BBB8BA /* jsonlite_builder.c in Sources */,
-				8469959217EA5C3400BBB8BA /* jsonlite_parser.c in Sources */,
-				8469959317EA5C3400BBB8BA /* jsonlite_token.c in Sources */,
-				8469959417EA5C3400BBB8BA /* jsonlite_token_pool.c in Sources */,
-				8469959517EA5C4000BBB8BA /* JsonLiteAccumulator.m in Sources */,
-				8469959617EA5C4000BBB8BA /* JsonLiteCollections.m in Sources */,
-				8469959717EA5C4000BBB8BA /* JsonLiteConverters.m in Sources */,
-				8469959817EA5C4000BBB8BA /* JsonLiteDeserializer.m in Sources */,
-				8469959917EA5C4000BBB8BA /* JsonLiteMetaData.m in Sources */,
-				8469959A17EA5C4000BBB8BA /* JsonLiteParser.m in Sources */,
-				8469959B17EA5C4000BBB8BA /* JsonLiteSerializer.m in Sources */,
-				84FC6F1A181B18F30087DABC /* jsonlite_stream.c in Sources */,
-				84FC6F1D181B19270087DABC /* JsonLiteObjCOutStream.m in Sources */,
+				B5A2EB39186025F900293619 /* JsonLiteObjCConverters.m in Sources */,
+				B5A2EB3F186025F900293619 /* JsonLiteObjCPoolTests.m in Sources */,
+				B5A2EB37186025F900293619 /* JsonLiteObjCBrokenTokenTests.m in Sources */,
+				B5A2EB42186025F900293619 /* JsonLiteObjCTokenTests.m in Sources */,
+				B5A2EB3E186025F900293619 /* JsonLiteObjCOutStream.m in Sources */,
+				B5A2EB43186025F900293619 /* JsonLiteObjCUnicodeTests.m in Sources */,
+				B5A2EB3C186025F900293619 /* JsonLiteObjCDeserializerTest.m in Sources */,
+				B5A2EB34186025F900293619 /* JsonLiteObjCAcc.m in Sources */,
+				B5A2EB3B186025F900293619 /* JsonLiteObjCCoverageTests.m in Sources */,
+				B5A2EB36186025F900293619 /* JsonLiteObjCBase64Tests.m in Sources */,
+				B5A2EB40186025F900293619 /* JsonLiteObjCStream.m in Sources */,
+				B5A2EB44186025F900293619 /* JsonLiteSenTestCaseExt.m in Sources */,
+				B5A2EB3D186025F900293619 /* JsonLiteObjCInputs.m in Sources */,
+				B5A2EB3A186025F900293619 /* JsonLiteObjCConvertersTests.m in Sources */,
+				B5A2EB35186025F900293619 /* JsonLiteObjCBadToken.m in Sources */,
+				B5A2EB38186025F900293619 /* JsonLiteObjCBuilderTests.m in Sources */,
+				B5A2EB41186025F900293619 /* JsonLiteObjCTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		879D181C15BA9B1A00791C72 /* PBXTargetDependency */ = {
+		B5A2EAD0186024A400293619 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 879D180715BA9B1A00791C72 /* JsonLiteObjC */;
-			targetProxy = 879D181B15BA9B1A00791C72 /* PBXContainerItemProxy */;
+			target = B5A2EAB8186024A400293619 /* JsonLiteObjC */;
+			targetProxy = B5A2EACF186024A400293619 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		879D182115BA9B1A00791C72 /* InfoPlist.strings */ = {
+		B5A2EAD5186024A400293619 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				879D182215BA9B1A00791C72 /* en */,
+				B5A2EAD6186024A400293619 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -592,191 +486,181 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		879D182915BA9B1A00791C72 /* Debug */ = {
+		B5A2EADA186024A400293619 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = "";
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
-		879D182A15BA9B1A00791C72 /* Release */ = {
+		B5A2EADB186024A400293619 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
-				GCC_VERSION = "";
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		879D182C15BA9B1A00791C72 /* Debug */ = {
+		B5A2EADD186024A400293619 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				DSTROOT = /tmp/JsonLiteObjC.dst;
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JsonLiteObjC/JsonLiteObjC-Prefix.pch";
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = "";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = YES;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_PARAMETER = NO;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		879D182D15BA9B1A00791C72 /* Release */ = {
+		B5A2EADE186024A400293619 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				DSTROOT = /tmp/JsonLiteObjC.dst;
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JsonLiteObjC/JsonLiteObjC-Prefix.pch";
-				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
-				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = "";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = YES;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_PARAMETER = NO;
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
-		879D182F15BA9B1A00791C72 /* Debug */ = {
+		B5A2EAE0186024A400293619 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JsonLiteObjCTests/JsonLiteObjCTests-Prefix.pch";
-				GCC_VERSION = "";
-				INFOPLIST_FILE = "JsonLiteObjCTests/JsonLiteObjCTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
+				GCC_PREFIX_HEADER = "JsonLiteObjC/JsonLiteObjC-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
 				);
+				INFOPLIST_FILE = "JsonLiteObjCTests/JsonLiteObjCTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
-		879D183015BA9B1A00791C72 /* Release */ = {
+		B5A2EAE1186024A400293619 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "JsonLiteObjCTests/JsonLiteObjCTests-Prefix.pch";
-				GCC_VERSION = "";
+				GCC_PREFIX_HEADER = "JsonLiteObjC/JsonLiteObjC-Prefix.pch";
 				INFOPLIST_FILE = "JsonLiteObjCTests/JsonLiteObjCTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					SenTestingKit,
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		879D180215BA9B1A00791C72 /* Build configuration list for PBXProject "JsonLiteObjC" */ = {
+		B5A2EAB4186024A400293619 /* Build configuration list for PBXProject "JsonLiteObjC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				879D182915BA9B1A00791C72 /* Debug */,
-				879D182A15BA9B1A00791C72 /* Release */,
+				B5A2EADA186024A400293619 /* Debug */,
+				B5A2EADB186024A400293619 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		879D182B15BA9B1A00791C72 /* Build configuration list for PBXNativeTarget "JsonLiteObjC" */ = {
+		B5A2EADC186024A400293619 /* Build configuration list for PBXNativeTarget "JsonLiteObjC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				879D182C15BA9B1A00791C72 /* Debug */,
-				879D182D15BA9B1A00791C72 /* Release */,
+				B5A2EADD186024A400293619 /* Debug */,
+				B5A2EADE186024A400293619 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		879D182E15BA9B1A00791C72 /* Build configuration list for PBXNativeTarget "JsonLiteObjCTests" */ = {
+		B5A2EADF186024A400293619 /* Build configuration list for PBXNativeTarget "JsonLiteObjCTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				879D182F15BA9B1A00791C72 /* Debug */,
-				879D183015BA9B1A00791C72 /* Release */,
+				B5A2EAE0186024A400293619 /* Debug */,
+				B5A2EAE1186024A400293619 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 879D17FF15BA9B1A00791C72 /* Project object */;
+	rootObject = B5A2EAB1186024A400293619 /* Project object */;
 }

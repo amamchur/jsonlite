@@ -16,21 +16,12 @@
 #ifndef JSONLITE_H
 #define JSONLITE_H
 
-#include "jsonlite_parser.h"
 #include "jsonlite_builder.h"
+#include "jsonlite_parser.h"
+#include "jsonlite_stream.h"
+#include "jsonlite_token.h"
 #include "jsonlite_token_pool.h"
 
-#endif
+extern const char *jsonlite_version;
 
-/** @mainpage jsonlite Index Page
- *
- * @section intro_sec Introduction
- *
- * This is the introduction.
- *
- * @section install_sec Installation
- *
- * @subsection step1 Step 1: Opening the box
- *
- * etc...
- */
+#endif

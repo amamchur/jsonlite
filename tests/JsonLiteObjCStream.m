@@ -67,7 +67,7 @@
         [runLoop runMode:NSDefaultRunLoopMode beforeDate:date];
     }
     
-    STAssertNil(parser.parseError, @"Error occurs %@", parser.parseError);
+    XCTAssertNil(parser.parseError, @"Error occurs %@", parser.parseError);
 }
 
 - (void)testInputs {
@@ -77,13 +77,13 @@
     NSInputStream *stream = [NSInputStream inputStreamWithFileAtPath:path];
     JsonLiteParser *parser = [JsonLiteParser parser];
     [parser parse:nil inRunLoop:nil];
-    STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
+    XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
     
     [parser parse:stream inRunLoop:nil];
-    STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
+    XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
     
     [parser parse:nil inRunLoop:[NSRunLoop currentRunLoop]];
-    STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
+    XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidArgument, @"Incorrect error");
 }
 
 @end

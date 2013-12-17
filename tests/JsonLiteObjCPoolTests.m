@@ -28,7 +28,7 @@
     token.end = token.start + 4;
     
     b = jsonlite_token_pool_get_bucket(pool, &token);
-    STAssertTrue(b != NULL, @"Bucket is null");
+    XCTAssertTrue(b != NULL, @"Bucket is null");
     
     jsonlite_token_pool_release(pool);
 }

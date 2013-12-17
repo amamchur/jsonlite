@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Andrii Mamchur. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface JsonLiteObjCStream : SenTestCase{
+@interface JsonLiteObjCStream : XCTestCase{
     volatile BOOL finished;
 }
 

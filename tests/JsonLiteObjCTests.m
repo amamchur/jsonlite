@@ -16,8 +16,7 @@
 
 #import "JsonLiteObjCTests.h"
 #import "JsonLiteSenTestCaseExt.h"
-#import "JsonLiteParser.h"
-#import "JsonLiteAccumulator.h"
+#import "JsonLiteObjC.h"
 
 @interface JsonLiteObjCTests()<JsonLiteAccumulatorDelegate>
 
@@ -27,24 +26,24 @@
 
 - (void)testSingleObject {
     id object = [self parseObjectFromFile:@"single_object" inDir:@"success"];
-    STAssertTrue(object != nil, @"Object is nil.");
-    STAssertTrue([object isEqual:[NSDictionary dictionary]], @"Incorect parse object.");
+    XCTAssertTrue(object != nil, @"Object is nil.");
+    XCTAssertTrue([object isEqual:[NSDictionary dictionary]], @"Incorect parse object.");
 }
 
 - (void)testSingleArray {
     id object = [self parseObjectFromFile:@"single_array" inDir:@"success"];
-    STAssertTrue(object != nil, @"Object is nil.");
-    STAssertTrue([object isEqual:[NSArray array]], @"Incorect parse object."); 
+    XCTAssertTrue(object != nil, @"Object is nil.");
+    XCTAssertTrue([object isEqual:[NSArray array]], @"Incorect parse object."); 
 }
 
 - (void)testTokenPool {
     id object = [self parseObjectFromFile:@"random" inDir:@"success"];
-    STAssertTrue(object != nil, @"Object is nil.");
+    XCTAssertTrue(object != nil, @"Object is nil.");
 }
 
 - (void)testArrayValues {
     id object = [self parseObjectFromFile:@"array_values" inDir:@"success"];
-    STAssertTrue(object != nil, @"Object is nil.");
+    XCTAssertTrue(object != nil, @"Object is nil.");
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:13];
     [array addObject:[NSNull null]];
     [array addObject:[NSNumber numberWithBool:YES]];
@@ -75,11 +74,11 @@
     [array addObject:[NSNumber numberWithDouble:-0.5e-5]];
     [array addObject:[NSNumber numberWithDouble:0.5e-5]];
     [array addObject:[NSNumber numberWithDouble:-0.5e-5]];
-    STAssertTrue([array count] == [object count], @"Different length %d and %d.", [array count], [object count]);
+    XCTAssertTrue([array count] == [object count], @"Different length %lu and %lu.", (unsigned long)[array count], (unsigned long)[object count]);
     for (NSInteger i = 0; i < [array count]; i++) {
         id obj1 = [array objectAtIndex:i];
         id obj2 = [object objectAtIndex:i];
-        STAssertTrue([obj1 isEqual:obj2], @"#%d Object is not equals: %@ == %@", i, obj1, obj2);
+        XCTAssertTrue([obj1 isEqual:obj2], @"#%ld Object is not equals: %@ == %@", (long)i, obj1, obj2);
     }
     
     NSException *exc = nil;
@@ -89,12 +88,12 @@
     @catch (NSException *exception) {
         exc = [[exception retain] autorelease];
     }
-    STAssertTrue([[exc name] isEqualToString:NSRangeException], @"Bad exception");
+    XCTAssertTrue([[exc name] isEqualToString:NSRangeException], @"Bad exception");
 }
 
 - (void)testObjectValues {
     id object = [self parseObjectFromFile:@"object_values" inDir:@"success"];
-    STAssertTrue(object != nil, @"Object is nil.");
+    XCTAssertTrue(object != nil, @"Object is nil.");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:[NSNull null] forKey:@"v0"];
     [dict setObject:[NSNumber numberWithBool:YES] forKey:@"v1"];
@@ -126,30 +125,30 @@
     [dict setObject:[NSNumber numberWithDouble:0.5e-5] forKey:@"v27"];
     [dict setObject:[NSNumber numberWithDouble:-0.5e-5] forKey:@"v28"];
     [dict setObject:[NSNumber numberWithDouble:-123.1234e04] forKey:@"v29"];
-    STAssertTrue([dict count] == [object count], @"Different length %d and %d.", [dict count], [object count]);
+    XCTAssertTrue([dict count] == [object count], @"Different length %lu and %lu.", (unsigned long)[dict count], (unsigned long)[object count]);
     NSArray *array1 = [[dict allKeys] sortedArrayUsingSelector:@selector(compare:)];
     NSArray *array2 = [[object allKeys] sortedArrayUsingSelector:@selector(compare:)];
     
-    STAssertNotNil([object objectForKey:@"v1"], @"Object is nil");
-    STAssertNil([object objectForKey:@"v1????"], @"Object not is nil");
-    STAssertTrue([array1 isEqualToArray:array2], @"Array not equals");
+    XCTAssertNotNil([object objectForKey:@"v1"], @"Object is nil");
+    XCTAssertNil([object objectForKey:@"v1????"], @"Object not is nil");
+    XCTAssertTrue([array1 isEqualToArray:array2], @"Array not equals");
     
     for (id key in object) {
-        STAssertTrue([array1 indexOfObject:key] != NSNotFound, @"No key");
+        XCTAssertTrue([array1 indexOfObject:key] != NSNotFound, @"No key");
     }
     
     NSEnumerator *en = [object keyEnumerator];
     id obj;
     while (obj = [en nextObject]) {
-        STAssertNotNil(obj, @"Is nil");
+        XCTAssertNotNil(obj, @"Is nil");
     }
-    STAssertNotNil([en allObjects], @"Is nil");
+    XCTAssertNotNil([en allObjects], @"Is nil");
     
     
     for (id key in array1) {
         id obj1 = [dict objectForKey:key];
         id obj2 = [object objectForKey:key];
-        STAssertTrue([obj1 isEqual:obj2], @"#%@ Object is not equals: %@ == %@", key, obj1, obj2);
+        XCTAssertTrue([obj1 isEqual:obj2], @"#%@ Object is not equals: %@ == %@", key, obj1, obj2);
     }
 }
 
@@ -158,7 +157,7 @@
     const char MUSICAL_SYMBOL_G_CLEF[] = {0xf0, 0x9d, 0x84, 0x9e, 0};
     
     id object = [self parseObjectFromFile:@"strings" inDir:@"success"];
-    STAssertTrue(object != nil, @"Object is nil.");
+    XCTAssertTrue(object != nil, @"Object is nil.");
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:13];
     [array addObject:@""];
     [array addObject:@"Test"];
@@ -173,179 +172,179 @@
     [array addObject:@"\u00E9"];
     [array addObject:[NSString stringWithUTF8String:MUSICAL_SYMBOL_G_CLEF]];
     [array addObject:@"42\u00e942\u226542"];
-    STAssertTrue([array count] == [object count], @"Different length %d and %d.", [array count], [object count]);
+    XCTAssertTrue([array count] == [object count], @"Different length %lu and %lu.", (unsigned long)[array count], (unsigned long)[object count]);
     for (NSInteger i = 0; i < [array count]; i++) {
         id obj1 = [array objectAtIndex:i];
         id obj2 = [object objectAtIndex:i];
-        STAssertTrue([obj1 isEqual:obj2], @"#%d Object is not equals: %@ == %@", i, obj1, obj2);
+        XCTAssertTrue([obj1 isEqual:obj2], @"#%ld Object is not equals: %@ == %@", (long)i, obj1, obj2);
     }
 }
 
 - (void)testFail1 {
     NSError *error = [self parseErrorFromFile:@"fail1" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedObjectOrArray, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedObjectOrArray, @"Test failed.");
 }
 
 - (void)testFail2 {
     NSError *error = [self parseErrorFromFile:@"fail2" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeEndOfStream, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeEndOfStream, @"Test failed.");
 }
 
 - (void)testFail3 {
     NSError *error = [self parseErrorFromFile:@"fail3" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedKeyOrEnd, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedKeyOrEnd, @"Test failed.");
 }
 
 - (void)testFail4 {
     NSError *error = [self parseErrorFromFile:@"fail4" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
 }
 
 - (void)testFail5 {
     NSError *error = [self parseErrorFromFile:@"fail5" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
 }
 
 - (void)testFail6 {
     NSError *error = [self parseErrorFromFile:@"fail6" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
 }
 
 - (void)testFail7 {
     NSError *error = [self parseErrorFromFile:@"fail7" inDir:@"fail"];
-    STAssertTrue(error == nil, @"Test failed.");
+    XCTAssertTrue(error == nil, @"Test failed.");
 }
 
 - (void)testFail8 {
     NSError *error = [self parseErrorFromFile:@"fail8" inDir:@"fail"];
-    STAssertTrue(error == nil, @"Test failed.");
+    XCTAssertTrue(error == nil, @"Test failed.");
 }
 
 - (void)testFail9 {
     NSError *error = [self parseErrorFromFile:@"fail9" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedKey, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedKey, @"Test failed.");
 }
 
 - (void)testFail10 {
     NSError *error = [self parseErrorFromFile:@"fail10" inDir:@"fail"];
-    STAssertTrue(error == nil, @"Test failed.");
+    XCTAssertTrue(error == nil, @"Test failed.");
 }
 
 - (void)testFail11 {
     NSError *error = [self parseErrorFromFile:@"fail11" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedCommaOrEnd, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedCommaOrEnd, @"Test failed.");
 }
 
 - (void)testFail12 {
     NSError *error = [self parseErrorFromFile:@"fail12" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
 }
 
 - (void)testFail13 {
     NSError *error = [self parseErrorFromFile:@"fail13" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
 }
 
 - (void)testFail14 {
     NSError *error = [self parseErrorFromFile:@"fail14" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
 }
 
 - (void)testFail15 {
     NSError *error = [self parseErrorFromFile:@"fail15" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidEscape, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidEscape, @"Test failed.");
 }
 
 - (void)testFail16 {
     NSError *error = [self parseErrorFromFile:@"fail16" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
 }
 
 - (void)testFail17 {
     NSError *error = [self parseErrorFromFile:@"fail17" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidEscape, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidEscape, @"Test failed.");
 }
 
 - (void)testFail18 {
     JsonLiteParser *parser = [JsonLiteParser parserWithDepth:6];
     NSData *data = [self dataFromFile:@"fail18" inDir:@"fail"];
     [parser parse:data];
-    STAssertTrue([parser.parseError code] == JsonLiteCodeDepthLimit, @"Test failed.");
+    XCTAssertTrue([parser.parseError code] == JsonLiteCodeDepthLimit, @"Test failed.");
 }
 
 - (void)testFail19 {
     NSError *error = [self parseErrorFromFile:@"fail19" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedColon, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedColon, @"Test failed.");
 }
 
 - (void)testFail20 {
     NSError *error = [self parseErrorFromFile:@"fail20" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
 }
 
 - (void)testFail21 {
     NSError *error = [self parseErrorFromFile:@"fail21" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedColon, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedColon, @"Test failed.");
 }
 
 - (void)testFail22 {
     NSError *error = [self parseErrorFromFile:@"fail22" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedCommaOrEnd, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedCommaOrEnd, @"Test failed.");
 }
 
 - (void)testFail23 {
     NSError *error = [self parseErrorFromFile:@"fail23" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidToken, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidToken, @"Test failed.");
 }
 
 - (void)testFail24 {
     NSError *error = [self parseErrorFromFile:@"fail24" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedValue, @"Test failed.");
 }
 
 - (void)testFail25 {
     NSError *error = [self parseErrorFromFile:@"fail25" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidToken, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidToken, @"Test failed.");
 }
 
 - (void)testFail26 {
     NSError *error = [self parseErrorFromFile:@"fail26" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidEscape, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidEscape, @"Test failed.");
 }
 
 - (void)testFail27 {
     NSError *error = [self parseErrorFromFile:@"fail27" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidToken, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidToken, @"Test failed.");
 }
 
 - (void)testFail28 {
     NSError *error = [self parseErrorFromFile:@"fail28" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidEscape, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidEscape, @"Test failed.");
 }
 
 - (void)testFail29 {
     NSError *error = [self parseErrorFromFile:@"fail29" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
 }
 
 - (void)testFail30 {
     NSError *error = [self parseErrorFromFile:@"fail30" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
 }
 
 - (void)testFail31 {
     NSError *error = [self parseErrorFromFile:@"fail31" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeInvalidNumber, @"Test failed.");
 }
 
 - (void)testFail32 {
     NSError *error = [self parseErrorFromFile:@"fail32" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeEndOfStream, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeEndOfStream, @"Test failed.");
 }
 
 - (void)testFail33 {
     NSError *error = [self parseErrorFromFile:@"fail33" inDir:@"fail"];
-    STAssertTrue([error code] == JsonLiteCodeExpectedCommaOrEnd, @"Test failed.");
+    XCTAssertTrue([error code] == JsonLiteCodeExpectedCommaOrEnd, @"Test failed.");
 }
 
 - (void)testParserInStack {
@@ -353,8 +352,28 @@
     uint8_t memory[200];
     jsonlite_parser parser = jsonlite_parser_init_memory(memory, sizeof(memory));
     jsonlite_result result = jsonlite_parser_tokenize(parser, [data bytes], [data length]);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     jsonlite_parser_cleanup(parser);
+}
+
+- (void)testHelpers{
+    NSData *data = [self dataFromFile:@"single_object" inDir:@"success"];
+    id obj = [JsonLiteObjC objectFromData:data];
+    XCTAssertEqualObjects(obj, [NSDictionary dictionary], @"Incorrect result");
+    
+    obj = [JsonLiteObjC objectFromData:data depth:4];
+    XCTAssertEqualObjects(obj, [NSDictionary dictionary], @"Incorrect result");
+    
+    obj = [JsonLiteObjC objectFromData:[data bytes] length:[data length]];
+    XCTAssertEqualObjects(obj, [NSDictionary dictionary], @"Incorrect result");
+    
+    obj = [JsonLiteObjC objectFromData:[data bytes] length:[data length] depth:4];
+    XCTAssertEqualObjects(obj, [NSDictionary dictionary], @"Incorrect result");
+    
+    NSError *error = nil;
+    obj = [JsonLiteObjC objectFromData:[data bytes] length:[data length] depth:4 error:&error];
+    XCTAssertNil(error, @"Error occurs");
+    XCTAssertEqualObjects(obj, [NSDictionary dictionary], @"Incorrect result");
 }
 
 @end

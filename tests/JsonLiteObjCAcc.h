@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Andrii Mamchur. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface JsonLiteObjCAcc : SenTestCase
+@interface JsonLiteObjCAcc : XCTestCase
 
 @end

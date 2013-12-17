@@ -29,11 +29,11 @@
     size_t buffer_size = jsonlite_static_mem_stream_written_bytes(stream);
     size_t json_size = strlen(json);
     
-    STAssertTrue(buffer_size == json_size, @"Incorrect size");
+    XCTAssertTrue(buffer_size == json_size, @"Incorrect size");
     
     size_t min = MIN(buffer_size, json_size);
     for (int i = 0; i < min; i++) {
-        STAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
     }
 }
 
@@ -59,7 +59,7 @@
     
     size_t min = MIN(buffer_size, json_size);
     for (int i = 0; i < min; i++) {
-        STAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
     }
 }
 
@@ -83,7 +83,7 @@
     
     size_t min = MIN(buffer_size, json_size);
     for (int i = 0; i < min; i++) {
-        STAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
     }
 }
 
@@ -107,11 +107,11 @@
     size_t buffer_size = fread(buffer, 1, sizeof(buffer), file);
     size_t json_size = strlen(json);
     
-    STAssertTrue(buffer_size == json_size, @"Incorrect size");
+    XCTAssertTrue(buffer_size == json_size, @"Incorrect size");
     
     size_t min = MIN(buffer_size, json_size);
     for (int i = 0; i < min; i++) {
-        STAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
     }
         
     fclose(file);
@@ -121,10 +121,10 @@
     char hello[] = "Hello mem stream!";
     
     jsonlite_stream stream = jsonlite_null_stream;
-    STAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
+    XCTAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
     
     int written = jsonlite_stream_write(stream, hello, sizeof(hello));
-    STAssertTrue(written == sizeof(hello), @"Incorrect size");
+    XCTAssertTrue(written == sizeof(hello), @"Incorrect size");
     
     jsonlite_stream_release(stream);
     jsonlite_stream_release(NULL);
@@ -134,22 +134,22 @@
     char hello[] = "Hello mem stream\n!";
     
     jsonlite_stream stream = jsonlite_stdout_stream;
-    STAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
+    XCTAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
     
     int written = jsonlite_stream_write(stream, hello, sizeof(hello) - 1);
-    STAssertTrue(written == sizeof(hello) - 1, @"Incorrect size");
+    XCTAssertTrue(written == sizeof(hello) - 1, @"Incorrect size");
     
     jsonlite_stream_release(stream);
 }
 
 - (void)testMemEmptyStream {    
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
-    STAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
+    XCTAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
     
     uint8_t *data = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &data, 0);
-    STAssertTrue(data == NULL, @"Data is not NULL");
-    STAssertTrue(size == 0, @"Size is not zero");
+    XCTAssertTrue(data == NULL, @"Data is not NULL");
+    XCTAssertTrue(size == 0, @"Size is not zero");
 
     jsonlite_stream_release(stream);
 }
@@ -158,18 +158,18 @@
     char hello[] = "Hello mem stream!";
     
     jsonlite_stream stream = jsonlite_mem_stream_init(0xFF);
-    STAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
+    XCTAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
     
     int written = jsonlite_stream_write(stream, hello, sizeof(hello));
-    STAssertTrue(written == sizeof(hello), @"Incorrect size");
+    XCTAssertTrue(written == sizeof(hello), @"Incorrect size");
     
     uint8_t *data = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &data, 0);
-    STAssertTrue(data != NULL, @"Data is NULL");
-    STAssertTrue(size == sizeof(hello), @"Size is not sizeof(hello)");
+    XCTAssertTrue(data != NULL, @"Data is NULL");
+    XCTAssertTrue(size == sizeof(hello), @"Size is not sizeof(hello)");
     
     int cmp = strcmp(hello, (char *)data);
-    STAssertTrue(cmp == 0, @"Data is not equals to original value");
+    XCTAssertTrue(cmp == 0, @"Data is not equals to original value");
     
     jsonlite_stream_release(stream);
 }
@@ -178,18 +178,18 @@
     char hello[] = "Hello mem stream!";
     
     jsonlite_stream stream = jsonlite_mem_stream_init(0x1);
-    STAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
+    XCTAssertTrue(stream != NULL, @"jsonlite_mem_stream_init return NULL stream");
     
     int written = jsonlite_stream_write(stream, hello, sizeof(hello));
-    STAssertTrue(written == sizeof(hello), @"Incorrect size");
+    XCTAssertTrue(written == sizeof(hello), @"Incorrect size");
     
     uint8_t *data = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &data, 0);
-    STAssertTrue(data != NULL, @"Data is NULL");
-    STAssertTrue(size == sizeof(hello), @"Size is not sizeof(hello)");
+    XCTAssertTrue(data != NULL, @"Data is NULL");
+    XCTAssertTrue(size == sizeof(hello), @"Size is not sizeof(hello)");
     
     int cmp = strcmp(hello, (char *)data);
-    STAssertTrue(cmp == 0, @"Data is not equals to original value");
+    XCTAssertTrue(cmp == 0, @"Data is not equals to original value");
     
     jsonlite_stream_release(stream);
 }

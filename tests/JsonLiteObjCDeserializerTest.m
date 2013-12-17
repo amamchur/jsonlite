@@ -19,6 +19,7 @@
 #import "JsonLiteSerializer.h"
 #import "JsonLiteDeserializer.h"
 #import "JsonLiteMetaData.h"
+#import "JsonLiteObjC.h"
 
 @interface JsonLiteTestGetterSetter : NSObject {
     NSString *someString;
@@ -229,11 +230,11 @@
 @implementation JsonLiteObjCDeserializerTest
 
 - (void)deserializer:(JsonLiteDeserializer *)deserializer didDeserializeObject:(id)object {
-    STAssertNotNil(object, @"Object is nil");
+    XCTAssertNotNil(object, @"Object is nil");
 }
 
 - (void)deserializer:(JsonLiteDeserializer *)deserializer didDeserializeArray:(NSArray *)array {
-    STAssertNotNil(array, @"Array is nil");
+    XCTAssertNotNil(array, @"Array is nil");
 }
 
 - (void)testArrays {
@@ -244,27 +245,27 @@
     NSData *data = [[NSData alloc] initWithContentsOfFile:path
                                                   options:0
                                                    error:&error];
-    STAssertNil(error, @"Can not open file");
+    XCTAssertNil(error, @"Can not open file");
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteDeserializer *deserializer = [[JsonLiteDeserializer alloc] initWithRootClass:nil];
-    STAssertNil(deserializer.delegate, @"Delegate is not nil");
+    XCTAssertNil(deserializer.delegate, @"Delegate is not nil");
     
     deserializer.delegate = self;
-    STAssertTrue(deserializer.delegate == self, @"Delegate is other object or nil");
+    XCTAssertTrue(deserializer.delegate == self, @"Delegate is other object or nil");
     
     deserializer.delegate = self;
-    STAssertTrue(deserializer.delegate == self, @"Delegate is other object or nil");
+    XCTAssertTrue(deserializer.delegate == self, @"Delegate is other object or nil");
     
     parser.delegate = deserializer;
     [parser parse:data];
     NSMutableArray *array = [deserializer object];
     
-    STAssertTrue([array count] > 0, @"Array is empty");
-    STAssertNil(error, @"Parse error");
+    XCTAssertTrue([array count] > 0, @"Array is empty");
+    XCTAssertNil(error, @"Parse error");
 
     deserializer.delegate = nil;
-    STAssertNil(deserializer.delegate, @"Delegate is not nil");
+    XCTAssertNil(deserializer.delegate, @"Delegate is not nil");
     
   
     [deserializer release];
@@ -274,13 +275,13 @@
     [parser parse:data];
     NSMutableArray *array1 = [deserializer object];
     
-    STAssertTrue([array1 count] > 0, @"Array is empty");
-    STAssertNil(error, @"Parse error");
+    XCTAssertTrue([array1 count] > 0, @"Array is empty");
+    XCTAssertNil(error, @"Parse error");
     
     [deserializer release];
     [parser release];
     
-    STAssertTrue([array isEqualToArray:array1], @"Arrays are not equal");
+    XCTAssertTrue([array isEqualToArray:array1], @"Arrays are not equal");
 }
 
 - (void)testObj1 {
@@ -291,7 +292,7 @@
     NSData *data = [[NSData alloc] initWithContentsOfFile:path
                                                   options:0
                                                    error:&error];
-    STAssertNil(error, @"Can not open file");
+    XCTAssertNil(error, @"Can not open file");
  
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteDeserializer *deserializer = [[JsonLiteDeserializer alloc] initWithRootClass:[JsonLiteTestObj1 class]];
@@ -304,18 +305,18 @@
     [deserializer release];
     [parser release];
     
-    STAssertNotNil(obj.strValue, @"strValue was not binded");
-    STAssertNotNil(obj.intValue, @"intValue was not binded");
-    STAssertNotNil(obj.array, @"array was not binded");
-    STAssertTrue([obj.array count] == 2, @"array has invalid size");
-    STAssertNotNil(obj.child, @"child was not bilded");
+    XCTAssertNotNil(obj.strValue, @"strValue was not binded");
+    XCTAssertNotNil(obj.intValue, @"intValue was not binded");
+    XCTAssertNotNil(obj.array, @"array was not binded");
+    XCTAssertTrue([obj.array count] == 2, @"array has invalid size");
+    XCTAssertNotNil(obj.child, @"child was not bilded");
     
     JsonLiteTestObj1 *child = obj.child;
-    STAssertNotNil(child.strValue, @"strValue was not binded");
-    STAssertNotNil(child.intValue, @"intValue was not binded");
-    STAssertNotNil(child.array, @"array was not binded");
-    STAssertTrue([child.array count] == 2, @"array has invalid size");
-    STAssertNil(child.child, @"child was not binded");
+    XCTAssertNotNil(child.strValue, @"strValue was not binded");
+    XCTAssertNotNil(child.intValue, @"intValue was not binded");
+    XCTAssertNotNil(child.array, @"array was not binded");
+    XCTAssertTrue([child.array count] == 2, @"array has invalid size");
+    XCTAssertNil(child.child, @"child was not binded");
 }
 
 - (void)testObj1Chunk {
@@ -326,7 +327,7 @@
     NSData *data = [[NSData alloc] initWithContentsOfFile:path
                                                   options:0
                                                     error:&error];
-    STAssertNil(error, @"Can not open file");
+    XCTAssertNil(error, @"Can not open file");
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteDeserializer *deserializer = [[JsonLiteDeserializer alloc] initWithRootClass:[JsonLiteTestObj1 class]];
@@ -342,7 +343,7 @@
         NSData *d = [[NSData alloc] initWithBytesNoCopy:buffer length:range.length freeWhenDone:NO];
         [parser parse:d];
         error = parser.parseError;
-        STAssertTrue(error == nil || [error code] == JsonLiteCodeEndOfStream, @"Incorrect error");        
+        XCTAssertTrue(error == nil || [error code] == JsonLiteCodeEndOfStream, @"Incorrect error");        
         [d release];        
     }
     
@@ -350,24 +351,24 @@
     [deserializer release];
     [parser release];
     
-    STAssertNotNil(obj.strValue, @"strValue was not binded");
-    STAssertNotNil(obj.intValue, @"intValue was not binded");
-    STAssertNotNil(obj.array, @"array was not binded");
-    STAssertTrue([obj.array count] == 2, @"array has invalid size");
-    STAssertNotNil(obj.child, @"child was not bilded");
+    XCTAssertNotNil(obj.strValue, @"strValue was not binded");
+    XCTAssertNotNil(obj.intValue, @"intValue was not binded");
+    XCTAssertNotNil(obj.array, @"array was not binded");
+    XCTAssertTrue([obj.array count] == 2, @"array has invalid size");
+    XCTAssertNotNil(obj.child, @"child was not bilded");
     
     JsonLiteTestObj1 *child = obj.child;
-    STAssertNotNil(child.strValue, @"strValue was not binded");
-    STAssertNotNil(child.intValue, @"intValue was not binded");
-    STAssertNotNil(child.array, @"array was not binded");
-    STAssertTrue([child.array count] == 2, @"array has invalid size");
-    STAssertNil(child.child, @"child was not binded");
+    XCTAssertNotNil(child.strValue, @"strValue was not binded");
+    XCTAssertNotNil(child.intValue, @"intValue was not binded");
+    XCTAssertNotNil(child.array, @"array was not binded");
+    XCTAssertTrue([child.array count] == 2, @"array has invalid size");
+    XCTAssertNil(child.child, @"child was not binded");
 }
 
 - (void)testObj2 {
     JsonLiteClassMetaData *metadata = [JsonLiteClassMetaData metaDataForClass:[JsonLiteTestObj2 class]];
     NSArray *keys = metadata.keys;
-    STAssertEqualObjects(keys, @[@"array"], @"Incorrect keys");
+    XCTAssertEqualObjects(keys, @[@"array"], @"Incorrect keys");
     
     NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"obj2"
                                                                       ofType:@"json"
@@ -376,7 +377,7 @@
     NSData *data = [[NSData alloc] initWithContentsOfFile:path
                                                   options:0
                                                    error:&error];
-    STAssertNil(error, @"Can not open file");
+    XCTAssertNil(error, @"Can not open file");
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteDeserializer *deserializer = [[JsonLiteDeserializer alloc] initWithRootClass:[JsonLiteTestObj2 class]];
@@ -389,22 +390,22 @@
     [deserializer release];
     [parser release];
     
-    STAssertNotNil(obj2.array, @"array was not binded");
-    STAssertTrue([obj2.array count] == 2, @"array has invalid size");
+    XCTAssertNotNil(obj2.array, @"array was not binded");
+    XCTAssertTrue([obj2.array count] == 2, @"array has invalid size");
     
     JsonLiteTestObj1 *obj = [obj2.array lastObject];
-    STAssertNotNil(obj.strValue, @"strValue was not binded");
-    STAssertNotNil(obj.intValue, @"intValue was not binded");
-    STAssertNotNil(obj.array, @"array was not binded");
-    STAssertTrue([obj.array count] == 2, @"array has invalid size");
-    STAssertNotNil(obj.child, @"child was not bilded");
+    XCTAssertNotNil(obj.strValue, @"strValue was not binded");
+    XCTAssertNotNil(obj.intValue, @"intValue was not binded");
+    XCTAssertNotNil(obj.array, @"array was not binded");
+    XCTAssertTrue([obj.array count] == 2, @"array has invalid size");
+    XCTAssertNotNil(obj.child, @"child was not bilded");
     
     JsonLiteTestObj1 *child = obj.child;
-    STAssertNotNil(child.strValue, @"strValue was not binded");
-    STAssertNotNil(child.intValue, @"intValue was not binded");
-    STAssertNotNil(child.array, @"array was not binded");
-    STAssertTrue([child.array count] == 2, @"array has invalid size");
-    STAssertNil(child.child, @"child was not binded");
+    XCTAssertNotNil(child.strValue, @"strValue was not binded");
+    XCTAssertNotNil(child.intValue, @"intValue was not binded");
+    XCTAssertNotNil(child.array, @"array was not binded");
+    XCTAssertTrue([child.array count] == 2, @"array has invalid size");
+    XCTAssertNil(child.child, @"child was not binded");
 }
 
 - (void)testObj3 {
@@ -415,7 +416,7 @@
     NSData *data = [[NSData alloc] initWithContentsOfFile:path
                                                   options:0
                                                    error:&error];
-    STAssertNil(error, @"Can not open file");
+    XCTAssertNil(error, @"Can not open file");
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteDeserializer *deserializer = [[JsonLiteDeserializer alloc] initWithRootClass:[JsonLiteTestObj3 class]];
@@ -424,15 +425,15 @@
     [parser parse:data];
     
     JsonLiteTestObj3 *obj3 = [deserializer object];
-    STAssertNotNil(obj3.identifier, @"id not binded");
-    STAssertNotNil(obj3.array, @"array not binded");
+    XCTAssertNotNil(obj3.identifier, @"id not binded");
+    XCTAssertNotNil(obj3.array, @"array not binded");
 
     JsonLiteTestObj1 *obj = [obj3.array lastObject];
-    STAssertNotNil(obj.strValue, @"strValue was not binded");
-    STAssertNotNil(obj.intValue, @"intValue was not binded");
-    STAssertNotNil(obj.array, @"array was not binded");
-    STAssertTrue([obj.array count] == 2, @"array has invalid size");
-    STAssertNotNil(obj.child, @"child was not bilded");
+    XCTAssertNotNil(obj.strValue, @"strValue was not binded");
+    XCTAssertNotNil(obj.intValue, @"intValue was not binded");
+    XCTAssertNotNil(obj.array, @"array was not binded");
+    XCTAssertTrue([obj.array count] == 2, @"array has invalid size");
+    XCTAssertNotNil(obj.child, @"child was not bilded");
     
     [deserializer release];
     [parser release];
@@ -446,7 +447,7 @@
     NSData *data = [[NSData alloc] initWithContentsOfFile:path
                                                   options:0
                                                     error:&error];
-    STAssertNil(error, @"Can not open file");
+    XCTAssertNil(error, @"Can not open file");
     
     JsonLiteParser *parser = [JsonLiteParser parser];
     JsonLiteDeserializer *deserializer = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteTestMatrix class]];
@@ -455,22 +456,22 @@
     [parser parse:data];
     
     JsonLiteTestMatrix *matrix = [deserializer object];
-    STAssertNotNil(matrix, @"matrix not binded");
-    STAssertNotNil(matrix.name, @"name not binded");
-    STAssertTrue([matrix.matrix count] == 2, @"matrix not binded");
+    XCTAssertNotNil(matrix, @"matrix not binded");
+    XCTAssertNotNil(matrix.name, @"name not binded");
+    XCTAssertTrue([matrix.matrix count] == 2, @"matrix not binded");
     
     NSArray *array = [matrix.matrix lastObject];
     JsonLiteTestObj1 *obj = [array lastObject];
-    STAssertNotNil(obj, @"matrix not binded");
-    STAssertNotNil(obj.strValue, @"strValue was not binded");
-    STAssertNotNil(obj.intValue, @"intValue was not binded");
-    STAssertNotNil(obj.array, @"array was not binded");
-    STAssertTrue([obj.array count] == 2, @"array has invalid size");
-    STAssertNil(obj.child, @"child was not bilded");
+    XCTAssertNotNil(obj, @"matrix not binded");
+    XCTAssertNotNil(obj.strValue, @"strValue was not binded");
+    XCTAssertNotNil(obj.intValue, @"intValue was not binded");
+    XCTAssertNotNil(obj.array, @"array was not binded");
+    XCTAssertTrue([obj.array count] == 2, @"array has invalid size");
+    XCTAssertNil(obj.child, @"child was not bilded");
     
     for (NSArray *a in matrix.matrix) {
         for (JsonLiteTestObj1 *o in a) {
-            STAssertTrue([o isEqual:o], @"Not equal");
+            XCTAssertTrue([o isEqual:o], @"Not equal");
         }
     }
 }
@@ -483,7 +484,7 @@
     NSData *data = [[NSData alloc] initWithContentsOfFile:path
                                                   options:0
                                                     error:&error];
-    STAssertNil(error, @"Can not open file");
+    XCTAssertNil(error, @"Can not open file");
     
     JsonLiteParser *parser = [JsonLiteParser parser];
     JsonLiteDeserializer *deserializer = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteTestMatrix2 class]];
@@ -491,11 +492,11 @@
     [parser parse:data];
     
     JsonLiteTestMatrix2 *matrix = [deserializer object];
-    STAssertNotNil(matrix, @"matrix not binded");
-    STAssertNotNil(matrix.name, @"name not binded");
-    STAssertTrue([matrix.matrix count] == 2, @"matrix not binded");
-    STAssertTrue([[matrix.matrix objectAtIndex:0] count] == 2, @"");
-    STAssertTrue([[[matrix.matrix objectAtIndex:0] objectAtIndex:0] isKindOfClass:[NSNull class]], @"");
+    XCTAssertNotNil(matrix, @"matrix not binded");
+    XCTAssertNotNil(matrix.name, @"name not binded");
+    XCTAssertTrue([matrix.matrix count] == 2, @"matrix not binded");
+    XCTAssertTrue([[matrix.matrix objectAtIndex:0] count] == 2, @"");
+    XCTAssertTrue([[[matrix.matrix objectAtIndex:0] objectAtIndex:0] isKindOfClass:[NSNull class]], @"");
 }
 
 - (void)testSerAndDeser {
@@ -520,9 +521,9 @@
     [ser serializeObject:obj];
     JsonLiteTestObj1 *obj2 = [deserializer object];
     
-    STAssertTrue([obj isEqual:obj1], @"Objects not equal");
-    STAssertTrue([obj1 isEqual:obj2], @"Objects not equal");
-    STAssertTrue([obj isEqual:obj2], @"Objects not equal");
+    XCTAssertTrue([obj isEqual:obj1], @"Objects not equal");
+    XCTAssertTrue([obj1 isEqual:obj2], @"Objects not equal");
+    XCTAssertTrue([obj isEqual:obj2], @"Objects not equal");
     [parser release];
     [deserializer release];
     [ser release];
@@ -531,48 +532,48 @@
 
 - (void)testMetaData {
     JsonLiteClassMetaData *metaData = [JsonLiteClassMetaData metaDataForClass:nil];
-    STAssertNil(metaData, @"metaData is not nil");    
+    XCTAssertNil(metaData, @"metaData is not nil");    
     
     metaData = [[JsonLiteClassMetaData alloc] initWithClass:[JsonLiteTestObj1 class]];
-    STAssertTrue(metaData.objectClass == [JsonLiteTestObj1 class], @"Bad class");
-    STAssertTrue([metaData.binding count] == 0, @"Bad binding");
-    STAssertTrue([metaData.keys count] == 4, @"Bad keys");
-    STAssertNil([metaData propertyToBindKey:@"some key"], @"Bad property");    
+    XCTAssertTrue(metaData.objectClass == [JsonLiteTestObj1 class], @"Bad class");
+    XCTAssertTrue([metaData.binding count] == 0, @"Bad binding");
+    XCTAssertTrue([metaData.keys count] == 4, @"Bad keys");
+    XCTAssertNil([metaData propertyToBindKey:@"some key"], @"Bad property");    
     
     NSDictionary *properties = metaData.properties;
-    STAssertTrue([properties count] == 4, @"Bad count");
+    XCTAssertTrue([properties count] == 4, @"Bad count");
         
     JsonLiteClassProperty *prop = [properties objectForKey:@"strValue"];
-    STAssertTrue([prop.name isEqualToString:@"strValue"], @"Bad name");
-    STAssertTrue(prop.objectClass == [NSString class], @"Bad class");
+    XCTAssertTrue([prop.name isEqualToString:@"strValue"], @"Bad name");
+    XCTAssertTrue(prop.objectClass == [NSString class], @"Bad class");
     
     prop = [properties objectForKey:@"intValue"];
-    STAssertTrue([prop.name isEqualToString:@"intValue"], @"Bad name");
-    STAssertTrue(prop.objectClass == [NSNumber class], @"Bad class");
+    XCTAssertTrue([prop.name isEqualToString:@"intValue"], @"Bad name");
+    XCTAssertTrue(prop.objectClass == [NSNumber class], @"Bad class");
     
     prop = [properties objectForKey:@"array"];
-    STAssertTrue([prop.name isEqualToString:@"array"], @"Bad name");
-    STAssertTrue(prop.objectClass == [NSArray class], @"Bad class");
+    XCTAssertTrue([prop.name isEqualToString:@"array"], @"Bad name");
+    XCTAssertTrue(prop.objectClass == [NSArray class], @"Bad class");
     
     prop = [properties objectForKey:@"child"];
-    STAssertTrue([prop.name isEqualToString:@"child"], @"Bad name");
-    STAssertTrue(prop.objectClass == [JsonLiteTestObj1 class], @"Bad class");
+    XCTAssertTrue([prop.name isEqualToString:@"child"], @"Bad name");
+    XCTAssertTrue(prop.objectClass == [JsonLiteTestObj1 class], @"Bad class");
     [metaData release];
     
     metaData = [[JsonLiteClassMetaData alloc] initWithClass:[JsonLiteTestObj3 class]];
-    STAssertTrue(metaData.objectClass == [JsonLiteTestObj3 class], @"Bad class");
-    STAssertTrue([metaData.binding count] == 2, @"Bad binding");
-    STAssertTrue([metaData.keys count] == 2, @"Bad keys");
+    XCTAssertTrue(metaData.objectClass == [JsonLiteTestObj3 class], @"Bad class");
+    XCTAssertTrue([metaData.binding count] == 2, @"Bad binding");
+    XCTAssertTrue([metaData.keys count] == 2, @"Bad keys");
 
     JsonLiteBindRule *rule = [metaData.binding objectForKey:@"id"];
-    STAssertTrue([rule.key isEqualToString:@"id"], @"Bad rule");
-    STAssertTrue([rule.property isEqualToString:@"identifier"], @"Bad rule");
-    STAssertTrue(rule.elementClass == nil, @"Bad rule");
+    XCTAssertTrue([rule.key isEqualToString:@"id"], @"Bad rule");
+    XCTAssertTrue([rule.property isEqualToString:@"identifier"], @"Bad rule");
+    XCTAssertTrue(rule.elementClass == nil, @"Bad rule");
                   
     rule = [metaData.binding objectForKey:@"while"];
-    STAssertTrue([rule.key isEqualToString:@"while"], @"Bad rule");
-    STAssertTrue([rule.property isEqualToString:@"array"], @"Bad rule");
-    STAssertTrue(rule.elementClass == [JsonLiteTestObj1 class], @"Bad rule");
+    XCTAssertTrue([rule.key isEqualToString:@"while"], @"Bad rule");
+    XCTAssertTrue([rule.property isEqualToString:@"array"], @"Bad rule");
+    XCTAssertTrue(rule.elementClass == [JsonLiteTestObj1 class], @"Bad rule");
     
     [metaData release];
 }
@@ -585,33 +586,120 @@
     NSMutableString *mstr =[NSMutableString stringWithString:@"hello"];
     
     [prop setValue:str forObject:obj];
-    STAssertTrue(str == [prop valueOfObject:obj], @"Bad assigment");
+    XCTAssertTrue(str == [prop valueOfObject:obj], @"Bad assigment");
     
     [prop setValue:mstr forObject:obj];
-    STAssertTrue(mstr != [prop valueOfObject:obj], @"Bad assigment");
-    STAssertTrue([mstr isEqualToString:[prop valueOfObject:obj]], @"Bad assigment");
+    XCTAssertTrue(mstr != [prop valueOfObject:obj], @"Bad assigment");
+    XCTAssertTrue([mstr isEqualToString:[prop valueOfObject:obj]], @"Bad assigment");
 
     NSNumber *number = [NSNumber numberWithInt:1];
     prop = [metaData.properties objectForKey:@"number"];
-    STAssertTrue([number isEqualToNumber:[prop valueOfObject:obj]], @"Bad assigment");
+    XCTAssertTrue([number isEqualToNumber:[prop valueOfObject:obj]], @"Bad assigment");
     
     prop = [metaData.properties objectForKey:@"cls"];
     [prop setValue:[NSString class] forObject:obj];
-    STAssertNil([prop valueOfObject:obj], @"Bad assigment");
+    XCTAssertNil([prop valueOfObject:obj], @"Bad assigment");
 
     prop = [metaData.properties objectForKey:@"name"];
     NSString *name = [prop valueOfObject:obj];
-    STAssertTrue([name isEqualToString:NSStringFromClass([JsonLiteTestGetterSetter class])], @"Bad getter");
+    XCTAssertTrue([name isEqualToString:NSStringFromClass([JsonLiteTestGetterSetter class])], @"Bad getter");
     
     prop = [metaData.properties objectForKey:@"dynamic"];
-    STAssertNotNil(prop, @"No property getter");
+    XCTAssertNotNil(prop, @"No property getter");
     
     prop = [metaData.properties objectForKey:@"redefVariable"];
     [prop setValue:str forObject:obj];
-    STAssertTrue(str == [prop valueOfObject:obj], @"Bad assigment");
+    XCTAssertTrue(str == [prop valueOfObject:obj], @"Bad assigment");
     
     [obj release];
     [metaData release];
+}
+
+- (void)testHelpers{
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"obj1"
+                                                                      ofType:@"json"
+                                                                 inDirectory:@"deserializer"];
+    NSError *error = nil;
+    NSData *data = [[NSData alloc] initWithContentsOfFile:path
+                                                  options:0
+                                                    error:&error];
+
+    JsonLiteTestObj1 *obj = [JsonLiteObjC objectFromData:data
+                                                 rootCls:[JsonLiteTestObj1 class]
+                                         convertersChain:nil];
+    
+    XCTAssertNotNil(obj.strValue, @"strValue was not binded");
+    XCTAssertNotNil(obj.intValue, @"intValue was not binded");
+    XCTAssertNotNil(obj.array, @"array was not binded");
+    XCTAssertTrue([obj.array count] == 2, @"array has invalid size");
+    XCTAssertNotNil(obj.child, @"child was not bilded");
+    
+    JsonLiteTestObj1 *child = obj.child;
+    XCTAssertNotNil(child.strValue, @"strValue was not binded");
+    XCTAssertNotNil(child.intValue, @"intValue was not binded");
+    XCTAssertNotNil(child.array, @"array was not binded");
+    XCTAssertTrue([child.array count] == 2, @"array has invalid size");
+    XCTAssertNil(child.child, @"child was not binded");
+    
+    obj = [JsonLiteObjC objectFromData:data
+                               rootCls:[JsonLiteTestObj1 class]
+                       convertersChain:nil
+                                 depth:16];
+    
+    XCTAssertNotNil(obj.strValue, @"strValue was not binded");
+    XCTAssertNotNil(obj.intValue, @"intValue was not binded");
+    XCTAssertNotNil(obj.array, @"array was not binded");
+    XCTAssertTrue([obj.array count] == 2, @"array has invalid size");
+    XCTAssertNotNil(obj.child, @"child was not bilded");
+    
+    child = obj.child;
+    XCTAssertNotNil(child.strValue, @"strValue was not binded");
+    XCTAssertNotNil(child.intValue, @"intValue was not binded");
+    XCTAssertNotNil(child.array, @"array was not binded");
+    XCTAssertTrue([child.array count] == 2, @"array has invalid size");
+    XCTAssertNil(child.child, @"child was not binded");
+    
+    obj = [JsonLiteObjC objectFromData:data
+                               rootCls:[JsonLiteTestObj1 class]
+                       convertersChain:nil
+                                 depth:16
+                                 error:&error];
+    XCTAssertNil(error, @"Error occurs");
+    XCTAssertNotNil(obj.strValue, @"strValue was not binded");
+    XCTAssertNotNil(obj.intValue, @"intValue was not binded");
+    XCTAssertNotNil(obj.array, @"array was not binded");
+    XCTAssertTrue([obj.array count] == 2, @"array has invalid size");
+    XCTAssertNotNil(obj.child, @"child was not bilded");
+    
+    child = obj.child;
+    XCTAssertNotNil(child.strValue, @"strValue was not binded");
+    XCTAssertNotNil(child.intValue, @"intValue was not binded");
+    XCTAssertNotNil(child.array, @"array was not binded");
+    XCTAssertTrue([child.array count] == 2, @"array has invalid size");
+    XCTAssertNil(child.child, @"child was not binded");
+    
+    obj = [JsonLiteObjC objectFromData:[data bytes]
+                                length:[data length]
+                               rootCls:[JsonLiteTestObj1 class]
+                       convertersChain:nil
+                                 depth:16];
+    XCTAssertNil(error, @"Error occurs");
+    XCTAssertNotNil(obj.strValue, @"strValue was not binded");
+    XCTAssertNotNil(obj.intValue, @"intValue was not binded");
+    XCTAssertNotNil(obj.array, @"array was not binded");
+    XCTAssertTrue([obj.array count] == 2, @"array has invalid size");
+    XCTAssertNotNil(obj.child, @"child was not bilded");
+    
+    child = obj.child;
+    XCTAssertNotNil(child.strValue, @"strValue was not binded");
+    XCTAssertNotNil(child.intValue, @"intValue was not binded");
+    XCTAssertNotNil(child.array, @"array was not binded");
+    XCTAssertTrue([child.array count] == 2, @"array has invalid size");
+    XCTAssertNil(child.child, @"child was not binded");
+    
+    NSData *d1 = [JsonLiteObjC dataFromObject:obj];
+    NSData *d2 = [JsonLiteObjC dataFromObject:obj convertersChain:nil];
+    XCTAssertEqualObjects(d1, d2, @"Different results");
 }
 
 @end

@@ -14,7 +14,7 @@
 //  limitations under the License
 
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface JsonLiteObjCBuilderTests : SenTestCase
+@interface JsonLiteObjCBuilderTests : XCTestCase
 @end

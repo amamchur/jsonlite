@@ -75,56 +75,56 @@ static uint8_t img_bytes[] = {
     token.start = (uint8_t *)"";
     token.end = token.start + 0;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 0, @"Incorrect size");
-    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    XCTAssertTrue(size == 0, @"Incorrect size");
+    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"=";
     token.end = token.start + 1;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 0, @"Incorrect size");
-    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    XCTAssertTrue(size == 0, @"Incorrect size");
+    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)" ";
     token.end = token.start + 1;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 0, @"Incorrect size");
-    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    XCTAssertTrue(size == 0, @"Incorrect size");
+    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"}";
     token.end = token.start + 1;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 0, @"Incorrect size");
-    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    XCTAssertTrue(size == 0, @"Incorrect size");
+    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"TWF";
     token.end = token.start + 3;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 0, @"Incorrect size");
-    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    XCTAssertTrue(size == 0, @"Incorrect size");
+    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"TWF{";
     token.end = token.start + 4;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 0, @"Incorrect size");
-    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    XCTAssertTrue(size == 0, @"Incorrect size");
+    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"TWF ";
     token.end = token.start + 4;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 0, @"Incorrect size");
-    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    XCTAssertTrue(size == 0, @"Incorrect size");
+    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"SGVsbG8===";
     token.end = token.start + 10;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 0, @"Incorrect size");
-    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    XCTAssertTrue(size == 0, @"Incorrect size");
+    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"aaaa\\ba";
     token.end = token.start + 8;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 0, @"Incorrect size");
-    STAssertTrue(buffer == NULL, @"Incorect decoding");
+    XCTAssertTrue(size == 0, @"Incorrect size");
+    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
 }
 
 - (void)testBase64Decoding {
@@ -134,40 +134,40 @@ static uint8_t img_bytes[] = {
     
     char *buffer = NULL;
     size_t size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 3, @"Incorrect size");
-    STAssertTrue(memcmp(buffer, "Man", 3) == 0, @"Incorect decoding");
+    XCTAssertTrue(size == 3, @"Incorrect size");
+    XCTAssertTrue(memcmp(buffer, "Man", 3) == 0, @"Incorect decoding");
     free(buffer);
     buffer = NULL;
     
     token.start = (uint8_t *)"SGVsbG8=";
     token.end = token.start + 8;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 5, @"Incorrect size");
-    STAssertTrue(memcmp(buffer, "Hello", 5) == 0, @"Incorect decoding");
+    XCTAssertTrue(size == 5, @"Incorrect size");
+    XCTAssertTrue(memcmp(buffer, "Hello", 5) == 0, @"Incorect decoding");
     free(buffer);
     buffer = NULL;
     
     token.start = (uint8_t *)"SGVsbG8hIQ==";
     token.end = token.start + 12;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == 7, @"Incorrect size");
-    STAssertTrue(memcmp(buffer, "Hello!!", 7) == 0, @"Incorect decoding");
+    XCTAssertTrue(size == 7, @"Incorrect size");
+    XCTAssertTrue(memcmp(buffer, "Hello!!", 7) == 0, @"Incorect decoding");
     free(buffer);
     buffer = NULL;
     
     token.start = (uint8_t *)img;
     token.end = token.start + sizeof(img) - 1;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == sizeof(img_bytes), @"Incorrect size");
-    STAssertTrue(memcmp(buffer, img_bytes, sizeof(img_bytes)) == 0, @"Incorect decoding");
+    XCTAssertTrue(size == sizeof(img_bytes), @"Incorrect size");
+    XCTAssertTrue(memcmp(buffer, img_bytes, sizeof(img_bytes)) == 0, @"Incorect decoding");
     free(buffer);
     buffer = NULL;
 
     token.start = (uint8_t *)img_scaped;
     token.end = token.start + sizeof(img_scaped) - 1;
     size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
-    STAssertTrue(size == sizeof(img_bytes), @"Incorrect size");
-    STAssertTrue(memcmp(buffer, img_bytes, sizeof(img_bytes)) == 0, @"Incorect decoding");
+    XCTAssertTrue(size == sizeof(img_bytes), @"Incorrect size");
+    XCTAssertTrue(memcmp(buffer, img_bytes, sizeof(img_bytes)) == 0, @"Incorect decoding");
     free(buffer);
     buffer = NULL;
 }
@@ -176,25 +176,25 @@ static uint8_t img_bytes[] = {
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
     jsonlite_builder builder = jsonlite_builder_init(0x10, stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_key(builder, "base64", 6);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_base64_value(builder, "Man", sizeof("Man") - 1);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_object_end(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &json, 1);
-    STAssertTrue(json != NULL, @"Json is null");
-    STAssertTrue(size != 0, @"Size is zero");
+    XCTAssertTrue(json != NULL, @"Json is null");
+    XCTAssertTrue(size != 0, @"Size is zero");
     json[size] = 0;
     
     char *pos =  strstr((char *)json, "TWFu");
-    STAssertTrue(pos != NULL, @"Encoding fails");
+    XCTAssertTrue(pos != NULL, @"Encoding fails");
     
     jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
@@ -205,22 +205,22 @@ static uint8_t img_bytes[] = {
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
     jsonlite_builder builder = jsonlite_builder_init(0x10, stream);
     jsonlite_result result = jsonlite_builder_array_begin(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_base64_value(builder, "Hello", sizeof("Hello") - 1);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_array_end(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &json, 1);
-    STAssertTrue(json != NULL, @"Json is null");
-    STAssertTrue(size != 0, @"Size is zero");
+    XCTAssertTrue(json != NULL, @"Json is null");
+    XCTAssertTrue(size != 0, @"Size is zero");
     json[size] = 0;
     
     char *pos =  strstr((char *)json, "SGVsbG8=");
-    STAssertTrue(pos != NULL, @"Encoding fails");
+    XCTAssertTrue(pos != NULL, @"Encoding fails");
     
     jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
@@ -231,22 +231,22 @@ static uint8_t img_bytes[] = {
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
     jsonlite_builder builder = jsonlite_builder_init(0x10, stream);
     jsonlite_result result = jsonlite_builder_array_begin(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_base64_value(builder, "Hello!!", sizeof("Hello!!") - 1);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_array_end(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &json, 1);
-    STAssertTrue(json != NULL, @"Json is null");
-    STAssertTrue(size != 0, @"Size is zero");
+    XCTAssertTrue(json != NULL, @"Json is null");
+    XCTAssertTrue(size != 0, @"Size is zero");
     json[size] = 0;
     
     char *pos =  strstr((char *)json, "SGVsbG8hIQ==");
-    STAssertTrue(pos != NULL, @"Encoding fails");
+    XCTAssertTrue(pos != NULL, @"Encoding fails");
     
     jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
@@ -257,25 +257,25 @@ static uint8_t img_bytes[] = {
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
     jsonlite_builder builder = jsonlite_builder_init(0x10, stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_key(builder, "base64", 6);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_base64_value(builder, img_bytes, sizeof(img_bytes));
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_object_end(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &json, 1);
-    STAssertTrue(json != NULL, @"Json is null");
-    STAssertTrue(size != 0, @"Size is zero");
+    XCTAssertTrue(json != NULL, @"Json is null");
+    XCTAssertTrue(size != 0, @"Size is zero");
     json[size] = 0;
     
     char *pos =  strstr((char *)json, img);
-    STAssertTrue(pos != NULL, @"Encoding fails");
+    XCTAssertTrue(pos != NULL, @"Encoding fails");
     
     jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
@@ -286,27 +286,27 @@ static uint8_t img_bytes[] = {
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
     jsonlite_builder builder = jsonlite_builder_init(0x10, stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
 
     result = jsonlite_builder_key(builder, "number", 6);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
 
     result = jsonlite_builder_int(builder, 12345);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_key(builder, "base64", 6);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_base64_value(builder, img_bytes, sizeof(img_bytes));
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_object_end(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &json, 0);
-    STAssertTrue(json != NULL, @"Json is null");
-    STAssertTrue(size != 0, @"Size is zero");
+    XCTAssertTrue(json != NULL, @"Json is null");
+    XCTAssertTrue(size != 0, @"Size is zero");
     
     jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
@@ -317,10 +317,10 @@ static uint8_t img_bytes[] = {
     des.converter = [[[JsonLiteBase64 alloc] init] autorelease];
     [parser parse:json length:size];
     JsonLiteBase64Model *model = [des object];
-    STAssertTrue(model.base64 != nil, @"base64 is nil");
+    XCTAssertTrue(model.base64 != nil, @"base64 is nil");
     
     NSData *originalData = [NSData dataWithBytes:img_bytes length:sizeof(img_bytes)];
-    STAssertEqualObjects(model.base64, originalData, @"Object are not equals");
+    XCTAssertEqualObjects(model.base64, originalData, @"Object are not equals");
     
     free(json);
 }
@@ -329,21 +329,21 @@ static uint8_t img_bytes[] = {
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
     jsonlite_builder builder = jsonlite_builder_init(0x10, stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_key(builder, "base64", 6);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_raw_string(builder, "SGVsbG8===", strlen("SGVsbG8==="));
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_object_end(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &json, 0);
-    STAssertTrue(json != NULL, @"Json is null");
-    STAssertTrue(size != 0, @"Size is zero");
+    XCTAssertTrue(json != NULL, @"Json is null");
+    XCTAssertTrue(size != 0, @"Size is zero");
     
     jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
@@ -354,7 +354,7 @@ static uint8_t img_bytes[] = {
     des.converter = [[[JsonLiteBase64 alloc] init] autorelease];
     [parser parse:json length:size];
     JsonLiteBase64Model *model = [des object];
-    STAssertTrue(model.base64 == nil, @"base64 is not nil");
+    XCTAssertTrue(model.base64 == nil, @"base64 is not nil");
 
     free(json);
 }
@@ -363,21 +363,21 @@ static uint8_t img_bytes[] = {
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
     jsonlite_builder builder = jsonlite_builder_init(0x10, stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_key(builder, "base64", 6);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_int(builder, 321654);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     result = jsonlite_builder_object_end(builder);
-    STAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
     uint8_t *json = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &json, 0);
-    STAssertTrue(json != NULL, @"Json is null");
-    STAssertTrue(size != 0, @"Size is zero");
+    XCTAssertTrue(json != NULL, @"Json is null");
+    XCTAssertTrue(size != 0, @"Size is zero");
     
     jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
@@ -388,7 +388,7 @@ static uint8_t img_bytes[] = {
     des.converter = [[[JsonLiteBase64 alloc] init] autorelease];
     [parser parse:json length:size];
     JsonLiteBase64Model *model = [des object];
-    STAssertTrue(model.base64 == nil, @"base64 is not nil");
+    XCTAssertTrue(model.base64 == nil, @"base64 is not nil");
     
     free(json);
 }
@@ -409,8 +409,8 @@ static uint8_t img_bytes[] = {
     [parser parse:json];
     
     JsonLiteBase64Model *model = [des object];
-    STAssertEqualObjects(model.base64, original.base64, @"Object are not equals");
-    STAssertEqualObjects(model.number, original.number, @"Object are not equals");
+    XCTAssertEqualObjects(model.base64, original.base64, @"Object are not equals");
+    XCTAssertEqualObjects(model.number, original.number, @"Object are not equals");
 }
 
 @end

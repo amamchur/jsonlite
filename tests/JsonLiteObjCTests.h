@@ -12,10 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 
-@interface JsonLiteObjCTests : SenTestCase {
+@interface JsonLiteObjCTests : XCTestCase {
 @private
     
 }

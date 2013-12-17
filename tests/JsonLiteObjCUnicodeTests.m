@@ -82,7 +82,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     [jls release];
     
     BOOL equal = [self compareDictionary:dict withDictionary:object];
-    STAssertTrue(equal, @"Not equal");
+    XCTAssertTrue(equal, @"Not equal");
     
     UnicodeTestCtx ctx = { dict, self};
     jsonlite_parser p = jsonlite_parser_init(256);
@@ -91,19 +91,19 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     cbs.string_found = string_found;
     
     jsonlite_result result = jsonlite_parser_set_callback(NULL, &cbs);
-    STAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
+    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
     
     result = jsonlite_parser_set_callback(p, NULL);
-    STAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
+    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
     
     result = jsonlite_parser_set_callback(NULL, NULL);
-    STAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
+    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
     
     result = jsonlite_parser_set_callback(p, &cbs);
-    STAssertTrue(result == jsonlite_result_ok, @"Bad error");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Bad error");
 
     result = jsonlite_parser_tokenize(p, [data bytes], [data length]);
-    STAssertTrue(result == jsonlite_result_ok, @"Bad error");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Bad error");
     
     jsonlite_parser_release(p);
 }
@@ -115,11 +115,11 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     cbs.string_found = string_token_found;
     
     jsonlite_result result = jsonlite_parser_set_callback(p, &cbs);
-    STAssertTrue(result == jsonlite_result_ok, @"Bad error");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Bad error");
     
     NSData *data = [self dataFromFile:@"tokens" inDir:@"tokens"];
     result = jsonlite_parser_tokenize(p, [data bytes], [data length]);
-    STAssertTrue(result == jsonlite_result_ok, @"Bad error");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Bad error");
     jsonlite_parser_release(p);
 }
 
@@ -128,31 +128,31 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     char json1[] = "[\"\\uD835       \"]";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json1, sizeof(json1));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json2[] = "[\"\\uD835\\     \"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json2, sizeof(json2));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json3[] = "[\"\\uD835\\uQEE2\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json3, sizeof(json3));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json4[] = "[\"\\uD835\\u0020\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json4, sizeof(json4));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json5[] = "[\"\\uD835\\uE000\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json5, sizeof(json5));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -160,31 +160,31 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     char json6[] = "[\"\\u \"]";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json6, sizeof(json6));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json7[] = "[\"\\u\u00FD \"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json7, sizeof(json7));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json8[] = "[\"\\uz\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json8, sizeof(json8));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json9[] = "[\"\\u<\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json9, sizeof(json9));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json10[] = "[\"\\uZ\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json10, sizeof(json10));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -192,31 +192,31 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     char json6[] = "[\"\\u0 \"]";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json6, sizeof(json6));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json7[] = "[\"\\u0\u00FD \"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json7, sizeof(json7));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json8[] = "[\"\\u0z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json8, sizeof(json8));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json9[] = "[\"\\u0<\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json9, sizeof(json9));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json10[] = "[\"\\u0Z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json10, sizeof(json10));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -224,31 +224,31 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     char json6[] = "[\"\\u00 \"]";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json6, sizeof(json6));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json7[] = "[\"\\u00\u00FD \"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json7, sizeof(json7));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json8[] = "[\"\\u00z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json8, sizeof(json8));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json9[] = "[\"\\u00<\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json9, sizeof(json9));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json10[] = "[\"\\u00Z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json10, sizeof(json10));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -256,31 +256,31 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     char json6[] = "[\"\\u000 \"]";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json6, sizeof(json6));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json7[] = "[\"\\u000\u00FD \"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json7, sizeof(json7));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json8[] = "[\"\\u000z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json8, sizeof(json8));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json9[] = "[\"\\u000<\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json9, sizeof(json9));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json10[] = "[\"\\u000Z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json10, sizeof(json10));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -288,31 +288,31 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     char json6[] = "[\"\\uD835\\u \"]";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json6, sizeof(json6));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json7[] = "[\"\\uD835\\u\u00FD \"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json7, sizeof(json7));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json8[] = "[\"\\uD835\\uz\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json8, sizeof(json8));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json9[] = "[\"\\uD835\\u<\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json9, sizeof(json9));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json10[] = "[\"\\uD835\\uZ\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json10, sizeof(json10));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -320,31 +320,31 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     char json6[] = "[\"\\uD835\\u0 \"]";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json6, sizeof(json6));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json7[] = "[\"\\uD835\\u0\u00FD \"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json7, sizeof(json7));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json8[] = "[\"\\uD835\\u0z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json8, sizeof(json8));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json9[] = "[\"\\uD835\\u0<\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json9, sizeof(json9));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json10[] = "[\"\\uD835\\u0Z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json10, sizeof(json10));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -352,31 +352,31 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     char json6[] = "[\"\\uD835\\u00 \"]";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json6, sizeof(json6));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json7[] = "[\"\\uD835\\u00\u00FD \"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json7, sizeof(json7));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json8[] = "[\"\\uD835\\u00z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json8, sizeof(json8));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json9[] = "[\"\\uD835\\u00<\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json9, sizeof(json9));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json10[] = "[\"\\uD835\\u00Z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json10, sizeof(json10));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -384,31 +384,31 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     char json6[] = "[\"\\uD835\\u000 \"]";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json6, sizeof(json6));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json7[] = "[\"\\uD835\\u000\u00FD \"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json7, sizeof(json7));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json8[] = "[\"\\uD835\\u000z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json8, sizeof(json8));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json9[] = "[\"\\uD835\\u000<\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json9, sizeof(json9));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
     
     char json10[] = "[\"\\uD835\\u000Z\"]";
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json10, sizeof(json10));
-    STAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -423,7 +423,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     NSError *error = nil;
     [parser parse:data];
-    STAssertNil(error, @"Parse error");
+    XCTAssertNil(error, @"Parse error");
     {
         data = [NSMutableData data];
         [data appendData:[header dataUsingEncoding:NSUTF8StringEncoding]];
@@ -435,7 +435,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidToken, @"Bad error!");
+        XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidToken, @"Bad error!");
     }
     {
         data = [NSMutableData data];
@@ -448,7 +448,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
+        XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
     }
     {
         data = [NSMutableData data];
@@ -461,7 +461,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
+        XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
     }
     {
         data = [NSMutableData data];
@@ -474,7 +474,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
+        XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
     }
     {
         data = [NSMutableData data];
@@ -487,7 +487,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
+        XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
     }
     {
         data = [NSMutableData data];
@@ -500,7 +500,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
+        XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
     }
     {
         data = [NSMutableData data];
@@ -513,7 +513,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
+        XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
     }
     {
         data = [NSMutableData data];
@@ -526,7 +526,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
+        XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
     }
     {
         data = [NSMutableData data];
@@ -539,7 +539,7 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
         [parser reset];
         [parser parse:data];
         
-        STAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
+        XCTAssertTrue([parser.parseError code] == JsonLiteCodeInvalidUTF8, @"Bad error!");
     }
     
     [parser release];
@@ -547,10 +547,10 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
 
 - (void)fastFails:(BOOL)fail {
     if (fail) {
-        STAssertFalse(fail, @"Failed test case from C code callback");
+        XCTAssertFalse(fail, @"Failed test case from C code callback");
     }
     
-    STAssertFalse(fail, @"Failed test case from C code callback");
+    XCTAssertFalse(fail, @"Failed test case from C code callback");
 }
 
 @end

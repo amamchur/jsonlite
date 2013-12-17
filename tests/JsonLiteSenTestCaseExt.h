@@ -13,9 +13,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface SenTestCase(JsonLiteSenTestCaseExt)
+@interface XCTestCase(JsonLiteSenTestCaseExt)
 
 - (BOOL)compareNumber:(NSNumber *)n1 withNumber:(NSNumber *)n2;
 - (BOOL)compareDictionary:(NSDictionary *)d1 withDictionary:(NSDictionary *)d2;

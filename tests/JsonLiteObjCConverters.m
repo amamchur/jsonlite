@@ -80,10 +80,10 @@
     deserializer.converter = [[[JsonLiteDecimal alloc] init] autorelease];
     parser.delegate = deserializer;
     [parser parse:data];
-    STAssertNil(parser.parseError, @"Parse error");
+    XCTAssertNil(parser.parseError, @"Parse error");
     
     DecimalHolder *holder = [deserializer object];
-    STAssertNil(holder.number, @"number is not nil");
+    XCTAssertNil(holder.number, @"number is not nil");
     [deserializer release];
     [parser release];
 }
@@ -96,10 +96,10 @@
     deserializer.converter = [[[JsonLiteURL alloc] init] autorelease];
     parser.delegate = deserializer;
     [parser parse:data];
-    STAssertNil(parser.parseError, @"Parse error");
+    XCTAssertNil(parser.parseError, @"Parse error");
     
     URLHolder *holder = [deserializer object];
-    STAssertNil(holder.url, @"url is not nil");
+    XCTAssertNil(holder.url, @"url is not nil");
     [deserializer release];
     [parser release];
 }
@@ -112,10 +112,10 @@
     deserializer.converter = [[[JsonLiteTwitterDate alloc] init] autorelease];
     parser.delegate = deserializer;
     [parser parse:data];
-    STAssertNil(parser.parseError, @"Parse error");
+    XCTAssertNil(parser.parseError, @"Parse error");
     
     DateHolder *holder = [deserializer object];
-    STAssertNil(holder.date, @"date is not nil");
+    XCTAssertNil(holder.date, @"date is not nil");
     [deserializer release];
     [parser release];
 }
@@ -128,10 +128,10 @@
     deserializer.converter = [[[JsonLiteTwitterDate alloc] init] autorelease];
     parser.delegate = deserializer;
     [parser parse:data];
-    STAssertNil(parser.parseError, @"Parse error");
+    XCTAssertNil(parser.parseError, @"Parse error");
     
     DateHolder *holder = [deserializer object];
-    STAssertNil(holder.date, @"date is not nil");
+    XCTAssertNil(holder.date, @"date is not nil");
     [deserializer release];
     [parser release];
 }

@@ -15,8 +15,8 @@
 
 - (void)test {
     NSData *data = [self dataFromFile:@"tokens" inDir:@"tokens"];
-    STAssertNotNil(data, @"Data is nil");
-    STAssertTrue([data length] > 0, @"Data is empty");
+    XCTAssertNotNil(data, @"Data is nil");
+    XCTAssertTrue([data length] > 0, @"Data is empty");
     
     const void *buffer = [data bytes];
        
@@ -24,7 +24,7 @@
     uint8_t *b = malloc(size);
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
-    STAssertTrue(result == jsonlite_result_ok, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
     
     for (size_t i = size - 1; i > 0; i--) {
@@ -33,7 +33,7 @@
         memcpy(b, buffer, size - i);
         
         result = jsonlite_parser_tokenize(ps, b, size - i);
-        STAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
+        XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
         jsonlite_parser_release(ps);
     }
     
@@ -46,17 +46,17 @@
     char json3[] = "[tru";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json1, sizeof(json1) - 1);
-    STAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
     jsonlite_parser_release(ps);
     
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json2, sizeof(json2) - 1);
-    STAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
     jsonlite_parser_release(ps);
     
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json3, sizeof(json3) - 1);
-    STAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 
@@ -67,22 +67,22 @@
     char json4[] = "[fals";
     jsonlite_parser ps = jsonlite_parser_init(4);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json1, sizeof(json1) - 1);
-    STAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
     jsonlite_parser_release(ps);
     
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json2, sizeof(json2) - 1);
-    STAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
     jsonlite_parser_release(ps);
     
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json3, sizeof(json3) - 1);
-    STAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
     jsonlite_parser_release(ps);
     
     ps = jsonlite_parser_init(4);
     result = jsonlite_parser_tokenize(ps, json4, sizeof(json4) - 1);
-    STAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
+    XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error code");
     jsonlite_parser_release(ps);
 }
 

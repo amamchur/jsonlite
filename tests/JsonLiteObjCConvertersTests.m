@@ -68,7 +68,7 @@
     NSData *data = [[NSData alloc] initWithContentsOfFile:path
                                                   options:0
                                                    error:&error];
-    STAssertNil(error, @"Can not open file");
+    XCTAssertNil(error, @"Can not open file");
     
     JsonLiteConverter *dummy = [[[JsonLiteConverter alloc] init] autorelease];
     JsonLiteConverter *converter = [JsonLiteConverter converters];
@@ -87,23 +87,23 @@
     JsonLiteParser *parser = [JsonLiteParser parser];
     JsonLiteDeserializer *deserializer = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteConvert class]];
     deserializer.converter = converter;
-    STAssertEqualObjects(deserializer.converter, converter, @"Object are not equals");
+    XCTAssertEqualObjects(deserializer.converter, converter, @"Object are not equals");
     parser.delegate = deserializer;
     [parser parse:data];
     
     JsonLiteConvert *obj = [deserializer object];
     
-    STAssertNotNil(obj.url, @"URL is null");
-    STAssertTrue([[obj.url absoluteString] isEqual:@"https://github.com/amamchur/jsonlite"], @"Bad url");
+    XCTAssertNotNil(obj.url, @"URL is null");
+    XCTAssertTrue([[obj.url absoluteString] isEqual:@"https://github.com/amamchur/jsonlite"], @"Bad url");
     
-    STAssertNotNil(obj.decimal, @"decimal is null");
-    STAssertTrue([obj.decimal isEqual:[NSDecimalNumber decimalNumberWithString:@"123456789987654321"]], @"Bad decimal");
+    XCTAssertNotNil(obj.decimal, @"decimal is null");
+    XCTAssertTrue([obj.decimal isEqual:[NSDecimalNumber decimalNumberWithString:@"123456789987654321"]], @"Bad decimal");
    
-    STAssertNotNil(obj.date, @"date is null");
+    XCTAssertNotNil(obj.date, @"date is null");
     
     JsonLiteSerializer *ser = [JsonLiteSerializer serializer];
     ser.converter = converter;
-    STAssertEqualObjects(ser.converter, converter, @"converters are not equals");
+    XCTAssertEqualObjects(ser.converter, converter, @"converters are not equals");
     data = [ser serializeObject:obj];
     
     [deserializer reset];
@@ -111,11 +111,11 @@
     [parser parse:data];
     JsonLiteConvert *obj1 = [deserializer object];
     
-    STAssertTrue([obj.str isEqual:obj1.str], @"Not equal");
-    STAssertTrue([obj.number isEqual:obj1.number], @"Not equal");
-    STAssertTrue([obj.url isEqual:obj1.url], @"Not equal");
-    STAssertTrue([obj.decimal isEqual:obj1.decimal], @"Not equal");
-    STAssertTrue([obj.date isEqual:obj1.date], @"Not equal");
+    XCTAssertTrue([obj.str isEqual:obj1.str], @"Not equal");
+    XCTAssertTrue([obj.number isEqual:obj1.number], @"Not equal");
+    XCTAssertTrue([obj.url isEqual:obj1.url], @"Not equal");
+    XCTAssertTrue([obj.decimal isEqual:obj1.decimal], @"Not equal");
+    XCTAssertTrue([obj.date isEqual:obj1.date], @"Not equal");
     
     [pool release];
 }
@@ -141,13 +141,13 @@
     [parser parse:data];
     JsonLiteConvert *obj = [deserializer object];
     
-    STAssertNotNil(obj.url, @"URL is null");
-    STAssertTrue([[obj.url absoluteString] isEqual:@"https://github.com/amamchur/jsonlite"], @"Bad url");
+    XCTAssertNotNil(obj.url, @"URL is null");
+    XCTAssertTrue([[obj.url absoluteString] isEqual:@"https://github.com/amamchur/jsonlite"], @"Bad url");
     
-    STAssertNotNil(obj.decimal, @"decimal is null");
-    STAssertTrue([obj.decimal isEqual:[NSDecimalNumber decimalNumberWithString:@"123456789987654321"]], @"Bad decimal");
+    XCTAssertNotNil(obj.decimal, @"decimal is null");
+    XCTAssertTrue([obj.decimal isEqual:[NSDecimalNumber decimalNumberWithString:@"123456789987654321"]], @"Bad decimal");
     
-    STAssertEqualObjects(obj.date, [NSDate dateWithTimeIntervalSince1970:1234657890], @"");
+    XCTAssertEqualObjects(obj.date, [NSDate dateWithTimeIntervalSince1970:1234657890], @"");
     
     JsonLiteSerializer *serializer = [JsonLiteSerializer serializer];
     serializer.converter = epoch;
@@ -158,11 +158,11 @@
     [parser parse:data];
     JsonLiteConvert *obj1 = [deserializer object];
     
-    STAssertTrue([obj.str isEqual:obj1.str], @"Not equal");
-    STAssertTrue([obj.number isEqual:obj1.number], @"Not equal");
-    STAssertTrue([obj.url isEqual:obj1.url], @"Not equal");
-    STAssertTrue([obj.decimal isEqual:obj1.decimal], @"Not equal");
-    STAssertTrue([obj.date isEqual:obj1.date], @"Not equal");
+    XCTAssertTrue([obj.str isEqual:obj1.str], @"Not equal");
+    XCTAssertTrue([obj.number isEqual:obj1.number], @"Not equal");
+    XCTAssertTrue([obj.url isEqual:obj1.url], @"Not equal");
+    XCTAssertTrue([obj.decimal isEqual:obj1.decimal], @"Not equal");
+    XCTAssertTrue([obj.date isEqual:obj1.date], @"Not equal");
     
     [epoch release];
 }
@@ -188,13 +188,13 @@
     [parser parse:data];
     JsonLiteConvert *obj = [deserializer object];
     
-    STAssertNotNil(obj.url, @"URL is null");
-    STAssertTrue([[obj.url absoluteString] isEqual:@"https://github.com/amamchur/jsonlite"], @"Bad url");
+    XCTAssertNotNil(obj.url, @"URL is null");
+    XCTAssertTrue([[obj.url absoluteString] isEqual:@"https://github.com/amamchur/jsonlite"], @"Bad url");
     
-    STAssertNotNil(obj.decimal, @"decimal is null");
-    STAssertTrue([obj.decimal isEqual:[NSDecimalNumber decimalNumberWithString:@"123456789987654321"]], @"Bad decimal");
+    XCTAssertNotNil(obj.decimal, @"decimal is null");
+    XCTAssertTrue([obj.decimal isEqual:[NSDecimalNumber decimalNumberWithString:@"123456789987654321"]], @"Bad decimal");
     
-    STAssertNotNil(obj.date, @"");
+    XCTAssertNotNil(obj.date, @"");
     
     [epoch release];
 }

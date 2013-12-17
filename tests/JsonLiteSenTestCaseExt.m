@@ -17,7 +17,7 @@
 #import "JsonLiteAccumulator.h"
 #import "JsonLiteParser.h"
 
-@implementation SenTestCase(JsonLiteSenTestCaseExt)
+@implementation XCTestCase(JsonLiteSenTestCaseExt)
 
 - (BOOL)compareNumber:(NSNumber *)n1 withNumber:(NSNumber *)n2 {
     double d1 = [n1 doubleValue];
@@ -112,40 +112,40 @@
 - (void)testCompareMethods {
     NSNumber *n1 = [NSNumber numberWithInt:1];
     NSNumber *n2 = [NSNumber numberWithInt:2];
-    STAssertFalse([self compareNumber:n1 withNumber:n2], @"Number are equal");
-    STAssertTrue([self compareNumber:n1 withNumber:n1], @"Number are not equal");
+    XCTAssertFalse([self compareNumber:n1 withNumber:n2], @"Number are equal");
+    XCTAssertTrue([self compareNumber:n1 withNumber:n1], @"Number are not equal");
     
     NSDictionary *d1 = [NSDictionary dictionaryWithObject:@"a" forKey:@"b"];
     NSDictionary *d2 = [NSDictionary dictionary];
-    STAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
+    XCTAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
     
     d1 = [NSDictionary dictionaryWithObject:[NSArray array] forKey:@"a"];
     d2 = [NSDictionary dictionaryWithObject:[NSArray arrayWithObject:@"2"] forKey:@"a"];
-    STAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
+    XCTAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
     
     d1 = [NSDictionary dictionaryWithObject:n1 forKey:@"a"];
     d2 = [NSDictionary dictionaryWithObject:n2 forKey:@"a"];
-    STAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
+    XCTAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
     
     d1 = [NSDictionary dictionaryWithObject:@"v1" forKey:@"a"];
     d2 = [NSDictionary dictionaryWithObject:@"v2" forKey:@"a"];
-    STAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
+    XCTAssertFalse([self compareDictionary:d1 withDictionary:d2], @"Dictionaries are equal");
     
     NSArray *a1 = [NSArray arrayWithObject:[NSArray arrayWithObject:@"v1"]];
     NSArray *a2 = [NSArray arrayWithObject:[NSArray arrayWithObject:@"v2"]];
-    STAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
+    XCTAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
     
     a1 = [NSArray arrayWithObject:d1];
     a2 = [NSArray arrayWithObject:d2];
-    STAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
+    XCTAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
     
     a1 = [NSArray arrayWithObject:n1];
     a2 = [NSArray arrayWithObject:n2];
-    STAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
+    XCTAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
     
     a1 = [NSArray arrayWithObject:@"v1"];
     a2 = [NSArray arrayWithObject:@"v2"];
-    STAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
+    XCTAssertFalse([self compareArray:a1 withArray:a2], @"Arrays are equal");
 }
 
 - (id)parseObjectFromFile:(NSString *)file inDir:(NSString *)dir {
@@ -156,26 +156,26 @@
     NSData *data = [[[NSData alloc] initWithContentsOfFile:path
                                                    options:0
                                                      error:&error] autorelease];
-    STAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
+    XCTAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteAccumulator *accumulator  = [[JsonLiteAccumulator alloc] init];
     parser.delegate = accumulator;
     
     BOOL complete = [parser parse:data];
-    STAssertTrue(error == nil, @"Parsing error %@.", error);
-    STAssertTrue(complete, @"Parsing not complate.");
-    STAssertTrue(parser.parseError == nil, @"Parsing not complate.");
-    STAssertTrue(parser.delegate == accumulator, @"Parsing not complate.");
-    STAssertTrue(parser.depth > 0, @"Parsing not complate.");
-    STAssertTrue(accumulator.currentDepth == 0, @"Parsing not complate.");
-    STAssertTrue(accumulator.depth > 0, @"Parsing not complate.");
+    XCTAssertTrue(error == nil, @"Parsing error %@.", error);
+    XCTAssertTrue(complete, @"Parsing not complate.");
+    XCTAssertTrue(parser.parseError == nil, @"Parsing not complate.");
+    XCTAssertTrue(parser.delegate == accumulator, @"Parsing not complate.");
+    XCTAssertTrue(parser.depth > 0, @"Parsing not complate.");
+    XCTAssertTrue(accumulator.currentDepth == 0, @"Parsing not complate.");
+    XCTAssertTrue(accumulator.depth > 0, @"Parsing not complate.");
     
     accumulator.delegate = nil;
-    STAssertTrue(accumulator.delegate == nil, @"Parsing not complate.");
+    XCTAssertTrue(accumulator.delegate == nil, @"Parsing not complate.");
     
     accumulator.delegate = nil;
-    STAssertTrue(accumulator.delegate == nil, @"Parsing not complate.");
+    XCTAssertTrue(accumulator.delegate == nil, @"Parsing not complate.");
     
     id object = [accumulator object];
     
@@ -194,7 +194,7 @@
     NSData *data = [[[NSData alloc] initWithContentsOfFile:path
                                                    options:0
                                                      error:&error] autorelease];
-    STAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
+    XCTAssertNil(error, @"Cann't read file %@, error - %@.", file, error);
     
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteAccumulator *delegate = [[JsonLiteAccumulator alloc] init];
@@ -217,4 +217,40 @@
     return data;
 }
 
++ (void)initialize {
+    [[NSUserDefaults standardUserDefaults] setValue:@"XCTestLog,GcovTestObserver"
+                                             forKey:@"XCTestObserverClass"];
+}
+
 @end
+
+@interface XCTest (GCovFlush)
+
+@end
+
+#import <objc/runtime.h>
+
+extern void __gcov_flush();
+
+@implementation XCTest (GCovFlush)
+
++ (void)load
+{
+    Method original, swizzled;
+    
+    original = class_getInstanceMethod(self, @selector(tearDown));
+    swizzled = class_getInstanceMethod(self, @selector(_swizzledTearDown));
+    method_exchangeImplementations(original, swizzled);
+}
+
+- (void)_swizzledTearDown
+{
+    if (__gcov_flush) {
+        __gcov_flush();
+    }
+    [self _swizzledTearDown];
+}
+
+@end
+
+

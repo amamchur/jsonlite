@@ -20,8 +20,8 @@
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
     id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
-    STAssertNotNil(obj, @"Object is nil");
-    STAssertTrue([obj count] == 1001, @"Incorrect count");
+    XCTAssertNotNil(obj, @"Object is nil");
+    XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
 
 - (void)testCheckCapacityForFalseTokens {
@@ -32,8 +32,8 @@
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
     id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
-    STAssertNotNil(obj, @"Object is nil");
-    STAssertTrue([obj count] == 1001, @"Incorrect count");
+    XCTAssertNotNil(obj, @"Object is nil");
+    XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
 
 - (void)testCheckCapacityForNullTokens {
@@ -44,8 +44,8 @@
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
     id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
-    STAssertNotNil(obj, @"Object is nil");
-    STAssertTrue([obj count] == 1001, @"Incorrect count");
+    XCTAssertNotNil(obj, @"Object is nil");
+    XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
 
 - (void)testDifferentKeys {
@@ -57,8 +57,8 @@
     [json appendString:@"}"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
     id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
-    STAssertNotNil(obj, @"Object is nil");
-    STAssertTrue([obj count] == 1001, @"Incorrect count");
+    XCTAssertNotNil(obj, @"Object is nil");
+    XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
 
 - (void)testDifferentStrings {
@@ -69,8 +69,8 @@
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
     id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
-    STAssertNotNil(obj, @"Object is nil");
-    STAssertTrue([obj count] == 1001, @"Incorrect count");
+    XCTAssertNotNil(obj, @"Object is nil");
+    XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
 
 - (void)testDifferentNumbers {
@@ -81,8 +81,8 @@
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
     id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
-    STAssertNotNil(obj, @"Object is nil");
-    STAssertTrue([obj count] == 1001, @"Incorrect count");
+    XCTAssertNotNil(obj, @"Object is nil");
+    XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
 
 - (void)testChunks {
@@ -106,7 +106,7 @@
                                                  forKey:@"key3"]];
     [array addObject:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:4]
                                                  forKey:@"key4"]];
-    STAssertEqualObjects(array, [acc object], @"Not equal!");
+    XCTAssertEqualObjects(array, [acc object], @"Not equal!");
 }
 
 @end

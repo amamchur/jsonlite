@@ -19,3 +19,45 @@
 #import "JsonLiteMetaData.h"
 #import "JsonLiteParser.h"
 #import "JsonLiteSerializer.h"
+
+@interface JsonLiteObjC : NSObject
+
++ (id)objectFromData:(const void *)data
+              length:(NSUInteger)length
+               depth:(NSUInteger)depth
+               error:(NSError **)error;
++ (id)objectFromData:(const void *)data length:(NSUInteger)length depth:(NSUInteger)depth;
++ (id)objectFromData:(const void *)data length:(NSUInteger)length;
++ (id)objectFromData:(NSData *)data depth:(NSUInteger)depth;
++ (id)objectFromData:(NSData *)data;
+
++ (id)objectFromData:(const void *)data
+              length:(NSUInteger)length
+             rootCls:(Class)cls
+     convertersChain:(id<JsonLiteDeserializerChain>)chain
+               depth:(NSUInteger)depth
+               error:(NSError **)error;
++ (id)objectFromData:(const void *)data
+              length:(NSUInteger)length
+             rootCls:(Class)cls
+    convertersChain:(id<JsonLiteDeserializerChain>)chain
+               depth:(NSUInteger)depth;
++ (id)objectFromData:(NSData *)data
+             rootCls:(Class)cls
+     convertersChain:(id<JsonLiteDeserializerChain>)chain
+               depth:(NSUInteger)depth
+               error:(NSError **)error;
++ (id)objectFromData:(NSData *)data
+             rootCls:(Class)cls
+     convertersChain:(id<JsonLiteDeserializerChain>)chain
+               depth:(NSUInteger)depth;
++ (id)objectFromData:(NSData *)data
+             rootCls:(Class)cls
+     convertersChain:(id<JsonLiteDeserializerChain>)chain;
+
++ (NSData *)dataFromObject:(id)object convertersChain:(id<JsonLiteSerializerChain>)chain;
++ (NSData *)dataFromObject:(id)object;
+
++ (NSString *)version;
+
+@end
