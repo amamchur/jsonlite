@@ -15,7 +15,6 @@
 #import <Foundation/Foundation.h>
 #import "JsonLiteParser.h"
 #import "jsonlite.h"
-#import "jsonlite_token_pool.h"
 
 @class JsonLiteToken;
 @class JsonLiteDeserializer;

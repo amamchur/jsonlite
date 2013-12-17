@@ -15,7 +15,6 @@
 #import <Foundation/Foundation.h>
 #import "JsonLiteParser.h"
 #include "jsonlite.h"
-#include "jsonlite_token_pool.h"
 
 struct JsonLiteAccumulatorState;
 @class JsonLiteAccumulator;
