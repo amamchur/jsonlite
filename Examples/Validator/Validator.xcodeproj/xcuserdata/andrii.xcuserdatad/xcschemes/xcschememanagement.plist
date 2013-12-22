@@ -4,20 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>JsonLiteObjC.xcscheme</key>
+		<key>Validator.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>11</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>8469945317EA55A700BBB8BA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8469946717EA55A700BBB8BA</key>
+		<key>844795F0178815F600833C1E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

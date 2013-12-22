@@ -4,20 +4,25 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>JsonLiteObjC.xcscheme</key>
+		<key>iPhoneJsonLite.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>6</integer>
+		</dict>
+		<key>iPhoneJsonLiteARC.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>8469945317EA55A700BBB8BA</key>
+		<key>84D8AA1817E9175500E11185</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8469946717EA55A700BBB8BA</key>
+		<key>87E75BC815828FFA00100333</key>
 		<dict>
 			<key>primary</key>
 			<true/>

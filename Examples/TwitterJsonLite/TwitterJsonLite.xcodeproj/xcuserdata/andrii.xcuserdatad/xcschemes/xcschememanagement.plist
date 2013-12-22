@@ -4,20 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>JsonLiteObjC.xcscheme</key>
+		<key>TwitterJsonLite.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>10</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>8469945317EA55A700BBB8BA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8469946717EA55A700BBB8BA</key>
+		<key>870B0D2A15834D040022CD49</key>
 		<dict>
 			<key>primary</key>
 			<true/>

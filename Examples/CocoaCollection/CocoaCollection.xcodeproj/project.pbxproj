@@ -10,25 +10,8 @@
 		844796471788176200833C1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 844796461788176200833C1E /* Foundation.framework */; };
 		8447964A1788176200833C1E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 844796491788176200833C1E /* main.m */; };
 		8447964E1788176200833C1E /* CocoaCollection.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8447964D1788176200833C1E /* CocoaCollection.1 */; };
-		846995C117EA5D8600BBB8BA /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 846995BE17EA5D7700BBB8BA /* libJsonLiteObjC.a */; };
+		B501559F1867A6E2002AF125 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B501559E1867A6E2002AF125 /* libJsonLiteObjC.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		846995BD17EA5D7700BBB8BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 846995B817EA5D7700BBB8BA /* JsonLiteObjC.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8469945417EA55A700BBB8BA;
-			remoteInfo = JsonLiteObjC;
-		};
-		846995BF17EA5D7700BBB8BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 846995B817EA5D7700BBB8BA /* JsonLiteObjC.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8469946817EA55A700BBB8BA;
-			remoteInfo = JsonLiteObjCTests;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		844796411788176200833C1E /* CopyFiles */ = {
@@ -49,7 +32,7 @@
 		844796491788176200833C1E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8447964C1788176200833C1E /* CocoaCollection-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CocoaCollection-Prefix.pch"; sourceTree = "<group>"; };
 		8447964D1788176200833C1E /* CocoaCollection.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CocoaCollection.1; sourceTree = "<group>"; };
-		846995B817EA5D7700BBB8BA /* JsonLiteObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JsonLiteObjC.xcodeproj; path = ../../platform/macosx/JsonLiteObjC.xcodeproj; sourceTree = "<group>"; };
+		B501559E1867A6E2002AF125 /* libJsonLiteObjC.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libJsonLiteObjC.a; path = "../../platform/ios/build/Debug-iphoneos/libJsonLiteObjC.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				846995C117EA5D8600BBB8BA /* libJsonLiteObjC.a in Frameworks */,
+				B501559F1867A6E2002AF125 /* libJsonLiteObjC.a in Frameworks */,
 				844796471788176200833C1E /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,7 +51,6 @@
 		8447963A1788176200833C1E = {
 			isa = PBXGroup;
 			children = (
-				846995B817EA5D7700BBB8BA /* JsonLiteObjC.xcodeproj */,
 				844796481788176200833C1E /* CocoaCollection */,
 				844796451788176200833C1E /* Frameworks */,
 				844796441788176200833C1E /* Products */,
@@ -86,6 +68,7 @@
 		844796451788176200833C1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B501559E1867A6E2002AF125 /* libJsonLiteObjC.a */,
 				844796461788176200833C1E /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -107,15 +90,6 @@
 				8447964C1788176200833C1E /* CocoaCollection-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		846995B917EA5D7700BBB8BA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				846995BE17EA5D7700BBB8BA /* libJsonLiteObjC.a */,
-				846995C017EA5D7700BBB8BA /* JsonLiteObjCTests.octest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,35 +131,12 @@
 			mainGroup = 8447963A1788176200833C1E;
 			productRefGroup = 844796441788176200833C1E /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 846995B917EA5D7700BBB8BA /* Products */;
-					ProjectRef = 846995B817EA5D7700BBB8BA /* JsonLiteObjC.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				844796421788176200833C1E /* CocoaCollection */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		846995BE17EA5D7700BBB8BA /* libJsonLiteObjC.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libJsonLiteObjC.a;
-			remoteRef = 846995BD17EA5D7700BBB8BA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		846995C017EA5D7700BBB8BA /* JsonLiteObjCTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JsonLiteObjCTests.octest;
-			remoteRef = 846995BF17EA5D7700BBB8BA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8447963F1788176200833C1E /* Sources */ = {

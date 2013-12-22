@@ -9,32 +9,8 @@
 /* Begin PBXBuildFile section */
 		8447961E1788166800833C1E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 8447961D1788166800833C1E /* main.c */; };
 		844796201788166800833C1E /* Summer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8447961F1788166800833C1E /* Summer.1 */; };
-		846995DF17EA5E1D00BBB8BA /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 846995DC17EA5E0C00BBB8BA /* libJsonLiteObjC.a */; };
+		B50155AB1867A768002AF125 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B50155AA1867A768002AF125 /* libJsonLiteObjC.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		8445C5D61814216700EFAC27 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8469945317EA55A700BBB8BA;
-			remoteInfo = JsonLiteObjC;
-		};
-		846995DB17EA5E0C00BBB8BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8469945417EA55A700BBB8BA;
-			remoteInfo = JsonLiteObjC;
-		};
-		846995DD17EA5E0C00BBB8BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8469946817EA55A700BBB8BA;
-			remoteInfo = JsonLiteObjCTests;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		844796181788166800833C1E /* CopyFiles */ = {
@@ -53,7 +29,7 @@
 		8447961A1788166800833C1E /* Summer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Summer; sourceTree = BUILT_PRODUCTS_DIR; };
 		8447961D1788166800833C1E /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		8447961F1788166800833C1E /* Summer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Summer.1; sourceTree = "<group>"; };
-		846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JsonLiteObjC.xcodeproj; path = ../../platform/macosx/JsonLiteObjC.xcodeproj; sourceTree = "<group>"; };
+		B50155AA1867A768002AF125 /* libJsonLiteObjC.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libJsonLiteObjC.a; path = "../../platform/ios/build/Debug-iphoneos/libJsonLiteObjC.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				846995DF17EA5E1D00BBB8BA /* libJsonLiteObjC.a in Frameworks */,
+				B50155AB1867A768002AF125 /* libJsonLiteObjC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,7 +47,7 @@
 		844796111788166800833C1E = {
 			isa = PBXGroup;
 			children = (
-				846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */,
+				B50155AA1867A768002AF125 /* libJsonLiteObjC.a */,
 				8447961C1788166800833C1E /* Summer */,
 				8447961B1788166800833C1E /* Products */,
 			);
@@ -94,15 +70,6 @@
 			path = Summer;
 			sourceTree = "<group>";
 		};
-		846995D717EA5E0C00BBB8BA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				846995DC17EA5E0C00BBB8BA /* libJsonLiteObjC.a */,
-				846995DE17EA5E0C00BBB8BA /* JsonLiteObjCTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -117,7 +84,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8445C5D71814216700EFAC27 /* PBXTargetDependency */,
 			);
 			name = Summer;
 			productName = Summer;
@@ -143,35 +109,12 @@
 			mainGroup = 844796111788166800833C1E;
 			productRefGroup = 8447961B1788166800833C1E /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 846995D717EA5E0C00BBB8BA /* Products */;
-					ProjectRef = 846995D617EA5E0C00BBB8BA /* JsonLiteObjC.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				844796191788166800833C1E /* Summer */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		846995DC17EA5E0C00BBB8BA /* libJsonLiteObjC.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libJsonLiteObjC.a;
-			remoteRef = 846995DB17EA5E0C00BBB8BA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		846995DE17EA5E0C00BBB8BA /* JsonLiteObjCTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JsonLiteObjCTests.octest;
-			remoteRef = 846995DD17EA5E0C00BBB8BA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		844796161788166800833C1E /* Sources */ = {
@@ -183,14 +126,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		8445C5D71814216700EFAC27 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = JsonLiteObjC;
-			targetProxy = 8445C5D61814216700EFAC27 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		844796211788166800833C1E /* Debug */ = {

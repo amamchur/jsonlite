@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		846995E917EA5E5100BBB8BA /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 846995E617EA5E4700BBB8BA /* libJsonLiteObjC.a */; };
 		84D24A451662F45A00F48E5C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84D24A441662F45A00F48E5C /* Default-568h@2x.png */; };
 		870B0D3015834D040022CD49 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 870B0D2F15834D040022CD49 /* UIKit.framework */; };
 		870B0D3215834D040022CD49 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 870B0D3115834D040022CD49 /* Foundation.framework */; };
@@ -20,27 +19,10 @@
 		870B0D4915834D040022CD49 /* TwitterJsonLiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 870B0D4715834D040022CD49 /* TwitterJsonLiteViewController.xib */; };
 		870B0D71158354220022CD49 /* TWTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 870B0D6E158354220022CD49 /* TWTimeline.m */; };
 		870B0D72158354220022CD49 /* TWUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 870B0D70158354220022CD49 /* TWUser.m */; };
+		B50155AD1867A77B002AF125 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B50155AC1867A77B002AF125 /* libJsonLiteObjC.a */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		846995E517EA5E4700BBB8BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 846995E017EA5E4700BBB8BA /* JsonLiteObjC.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 879D180815BA9B1A00791C72;
-			remoteInfo = JsonLiteObjC;
-		};
-		846995E717EA5E4700BBB8BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 846995E017EA5E4700BBB8BA /* JsonLiteObjC.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 879D181515BA9B1A00791C72;
-			remoteInfo = JsonLiteObjCTests;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		846995E017EA5E4700BBB8BA /* JsonLiteObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JsonLiteObjC.xcodeproj; path = ../../platform/ios/JsonLiteObjC.xcodeproj; sourceTree = "<group>"; };
 		84D24A441662F45A00F48E5C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		870B0D2B15834D040022CD49 /* TwitterJsonLite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterJsonLite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		870B0D2F15834D040022CD49 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -60,6 +42,7 @@
 		870B0D6E158354220022CD49 /* TWTimeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWTimeline.m; sourceTree = "<group>"; };
 		870B0D6F158354220022CD49 /* TWUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWUser.h; sourceTree = "<group>"; };
 		870B0D70158354220022CD49 /* TWUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWUser.m; sourceTree = "<group>"; };
+		B50155AC1867A77B002AF125 /* libJsonLiteObjC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libJsonLiteObjC.a; path = "../../../../../Library/Developer/Xcode/DerivedData/Examples-ddjvzzmnthncywfddbuzxlgufjvl/Build/Products/Debug/libJsonLiteObjC.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				846995E917EA5E5100BBB8BA /* libJsonLiteObjC.a in Frameworks */,
+				B50155AD1867A77B002AF125 /* libJsonLiteObjC.a in Frameworks */,
 				870B0D3015834D040022CD49 /* UIKit.framework in Frameworks */,
 				870B0D3215834D040022CD49 /* Foundation.framework in Frameworks */,
 				870B0D3415834D040022CD49 /* CoreGraphics.framework in Frameworks */,
@@ -77,19 +60,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		846995E117EA5E4700BBB8BA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				846995E617EA5E4700BBB8BA /* libJsonLiteObjC.a */,
-				846995E817EA5E4700BBB8BA /* JsonLiteObjCTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		870B0D2015834D040022CD49 = {
 			isa = PBXGroup;
 			children = (
-				846995E017EA5E4700BBB8BA /* JsonLiteObjC.xcodeproj */,
 				84D24A441662F45A00F48E5C /* Default-568h@2x.png */,
 				870B0D3515834D040022CD49 /* TwitterJsonLite */,
 				870B0D2E15834D040022CD49 /* Frameworks */,
@@ -108,6 +81,7 @@
 		870B0D2E15834D040022CD49 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B50155AC1867A77B002AF125 /* libJsonLiteObjC.a */,
 				870B0D2F15834D040022CD49 /* UIKit.framework */,
 				870B0D3115834D040022CD49 /* Foundation.framework */,
 				870B0D3315834D040022CD49 /* CoreGraphics.framework */,
@@ -183,35 +157,12 @@
 			mainGroup = 870B0D2015834D040022CD49;
 			productRefGroup = 870B0D2C15834D040022CD49 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 846995E117EA5E4700BBB8BA /* Products */;
-					ProjectRef = 846995E017EA5E4700BBB8BA /* JsonLiteObjC.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				870B0D2A15834D040022CD49 /* TwitterJsonLite */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		846995E617EA5E4700BBB8BA /* libJsonLiteObjC.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libJsonLiteObjC.a;
-			remoteRef = 846995E517EA5E4700BBB8BA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		846995E817EA5E4700BBB8BA /* JsonLiteObjCTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = JsonLiteObjCTests.octest;
-			remoteRef = 846995E717EA5E4700BBB8BA /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		870B0D2915834D040022CD49 /* Resources */ = {
@@ -312,6 +263,10 @@
 				GCC_PREFIX_HEADER = "TwitterJsonLite/TwitterJsonLite-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "TwitterJsonLite/TwitterJsonLite-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Examples-ddjvzzmnthncywfddbuzxlgufjvl/Build/Products/Debug",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -326,6 +281,10 @@
 				GCC_PREFIX_HEADER = "TwitterJsonLite/TwitterJsonLite-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "TwitterJsonLite/TwitterJsonLite-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Examples-ddjvzzmnthncywfddbuzxlgufjvl/Build/Products/Debug",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
