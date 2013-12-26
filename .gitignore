@@ -7,3 +7,5 @@
 *.xcbkptlist
 *.xcscheme
 *.xcsettings
+platform/ios/JsonLiteObjC.xcodeproj/xcuserdata/**
+platform/macosx/JsonLiteObjC.xcodeproj/xcuserdata/**
