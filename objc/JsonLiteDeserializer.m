@@ -145,7 +145,7 @@ static JsonLiteArrayBinder *arrayBinder = nil;
             if (item->value == nil) {
                 item->value = [token copyValue];
             }
-            value = (id)CFRetain((CFTypeRef)item->value);
+            value = (id)item->value;
         }
         
         [state->binder setValue:value forObject:state->obj];
