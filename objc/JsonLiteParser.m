@@ -491,18 +491,18 @@ static void null_found_callback(jsonlite_callback_context *ctx) {
 
 static void key_found_callback(jsonlite_callback_context *ctx, jsonlite_token *token) {
     JsonLiteInternal *jli = (JsonLiteInternal *)ctx->client_state;
-    token->ext = class_JsonLiteStringToken;
+    object_setClass((id)token, class_JsonLiteStringToken);
     jli->keyFound(jli->delegate, @selector(parser:foundKeyToken:), jli->parserObj, token);
 }
 
 static void string_found_callback(jsonlite_callback_context *ctx, jsonlite_token *token) {
     JsonLiteInternal *jli = (JsonLiteInternal *)ctx->client_state;
-    token->ext = class_JsonLiteStringToken;
+    object_setClass((id)token, class_JsonLiteStringToken);
     jli->stringFound(jli->delegate, @selector(parser:foundStringToken:), jli->parserObj, token);
 }
 
 static void number_found_callback(jsonlite_callback_context *ctx, jsonlite_token *token) {
     JsonLiteInternal *jli = (JsonLiteInternal *)ctx->client_state;
-    token->ext = class_JsonLiteNumberToken;
+    object_setClass((id)token, class_JsonLiteNumberToken);
     jli->numberFound(jli->delegate, @selector(parser:foundNumberToken:), jli->parserObj, token);
 }

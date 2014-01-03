@@ -241,7 +241,7 @@ static void jsonlite_do_parse(jsonlite_parser parser) {
     const uint8_t *token_start = NULL;
     const parse_state *last = parser->last;
     parse_state *state = parser->current;
-    jsonlite_token token;
+    jsonlite_token token = {NULL, NULL, NULL, 0};
     uint32_t value, utf32;
     uint8_t hex_value;
     
