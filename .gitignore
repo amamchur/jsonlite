@@ -2,10 +2,11 @@
 .DS_Store
 .idea/
 
-*.xcworkspacedata
 *.xcuserstate
 *.xcbkptlist
 *.xcscheme
 *.xcsettings
+*.xccheckout
 platform/ios/JsonLiteObjC.xcodeproj/xcuserdata/**
 platform/macosx/JsonLiteObjC.xcodeproj/xcuserdata/**
+

@@ -42,6 +42,7 @@
 		87E75C2E1582A18200100333 /* twitter_public_timeline.json in Resources */ = {isa = PBXBuildFile; fileRef = 87E75C2C1582A18200100333 /* twitter_public_timeline.json */; };
 		87FFFAB616286E09004AAD06 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 87FFFAB516286E09004AAD06 /* Default-568h@2x.png */; };
 		B50155A31867A70F002AF125 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B50155A21867A70F002AF125 /* libJsonLiteObjC.a */; };
+		B5CF9AA018775D38003A2B56 /* libJsonLiteObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B50155A21867A70F002AF125 /* libJsonLiteObjC.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5CF9AA018775D38003A2B56 /* libJsonLiteObjC.a in Frameworks */,
 				84D8AA2117E9175500E11185 /* UIKit.framework in Frameworks */,
 				84D8AA2217E9175500E11185 /* Foundation.framework in Frameworks */,
 				84D8AA2317E9175500E11185 /* CoreGraphics.framework in Frameworks */,
@@ -347,6 +349,10 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "iPhoneJsonLite/iPhoneJsonLite-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Examples-ddjvzzmnthncywfddbuzxlgufjvl/Build/Products/Debug",
+				);
 				PRODUCT_NAME = iPhoneJsonLiteARC;
 				WRAPPER_EXTENSION = app;
 			};
@@ -383,6 +389,10 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "iPhoneJsonLite/iPhoneJsonLite-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Examples-ddjvzzmnthncywfddbuzxlgufjvl/Build/Products/Debug",
+				);
 				PRODUCT_NAME = iPhoneJsonLiteARC;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

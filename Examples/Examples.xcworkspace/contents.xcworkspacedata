@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Base64/Base64.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Beautifier/Beautifier.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Chunks/Chunks.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:CocoaCollection/CocoaCollection.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:DecimalNumber/DecimalNumber.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:iPhoneJsonLite/iPhoneJsonLite.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:JsonAndModel/JsonAndModel.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Summer/Summer.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:TwitterJsonLite/TwitterJsonLite.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Validator/Validator.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../platform/ios/JsonLiteObjC.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../platform/macosx/JsonLiteObjC.xcodeproj">
+   </FileRef>
+</Workspace>
