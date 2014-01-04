@@ -17,7 +17,6 @@
 #include "../include/jsonlite_token.h"
 #endif
 
-#include <math.h>
 #include <stdlib.h>
 
 #ifdef _MSC_VER
@@ -218,16 +217,17 @@ size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void **buffer) {
     size_t size = jsonlite_token_size_of_base64_binary(ts);
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
-    uint8_t *c = *buffer = NULL;
-    uint32_t bytes = 0;
-    int i;
+    uint8_t *c;
+    size_t bytes, i;
     if (size > 0) {
         c = *buffer = (uint16_t *)malloc(size);
     } else {
+        *buffer = NULL;
         goto error;
     }
 next:
-    bytes = i = 0;
+    bytes = 0;
+    i = 0;
     do {
         if (p == l) goto error;
         i++;
@@ -240,11 +240,11 @@ next:
         if (*p == '=') {
             switch (l - p) {
                 case 1:
-                    *c++ = (bytes >> 16)    & 0x000000FF;
-                    *c++ = (bytes >> 8)     & 0x000000FF;
+                    *c++ = (uint8_t)((bytes >> 16) & 0x000000FF);
+                    *c = (uint8_t)((bytes >> 8) & 0x000000FF);
                     return length + 2;
                 case 2:
-                    *c++ = (bytes >> 10)    & 0x000000FF;
+                    *c = (uint8_t)((bytes >> 10) & 0x000000FF);
                     return length + 1;
             }
         }
@@ -252,9 +252,9 @@ next:
         goto error;
     } while (i < 4);
     
-    *c++ = (bytes >> 16)    & 0x000000FF;
-    *c++ = (bytes >> 8)     & 0x000000FF;
-    *c++ = (bytes)          & 0x000000FF;
+    *c++ = (uint8_t)((bytes >> 16)  & 0x000000FF);
+    *c++ = (uint8_t)((bytes >> 8)   & 0x000000FF);
+    *c++ = (uint8_t)((bytes)        & 0x000000FF);
     length += 3;
     
     if (p == l) goto done;

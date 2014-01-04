@@ -75,8 +75,8 @@ static void jsonlite_builder_pop_state(jsonlite_builder builder);
 static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder);
 static void jsonlite_builder_raw_char(jsonlite_builder builder, char data);
 static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length);
-static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, ptrdiff_t length);
-static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, ptrdiff_t count);
+static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length);
+static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count);
 static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length);
 
 jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
@@ -225,7 +225,7 @@ jsonlite_result jsonlite_builder_array_end(jsonlite_builder builder) {
 }
 
 static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length) {
-    char b[2] = "\\?";
+    char b[2] = {'\\', '?'};
     const char *c = data;
     const char *p = data;
     const char *l = data + length;
@@ -308,7 +308,7 @@ jsonlite_result jsonlite_builder_int(jsonlite_builder builder, long long value) 
     }
 
     char buff[64];
-	int size = 0;
+	size_t size = 0;
     jsonlite_write_state *ws = builder->state;
     if (jsonlite_builder_accept(builder, jsonlite_accept_value)) {
         jsonlite_builder_prepare_value_writing(builder);
@@ -331,7 +331,7 @@ jsonlite_result jsonlite_builder_double(jsonlite_builder builder, double value) 
     }
 
     char buff[64];
-	int size = 0;
+	size_t size = 0;
     jsonlite_write_state *ws = builder->state;
     if (jsonlite_builder_accept(builder, jsonlite_accept_value)) {
         jsonlite_builder_prepare_value_writing(builder);
@@ -413,11 +413,11 @@ jsonlite_result jsonlite_builder_null(jsonlite_builder builder) {
     return jsonlite_result_ok;
 }
 
-static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, ptrdiff_t length) {
+static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length) {
     jsonlite_stream_write(builder->stream, data, length);
 }
 
-static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, ptrdiff_t count) {
+static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count) {
     ptrdiff_t i = 0;
     for (; i < count; i++) {
         jsonlite_stream_write(builder->stream, &ch, 1);

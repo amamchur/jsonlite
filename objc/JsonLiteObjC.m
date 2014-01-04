@@ -13,7 +13,6 @@
 //  limitations under the License
 
 #import "JsonLiteObjC.h"
-#include "jsonlite.h"
 
 @implementation JsonLiteObjC
 

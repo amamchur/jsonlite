@@ -206,7 +206,7 @@ static int jsonlite_file_stream_write(jsonlite_stream stream, const void *data, 
 }
 
 jsonlite_stream jsonlite_file_stream_init(FILE *file) {
-    size_t size = SIZE_OF_MEM_STREAM();    
+    size_t size = SIZE_OF_FILE_STREAM();
     struct jsonlite_stream_struct *stream = malloc(size);
     stream->write = jsonlite_file_stream_write;
     stream->release = jsonlite_stream_free_mem;

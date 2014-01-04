@@ -13,7 +13,6 @@
 //  limitations under the License
 
 #import "JsonLiteConverters.h"
-#import "JsonLiteSerializer.h"
 
 @implementation JsonLiteConverter
 
@@ -21,7 +20,7 @@
 @synthesize nextSerializerChain;
 
 - (BOOL)writeConvertedValue:(id)value serializer:(JsonLiteSerializer *)serializer {
-    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
+    return [nextSerializerChain writeConvertedValue:value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value
@@ -62,7 +61,7 @@
         jsonlite_builder_raw_value(serializer.builder, c_str, strlen(c_str));
         return YES;
     }
-    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
+    return [nextSerializerChain writeConvertedValue:value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value
@@ -87,7 +86,7 @@
         jsonlite_builder_string(serializer.builder, c_str, strlen(c_str));
         return YES;
     }
-    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer]; 
+    return [nextSerializerChain writeConvertedValue:value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value
@@ -113,7 +112,7 @@
         jsonlite_builder_int(serializer.builder, epoch);
         return YES;
     }
-    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
+    return [nextSerializerChain writeConvertedValue:value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value
@@ -139,7 +138,7 @@
         jsonlite_builder_base64_value(serializer.builder, [data bytes], [data length]);
         return YES;
     }
-    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
+    return [nextSerializerChain writeConvertedValue:value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value
@@ -178,7 +177,7 @@
         jsonlite_builder_string(serializer.builder, c_str, strlen(c_str));
         return YES;
     }
-    return [nextSerializerChain writeConvertedValue:(id)value serializer:serializer];
+    return [nextSerializerChain writeConvertedValue:value serializer:serializer];
 }
 
 - (BOOL)getValue:(id *)value

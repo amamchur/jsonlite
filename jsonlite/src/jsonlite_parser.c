@@ -120,7 +120,7 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size) {
     parser->buffer_own = NULL;
     parser->callbacks = jsonlite_default_callbacks;
     parser->control = NULL;
-    parser->current = (parse_state *)((uint8_t *)parser + sizeof(jsonlite_parser_struct));
+    parser->current = ((uint8_t *)parser + sizeof(jsonlite_parser_struct));
     parser->current[0] = state_end;
     parser->current[1] = state_start;
     parser->last = parser->current + depth;
@@ -242,6 +242,7 @@ static void jsonlite_do_parse(jsonlite_parser parser) {
     const parse_state *last = parser->last;
     parse_state *state = parser->current;
     jsonlite_token token = {NULL, NULL, NULL, 0};
+    jsonlite_result result = jsonlite_result_ok;
     uint32_t value, utf32;
     uint8_t hex_value;
     
@@ -250,7 +251,7 @@ static void jsonlite_do_parse(jsonlite_parser parser) {
     goto select_state;
     
 structure_finished:
-    if (*state == state_end)            goto success;
+    if (*state == state_end)            goto end;
 skip_char_and_whitespaces:
     c++;
 select_state:
@@ -274,8 +275,10 @@ select_state:
             if (*c == 0x7B)             goto parse_object;
             if (*c == 0x5B)             goto parse_array_state;
             goto error_exp_ooa;
-        case state_end:                 goto success;
-        default:                        goto end;
+        case state_end:                 goto end;
+        default:
+            result = parser->result;
+            goto end;
     }
 parse_object:
     *state = state_object_key_end;
@@ -532,31 +535,36 @@ parse_null_token:
     goto select_state;
 
 // Error states.
-error_depth:        parser->result = jsonlite_result_depth_limit;               goto end;
-error_exp_ooa:      parser->result = jsonlite_result_expected_object_or_array;  goto end;
-error_exp_value:    parser->result = jsonlite_result_expected_value;            goto end;
-error_exp_koe:      parser->result = jsonlite_result_expected_key_or_end;       goto end;
-error_exp_key:      parser->result = jsonlite_result_expected_key;              goto end;
-error_exp_colon:    parser->result = jsonlite_result_expected_colon;            goto end;
-error_exp_coe:      parser->result = jsonlite_result_expected_comma_or_end;     goto end;
-error_escape:       parser->result = jsonlite_result_invalid_escape;            goto end;
-error_number:       parser->result = jsonlite_result_invalid_number;            goto end;
-error_token:        parser->result = jsonlite_result_invalid_token;             goto end;
-error_utf8:         parser->result = jsonlite_result_invalid_utf8;              goto end;
+error_depth:        result = jsonlite_result_depth_limit;               goto end;
+error_exp_ooa:      result = jsonlite_result_expected_object_or_array;  goto end;
+error_exp_value:    result = jsonlite_result_expected_value;            goto end;
+error_exp_koe:      result = jsonlite_result_expected_key_or_end;       goto end;
+error_exp_key:      result = jsonlite_result_expected_key;              goto end;
+error_exp_colon:    result = jsonlite_result_expected_colon;            goto end;
+error_exp_coe:      result = jsonlite_result_expected_comma_or_end;     goto end;
+error_escape:       result = jsonlite_result_invalid_escape;            goto end;
+error_number:       result = jsonlite_result_invalid_number;            goto end;
+error_token:        result = jsonlite_result_invalid_token;             goto end;
+error_utf8:         result = jsonlite_result_invalid_utf8;              goto end;
 
 // End of stream states.
 end_of_stream_whitespaces:
     token_start = l;
 end_of_stream:
-    parser->result = jsonlite_result_end_of_stream;
+    result = jsonlite_result_end_of_stream;
+end:
+    parser->result = result;
     parser->current = state;
     parser->control = NULL;
     parser->cursor = c;
     parser->callbacks.parse_finished(&parser->callbacks.context);
+    if (result != jsonlite_result_end_of_stream) {
+        return;
+    }
     
     res = parser->buffer_own != NULL;
     if ((parser->limit - token_start) > 0) {
-        parser->buffer_own = malloc(parser->limit - token_start);               // LCOV_EXCL_LINE
+        parser->buffer_own = malloc(parser->limit - token_start);       // LCOV_EXCL_LINE
         parser->limit = parser->buffer_own + (parser->limit - token_start);
         memcpy(parser->buffer_own, token_start, parser->limit - parser->buffer_own);
         if (res) {
@@ -570,12 +578,4 @@ end_of_stream:
             parser->buffer_own = NULL;
         }
     }
-    return;
-success:
-    parser->result = jsonlite_result_ok;
-end:
-    parser->current = state;
-    parser->control = NULL;
-    parser->cursor = c;
-    parser->callbacks.parse_finished(&parser->callbacks.context);
 }

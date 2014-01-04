@@ -293,7 +293,7 @@ static Class class_JsonLiteNumberToken;
     return [self parse:[data bytes] length:[data length]];
 }
 
-- (void)stream:(NSInputStream *)aStream handleEvent:(NSStreamEvent)eventCode {
+- (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode {
     uint8_t data[4096];
     NSInteger read;
     switch (eventCode) {

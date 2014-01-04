@@ -14,7 +14,6 @@
 
 #import "JsonLiteDeserializer.h"
 #import "JsonLiteMetaData.h"
-#include "jsonlite.h"
 
 @interface JsonLiteArrayBinder : NSObject<JsonLiteValueBinder>
 @end

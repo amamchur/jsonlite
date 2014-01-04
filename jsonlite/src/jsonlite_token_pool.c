@@ -111,7 +111,7 @@ void jsonlite_token_pool_release(jsonlite_token_pool pool) {
 
 jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, jsonlite_token *token) {
     ptrdiff_t length = token->end - token->start;
-    ptrdiff_t hash = jsonlite_hash(token->start, length);
+    ptrdiff_t hash = jsonlite_hash(token->start, (size_t)length);
     ptrdiff_t index = hash & JSONLITE_TOKEN_POOL_FRONT_MASK;
     size_t count = 0;
     jsonlite_token_bucket *bucket = pool->blocks[index].buckets;
@@ -124,7 +124,7 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
             continue;
         }
         
-        if (memcmp(token->start, bucket->start, length) == 0) {
+        if (memcmp(token->start, bucket->start, (size_t)length) == 0) {
             return bucket;
         }
     }
@@ -180,7 +180,7 @@ static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index) 
 // 2. It will not produce the same results on little-endian and big-endian
 //    machines.
 
-static uint32_t MurmurHash2 ( const void * key, int len)
+static uint32_t MurmurHash2(const void * key, size_t len)
 {
     // 'm' and 'r' are mixing constants generated offline.
     // They're not really 'magic', they just happen to work well.
@@ -234,5 +234,5 @@ static uint32_t MurmurHash2 ( const void * key, int len)
 //-----------------------------------------------------------------------------
 
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len) {
-    return MurmurHash2(data, (int)len);
+    return MurmurHash2(data, len);
 }

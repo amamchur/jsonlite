@@ -14,13 +14,12 @@
 
 #import "JsonLiteAccumulator.h"
 #import "JsonLiteCollections.h"
-#import "jsonlite.h"
 
 #define CHECK_CAPACITY() if (keys + capacity < current->keys + current->length + 1) [self extendCapacity]
 
 typedef struct JsonLiteAccumulatorState {
-    id *keys;
-    id *values;
+    id __unsafe_unretained *keys;
+    id __unsafe_unretained *values;
     CFHashCode *hashes;
     size_t length;
     size_t capacity;
@@ -124,8 +123,8 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     size_t newCapacity = capacity * 2;    
     CFHashCode *newHashes = malloc(newCapacity * sizeof(CFHashCode));
     id *buffer = calloc(2 * newCapacity, sizeof(id));
-    id *newValues = buffer;
-    id *newKeys = buffer + newCapacity;
+    id __unsafe_unretained *newValues = buffer;
+    id __unsafe_unretained *newKeys = buffer + newCapacity;
     
     memcpy(newValues, values, capacity * sizeof(id)); // LCOV_EXCL_LINE
     memcpy(newKeys, keys, capacity * sizeof(id)); // LCOV_EXCL_LINE
