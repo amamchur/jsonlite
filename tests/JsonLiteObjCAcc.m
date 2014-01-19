@@ -9,6 +9,7 @@
 #import "JsonLiteObjCAcc.h"
 #import "JsonLiteSenTestCaseExt.h"
 #import "JsonLiteAccumulator.h"
+#import "JsonLiteObjC.h"
 
 @implementation JsonLiteObjCAcc
 
@@ -19,7 +20,7 @@
     }
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
+    id obj = [JsonLiteObjC objectFromData:data depth:4];
     XCTAssertNotNil(obj, @"Object is nil");
     XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
@@ -31,7 +32,7 @@
     }
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
+    id obj = [JsonLiteObjC objectFromData:data depth:4];
     XCTAssertNotNil(obj, @"Object is nil");
     XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
@@ -43,7 +44,7 @@
     }
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
+    id obj = [JsonLiteObjC objectFromData:data depth:4];
     XCTAssertNotNil(obj, @"Object is nil");
     XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
@@ -56,7 +57,7 @@
     }
     [json appendString:@"}"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
+    id obj = [JsonLiteObjC objectFromData:data depth:4];
     XCTAssertNotNil(obj, @"Object is nil");
     XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
@@ -68,7 +69,7 @@
     }
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
+    id obj = [JsonLiteObjC objectFromData:data depth:4];
     XCTAssertNotNil(obj, @"Object is nil");
     XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }
@@ -80,7 +81,7 @@
     }
     [json appendString:@"]"];
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
+    id obj = [JsonLiteObjC objectFromData:data depth:4];
     XCTAssertNotNil(obj, @"Object is nil");
     XCTAssertTrue([obj count] == 1001, @"Incorrect count");
 }

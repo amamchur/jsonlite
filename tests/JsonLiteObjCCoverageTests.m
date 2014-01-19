@@ -273,7 +273,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     JsonLiteSerializer *ser = [JsonLiteSerializer serializer];
     NSData *data = [ser serializeObject:array];
     
-    id obj = [JsonLiteAccumulator objectFromData:data withMaxDepth:32];
+    id obj = [JsonLiteObjC objectFromData:data depth:32];
     XCTAssertTrue([array isEqual:obj], @"Not Equal");
 }
 
@@ -447,7 +447,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 - (void)testCFHashCollection {
     NSString *json = @"{\"test4\": null, \"10D789E\" : null}";
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dic = [JsonLiteAccumulator objectFromData:data withMaxDepth:8];
+    NSDictionary *dic = [JsonLiteObjC objectFromData:data depth:8];
     id obj1 = [dic objectForKey:@"test4"];
     id obj2 = [dic objectForKey:@"10D789E"];
     XCTAssertEqualObjects(obj1, obj2, @"");
@@ -478,7 +478,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     NSNumber *number = [NSNumber numberWithLongLong:LONG_MAX];
     JsonLiteSerializer *ser = [JsonLiteSerializer serializer];
     NSData *data = [ser serializeObject:@[number]];
-    NSArray *array = [JsonLiteAccumulator objectFromData:data withMaxDepth:16];
+    NSArray *array = [JsonLiteObjC objectFromData:data depth:16];
     XCTAssertEqualObjects(number, [array lastObject], @"Objects are not equal");
 }
 

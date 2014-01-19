@@ -142,7 +142,7 @@ typedef struct JsonLiteDictionaryBucket {
 
 @end
 
-id JsonLiteCreateDictionary(const id *values, const id *keys, const CFHashCode *hashes, NSUInteger count) {
+id CreateJsonLiteDictionary(const id *values, const id *keys, const CFHashCode *hashes, NSUInteger count) {
     static Class cls = nil;
     static size_t size = 0;
     if (cls == nil) {
@@ -172,7 +172,7 @@ id JsonLiteCreateDictionary(const id *values, const id *keys, const CFHashCode *
     return [[NSDictionary dictionary] retain]; // Return empty dictionary singleton;
 }
 
-id JsonLiteCreateArray(const id *objects, NSUInteger count) {
+id CreateJsonLiteArray(const id *objects, NSUInteger count) {
     static Class cls = nil;
     static size_t size = 0;
     if (cls == nil) {

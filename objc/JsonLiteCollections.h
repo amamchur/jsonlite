@@ -14,5 +14,5 @@
 
 #import <Foundation/Foundation.h>
 
-id JsonLiteCreateDictionary(const id *values, const id *keys, const CFHashCode *hashes, NSUInteger count);
-id JsonLiteCreateArray(const id *objects, NSUInteger count);
+id CreateJsonLiteDictionary(const id *values, const id *keys, const CFHashCode *hashes, NSUInteger count);
+id CreateJsonLiteArray(const id *objects, NSUInteger count);

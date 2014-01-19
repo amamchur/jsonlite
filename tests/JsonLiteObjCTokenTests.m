@@ -15,11 +15,7 @@
 
 #import "JsonLiteObjCTokenTests.h"
 #import "JsonLiteSenTestCaseExt.h"
-#import "JsonLiteAccumulator.h"
-
-#include "jsonlite.h"
-#import "JsonLiteSerializer.h"
-#import "JsonLiteAccumulator.h"
+#import "JsonLiteObjC.h"
 
 @implementation JsonLiteObjCTokenTests
 
@@ -423,49 +419,49 @@
 - (void)testNumber {
     NSNumber *n1 = [NSNumber numberWithLongLong:4278190080];
     NSData *data  = [[JsonLiteSerializer serializer] serializeObject:@[n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1, n1]];
-    NSNumber *n2 = [[JsonLiteAccumulator objectFromData:data withMaxDepth:16] lastObject];
+    NSNumber *n2 = [[JsonLiteObjC objectFromData:data depth:16] lastObject];
     XCTAssertEqualObjects(n1, n2, @"Object not equals");
 }
 
 - (void)testMaxLong {
     NSNumber *n1 = [NSNumber numberWithLong:LONG_MAX];
     NSData *data  = [[JsonLiteSerializer serializer] serializeObject:@[n1]];
-    NSNumber *n2 = [[JsonLiteAccumulator objectFromData:data withMaxDepth:16] lastObject];
+    NSNumber *n2 = [[JsonLiteObjC objectFromData:data depth:16] lastObject];
     XCTAssertEqualObjects(n1, n2, @"Object not equals");
 }
 
 - (void)testMinLong {
     NSNumber *n1 = [NSNumber numberWithLong:LONG_MIN];
     NSData *data  = [[JsonLiteSerializer serializer] serializeObject:@[n1]];
-    NSNumber *n2 = [[JsonLiteAccumulator objectFromData:data withMaxDepth:16] lastObject];
+    NSNumber *n2 = [[JsonLiteObjC objectFromData:data depth:16] lastObject];
     XCTAssertEqualObjects(n1, n2, @"Object not equals");
 }
 
 - (void)testMaxLongP1 {
     NSNumber *n1 = [NSNumber numberWithLongLong:(long long)LONG_MAX + 1ll];
     NSData *data  = [[JsonLiteSerializer serializer] serializeObject:@[n1]];
-    NSNumber *n2 = [[JsonLiteAccumulator objectFromData:data withMaxDepth:16] lastObject];
+    NSNumber *n2 = [[JsonLiteObjC objectFromData:data depth:16] lastObject];
     XCTAssertEqualObjects(n1, n2, @"Object not equals");
 }
 
 - (void)testMinLongM1 {
     NSNumber *n1 = [NSNumber numberWithLongLong:LONG_MIN - 1ll];
     NSData *data  = [[JsonLiteSerializer serializer] serializeObject:@[n1]];
-    NSNumber *n2 = [[JsonLiteAccumulator objectFromData:data withMaxDepth:16] lastObject];
+    NSNumber *n2 = [[JsonLiteObjC objectFromData:data depth:16] lastObject];
     XCTAssertEqualObjects(n1, n2, @"Object not equals");
 }
 
 - (void)testMaxLongLong {
     NSNumber *n1 = [NSNumber numberWithLongLong:LONG_LONG_MAX];
     NSData *data  = [[JsonLiteSerializer serializer] serializeObject:@[n1]];
-    NSNumber *n2 = [[JsonLiteAccumulator objectFromData:data withMaxDepth:16] lastObject];
+    NSNumber *n2 = [[JsonLiteObjC objectFromData:data depth:16] lastObject];
     XCTAssertEqualObjects(n1, n2, @"Object not equals");
 }
 
 - (void)testMinLongLong {
     NSNumber *n1 = [NSNumber numberWithLongLong:LONG_LONG_MIN];
     NSData *data  = [[JsonLiteSerializer serializer] serializeObject:@[n1]];
-    NSNumber *n2 = [[JsonLiteAccumulator objectFromData:data withMaxDepth:16] lastObject];
+    NSNumber *n2 = [[JsonLiteObjC objectFromData:data depth:16] lastObject];
     XCTAssertEqualObjects(n1, n2, @"Object not equals");
 }
 

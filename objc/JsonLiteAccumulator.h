@@ -36,13 +36,15 @@ struct JsonLiteAccumulatorState;
     jsonlite_token_pool keyPool;
     jsonlite_token_pool stringPool;
     jsonlite_token_pool numberPool;
-    NSUInteger capacity;
+
     struct {
         BOOL didAccumulateArray : 1;
         BOOL didAccumulateDictionary : 1;
     } flags;
     
     NSUInteger depth;
+    NSUInteger capacity;
+    
     id<JsonLiteAccumulatorDelegate> delegate;
 }
 
@@ -56,7 +58,5 @@ struct JsonLiteAccumulatorState;
 + (id)accumulatorWithDepth:(NSUInteger)depth;
 - (id)initWithDepth:(NSUInteger)depth;
 - (id)init;
-
-+ (id)objectFromData:(NSData *)data withMaxDepth:(NSUInteger)maxDepth;
 
 @end

@@ -178,7 +178,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 }
 
 - (void)parserDidEndObject:(JsonLiteParser *)parser {
-    NSDictionary *d = JsonLiteCreateDictionary(current->values,
+    NSDictionary *d = CreateJsonLiteDictionary(current->values,
                                                current->keys,
                                                current->hashes,
                                                current->length);
@@ -197,7 +197,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 }
 
 - (void)parserDidEndArray:(JsonLiteParser *)parser {
-    NSArray *a = JsonLiteCreateArray(current->values, current->length);
+    NSArray *a = CreateJsonLiteArray(current->values, current->length);
     JsonLiteAccumulatorState *prev = current - 1;
     prev->values[prev->length++] = a;
     
@@ -253,17 +253,6 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
     
     CHECK_CAPACITY();
     current->values[current->length++] = (id)CFRetain((CFTypeRef)item->value);
-}
-
-+ (id)objectFromData:(NSData *)data withMaxDepth:(NSUInteger)maxDepth {
-    JsonLiteParser *parser = [[JsonLiteParser alloc] initWithDepth:maxDepth];
-    JsonLiteAccumulator *acc = [[JsonLiteAccumulator alloc] initWithDepth:maxDepth];
-    parser.delegate = acc;
-    BOOL success = [parser parse:data];
-    id obj = success ? [acc object] : nil;
-    [acc release];
-    [parser release];
-    return obj;
 }
 
 @end

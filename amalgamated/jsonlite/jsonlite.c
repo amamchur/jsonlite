@@ -15,7 +15,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-const char *jsonlite_version = "1.1.1";
+const char *jsonlite_version = "1.1.2";
 //
 //  Copyright 2012-2013, Andrii Mamchur
 //
@@ -1894,7 +1894,7 @@ static uint32_t MurmurHash2(const void * key, size_t len)
     
     // Initialize the hash to a 'random' value
     
-    uint32_t h = len;
+    uint32_t h = (uint32_t)len;
     
     // Mix 4 bytes at a time into the hash
     
