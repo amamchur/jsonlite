@@ -98,8 +98,33 @@ typedef enum {
 #ifndef JSONLITE_STREAM_H
 #define JSONLITE_STREAM_H
 
-#include <stdio.h>
+// #include "jsonlite_config.h"
+//
+//  Copyright 2012-2013, Andrii Mamchur
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License
+
+
+#ifndef JSONLITE_CONFIG_H
+#define JSONLITE_CONFIG_H
+
+#define JSONLITE_HEAP_ENABLED           1
+#define JSONLITE_FILE_SYSTEM_ENABLED    1
+
+#endif
+
 #include <stdint.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -114,14 +139,19 @@ extern "C" {
     int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t length);
     void jsonlite_stream_release(jsonlite_stream stream);
     
-    jsonlite_stream jsonlite_mem_stream_init(size_t block_size);
-    size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data, size_t extra_bytes);
-    
     jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size);
     size_t jsonlite_static_mem_stream_written_bytes(jsonlite_stream stream);
+    const void * jsonlite_static_mem_stream_data(jsonlite_stream stream);
     
+#if JSONLITE_FILE_SYSTEM_ENABLED
     jsonlite_stream jsonlite_file_stream_init(FILE *file);
-   
+#endif
+
+#if JSONLITE_HEAP_ENABLED
+    jsonlite_stream jsonlite_mem_stream_init(size_t block_size);
+    size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data, size_t extra_bytes);
+#endif
+    
     extern jsonlite_stream jsonlite_null_stream;
     extern jsonlite_stream jsonlite_stdout_stream;
 
@@ -131,6 +161,8 @@ extern "C" {
 
 #endif
 
+// #include "jsonlite_config.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -139,6 +171,12 @@ extern "C" {
     struct jsonlite_builder_struct;
     typedef struct jsonlite_builder_struct* jsonlite_builder;
 
+    size_t jsonlite_builder_estimate_size(size_t depth);
+    
+    jsonlite_builder jsonlite_builder_init_memory(void *memory, size_t size, jsonlite_stream stream);
+    
+#if JSONLITE_HEAP_ENABLED
+    
     /** @brief Creates and initializes new instance of builder object.
      *
      * You should release jsonlite_builder object using ::jsonlite_builder_release.
@@ -158,6 +196,8 @@ extern "C" {
      * @return jsonlite_result_invalid_argument when builder is NULL; otherwise jsonlite_result_ok.
      */
     jsonlite_result jsonlite_builder_release(jsonlite_builder builder);
+    
+#endif
        
     /** \brief Sets beautify indentation. Default is 0.
      *
@@ -385,7 +425,6 @@ extern "C" {
 #ifndef JSONLITE_PARSER_H
 #define JSONLITE_PARSER_H
 
-#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 // #include "jsonlite_token.h"
@@ -407,7 +446,6 @@ extern "C" {
 #ifndef JSONLITE_TOKEN_H
 #define JSONLITE_TOKEN_H
 
-#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -596,6 +634,72 @@ extern "C" {
 
 // #include "jsonlite_types.h"
 
+// #include "jsonlite_buffer.h"
+//
+//  Copyright 2012-2013, Andrii Mamchur
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License
+
+#ifndef JSONLITE_BUFFER_H
+#define JSONLITE_BUFFER_H
+
+#include <stdint.h>
+// #include "jsonlite_config.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+    typedef struct jsonlite_buffer_struct *jsonlite_buffer;
+    typedef int (*jsonlite_buffer_mem_fn)(jsonlite_buffer buffer, const void *data, size_t length);
+    typedef size_t (*jsonlite_buffer_size_fn)(jsonlite_buffer buffer);
+    typedef const void * (*jsonlite_buffer_data_fn)(jsonlite_buffer buffer);
+    typedef void (*jsonlite_buffer_cleanup_fn)(jsonlite_buffer buffer);
+    typedef void (*jsonlite_buffer_cleanup_fn)(jsonlite_buffer buffer);
+    
+    struct jsonlite_buffer_struct {
+        uint8_t *mem;
+        size_t size;
+        size_t capacity;
+        
+        jsonlite_buffer_mem_fn set_mem;
+        jsonlite_buffer_mem_fn append_mem;
+        jsonlite_buffer_cleanup_fn cleanup;
+    } jsonlite_buffer_struct;
+    
+    int jsonlite_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t length);
+    int jsonlite_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t length);
+    const void *jsonlite_buffer_data(jsonlite_buffer buffer);
+    size_t jsonlite_buffer_size(jsonlite_buffer buffer);
+    void jsonlite_buffer_cleanup(jsonlite_buffer buffer);
+
+    #define jsonlite_static_buffer_size() (sizeof(jsonlite_buffer_struct))
+    jsonlite_buffer jsonlite_static_buffer_init_memory(void *mem);
+    
+#if JSONLITE_HEAP_ENABLED
+    #define jsonlite_heap_buffer_size() (sizeof(jsonlite_buffer_struct))
+    jsonlite_buffer jsonlite_heap_buffer_init_memory(void *mem);
+#endif
+    
+    extern jsonlite_buffer jsonlite_null_buffer;
+    
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -681,14 +785,22 @@ extern "C" {
         jsonlite_callback_context context;
     } jsonlite_parser_callbacks;
 
-    /** @brief Estimates memory usage.
-     * @note
-     * This value depends on CPU architectures.
-     * @param depth the parsing depth.
-     * @return Estimated size in bytes.
-     */
-    size_t jsonlite_parser_estimate_size(size_t depth);
-
+    typedef uint8_t parse_state;
+    struct jsonlite_parser_struct {
+        const uint8_t *cursor;
+        const uint8_t *limit;
+        const uint8_t *buffer;
+        
+        jsonlite_buffer rest_buffer;
+        
+        parse_state *current;
+        parse_state *last;
+        parse_state **control;
+        
+        jsonlite_result result;
+        jsonlite_parser_callbacks callbacks;
+    } jsonlite_parser_struct;
+    
     /** @brief Creates and initializes new instance of parser object.
      *
      * You should release jsonlite_parser object using ::jsonlite_parser_release.
@@ -697,7 +809,7 @@ extern "C" {
      * @param depth the parsing depth.
      * @return jsonlite_parser object.
      */
-    jsonlite_parser jsonlite_parser_init(size_t depth);
+    jsonlite_parser jsonlite_parser_init(size_t depth, jsonlite_buffer rest_buffer);
     
     /** @brief Initializes memory for parser object.
      *
@@ -708,7 +820,7 @@ extern "C" {
      * @param size the memory size.
      * @return jsonlite_parser object.
      */
-    jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size);
+    jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size, jsonlite_buffer rest_buffer);
     
     /** \brief Copies provided callbacks structure to parser object.
      * @see jsonlite_parser
@@ -818,6 +930,8 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
+#define jsonlite_parser_estimate_size(depth) (sizeof(jsonlite_parser_struct) + (depth) * sizeof(parse_state))
 
 #endif
 

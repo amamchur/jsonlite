@@ -3,6 +3,7 @@
 	"target": "../amalgamated/jsonlite/jsonlite.c",
 	"sources": [
 		"../jsonlite/src/jsonlite.c",
+		"../jsonlite/src/jsonlite_buffer.c",
 		"../jsonlite/src/jsonlite_builder.c",
 		"../jsonlite/src/jsonlite_parser.c",
 		"../jsonlite/src/jsonlite_stream.c",
