@@ -13,7 +13,7 @@
 
 - (void)testStaticMemStream {
     char json[] = "{\"key\":\"hello\"}";
-    char buffer[512] = {0};
+    char buffer[jsonlite_static_buffer_size() + 32] = {0};
     
     jsonlite_stream stream = jsonlite_static_mem_stream_init(buffer, sizeof(buffer));
     jsonlite_builder builder = jsonlite_builder_init(0xFF, stream);
@@ -28,18 +28,19 @@
     
     size_t buffer_size = jsonlite_static_mem_stream_written_bytes(stream);
     size_t json_size = strlen(json);
+    char *data = (char *)jsonlite_static_mem_stream_data(stream);
     
     XCTAssertTrue(buffer_size == json_size, @"Incorrect size");
     
     size_t min = MIN(buffer_size, json_size);
     for (int i = 0; i < min; i++) {
-        XCTAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == data[i], @"Bad chars %c %c", json[i], buffer[i]);
     }
 }
 
 - (void)testSmallStaticMemStream {
     char json[] = "{\"key\":\"hello\",\"long\":\"longlonglonglonglonglong\"}";
-    char buffer[8] = {0};
+    char buffer[jsonlite_static_buffer_size() + 32] = {0};
     
     jsonlite_stream stream = jsonlite_static_mem_stream_init(buffer, sizeof(buffer));
     jsonlite_builder builder = jsonlite_builder_init(0xFF, stream);
@@ -56,16 +57,17 @@
     
     size_t buffer_size = jsonlite_static_mem_stream_written_bytes(stream);
     size_t json_size = strlen(json);
+    char *data = (char *)jsonlite_static_mem_stream_data(stream);
     
     size_t min = MIN(buffer_size, json_size);
     for (int i = 0; i < min; i++) {
-        XCTAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == data[i], @"Bad chars %c %c", json[i], buffer[i]);
     }
 }
 
 - (void)testSmallStaticMemStream1 {
     char json[] = "{\"long\":\"longlonglonglonglonglong\"}";
-    char buffer[16] = {0};
+    char buffer[jsonlite_static_buffer_size() + 32] = {0};
     
     jsonlite_stream stream = jsonlite_static_mem_stream_init(buffer, sizeof(buffer));
     jsonlite_builder builder = jsonlite_builder_init(0xFF, stream);
@@ -80,10 +82,11 @@
     
     size_t buffer_size = jsonlite_static_mem_stream_written_bytes(stream);
     size_t json_size = strlen(json);
-    
     size_t min = MIN(buffer_size, json_size);
+    char *data = (char *)jsonlite_static_mem_stream_data(stream);
+    
     for (int i = 0; i < min; i++) {
-        XCTAssertTrue(json[i] == buffer[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == data[i], @"Bad chars %c %c", json[i], buffer[i]);
     }
 }
 
@@ -91,7 +94,7 @@
 
 - (void)testFileStream {
     char json[] = "{\"key\":\"hello\"}";
-    char buffer[512] = {0};
+    char buffer[jsonlite_static_buffer_size() + 32] = {0};
     
     FILE *file = tmpfile ();
     jsonlite_stream stream = jsonlite_file_stream_init(file);

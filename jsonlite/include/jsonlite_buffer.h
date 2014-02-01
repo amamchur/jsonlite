@@ -46,6 +46,9 @@ extern "C" {
     size_t jsonlite_buffer_size(jsonlite_buffer buffer);
     void jsonlite_buffer_cleanup(jsonlite_buffer buffer);
 
+    #define jsonlite_static_buffer_size() (sizeof(jsonlite_buffer_struct))
+    jsonlite_buffer jsonlite_static_buffer_init_memory(void *mem);
+    
 #if JSONLITE_HEAP_ENABLED
     #define jsonlite_heap_buffer_size() (sizeof(jsonlite_buffer_struct))
     jsonlite_buffer jsonlite_heap_buffer_init_memory(void *mem);

@@ -35,6 +35,7 @@ extern "C" {
     
     jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size);
     size_t jsonlite_static_mem_stream_written_bytes(jsonlite_stream stream);
+    const void * jsonlite_static_mem_stream_data(jsonlite_stream stream);
     
 #if JSONLITE_FILE_SYSTEM_ENABLED
     jsonlite_stream jsonlite_file_stream_init(FILE *file);

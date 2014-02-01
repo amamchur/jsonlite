@@ -17,6 +17,24 @@
 #include <stdlib.h>
 #include <string.h>
 
+static int jsonlite_null_buffer_set_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
+    return length == 0 ? 0 : -1;
+}
+
+static void jsonlite_null_buffer_cleanup(jsonlite_buffer buffer) {
+}
+
+struct jsonlite_buffer_struct jsonlite_null_buffer_struct = {
+    NULL,
+    0,
+    0,
+    &jsonlite_null_buffer_set_append_mem,
+    &jsonlite_null_buffer_set_append_mem,
+    &jsonlite_null_buffer_cleanup
+};
+
+jsonlite_buffer jsonlite_null_buffer = &jsonlite_null_buffer_struct;
+
 const void *jsonlite_buffer_data(jsonlite_buffer buffer) {
     return buffer->mem;
 }
@@ -37,6 +55,38 @@ void jsonlite_buffer_cleanup(jsonlite_buffer buffer) {
     if (buffer != NULL) {
         buffer->cleanup(buffer);
     }
+}
+
+static int jsonlite_static_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t length) {
+    if (length > buffer->capacity) {
+        return -1;
+    }
+    
+    buffer->size = length;
+    memcpy(buffer->mem, data, length);
+    return 0;
+}
+
+static int jsonlite_static_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
+    size_t total_size = buffer->size + length;
+    if (total_size > buffer->capacity) {
+        return -1;
+    }
+    
+    memcpy(buffer->mem + buffer->size, data, length);
+    buffer->size = total_size;
+    return 0;
+}
+
+jsonlite_buffer jsonlite_static_buffer_init_memory(void *mem) {
+    struct jsonlite_buffer_struct *buffer = (struct jsonlite_buffer_struct *)mem;
+    buffer->set_mem = &jsonlite_static_buffer_set_mem;
+    buffer->append_mem = &jsonlite_static_buffer_append_mem;
+    buffer->cleanup = &jsonlite_null_buffer_cleanup;
+    buffer->mem = NULL;
+    buffer->size = 0;
+    buffer->capacity = 0;
+    return buffer;
 }
 
 #if JSONLITE_HEAP_ENABLED
@@ -83,23 +133,3 @@ jsonlite_buffer jsonlite_heap_buffer_init_memory(void *mem) {
 }
 
 #endif
-
-static int jsonlite_null_buffer_set_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
-    return length == 0 ? 0 : -1;
-}
-
-static void jsonlite_null_buffer_cleanup(jsonlite_buffer buffer) {
-}
-
-struct jsonlite_buffer_struct jsonlite_null_buffer_struct = {
-    NULL,
-    0,
-    0,
-    &jsonlite_null_buffer_set_append_mem,
-    &jsonlite_null_buffer_set_append_mem,
-    &jsonlite_null_buffer_cleanup
-};
-
-jsonlite_buffer jsonlite_null_buffer = &jsonlite_null_buffer_struct;
-
-
