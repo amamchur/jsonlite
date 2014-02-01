@@ -159,7 +159,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     jsonlite_result result = jsonlite_parser_get_result(NULL);
     XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
 
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     char json[] = "{}";
     result = jsonlite_parser_tokenize(NULL, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
@@ -178,7 +178,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testEmptyCallbacks {
     char json[] = "{\"key\" : 12345, \"array\": [null, true, false, \"string\"]}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Parse fails");
@@ -187,7 +187,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testInvalidEscape {
     char json[] = "{\"key\" : \"\\u000Q\"}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_invalid_escape, @"Parse fails");
@@ -196,7 +196,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testInvalidNegativeNumber {
     char json[] = "{\"key\" : -w}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_invalid_number, @"Parse fails");
@@ -205,7 +205,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testInvalidHexNumber {
     char json[] = "{\"key\" : -0x0011}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_invalid_number, @"Parse fails");
@@ -214,7 +214,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testInvalidNumberEnding {
     char json[] = "{\"key\" : 123456w}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_invalid_number, @"Parse fails");
@@ -223,7 +223,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testInvalidFracStart {
     char json[] = "{\"key\" : 12345.A132}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_invalid_number, @"Parse fails");
@@ -232,7 +232,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testInvalidFracEnding {
     char json[] = "{\"key\" : 12345.132A}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_invalid_number, @"Parse fails");
@@ -241,7 +241,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testInvalidExpEnding {
     char json[] = "{\"key\" : 12345.132e01A}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_invalid_number, @"Parse fails");
@@ -251,7 +251,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 - (void)testJsonChunk {
     char json1[] = "{\"key\" : 12345, \"obj\": {}, \"arr";
     char json2[] = "ay\":[null, true, false, \"string\"]}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json1, sizeof(json1) - 1);
     XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Parse fails");
@@ -342,7 +342,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     char json1[] = "     ";
     char json2[] = "{\"key\" : 12345, \"obj\": {}, \"arr";
     char json3[] = "ay\":[null, true, false, \"string\"]}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json1, sizeof(json1) - 1);
     XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Parse fails");
@@ -358,11 +358,11 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 - (void)testJsonChunkIncorrectInitialization {
     char json1[] = "{\"key\" : 12345, \"obj\": {}, \"arr";
     char json2[] = "ay\":[null, true, false, \"string\"]}";
-    jsonlite_parser ps = jsonlite_parser_init(100);
+    jsonlite_parser ps = jsonlite_parser_init(100, jsonlite_null_buffer);
     XCTAssertTrue(ps != NULL, @"jsonlite_init_parser return NULL");
     jsonlite_result result = jsonlite_parser_tokenize(ps, json1, sizeof(json1) - 1);
     XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Parse fails");
-    jsonlite_parser next = jsonlite_parser_init(100);
+    jsonlite_parser next = jsonlite_parser_init(100, jsonlite_null_buffer);
     
     result = jsonlite_parser_tokenize(NULL, json2, sizeof(json2) - 1);
     XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
@@ -376,7 +376,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testSuspendResume {
     char json1[] = "{\"key\" : 12345, \"obj\": {}, \"array\":[null, true, false, \"string\"]}";
-    jsonlite_parser p = jsonlite_parser_init(100);
+    jsonlite_parser p = jsonlite_parser_init(100, jsonlite_null_buffer);
     jsonlite_parser_callbacks cbs = {
         &state_suspend,
         &state_suspend,
@@ -455,7 +455,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testKeyDepthCheck {
     char json[] = "{\"obj\": {\"obj\": {\"obj\": {}}}}";
-    jsonlite_parser p = jsonlite_parser_init(2);
+    jsonlite_parser p = jsonlite_parser_init(2, jsonlite_null_buffer);
     
     jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_depth_limit, @"Incorrect result");
@@ -465,7 +465,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testArrayValueDepthCheck {
     char json[] = "[1, [1, [1, [1, [0]]]]]";
-    jsonlite_parser p = jsonlite_parser_init(2);
+    jsonlite_parser p = jsonlite_parser_init(2, jsonlite_null_buffer);
     
     jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_depth_limit, @"Incorrect result");
@@ -484,7 +484,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testVersion {
     NSString *version = [JsonLiteObjC version];
-    XCTAssertEqualObjects(version, @"1.1.1", @"Incorrect version");
+    XCTAssertEqualObjects(version, @"1.2.0", @"Incorrect version");
 }
 
 @end

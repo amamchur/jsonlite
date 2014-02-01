@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include "jsonlite_types.h"
 #include "jsonlite_stream.h"
+#include "jsonlite_config.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +28,12 @@ extern "C" {
     struct jsonlite_builder_struct;
     typedef struct jsonlite_builder_struct* jsonlite_builder;
 
+    size_t jsonlite_builder_estimate_size(size_t depth);
+    
+    jsonlite_builder jsonlite_builder_init_memory(void *memory, size_t size, jsonlite_stream stream);
+    
+#if JSONLITE_HEAP_ENABLED
+    
     /** @brief Creates and initializes new instance of builder object.
      *
      * You should release jsonlite_builder object using ::jsonlite_builder_release.
@@ -46,6 +53,8 @@ extern "C" {
      * @return jsonlite_result_invalid_argument when builder is NULL; otherwise jsonlite_result_ok.
      */
     jsonlite_result jsonlite_builder_release(jsonlite_builder builder);
+    
+#endif
        
     /** \brief Sets beautify indentation. Default is 0.
      *

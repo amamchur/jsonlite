@@ -16,7 +16,6 @@
 #ifndef JSONLITE_TOKEN_H
 #define JSONLITE_TOKEN_H
 
-#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 

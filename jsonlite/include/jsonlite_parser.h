@@ -16,11 +16,11 @@
 #ifndef JSONLITE_PARSER_H
 #define JSONLITE_PARSER_H
 
-#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "jsonlite_token.h"
 #include "jsonlite_types.h"
+#include "jsonlite_buffer.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -106,14 +106,22 @@ extern "C" {
         jsonlite_callback_context context;
     } jsonlite_parser_callbacks;
 
-    /** @brief Estimates memory usage.
-     * @note
-     * This value depends on CPU architectures.
-     * @param depth the parsing depth.
-     * @return Estimated size in bytes.
-     */
-    size_t jsonlite_parser_estimate_size(size_t depth);
-
+    typedef uint8_t parse_state;
+    struct jsonlite_parser_struct {
+        const uint8_t *cursor;
+        const uint8_t *limit;
+        const uint8_t *buffer;
+        
+        jsonlite_buffer rest_buffer;
+        
+        parse_state *current;
+        parse_state *last;
+        parse_state **control;
+        
+        jsonlite_result result;
+        jsonlite_parser_callbacks callbacks;
+    } jsonlite_parser_struct;
+    
     /** @brief Creates and initializes new instance of parser object.
      *
      * You should release jsonlite_parser object using ::jsonlite_parser_release.
@@ -122,7 +130,7 @@ extern "C" {
      * @param depth the parsing depth.
      * @return jsonlite_parser object.
      */
-    jsonlite_parser jsonlite_parser_init(size_t depth);
+    jsonlite_parser jsonlite_parser_init(size_t depth, jsonlite_buffer rest_buffer);
     
     /** @brief Initializes memory for parser object.
      *
@@ -133,7 +141,7 @@ extern "C" {
      * @param size the memory size.
      * @return jsonlite_parser object.
      */
-    jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size);
+    jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size, jsonlite_buffer rest_buffer);
     
     /** \brief Copies provided callbacks structure to parser object.
      * @see jsonlite_parser
@@ -243,5 +251,7 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
+#define jsonlite_parser_estimate_size(depth) (sizeof(jsonlite_parser_struct) + (depth) * sizeof(parse_state))
 
 #endif

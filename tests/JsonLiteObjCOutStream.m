@@ -87,6 +87,8 @@
     }
 }
 
+#if JSONLITE_FILE_SYSTEM_ENABLED
+
 - (void)testFileStream {
     char json[] = "{\"key\":\"hello\"}";
     char buffer[512] = {0};
@@ -116,6 +118,8 @@
         
     fclose(file);
 }
+
+#endif
 
 - (void)testNullStream {
     char hello[] = "Hello mem stream!";

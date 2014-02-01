@@ -21,6 +21,8 @@
 #include <stddef.h>
 #include <string.h>
 
+#define MIN_DEPTH 2
+
 #define jsonlite_builder_check_depth()          \
 do {                                            \
     if (builder->state >= builder->limit) {     \
@@ -67,7 +69,7 @@ typedef struct jsonlite_builder_struct {
     jsonlite_stream stream;
 
     size_t indentation;
-    char *doubleFormat;
+    char doubleFormat[8];
 } jsonlite_builder_struct;
 
 static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_write_state a);
@@ -78,13 +80,48 @@ static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *da
 static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length);
 static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count);
 static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length);
+static jsonlite_builder jsonlite_builder_configure(void *memory, size_t size, jsonlite_stream stream);
+
+#if JSONLITE_HEAP_ENABLED
 
 jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
-    jsonlite_builder builder;
+    depth = depth < 2 ? MIN_DEPTH : depth;
+    size_t size = sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state);
+    void *mem = malloc(size);
+    return jsonlite_builder_configure(mem, size, stream);
+}
 
-    depth = depth < 2 ? 2 : depth;
+jsonlite_result jsonlite_builder_release(jsonlite_builder builder) {
+    if (builder == NULL) {
+        return jsonlite_result_invalid_argument;
+    }
+    
+    free(builder);
+    return jsonlite_result_ok;
+}
 
-    builder = malloc(sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state));
+#endif
+
+size_t jsonlite_builder_estimate_size(size_t depth) {
+    depth = depth < MIN_DEPTH ? MIN_DEPTH : depth;
+    return sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state);
+}
+
+jsonlite_builder jsonlite_builder_init_memory(void *memory, size_t size, jsonlite_stream stream) {
+    if (memory == NULL) {
+        return NULL;
+    }
+    
+    if (size < jsonlite_builder_estimate_size(MIN_DEPTH)) {
+        return NULL;
+    }
+    
+    return jsonlite_builder_configure(memory, size, stream);
+}
+
+static jsonlite_builder jsonlite_builder_configure(void *memory, size_t size, jsonlite_stream stream) {
+    jsonlite_builder builder = (jsonlite_builder)memory;
+    size_t depth = (size - sizeof(jsonlite_builder_struct)) / sizeof(jsonlite_write_state);
     builder->state = (jsonlite_write_state *)((uint8_t *)builder + sizeof(jsonlite_builder_struct));
     builder->limit = builder->state + depth - 1;
     builder->stack = builder->state;
@@ -93,16 +130,6 @@ jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
     *builder->state = jsonlite_accept_object_begin | jsonlite_accept_array_begin;
     jsonlite_builder_set_double_format(builder, "%.16g");
     return builder;
-}
-
-jsonlite_result jsonlite_builder_release(jsonlite_builder builder) {
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-
-    free(builder->doubleFormat);
-    free(builder);
-    return jsonlite_result_ok;
 }
 
 jsonlite_result jsonlite_builder_set_indentation(jsonlite_builder builder, size_t indentation) {
@@ -115,7 +142,7 @@ jsonlite_result jsonlite_builder_set_indentation(jsonlite_builder builder, size_
 
 jsonlite_result jsonlite_builder_set_double_format(jsonlite_builder builder, const char *format) {
     if (builder != NULL && format != NULL) {
-        builder->doubleFormat = strdup(format);
+        strcpy(builder->doubleFormat, format);
         return jsonlite_result_ok;
     }
     return jsonlite_result_invalid_argument;

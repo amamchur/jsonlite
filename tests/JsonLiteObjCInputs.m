@@ -58,11 +58,11 @@
     XCTAssertTrue(size > 0, @"Size can must be greater zero.");
     
     // jsonlite_parser_init
-    jsonlite_parser parser = jsonlite_parser_init(0);
+    jsonlite_parser parser = jsonlite_parser_init(0, jsonlite_null_buffer);
     XCTAssertTrue(parser != NULL, @"Parser is NULL");
     jsonlite_parser_release(parser);
     
-    parser = jsonlite_parser_init(16);
+    parser = jsonlite_parser_init(16, jsonlite_null_buffer);
     XCTAssertTrue(parser != NULL, @"Parser is NULL");
     
     // jsonlite_parser_set_callback
@@ -128,11 +128,11 @@
     jsonlite_parser_release(parser);
     jsonlite_parser_release(NULL);
     
-    parser = jsonlite_parser_init_memory(NULL, 123);
+    parser = jsonlite_parser_init_memory(NULL, 123, jsonlite_null_buffer);
     XCTAssertTrue(parser == NULL, @"Parser in not NULL");
     
     char mem[256];
-    parser = jsonlite_parser_init_memory(mem, 5);
+    parser = jsonlite_parser_init_memory(mem, 5, jsonlite_null_buffer);
     XCTAssertTrue(parser == NULL, @"Parser in not NULL");
 }
 

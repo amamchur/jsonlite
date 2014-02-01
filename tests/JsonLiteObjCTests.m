@@ -350,7 +350,7 @@
 - (void)testParserInStack {
     NSData *data = [self dataFromFile:@"random" inDir:@"success"];
     uint8_t memory[200];
-    jsonlite_parser parser = jsonlite_parser_init_memory(memory, sizeof(memory));
+    jsonlite_parser parser = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(parser, [data bytes], [data length]);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     jsonlite_parser_cleanup(parser);

@@ -13,4 +13,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-const char *jsonlite_version = "1.2.0";
+
+#ifndef JSONLITE_CONFIG_H
+#define JSONLITE_CONFIG_H
+
+#define JSONLITE_HEAP_ENABLED           1
+#define JSONLITE_FILE_SYSTEM_ENABLED    1
+
+#endif

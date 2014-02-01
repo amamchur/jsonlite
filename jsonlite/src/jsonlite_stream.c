@@ -43,6 +43,8 @@ static void jsonlite_stream_free_mem(jsonlite_stream stream) {
     free((void *)stream);
 }
 
+#ifdef JSONLITE_HEAP_ENABLED
+
 #define CAST_TO_MEM_STREAM(S)   (jsonlite_mem_stream *)((uint8_t *)(S) + sizeof(jsonlite_stream_struct))
 #define SIZE_OF_MEM_STREAM()    (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_mem_stream))
 
@@ -149,6 +151,8 @@ size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data, size_t e
     return size;
 }
 
+#endif
+
 #define CAST_TO_STATIC_MEM_STREAM(S)   (jsonlite_static_mem_stream *)((uint8_t *)(S) + sizeof(jsonlite_stream_struct))
 #define SIZE_OF_STATIC_MEM_STREAM()    (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_static_mem_stream))
 
@@ -193,6 +197,8 @@ size_t jsonlite_static_mem_stream_written_bytes(jsonlite_stream stream) {
     return mem_stream->written;
 }
 
+#if JSONLITE_FILE_SYSTEM_ENABLED
+
 #define CAST_TO_FILE_STREAM(S)   (jsonlite_file_stream *)((uint8_t *)(S) + sizeof(jsonlite_stream_struct))
 #define SIZE_OF_FILE_STREAM()    (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_file_stream))
 
@@ -215,6 +221,8 @@ jsonlite_stream jsonlite_file_stream_init(FILE *file) {
     file_stream->file = file;
     return stream;
 }
+
+#endif
 
 static int jsonlite_null_stream_write(jsonlite_stream stream, const void *data, size_t length) {
     return (int)length;

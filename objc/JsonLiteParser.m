@@ -18,6 +18,7 @@
 
 typedef struct JsonLiteInternal {
     jsonlite_parser parser;
+    jsonlite_buffer buffer;
     void *parserObj;
     void *delegate;
     IMP parseFinished;
@@ -237,8 +238,12 @@ static Class class_JsonLiteNumberToken;
     self = [super init];
     if (self != nil) {        
         depth = aDepth < 2 ? 16 : aDepth;
-        internal = malloc(sizeof(JsonLiteInternal) + jsonlite_parser_estimate_size(depth));
+        size_t size = sizeof(JsonLiteInternal);
+        size += jsonlite_parser_estimate_size(depth);
+        size += jsonlite_heap_buffer_size();
+        internal = malloc(size);
         internal->parser = NULL;
+        internal->buffer = NULL;
     }
     return self;
 }
@@ -259,6 +264,7 @@ static Class class_JsonLiteNumberToken;
     self.parseError = nil;
     self.stream = nil;
     self.runLoop = nil;
+    jsonlite_buffer_cleanup(internal->buffer);
     jsonlite_parser_cleanup(internal->parser);
     free(internal);
     [super dealloc];
@@ -271,10 +277,13 @@ static Class class_JsonLiteNumberToken;
     }
     
     jsonlite_parser jp = internal->parser;
+    jsonlite_buffer buffer = internal->buffer;
     if (jp == NULL) {
-        void *memory = (uint8_t *)internal + sizeof(JsonLiteInternal);
         size_t size = jsonlite_parser_estimate_size(depth);
-        jp = jsonlite_parser_init_memory(memory, size);
+        void *parserMemory = (uint8_t *)internal + sizeof(JsonLiteInternal);
+        void *bufferMemory = (uint8_t *)parserMemory + size;
+        buffer = jsonlite_heap_buffer_init_memory(bufferMemory);
+        jp = jsonlite_parser_init_memory(parserMemory, size, buffer);
         internal->parser = jp;
         if (delegate != nil) {
             jsonlite_parser_callbacks cbs = JsonLiteParserCallbacks;

@@ -32,7 +32,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -46,7 +46,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -60,7 +60,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -74,7 +74,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -88,7 +88,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -102,7 +102,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -116,7 +116,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -130,7 +130,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -144,7 +144,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -158,7 +158,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -172,7 +172,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -186,7 +186,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -200,7 +200,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -214,7 +214,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -228,7 +228,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -242,7 +242,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -256,7 +256,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -270,7 +270,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -284,7 +284,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -298,7 +298,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -312,7 +312,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -326,7 +326,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -340,7 +340,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -354,7 +354,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -368,7 +368,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -382,7 +382,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -396,7 +396,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
@@ -410,7 +410,7 @@
     
     const void *buffer = [data bytes];
     size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
+    jsonlite_parser ps = jsonlite_parser_init(8, jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
     jsonlite_parser_release(ps);
