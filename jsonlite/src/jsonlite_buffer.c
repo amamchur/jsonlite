@@ -13,7 +13,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
+#ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_buffer.h"
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -119,6 +122,9 @@ static int jsonlite_heap_buffer_append_mem(jsonlite_buffer buffer, const void *d
 
 static void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer) {
     free(buffer->mem);
+    buffer->mem = NULL;
+    buffer->size = 0;
+    buffer->capacity = 0;
 }
 
 jsonlite_buffer jsonlite_heap_buffer_init_memory(void *mem) {

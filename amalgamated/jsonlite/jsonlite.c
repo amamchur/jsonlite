@@ -31,7 +31,10 @@ const char *jsonlite_version = "1.2.0";
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
+#ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_buffer.h"
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 

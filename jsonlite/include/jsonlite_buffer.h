@@ -17,6 +17,7 @@
 #define JSONLITE_BUFFER_H
 
 #include <stdint.h>
+#include <stdlib.h>
 #include "jsonlite_config.h"
 
 #ifdef __cplusplus
@@ -27,7 +28,6 @@ extern "C" {
     typedef int (*jsonlite_buffer_mem_fn)(jsonlite_buffer buffer, const void *data, size_t length);
     typedef size_t (*jsonlite_buffer_size_fn)(jsonlite_buffer buffer);
     typedef const void * (*jsonlite_buffer_data_fn)(jsonlite_buffer buffer);
-    typedef void (*jsonlite_buffer_cleanup_fn)(jsonlite_buffer buffer);
     typedef void (*jsonlite_buffer_cleanup_fn)(jsonlite_buffer buffer);
     
     struct jsonlite_buffer_struct {

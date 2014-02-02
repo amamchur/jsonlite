@@ -18,6 +18,7 @@
 
 #include "jsonlite_config.h"
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 #ifdef __cplusplus

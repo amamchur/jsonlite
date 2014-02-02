@@ -18,6 +18,7 @@
 #endif
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 
 struct jsonlite_stream_struct {
@@ -176,7 +177,7 @@ static int jsonlite_static_mem_stream_write(jsonlite_stream stream, const void *
 }
 
 jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size) {
-    int extra_size = size - sizeof(jsonlite_stream_struct) - sizeof(jsonlite_static_mem_stream);
+    int extra_size = (int)size - sizeof(jsonlite_stream_struct) - sizeof(jsonlite_static_mem_stream);
     if (extra_size <= 0) {
         return NULL;
     }
@@ -187,7 +188,7 @@ jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size) {
     
     jsonlite_static_mem_stream *mem_stream = (jsonlite_static_mem_stream *)((uint8_t *)stream + sizeof(jsonlite_stream_struct));
     mem_stream->buffer = (uint8_t *)mem_stream + sizeof(jsonlite_static_mem_stream);
-    mem_stream->size = extra_size;
+    mem_stream->size = (size_t)extra_size;
     mem_stream->written = 0;
     mem_stream->enabled = 1;
     return stream;
