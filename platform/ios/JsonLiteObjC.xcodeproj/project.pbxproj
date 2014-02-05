@@ -24,7 +24,6 @@
 		B50155601867A4DA002AF125 /* JsonLiteSerializer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5A2EB07186025E400293619 /* JsonLiteSerializer.h */; };
 		B52C01E8189CFBD000A7F7AC /* jsonlite_buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = B52C01E7189CFBBC00A7F7AC /* jsonlite_buffer.c */; };
 		B52C01E9189CFBD100A7F7AC /* jsonlite_buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = B52C01E7189CFBBC00A7F7AC /* jsonlite_buffer.c */; };
-		B52C0201189E821A00A7F7AC /* jsonlite_config.h in Sources */ = {isa = PBXBuildFile; fileRef = B52C01E3189CEEC800A7F7AC /* jsonlite_config.h */; };
 		B52C0208189E83B400A7F7AC /* jsonlite_buffer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B52C01E6189CFBAD00A7F7AC /* jsonlite_buffer.h */; };
 		B52C0209189E83B400A7F7AC /* jsonlite_config.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B52C01E3189CEEC800A7F7AC /* jsonlite_config.h */; };
 		B5A2EABD186024A400293619 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A2EABC186024A400293619 /* Foundation.framework */; };
@@ -466,7 +465,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B52C0201189E821A00A7F7AC /* jsonlite_config.h in Sources */,
 				B5A2EAF2186025D800293619 /* jsonlite.c in Sources */,
 				B5A2EB09186025E400293619 /* JsonLiteAccumulator.m in Sources */,
 				B5A2EAF7186025D800293619 /* jsonlite_token_pool.c in Sources */,

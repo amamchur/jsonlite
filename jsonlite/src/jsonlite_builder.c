@@ -61,17 +61,6 @@ enum {
                                     | jsonlite_accept_array_end
 };
 
-typedef uint16_t jsonlite_write_state;
-typedef struct jsonlite_builder_struct {
-    jsonlite_write_state *state;
-    jsonlite_write_state *limit;
-    jsonlite_write_state *stack;
-    jsonlite_stream stream;
-
-    size_t indentation;
-    char doubleFormat[8];
-} jsonlite_builder_struct;
-
 static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_write_state a);
 static void jsonlite_builder_pop_state(jsonlite_builder builder);
 static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder);
@@ -101,11 +90,6 @@ jsonlite_result jsonlite_builder_release(jsonlite_builder builder) {
 }
 
 #endif
-
-size_t jsonlite_builder_estimate_size(size_t depth) {
-    depth = depth < MIN_DEPTH ? MIN_DEPTH : depth;
-    return sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state);
-}
 
 jsonlite_builder jsonlite_builder_init_memory(void *memory, size_t size, jsonlite_stream stream) {
     if (memory == NULL) {

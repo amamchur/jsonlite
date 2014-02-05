@@ -39,11 +39,17 @@ static int is_float(CFNumberRef number) {
 @synthesize indentation;
 @synthesize converter;
 @synthesize builder;
+@synthesize depth;
 
 - (id)init {
+    return [self initWithDepth:32];
+}
+
+- (id)initWithDepth:(NSUInteger)theDepth {
     self = [super init];
     if (self != nil) {
-        builder = NULL;
+        depth = theDepth;
+        builder = malloc(jsonlite_builder_estimate_size(depth));
     }
     return self;
 }
@@ -54,9 +60,7 @@ static int is_float(CFNumberRef number) {
 
 - (void)dealloc {
     self.converter = nil;
-    if (builder != NULL) {
-        jsonlite_builder_release(builder);        
-    }
+    free(builder);
     [super dealloc];
 }
 
@@ -154,12 +158,8 @@ static int is_float(CFNumberRef number) {
 }
 
 - (NSData *)serializeObject:(id)obj {
-    if (builder != NULL) {
-        jsonlite_builder_release(builder);        
-    }    
-    
     jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
-    builder = jsonlite_builder_init(16, stream);
+    builder = jsonlite_builder_init_memory(builder, jsonlite_builder_estimate_size(depth), stream);
     jsonlite_builder_set_indentation(builder, indentation > 0 ? (size_t)indentation : 0);
     
     if ([obj isKindOfClass:[NSArray class]]) {

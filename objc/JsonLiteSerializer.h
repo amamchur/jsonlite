@@ -32,6 +32,7 @@
     NSInteger indentation;
 }
 
+@property (nonatomic, readonly) NSUInteger depth;
 @property (nonatomic, readonly) jsonlite_builder builder;
 @property (nonatomic, retain) id<JsonLiteSerializerChain> converter;
 @property (nonatomic, assign) NSInteger indentation;
@@ -39,6 +40,7 @@
 - (NSData *)serializeObject:(id)obj;
 
 - (id)init;
+- (id)initWithDepth:(NSUInteger)theDepth;
 + (id)serializer;
 
 @end

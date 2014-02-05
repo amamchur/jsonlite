@@ -13,17 +13,17 @@
 
 - (void)testStaticMemStream {
     char json[] = "{\"key\":\"hello\"}";
-    char buffer[jsonlite_static_buffer_size() + 32] = {0};
+    char stream_memory[jsonlite_static_buffer_size() + 32];
+    char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_static_mem_stream_init(buffer, sizeof(buffer));
-    jsonlite_builder builder = jsonlite_builder_init(0xFF, stream);
+    jsonlite_stream stream = jsonlite_static_mem_stream_init(stream_memory, sizeof(stream_memory));
+    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     
     jsonlite_builder_object_begin(builder);
     jsonlite_builder_key(builder, "key", sizeof("key") - 1);
     jsonlite_builder_string(builder, "hello", sizeof("hello") - 1);
     jsonlite_builder_object_end(builder);
     
-    jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
     
     size_t buffer_size = jsonlite_static_mem_stream_written_bytes(stream);
@@ -34,16 +34,17 @@
     
     size_t min = MIN(buffer_size, json_size);
     for (int i = 0; i < min; i++) {
-        XCTAssertTrue(json[i] == data[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == data[i], @"Bad chars %c %c", json[i], data[i]);
     }
 }
 
 - (void)testSmallStaticMemStream {
     char json[] = "{\"key\":\"hello\",\"long\":\"longlonglonglonglonglong\"}";
-    char buffer[jsonlite_static_buffer_size() + 32] = {0};
+    char stream_memory[jsonlite_static_buffer_size() + 32];
+    char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_static_mem_stream_init(buffer, sizeof(buffer));
-    jsonlite_builder builder = jsonlite_builder_init(0xFF, stream);
+    jsonlite_stream stream = jsonlite_static_mem_stream_init(stream_memory, sizeof(stream_memory));
+    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     
     jsonlite_builder_object_begin(builder);
     jsonlite_builder_key(builder, "key", sizeof("key") - 1);
@@ -52,7 +53,6 @@
     jsonlite_builder_string(builder, "longlonglonglonglonglong", sizeof("longlonglonglonglonglong") - 1);
     jsonlite_builder_object_end(builder);
     
-    jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
     
     size_t buffer_size = jsonlite_static_mem_stream_written_bytes(stream);
@@ -61,23 +61,23 @@
     
     size_t min = MIN(buffer_size, json_size);
     for (int i = 0; i < min; i++) {
-        XCTAssertTrue(json[i] == data[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == data[i], @"Bad chars %c %c", json[i], data[i]);
     }
 }
 
 - (void)testSmallStaticMemStream1 {
     char json[] = "{\"long\":\"longlonglonglonglonglong\"}";
-    char buffer[jsonlite_static_buffer_size() + 32] = {0};
+    char stream_memory[jsonlite_static_buffer_size() + 32];
+    char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_static_mem_stream_init(buffer, sizeof(buffer));
-    jsonlite_builder builder = jsonlite_builder_init(0xFF, stream);
+    jsonlite_stream stream = jsonlite_static_mem_stream_init(stream_memory, sizeof(stream_memory));
+    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     
     jsonlite_builder_object_begin(builder);
     jsonlite_builder_key(builder, "long", sizeof("long") - 1);
     jsonlite_builder_string(builder, "longlonglonglonglonglong", sizeof("longlonglonglonglonglong") - 1);
     jsonlite_builder_object_end(builder);
     
-    jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
     
     size_t buffer_size = jsonlite_static_mem_stream_written_bytes(stream);
@@ -86,7 +86,7 @@
     char *data = (char *)jsonlite_static_mem_stream_data(stream);
     
     for (int i = 0; i < min; i++) {
-        XCTAssertTrue(json[i] == data[i], @"Bad chars %c %c", json[i], buffer[i]);
+        XCTAssertTrue(json[i] == data[i], @"Bad chars %c %c", json[i], data[i]);
     }
 }
 
@@ -94,18 +94,18 @@
 
 - (void)testFileStream {
     char json[] = "{\"key\":\"hello\"}";
-    char buffer[jsonlite_static_buffer_size() + 32] = {0};
+    char buffer[512];
+    char builder_memory[jsonlite_builder_estimate_size(32)];
     
     FILE *file = tmpfile ();
     jsonlite_stream stream = jsonlite_file_stream_init(file);
-    jsonlite_builder builder = jsonlite_builder_init(0xFF, stream);
+    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     
     jsonlite_builder_object_begin(builder);
     jsonlite_builder_key(builder, "key", sizeof("key") - 1);
     jsonlite_builder_string(builder, "hello", sizeof("hello") - 1);
     jsonlite_builder_object_end(builder);
     
-    jsonlite_builder_release(builder);
     jsonlite_stream_release(stream);
     
     fseek(file, 0, SEEK_SET);
