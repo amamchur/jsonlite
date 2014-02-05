@@ -71,26 +71,6 @@ static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, siz
 static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length);
 static jsonlite_builder jsonlite_builder_configure(void *memory, size_t size, jsonlite_stream stream);
 
-#if JSONLITE_HEAP_ENABLED
-
-jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
-    depth = depth < 2 ? MIN_DEPTH : depth;
-    size_t size = sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state);
-    void *mem = malloc(size);
-    return jsonlite_builder_configure(mem, size, stream);
-}
-
-jsonlite_result jsonlite_builder_release(jsonlite_builder builder) {
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    free(builder);
-    return jsonlite_result_ok;
-}
-
-#endif
-
 jsonlite_builder jsonlite_builder_init_memory(void *memory, size_t size, jsonlite_stream stream) {
     if (memory == NULL) {
         return NULL;
