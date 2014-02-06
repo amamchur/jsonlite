@@ -100,9 +100,9 @@ static JsonLiteArrayBinder *arrayBinder = nil;
     if (self != nil) {
         rootClass = cls;
         metaDataPool = [[JsonLiteClassMetaDataPool alloc] init];
-        keyPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
-        stringPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
-        numberPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
+        keyPool = jsonlite_token_pool_alloc((jsonlite_token_pool_release_value_fn)CFRelease);
+        stringPool = jsonlite_token_pool_alloc((jsonlite_token_pool_release_value_fn)CFRelease);
+        numberPool = jsonlite_token_pool_alloc((jsonlite_token_pool_release_value_fn)CFRelease);
     }
     return self;
 }
@@ -114,9 +114,9 @@ static JsonLiteArrayBinder *arrayBinder = nil;
 - (void)dealloc {
     self.converter = nil;
     
-    jsonlite_token_pool_release(keyPool);
-    jsonlite_token_pool_release(stringPool);
-    jsonlite_token_pool_release(numberPool);
+    jsonlite_token_pool_free(keyPool);
+    jsonlite_token_pool_free(stringPool);
+    jsonlite_token_pool_free(numberPool);
     
     [bindingStack release];
     [metaDataStack release];

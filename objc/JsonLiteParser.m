@@ -265,8 +265,7 @@ static Class class_JsonLiteNumberToken;
     self.parseError = nil;
     self.stream = nil;
     self.runLoop = nil;
-    jsonlite_buffer_cleanup(internal->buffer);
-    jsonlite_parser_cleanup(internal->parser);
+    jsonlite_heap_buffer_free(internal->buffer);
     free(internal);
     [super dealloc];
 }
@@ -367,7 +366,8 @@ static Class class_JsonLiteNumberToken;
     self.stream = nil;
     self.runLoop = nil;
     
-    jsonlite_parser_cleanup(internal->parser);
+    jsonlite_heap_buffer_free(internal->buffer);
+    internal->buffer = NULL;
     internal->parser = NULL;
 }
 

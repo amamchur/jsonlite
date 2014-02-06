@@ -190,14 +190,6 @@ jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_resul
     return jsonlite_result_ok;
 }
 
-void jsonlite_parser_cleanup(jsonlite_parser parser) {
-    if (parser == NULL) {
-        return;
-    }
-    
-    jsonlite_buffer_cleanup(parser->rest_buffer);
-}
-
 static void jsonlite_do_parse(jsonlite_parser parser) {
     const uint8_t *c = parser->cursor;
     const uint8_t *l = parser->limit;

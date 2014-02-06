@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include "jsonlite_types.h"
 #include "jsonlite_stream.h"
-#include "jsonlite_config.h"
 
 #ifdef __cplusplus
 extern "C" {

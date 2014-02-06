@@ -47,6 +47,20 @@
     return object;
 }
 
+- (void)testParams {
+    char builder_memory[jsonlite_builder_estimate_size(32)];
+    
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
+    jsonlite_builder bs = jsonlite_builder_init_memory(NULL, sizeof(builder_memory), stream);
+    XCTAssertTrue(bs == NULL, @"Builder was created");
+    
+    bs = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), NULL);
+    XCTAssertTrue(bs == NULL, @"Builder was created");
+    
+    bs = jsonlite_builder_init_memory(builder_memory, 0, stream);
+    XCTAssertTrue(bs == NULL, @"Builder was created");
+}
+
 - (void)testBuilder {
     id object = [self parseObjectFromFile:@"pass1" inDir:@"fail"];
     XCTAssertTrue(object != nil, @"Parsing error.");
@@ -92,19 +106,19 @@
 }
 
 - (void)testBuilderInitialization {
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     uint8_t *buffer = NULL;
     size_t size = jsonlite_mem_stream_data(stream, &buffer, 0);
     
     XCTAssertTrue(buffer == NULL, @"Buffer not null");
     XCTAssertTrue(size == 0, @"Size not 0");
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
 }
 
 - (void)manualBuildingWithIndentation:(int)indentation {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     jsonlite_builder bs = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     XCTAssertTrue(bs != NULL, @"Builder not created");
     
@@ -307,14 +321,14 @@
     
     free(buffer);
     
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
     XCTAssertTrue(result == jsonlite_result_ok, @"Release error");
 }
 
 - (void)testDepth {
     char builder_memory[jsonlite_builder_estimate_size(2)];
     
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     jsonlite_builder bs = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(bs);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad result");
@@ -322,15 +336,15 @@
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad result");
     result = jsonlite_builder_object_begin(bs);
     XCTAssertTrue(result == jsonlite_result_depth_limit, @"Bad result");
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
     
-    stream = jsonlite_mem_stream_init(0x100);
+    stream = jsonlite_mem_stream_alloc(0x100);
     bs = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     result = jsonlite_builder_array_begin(bs);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad result");
     result = jsonlite_builder_array_begin(bs);
     XCTAssertTrue(result == jsonlite_result_depth_limit, @"Bad result");
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
 }
 
 - (void)testManualBuildingBeautifier {

@@ -156,7 +156,7 @@ static uint8_t img_bytes[] = {
 - (void)testBase64Man {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
@@ -179,14 +179,14 @@ static uint8_t img_bytes[] = {
     char *pos =  strstr((char *)json, "TWFu");
     XCTAssertTrue(pos != NULL, @"Encoding fails");
     
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
     free(json);
 }
 
 - (void)testBase64Hello {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_array_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
@@ -206,14 +206,14 @@ static uint8_t img_bytes[] = {
     char *pos =  strstr((char *)json, "SGVsbG8=");
     XCTAssertTrue(pos != NULL, @"Encoding fails");
     
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
     free(json);
 }
 
 - (void)testBase64Hello1 {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_array_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
@@ -233,14 +233,14 @@ static uint8_t img_bytes[] = {
     char *pos =  strstr((char *)json, "SGVsbG8hIQ==");
     XCTAssertTrue(pos != NULL, @"Encoding fails");
     
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
     free(json);
 }
 
 - (void)testBase64 {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
@@ -263,14 +263,14 @@ static uint8_t img_bytes[] = {
     char *pos =  strstr((char *)json, img);
     XCTAssertTrue(pos != NULL, @"Encoding fails");
     
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
     free(json);
 }
 
 - (void)testBase64Deserialization {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
@@ -295,7 +295,7 @@ static uint8_t img_bytes[] = {
     XCTAssertTrue(json != NULL, @"Json is null");
     XCTAssertTrue(size != 0, @"Size is zero");
     
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
     
     JsonLiteParser *parser = [JsonLiteParser parserWithDepth:16];
     JsonLiteDeserializer *des = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteBase64Model class]];
@@ -314,7 +314,7 @@ static uint8_t img_bytes[] = {
 - (void)testBase64DeserializationError {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
@@ -333,7 +333,7 @@ static uint8_t img_bytes[] = {
     XCTAssertTrue(json != NULL, @"Json is null");
     XCTAssertTrue(size != 0, @"Size is zero");
     
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
     
     JsonLiteParser *parser = [JsonLiteParser parserWithDepth:16];
     JsonLiteDeserializer *des = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteBase64Model class]];
@@ -349,7 +349,7 @@ static uint8_t img_bytes[] = {
 - (void)testBase64DeserializationBadTokenType {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
-    jsonlite_stream stream = jsonlite_mem_stream_init(0x100);
+    jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
     jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
@@ -368,7 +368,7 @@ static uint8_t img_bytes[] = {
     XCTAssertTrue(json != NULL, @"Json is null");
     XCTAssertTrue(size != 0, @"Size is zero");
     
-    jsonlite_stream_release(stream);
+    jsonlite_mem_stream_free(stream);
     
     JsonLiteParser *parser = [JsonLiteParser parserWithDepth:16];
     JsonLiteDeserializer *des = [JsonLiteDeserializer deserializerWithRootClass:[JsonLiteBase64Model class]];

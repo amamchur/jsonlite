@@ -218,14 +218,6 @@ extern "C" {
      */
     jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_result result);
     
-    /** \brief Releases internal resources and states.
-     *
-     * If parser is NULL, jsonlite_parser_reset does nothing.
-     * @see jsonlite_parser
-     * @param parser the parser object.
-     */
-    void jsonlite_parser_cleanup(jsonlite_parser parser);
-
     /** \brief jsonlite_parser_callbacks structure initialized with callbacks that do nothing.
      */
     extern const jsonlite_parser_callbacks jsonlite_default_callbacks;

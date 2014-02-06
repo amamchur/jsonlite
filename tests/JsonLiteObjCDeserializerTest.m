@@ -510,7 +510,7 @@
     child.intValue = [NSNumber numberWithInt:12345];
     child.array = [NSArray arrayWithObjects:[NSNumber numberWithInt:321], @"test", nil];
     
-    JsonLiteSerializer *ser = [[JsonLiteSerializer alloc] init];
+    JsonLiteSerializer *ser = [[JsonLiteSerializer alloc] initWithDepth:32];
     NSData *data = [ser serializeObject:obj];
     JsonLiteParser *parser = [[JsonLiteParser alloc] init];
     JsonLiteDeserializer *deserializer = [[JsonLiteDeserializer alloc] initWithRootClass:[JsonLiteTestObj1 class]];
@@ -521,6 +521,7 @@
     [ser serializeObject:obj];
     JsonLiteTestObj1 *obj2 = [deserializer object];
     
+    XCTAssertTrue(ser.depth == 32, @"Incorrect depth");
     XCTAssertTrue([obj isEqual:obj1], @"Objects not equal");
     XCTAssertTrue([obj1 isEqual:obj2], @"Objects not equal");
     XCTAssertTrue([obj isEqual:obj2], @"Objects not equal");

@@ -35,9 +35,9 @@ typedef struct jsonlite_token_bucket {
     const void *value;
 } jsonlite_token_bucket;
     
-jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value_fn release_fn);
+jsonlite_token_pool jsonlite_token_pool_alloc(jsonlite_token_pool_release_value_fn release_fn);
 void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool);
-void jsonlite_token_pool_release(jsonlite_token_pool pool);
+void jsonlite_token_pool_free(jsonlite_token_pool pool);
 jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, jsonlite_token *token);
 
 #ifdef __cplusplus

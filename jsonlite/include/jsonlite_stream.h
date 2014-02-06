@@ -16,7 +16,6 @@
 #ifndef JSONLITE_STREAM_H
 #define JSONLITE_STREAM_H
 
-#include "jsonlite_config.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -29,23 +28,19 @@ extern "C" {
     typedef struct jsonlite_stream_struct const * jsonlite_stream;
 
     typedef int (*jsonlite_stream_write_fn)(jsonlite_stream stream, const void *data, size_t length);
-    typedef void (*jsonlite_stream_release_fn)(jsonlite_stream stream);
 
     int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t length);
-    void jsonlite_stream_release(jsonlite_stream stream);
     
     jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size);
     size_t jsonlite_static_mem_stream_written_bytes(jsonlite_stream stream);
     const void * jsonlite_static_mem_stream_data(jsonlite_stream stream);
     
-#if JSONLITE_FILE_SYSTEM_ENABLED
-    jsonlite_stream jsonlite_file_stream_init(FILE *file);
-#endif
-
-#if JSONLITE_HEAP_ENABLED
-    jsonlite_stream jsonlite_mem_stream_init(size_t block_size);
+    jsonlite_stream jsonlite_file_stream_alloc(FILE *file);
+    void jsonlite_file_stream_free(jsonlite_stream stream);
+    
+    jsonlite_stream jsonlite_mem_stream_alloc(size_t block_size);
+    void jsonlite_mem_stream_free(jsonlite_stream stream);
     size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data, size_t extra_bytes);
-#endif
     
     extern jsonlite_stream jsonlite_null_stream;
     extern jsonlite_stream jsonlite_stdout_stream;

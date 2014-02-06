@@ -72,7 +72,7 @@ static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *
 static jsonlite_builder jsonlite_builder_configure(void *memory, size_t size, jsonlite_stream stream);
 
 jsonlite_builder jsonlite_builder_init_memory(void *memory, size_t size, jsonlite_stream stream) {
-    if (memory == NULL) {
+    if (memory == NULL || stream == NULL) {
         return NULL;
     }
     

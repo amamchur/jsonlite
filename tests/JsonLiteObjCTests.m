@@ -353,7 +353,6 @@
     jsonlite_parser parser = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(parser, [data bytes], [data length]);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
-    jsonlite_parser_cleanup(parser);
 }
 
 - (void)testHelpers{
