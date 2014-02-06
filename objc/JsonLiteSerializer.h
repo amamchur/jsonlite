@@ -30,6 +30,7 @@
     jsonlite_builder builder;
     id<JsonLiteSerializerChain> converter;
     NSInteger indentation;
+    NSUInteger depth;
 }
 
 @property (nonatomic, readonly) NSUInteger depth;

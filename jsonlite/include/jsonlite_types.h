@@ -34,7 +34,8 @@ typedef enum {
     jsonlite_result_invalid_utf8,
     jsonlite_result_suspended,    
     
-    jsonlite_result_not_allowed
+    jsonlite_result_not_allowed,
+    jsonlite_result_out_of_memory,
 } jsonlite_result;
 
 

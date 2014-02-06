@@ -159,7 +159,7 @@ static int is_float(CFNumberRef number) {
 
 - (NSData *)serializeObject:(id)obj {
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    builder = jsonlite_builder_init_memory(builder, jsonlite_builder_estimate_size(depth), stream);
+    builder = jsonlite_builder_init(builder, jsonlite_builder_estimate_size(depth), stream);
     jsonlite_builder_set_indentation(builder, indentation > 0 ? (size_t)indentation : 0);
     
     if ([obj isKindOfClass:[NSArray class]]) {

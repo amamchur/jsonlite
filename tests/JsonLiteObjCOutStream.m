@@ -13,11 +13,11 @@
 
 - (void)testStaticMemStream {
     char json[] = "{\"key\":\"hello\"}";
-    char stream_memory[jsonlite_static_buffer_size() + 32];
+    char stream_memory[jsonlite_static_mem_stream_size() + 32];
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_static_mem_stream_init(stream_memory, sizeof(stream_memory));
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     
     jsonlite_builder_object_begin(builder);
     jsonlite_builder_key(builder, "key", sizeof("key") - 1);
@@ -41,11 +41,11 @@
 
 - (void)testSmallStaticMemStream {
     char json[] = "{\"key\":\"hello\",\"long\":\"longlonglonglonglonglong\"}";
-    char stream_memory[jsonlite_static_buffer_size() + 32];
+    char stream_memory[jsonlite_static_mem_stream_size() + 32];
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_static_mem_stream_init(stream_memory, sizeof(stream_memory));
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     
     jsonlite_builder_object_begin(builder);
     jsonlite_builder_key(builder, "key", sizeof("key") - 1);
@@ -70,7 +70,7 @@
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_static_mem_stream_init(stream_memory, sizeof(stream_memory));
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     
     jsonlite_builder_object_begin(builder);
     jsonlite_builder_key(builder, "long", sizeof("long") - 1);
@@ -94,7 +94,7 @@
     
     FILE *file = tmpfile();
     jsonlite_stream stream = jsonlite_file_stream_alloc(file);
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     
     jsonlite_builder_object_begin(builder);
     jsonlite_builder_key(builder, "key", sizeof("key") - 1);

@@ -108,7 +108,7 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, json
     return parser;
 }
 
-jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size, jsonlite_buffer rest_buffer) {
+jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer rest_buffer) {
     if (memory == NULL) {
         return NULL;
     }
@@ -145,7 +145,10 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
     
     size_t rest_size = jsonlite_buffer_size(parser->rest_buffer);
     if (rest_size > 0) {
-        jsonlite_buffer_append_mem(parser->rest_buffer, buffer, size);
+        if (jsonlite_buffer_append_mem(parser->rest_buffer, buffer, size) < 0) {
+            return jsonlite_result_out_of_memory;
+        }
+        
         parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
         parser->cursor = parser->buffer;
         parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
@@ -517,7 +520,11 @@ end:
         return;
     }
     
-    jsonlite_buffer_set_mem(parser->rest_buffer, token_start, parser->limit - token_start);
-    parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
-    parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
+    res = jsonlite_buffer_set_mem(parser->rest_buffer, token_start, parser->limit - token_start);
+    if (res < 0) {
+        parser->result = jsonlite_result_out_of_memory;
+    } else {
+        parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
+        parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
+    }
 }

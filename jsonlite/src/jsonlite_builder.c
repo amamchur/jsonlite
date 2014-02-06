@@ -71,7 +71,7 @@ static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, siz
 static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length);
 static jsonlite_builder jsonlite_builder_configure(void *memory, size_t size, jsonlite_stream stream);
 
-jsonlite_builder jsonlite_builder_init_memory(void *memory, size_t size, jsonlite_stream stream) {
+jsonlite_builder jsonlite_builder_init(void *memory, size_t size, jsonlite_stream stream) {
     if (memory == NULL || stream == NULL) {
         return NULL;
     }

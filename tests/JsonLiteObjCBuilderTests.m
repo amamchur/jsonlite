@@ -51,13 +51,13 @@
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder bs = jsonlite_builder_init_memory(NULL, sizeof(builder_memory), stream);
+    jsonlite_builder bs = jsonlite_builder_init(NULL, sizeof(builder_memory), stream);
     XCTAssertTrue(bs == NULL, @"Builder was created");
     
-    bs = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), NULL);
+    bs = jsonlite_builder_init(builder_memory, sizeof(builder_memory), NULL);
     XCTAssertTrue(bs == NULL, @"Builder was created");
     
-    bs = jsonlite_builder_init_memory(builder_memory, 0, stream);
+    bs = jsonlite_builder_init(builder_memory, 0, stream);
     XCTAssertTrue(bs == NULL, @"Builder was created");
 }
 
@@ -119,7 +119,7 @@
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder bs = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder bs = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     XCTAssertTrue(bs != NULL, @"Builder not created");
     
     jsonlite_result result = jsonlite_result_ok;
@@ -329,7 +329,7 @@
     char builder_memory[jsonlite_builder_estimate_size(2)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder bs = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder bs = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(bs);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad result");
     result = jsonlite_builder_key(bs, "a", sizeof("a"));
@@ -339,7 +339,7 @@
     jsonlite_mem_stream_free(stream);
     
     stream = jsonlite_mem_stream_alloc(0x100);
-    bs = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    bs = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     result = jsonlite_builder_array_begin(bs);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad result");
     result = jsonlite_builder_array_begin(bs);

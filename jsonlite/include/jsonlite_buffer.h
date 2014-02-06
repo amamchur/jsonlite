@@ -25,7 +25,6 @@ extern "C" {
     
     typedef struct jsonlite_buffer_struct *jsonlite_buffer;
     typedef int (*jsonlite_buffer_mem_fn)(jsonlite_buffer buffer, const void *data, size_t length);
-    typedef size_t (*jsonlite_buffer_size_fn)(jsonlite_buffer buffer);
     typedef const void * (*jsonlite_buffer_data_fn)(jsonlite_buffer buffer);
     
     struct jsonlite_buffer_struct {
@@ -41,14 +40,13 @@ extern "C" {
     int jsonlite_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t length);
     const void *jsonlite_buffer_data(jsonlite_buffer buffer);
     size_t jsonlite_buffer_size(jsonlite_buffer buffer);
-    void jsonlite_buffer_cleanup(jsonlite_buffer buffer);
 
     #define jsonlite_static_buffer_size() (sizeof(jsonlite_buffer_struct))
-    jsonlite_buffer jsonlite_static_buffer_init_memory(void *mem);
+    jsonlite_buffer jsonlite_static_buffer_init(void *mem, size_t size);
     
     #define jsonlite_heap_buffer_size() (sizeof(jsonlite_buffer_struct))
-    jsonlite_buffer jsonlite_heap_buffer_init_memory(void *mem);
-    void jsonlite_heap_buffer_free(jsonlite_buffer buffer);
+    jsonlite_buffer jsonlite_heap_buffer_init(void *mem);
+    void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer);
     
     extern jsonlite_buffer jsonlite_null_buffer;
     

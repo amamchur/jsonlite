@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int jsonlite_null_buffer_set_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
+static int jsonlite_null_buffer_set_append(jsonlite_buffer buffer, const void *data, size_t length) {
     return length == 0 ? 0 : -1;
 }
 
@@ -28,8 +28,8 @@ struct jsonlite_buffer_struct jsonlite_null_buffer_struct = {
     NULL,
     0,
     0,
-    &jsonlite_null_buffer_set_append_mem,
-    &jsonlite_null_buffer_set_append_mem
+    &jsonlite_null_buffer_set_append,
+    &jsonlite_null_buffer_set_append
 };
 
 jsonlite_buffer jsonlite_null_buffer = &jsonlite_null_buffer_struct;
@@ -71,13 +71,13 @@ static int jsonlite_static_buffer_append_mem(jsonlite_buffer buffer, const void 
     return 0;
 }
 
-jsonlite_buffer jsonlite_static_buffer_init_memory(void *mem) {
+jsonlite_buffer jsonlite_static_buffer_init(void *mem, size_t size) {
     struct jsonlite_buffer_struct *buffer = (struct jsonlite_buffer_struct *)mem;
     buffer->set_mem = &jsonlite_static_buffer_set_mem;
     buffer->append_mem = &jsonlite_static_buffer_append_mem;
-    buffer->mem = NULL;
+    buffer->mem = (uint8_t *)mem + sizeof(jsonlite_buffer_struct);
     buffer->size = 0;
-    buffer->capacity = 0;
+    buffer->capacity = size - sizeof(jsonlite_buffer_struct);
     return buffer;
 }
 
@@ -107,7 +107,7 @@ static int jsonlite_heap_buffer_append_mem(jsonlite_buffer buffer, const void *d
     return 0;
 }
 
-void jsonlite_heap_buffer_free(jsonlite_buffer buffer) {
+void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer) {
     if (buffer != NULL) {
         free(buffer->mem);
         buffer->mem = NULL;
@@ -116,7 +116,7 @@ void jsonlite_heap_buffer_free(jsonlite_buffer buffer) {
     }
 }
 
-jsonlite_buffer jsonlite_heap_buffer_init_memory(void *mem) {
+jsonlite_buffer jsonlite_heap_buffer_init(void *mem) {
     struct jsonlite_buffer_struct *buffer = (struct jsonlite_buffer_struct *)mem;
     buffer->set_mem = &jsonlite_heap_buffer_set_mem;
     buffer->append_mem = &jsonlite_heap_buffer_append_mem;

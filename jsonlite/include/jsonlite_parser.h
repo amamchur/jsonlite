@@ -131,7 +131,7 @@ extern "C" {
      * @param size the memory size.
      * @return jsonlite_parser object.
      */
-    jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size, jsonlite_buffer rest_buffer);
+    jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer rest_buffer);
     
     /** \brief Copies provided callbacks structure to parser object.
      * @see jsonlite_parser

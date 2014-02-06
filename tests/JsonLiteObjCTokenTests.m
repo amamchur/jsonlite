@@ -28,7 +28,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[0\t]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -37,7 +37,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[0\n]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -46,7 +46,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[0\r]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -55,7 +55,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[0 ]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -64,7 +64,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[0, 0]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -73,7 +73,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[0]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -82,7 +82,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "{\"key\":0}";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -91,7 +91,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[12345\t]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -100,7 +100,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[12345\n]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -109,7 +109,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[12345\r]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -118,7 +118,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[12345 ]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -127,7 +127,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[12345, 12345]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -136,7 +136,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[12345]";
 
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -145,7 +145,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "{\"key\":12345}";
 
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -154,7 +154,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234e5\t]";
 
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -163,7 +163,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234e5\n]";
 
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -172,7 +172,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234e5\r]";
 
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -181,7 +181,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234e5 ]";
 
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -190,7 +190,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234e5, 1234e5]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -199,7 +199,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234e5]";
 
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -208,7 +208,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "{\"key\":1234e5}";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -217,7 +217,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234.5\t]";
 
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -226,7 +226,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234.5\n]";
 
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -235,7 +235,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234.5\r]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -244,7 +244,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234.5 ]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -253,7 +253,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234.5, 1234.5]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -262,7 +262,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "[1234.5]";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }
@@ -271,7 +271,7 @@
     char memory[jsonlite_parser_estimate_size(4)];
     char json[] = "{\"key\":1234.5}";
     
-    jsonlite_parser ps = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
 }

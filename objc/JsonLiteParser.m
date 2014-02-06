@@ -265,7 +265,7 @@ static Class class_JsonLiteNumberToken;
     self.parseError = nil;
     self.stream = nil;
     self.runLoop = nil;
-    jsonlite_heap_buffer_free(internal->buffer);
+    jsonlite_heap_buffer_cleanup(internal->buffer);
     free(internal);
     [super dealloc];
 }
@@ -282,8 +282,8 @@ static Class class_JsonLiteNumberToken;
         size_t size = jsonlite_parser_estimate_size(depth);
         void *parserMemory = (uint8_t *)internal + sizeof(JsonLiteInternal);
         void *bufferMemory = (uint8_t *)parserMemory + size;
-        buffer = jsonlite_heap_buffer_init_memory(bufferMemory);
-        jp = jsonlite_parser_init_memory(parserMemory, size, buffer);
+        buffer = jsonlite_heap_buffer_init(bufferMemory);
+        jp = jsonlite_parser_init(parserMemory, size, buffer);
         internal->parser = jp;
         if (delegate != nil) {
             jsonlite_parser_callbacks cbs = JsonLiteParserCallbacks;
@@ -366,7 +366,7 @@ static Class class_JsonLiteNumberToken;
     self.stream = nil;
     self.runLoop = nil;
     
-    jsonlite_heap_buffer_free(internal->buffer);
+    jsonlite_heap_buffer_cleanup(internal->buffer);
     internal->buffer = NULL;
     internal->parser = NULL;
 }

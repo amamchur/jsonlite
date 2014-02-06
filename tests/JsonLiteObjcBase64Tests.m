@@ -157,7 +157,7 @@ static uint8_t img_bytes[] = {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
@@ -187,7 +187,7 @@ static uint8_t img_bytes[] = {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_array_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
@@ -214,7 +214,7 @@ static uint8_t img_bytes[] = {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_array_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
@@ -241,7 +241,7 @@ static uint8_t img_bytes[] = {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
@@ -271,7 +271,7 @@ static uint8_t img_bytes[] = {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
 
@@ -315,7 +315,7 @@ static uint8_t img_bytes[] = {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
@@ -350,7 +350,7 @@ static uint8_t img_bytes[] = {
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder builder = jsonlite_builder_init_memory(builder_memory, sizeof(builder_memory), stream);
+    jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), stream);
     jsonlite_result result = jsonlite_builder_object_begin(builder);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     

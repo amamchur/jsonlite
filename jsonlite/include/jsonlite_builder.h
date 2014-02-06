@@ -39,7 +39,7 @@ extern "C" {
 
     #define jsonlite_builder_estimate_size(depth) (sizeof(jsonlite_builder_struct) + (depth) * sizeof(jsonlite_write_state))
     
-    jsonlite_builder jsonlite_builder_init_memory(void *memory, size_t size, jsonlite_stream stream);
+    jsonlite_builder jsonlite_builder_init(void *memory, size_t size, jsonlite_stream stream);
     
     /** \brief Sets beautify indentation. Default is 0.
      *
