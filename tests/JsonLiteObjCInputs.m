@@ -50,6 +50,7 @@
 @implementation JsonLiteObjCInputs
 
 - (void)testJsonLiteParserC {
+    char memory[jsonlite_parser_estimate_size(16)];
     char json[] = "{}";
     size_t json_size = sizeof(json) - 1;
     
@@ -58,11 +59,7 @@
     XCTAssertTrue(size > 0, @"Size can must be greater zero.");
     
     // jsonlite_parser_init
-    jsonlite_parser parser = jsonlite_parser_init(0, jsonlite_null_buffer);
-    XCTAssertTrue(parser != NULL, @"Parser is NULL");
-    jsonlite_parser_release(parser);
-    
-    parser = jsonlite_parser_init(16, jsonlite_null_buffer);
+    jsonlite_parser parser = jsonlite_parser_init_memory(memory, sizeof(memory), jsonlite_null_buffer);
     XCTAssertTrue(parser != NULL, @"Parser is NULL");
     
     // jsonlite_parser_set_callback
@@ -123,10 +120,6 @@
     
     result = jsonlite_parser_tokenize(parser, json, json_size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
-    
-    // jsonlite_parser_release
-    jsonlite_parser_release(parser);
-    jsonlite_parser_release(NULL);
     
     parser = jsonlite_parser_init_memory(NULL, 123, jsonlite_null_buffer);
     XCTAssertTrue(parser == NULL, @"Parser in not NULL");

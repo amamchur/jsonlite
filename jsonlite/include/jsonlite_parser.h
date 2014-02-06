@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -122,16 +122,6 @@ extern "C" {
         jsonlite_parser_callbacks callbacks;
     } jsonlite_parser_struct;
     
-    /** @brief Creates and initializes new instance of parser object.
-     *
-     * You should release jsonlite_parser object using ::jsonlite_parser_release.
-     * @see jsonlite_parser
-     * @see jsonlite_parser_release
-     * @param depth the parsing depth.
-     * @return jsonlite_parser object.
-     */
-    jsonlite_parser jsonlite_parser_init(size_t depth, jsonlite_buffer rest_buffer);
-    
     /** @brief Initializes memory for parser object.
      *
      * You should release internal resources using ::jsonlite_parser_cleanup
@@ -227,14 +217,6 @@ extern "C" {
      * otherwise jsonlite_result_ok.
      */
     jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_result result);
-    
-    /** \brief Releases parser object.
-     *
-     * If parser is NULL, jsonlite_parser_release does nothing.
-     * @see jsonlite_parser
-     * @param parser the parser object.
-     */
-    void jsonlite_parser_release(jsonlite_parser parser);
     
     /** \brief Releases internal resources and states.
      *

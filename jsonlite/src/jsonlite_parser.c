@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -107,21 +107,6 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, json
     parser->current++;
     return parser;
 }
-
-#if JSONLITE_HEAP_ENABLED
-
-jsonlite_parser jsonlite_parser_init(size_t depth, jsonlite_buffer rest_buffer) {
-    size_t size = jsonlite_parser_estimate_size(depth);
-    void *memory = malloc(size);
-    return jsonlite_parser_configure(memory, size, rest_buffer);
-}
-
-void jsonlite_parser_release(jsonlite_parser parser) {
-    jsonlite_parser_cleanup(parser);
-    free(parser);
-}
-
-#endif
 
 jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size, jsonlite_buffer rest_buffer) {
     if (memory == NULL) {
