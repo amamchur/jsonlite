@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 @implementation JsonLiteObjCPoolTests
 
 - (void)testPool {
-    jsonlite_token_pool pool = jsonlite_token_pool_create(NULL);
+    jsonlite_token_pool pool = jsonlite_token_pool_alloc(NULL);
     jsonlite_token_bucket *b = NULL;
     
     jsonlite_token token;
@@ -30,7 +30,7 @@
     b = jsonlite_token_pool_get_bucket(pool, &token);
     XCTAssertTrue(b != NULL, @"Bucket is null");
     
-    jsonlite_token_pool_release(pool);
+    jsonlite_token_pool_free(pool);
 }
 
 @end

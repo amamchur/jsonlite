@@ -22,6 +22,9 @@
 		B501555E1867A4DA002AF125 /* JsonLiteObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5A2EB03186025E400293619 /* JsonLiteObjC.h */; };
 		B501555F1867A4DA002AF125 /* JsonLiteParser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5A2EB05186025E400293619 /* JsonLiteParser.h */; };
 		B50155601867A4DA002AF125 /* JsonLiteSerializer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5A2EB07186025E400293619 /* JsonLiteSerializer.h */; };
+		B52C01E8189CFBD000A7F7AC /* jsonlite_buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = B52C01E7189CFBBC00A7F7AC /* jsonlite_buffer.c */; };
+		B52C01E9189CFBD100A7F7AC /* jsonlite_buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = B52C01E7189CFBBC00A7F7AC /* jsonlite_buffer.c */; };
+		B52C0208189E83B400A7F7AC /* jsonlite_buffer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B52C01E6189CFBAD00A7F7AC /* jsonlite_buffer.h */; };
 		B5A2EABD186024A400293619 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A2EABC186024A400293619 /* Foundation.framework */; };
 		B5A2EACB186024A400293619 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A2EACA186024A400293619 /* XCTest.framework */; };
 		B5A2EACC186024A400293619 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A2EABC186024A400293619 /* Foundation.framework */; };
@@ -82,6 +85,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				B52C0208189E83B400A7F7AC /* jsonlite_buffer.h in CopyFiles */,
 				B50155591867A4DA002AF125 /* JsonLiteAccumulator.h in CopyFiles */,
 				B501555A1867A4DA002AF125 /* JsonLiteCollections.h in CopyFiles */,
 				B501555B1867A4DA002AF125 /* JsonLiteConverters.h in CopyFiles */,
@@ -103,6 +107,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B52C01E6189CFBAD00A7F7AC /* jsonlite_buffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jsonlite_buffer.h; sourceTree = "<group>"; };
+		B52C01E7189CFBBC00A7F7AC /* jsonlite_buffer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = jsonlite_buffer.c; sourceTree = "<group>"; };
 		B5A2EAB9186024A400293619 /* libJsonLiteObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJsonLiteObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5A2EABC186024A400293619 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B5A2EAC0186024A400293619 /* JsonLiteObjC-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JsonLiteObjC-Prefix.pch"; sourceTree = "<group>"; };
@@ -320,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				B5A2EAE4186025D800293619 /* jsonlite.h */,
+				B52C01E6189CFBAD00A7F7AC /* jsonlite_buffer.h */,
 				B5A2EAE5186025D800293619 /* jsonlite_builder.h */,
 				B5A2EAE6186025D800293619 /* jsonlite_parser.h */,
 				B5A2EAE7186025D800293619 /* jsonlite_stream.h */,
@@ -334,6 +341,7 @@
 			isa = PBXGroup;
 			children = (
 				B5A2EAEC186025D800293619 /* jsonlite.c */,
+				B52C01E7189CFBBC00A7F7AC /* jsonlite_buffer.c */,
 				B5A2EAED186025D800293619 /* jsonlite_builder.c */,
 				B5A2EAEE186025D800293619 /* jsonlite_parser.c */,
 				B5A2EAEF186025D800293619 /* jsonlite_stream.c */,
@@ -465,6 +473,7 @@
 				B5A2EB0F186025E400293619 /* JsonLiteParser.m in Sources */,
 				B5A2EB0C186025E400293619 /* JsonLiteDeserializer.m in Sources */,
 				B5A2EB10186025E400293619 /* JsonLiteSerializer.m in Sources */,
+				B52C01E9189CFBD100A7F7AC /* jsonlite_buffer.c in Sources */,
 				B5A2EB0A186025E400293619 /* JsonLiteCollections.m in Sources */,
 				B5A2EB0E186025E400293619 /* JsonLiteObjC.m in Sources */,
 			);
@@ -477,6 +486,7 @@
 				B5A2EB39186025F900293619 /* JsonLiteObjCConverters.m in Sources */,
 				B5A2EB3F186025F900293619 /* JsonLiteObjCPoolTests.m in Sources */,
 				B5A2EB37186025F900293619 /* JsonLiteObjCBrokenTokenTests.m in Sources */,
+				B52C01E8189CFBD000A7F7AC /* jsonlite_buffer.c in Sources */,
 				B5A2EB42186025F900293619 /* JsonLiteObjCTokenTests.m in Sources */,
 				B5A2EB3E186025F900293619 /* JsonLiteObjCOutStream.m in Sources */,
 				B5A2EB43186025F900293619 /* JsonLiteObjCUnicodeTests.m in Sources */,
@@ -548,7 +558,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -580,7 +590,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

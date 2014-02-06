@@ -50,6 +50,7 @@
 @implementation JsonLiteObjCInputs
 
 - (void)testJsonLiteParserC {
+    char memory[jsonlite_parser_estimate_size(16)];
     char json[] = "{}";
     size_t json_size = sizeof(json) - 1;
     
@@ -58,11 +59,7 @@
     XCTAssertTrue(size > 0, @"Size can must be greater zero.");
     
     // jsonlite_parser_init
-    jsonlite_parser parser = jsonlite_parser_init(0);
-    XCTAssertTrue(parser != NULL, @"Parser is NULL");
-    jsonlite_parser_release(parser);
-    
-    parser = jsonlite_parser_init(16);
+    jsonlite_parser parser = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     XCTAssertTrue(parser != NULL, @"Parser is NULL");
     
     // jsonlite_parser_set_callback
@@ -124,15 +121,11 @@
     result = jsonlite_parser_tokenize(parser, json, json_size);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect result");
     
-    // jsonlite_parser_release
-    jsonlite_parser_release(parser);
-    jsonlite_parser_release(NULL);
-    
-    parser = jsonlite_parser_init_memory(NULL, 123);
+    parser = jsonlite_parser_init(NULL, 123, jsonlite_null_buffer);
     XCTAssertTrue(parser == NULL, @"Parser in not NULL");
     
     char mem[256];
-    parser = jsonlite_parser_init_memory(mem, 5);
+    parser = jsonlite_parser_init(mem, 5, jsonlite_null_buffer);
     XCTAssertTrue(parser == NULL, @"Parser in not NULL");
 }
 
@@ -148,8 +141,9 @@
     
     size_t size = jsonlite_token_size_of_uft8(&token);
     XCTAssertTrue(size == sizeof(str), @"Incorrect size - %zu", size);
-        
-    size = jsonlite_token_to_uft8(&token, &buffer);
+    
+    buffer = malloc(jsonlite_token_size_of_uft8(&token));
+    size = jsonlite_token_to_uft8(&token, buffer);
     XCTAssertTrue(buffer != NULL, @"Buffer is null");
     XCTAssertTrue(size == strlen((char *)str), @"Size is not zero");
     XCTAssertTrue(memcmp(str, buffer, sizeof(str)) == 0, @"String are not equal");
@@ -159,8 +153,9 @@
     
     size = jsonlite_token_size_of_uft16(&token);
     XCTAssertTrue(size == sizeof(str) * 2, @"Incorrect size - %zu", size);
-        
-    size = jsonlite_token_to_uft16(&token, &unicode);
+    
+    unicode = malloc(jsonlite_token_size_of_uft16(&token));
+    size = jsonlite_token_to_uft16(&token, unicode);
     XCTAssertTrue(unicode != NULL, @"Buffer is null");
     XCTAssertTrue(size == sizeof(str16) - sizeof(uint16_t), @"Size is not zero");
     XCTAssertTrue(memcmp(str16, unicode, sizeof(str16)) == 0, @"String are not equal");

@@ -125,10 +125,12 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
 }
 
 - (void)testBadUnicodeNonchar {
+    char memory[jsonlite_parser_estimate_size(4)];
+    
     NSData *data = [self dataFromFile:@"unicode_noncharacter" inDir:@"bad_token"];
     XCTAssertNotNil(data, @"Data is nil");
     noncharacters_count = 0;
-    jsonlite_parser parser = jsonlite_parser_init(4);
+    jsonlite_parser parser = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_parser_callbacks c = jsonlite_default_callbacks;
     c.key_found = &check_noncharacters;
     c.string_found = &check_noncharacters;
@@ -136,10 +138,11 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     jsonlite_result result = jsonlite_parser_tokenize(parser, [data bytes], [data length]);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect error");
     XCTAssertTrue(noncharacters_count == 1, @"Incorrect noncharacters_count");
-    jsonlite_parser_release(parser);
 }
 
 - (void)testBadUnicodeNoncharTerminate {
+    char memory[jsonlite_parser_estimate_size(4)];
+    
     NSData *data = [self dataFromFile:@"unicode_noncharacter" inDir:@"bad_token"];
     XCTAssertNotNil(data, @"Data is nil");
     noncharacters_count = 0;
@@ -147,7 +150,7 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     jsonlite_result result = jsonlite_parser_terminate(NULL, jsonlite_result_invalid_token);
     XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
     
-    jsonlite_parser parser = jsonlite_parser_init(4);
+    jsonlite_parser parser = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     result = jsonlite_parser_terminate(parser, jsonlite_result_unknown);
     XCTAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect error");
     
@@ -157,14 +160,15 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     jsonlite_parser_set_callback(parser, &c);
     result = jsonlite_parser_tokenize(parser, [data bytes], [data length]);
     XCTAssertTrue(result == jsonlite_result_invalid_token, @"Incorrect error");
-    jsonlite_parser_release(parser);
 }
 
 - (void)testBadUnicodeNonchar1 {
+    char memory[jsonlite_parser_estimate_size(4)];
+    
     NSData *data = [self dataFromFile:@"unicode_noncharacter_1" inDir:@"bad_token"];
     XCTAssertNotNil(data, @"Data is nil");
     noncharacters_count = 0;
-    jsonlite_parser parser = jsonlite_parser_init(4);
+    jsonlite_parser parser = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_parser_callbacks c = jsonlite_default_callbacks;
     c.key_found = &check_noncharacters;
     c.string_found = &check_noncharacters;
@@ -172,14 +176,15 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     jsonlite_result result = jsonlite_parser_tokenize(parser, [data bytes], [data length]);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect error");
     XCTAssertTrue(noncharacters_count == 1, @"Incorrect noncharacters_count");
-    jsonlite_parser_release(parser);
 }
 
 - (void)testBadUnicodeNonchar2 {
+    char memory[jsonlite_parser_estimate_size(4)];
+    
     NSData *data = [self dataFromFile:@"unicode_noncharacter_2" inDir:@"bad_token"];
     XCTAssertNotNil(data, @"Data is nil");
     noncharacters_count = 0;
-    jsonlite_parser parser = jsonlite_parser_init(4);
+    jsonlite_parser parser = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_parser_callbacks c = jsonlite_default_callbacks;
     c.key_found = &check_noncharacters;
     c.string_found = &check_noncharacters;
@@ -187,10 +192,10 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     jsonlite_result result = jsonlite_parser_tokenize(parser, [data bytes], [data length]);
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect error");
     XCTAssertTrue(noncharacters_count == 1, @"Incorrect noncharacters_count");
-    jsonlite_parser_release(parser);
 }
 
 - (void)testBadUnicodeNonchar3 {
+    char memory[jsonlite_parser_estimate_size(4)];
     char data[] = "[\"????\"]";
     data[2] = 0xF0;
     data[3] = 0xBF;
@@ -198,7 +203,7 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     data[5] = 0xBF;
     
     noncharacters_count = 0;
-    jsonlite_parser parser = jsonlite_parser_init(4);
+    jsonlite_parser parser = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_parser_callbacks c = jsonlite_default_callbacks;
     c.key_found = &check_noncharacters;
     c.string_found = &check_noncharacters;
@@ -206,17 +211,17 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     jsonlite_result result = jsonlite_parser_tokenize(parser, data, sizeof(data));
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect error");
     XCTAssertTrue(noncharacters_count == 1, @"Incorrect noncharacters_count");
-    jsonlite_parser_release(parser);
 }
 
 - (void)testBadUnicodeNonchar4 {
+    char memory[jsonlite_parser_estimate_size(4)];
     char data[] = "[\"???\"]";
     data[2] = 0xEF;
     data[3] = 0xB7;
     data[4] = 0x90;
     
     noncharacters_count = 0;
-    jsonlite_parser parser = jsonlite_parser_init(4);
+    jsonlite_parser parser = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     jsonlite_parser_callbacks c = jsonlite_default_callbacks;
     c.key_found = &check_noncharacters;
     c.string_found = &check_noncharacters;
@@ -224,7 +229,6 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     jsonlite_result result = jsonlite_parser_tokenize(parser, data, sizeof(data));
     XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect error");
     XCTAssertTrue(noncharacters_count == 1, @"Incorrect noncharacters_count");
-    jsonlite_parser_release(parser);
 }
 
 @end

@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:HeapFree/HeapFree.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Base64/Base64.xcodeproj">
    </FileRef>
    <FileRef

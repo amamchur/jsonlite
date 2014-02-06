@@ -1,4 +1,4 @@
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -53,9 +53,9 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 - (id)initWithDepth:(NSUInteger)aDepth {
     self = [super init];
     if (self != nil) {
-        keyPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
-        stringPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
-        numberPool = jsonlite_token_pool_create((jsonlite_token_pool_release_value_fn)CFRelease);
+        keyPool = jsonlite_token_pool_alloc((jsonlite_token_pool_release_value_fn)CFRelease);
+        stringPool = jsonlite_token_pool_alloc((jsonlite_token_pool_release_value_fn)CFRelease);
+        numberPool = jsonlite_token_pool_alloc((jsonlite_token_pool_release_value_fn)CFRelease);
         capacity = 0x100;
         
         id *buffer = calloc(2 * capacity, sizeof(id));
@@ -87,9 +87,9 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 - (void)dealloc {  
     [self reset];
 
-    jsonlite_token_pool_release(keyPool);
-    jsonlite_token_pool_release(stringPool);
-    jsonlite_token_pool_release(numberPool);
+    jsonlite_token_pool_free(keyPool);
+    jsonlite_token_pool_free(stringPool);
+    jsonlite_token_pool_free(numberPool);
     
     free(values);
     free(state);

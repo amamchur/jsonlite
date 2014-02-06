@@ -1,4 +1,4 @@
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 
 typedef struct JsonLiteInternal {
     jsonlite_parser parser;
+    jsonlite_buffer buffer;
     void *parserObj;
     void *delegate;
     IMP parseFinished;
@@ -100,8 +101,8 @@ static Class class_JsonLiteNumberToken;
 @implementation JsonLiteStringToken 
 
 - (NSString *)allocEscapedString:(jsonlite_token *)token {
-    void *buffer = NULL;
-    size_t size = jsonlite_token_to_uft16(token, (uint16_t **)&buffer);
+    uint16_t *buffer = malloc(jsonlite_token_size_of_uft16(token));
+    size_t size = jsonlite_token_to_uft16(token, buffer);
     NSString *str = (NSString *)CFStringCreateWithBytesNoCopy(NULL, 
                                                               (const UInt8 *)buffer,
                                                               size,
@@ -160,9 +161,10 @@ static Class class_JsonLiteNumberToken;
 
 - (NSData *)copyBase64Data {
     jsonlite_token *token = (jsonlite_token *)self;
-    void *buffer = NULL;
-    size_t size = jsonlite_token_base64_to_binary(token, &buffer);
-    if (buffer == NULL) {
+    void *buffer = malloc(jsonlite_token_size_of_base64_binary(token));
+    size_t size = jsonlite_token_base64_to_binary(token, buffer);
+    if (size == 0) {
+        free(buffer);
         return nil;
     }
     
@@ -237,8 +239,12 @@ static Class class_JsonLiteNumberToken;
     self = [super init];
     if (self != nil) {        
         depth = aDepth < 2 ? 16 : aDepth;
-        internal = malloc(sizeof(JsonLiteInternal) + jsonlite_parser_estimate_size(depth));
+        size_t size = sizeof(JsonLiteInternal);
+        size += jsonlite_parser_estimate_size(depth);
+        size += jsonlite_heap_buffer_size();
+        internal = malloc(size);
         internal->parser = NULL;
+        internal->buffer = NULL;
     }
     return self;
 }
@@ -259,7 +265,7 @@ static Class class_JsonLiteNumberToken;
     self.parseError = nil;
     self.stream = nil;
     self.runLoop = nil;
-    jsonlite_parser_cleanup(internal->parser);
+    jsonlite_heap_buffer_cleanup(internal->buffer);
     free(internal);
     [super dealloc];
 }
@@ -271,10 +277,13 @@ static Class class_JsonLiteNumberToken;
     }
     
     jsonlite_parser jp = internal->parser;
+    jsonlite_buffer buffer = internal->buffer;
     if (jp == NULL) {
-        void *memory = (uint8_t *)internal + sizeof(JsonLiteInternal);
         size_t size = jsonlite_parser_estimate_size(depth);
-        jp = jsonlite_parser_init_memory(memory, size);
+        void *parserMemory = (uint8_t *)internal + sizeof(JsonLiteInternal);
+        void *bufferMemory = (uint8_t *)parserMemory + size;
+        buffer = jsonlite_heap_buffer_init(bufferMemory);
+        jp = jsonlite_parser_init(parserMemory, size, buffer);
         internal->parser = jp;
         if (delegate != nil) {
             jsonlite_parser_callbacks cbs = JsonLiteParserCallbacks;
@@ -357,7 +366,8 @@ static Class class_JsonLiteNumberToken;
     self.stream = nil;
     self.runLoop = nil;
     
-    jsonlite_parser_cleanup(internal->parser);
+    jsonlite_heap_buffer_cleanup(internal->buffer);
+    internal->buffer = NULL;
     internal->parser = NULL;
 }
 

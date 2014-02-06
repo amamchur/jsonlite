@@ -1,4 +1,4 @@
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@
     jsonlite_builder builder;
     id<JsonLiteSerializerChain> converter;
     NSInteger indentation;
+    NSUInteger depth;
 }
 
+@property (nonatomic, readonly) NSUInteger depth;
 @property (nonatomic, readonly) jsonlite_builder builder;
 @property (nonatomic, retain) id<JsonLiteSerializerChain> converter;
 @property (nonatomic, assign) NSInteger indentation;
@@ -39,6 +41,7 @@
 - (NSData *)serializeObject:(id)obj;
 
 - (id)init;
+- (id)initWithDepth:(NSUInteger)theDepth;
 + (id)serializer;
 
 @end

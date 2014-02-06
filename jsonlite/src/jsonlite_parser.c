@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -74,21 +74,6 @@ enum {
     state_stop = 1 << 7
 };
 
-typedef uint8_t parse_state;
-struct jsonlite_parser_struct {
-    const uint8_t *cursor;
-    const uint8_t *limit;
-    const uint8_t *buffer;    
-    uint8_t *buffer_own;
- 
-    parse_state *current;
-    parse_state *last;
-    parse_state **control;
-    
-    jsonlite_result result;
-    jsonlite_parser_callbacks callbacks;
-} jsonlite_parser_struct;
-
 static void jsonlite_do_parse(jsonlite_parser parser);
 static void empty_value_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {}
 static void empty_state_callback(jsonlite_callback_context *ctx) {}
@@ -108,16 +93,11 @@ const jsonlite_parser_callbacks jsonlite_default_callbacks = {
     {NULL, NULL}
 };
 
-size_t jsonlite_parser_estimate_size(size_t depth) {
-    depth = depth < MIN_DEPTH ? 32 : depth;
-    return sizeof(jsonlite_parser_struct) + depth * sizeof(parse_state);
-}
-
-static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size) {
+static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, jsonlite_buffer rest_buffer) {
     size_t depth = (size - sizeof(jsonlite_parser_struct)) / sizeof(parse_state);
     jsonlite_parser parser = (jsonlite_parser)memory;
     parser->result = jsonlite_result_unknown;
-    parser->buffer_own = NULL;
+    parser->rest_buffer = rest_buffer;
     parser->callbacks = jsonlite_default_callbacks;
     parser->control = NULL;
     parser->current = ((uint8_t *)parser + sizeof(jsonlite_parser_struct));
@@ -128,13 +108,7 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size) {
     return parser;
 }
 
-jsonlite_parser jsonlite_parser_init(size_t depth) {
-    size_t size = jsonlite_parser_estimate_size(depth);
-    void *memory = malloc(size);
-    return jsonlite_parser_configure(memory, size);
-}
-
-jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size) {
+jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer rest_buffer) {
     if (memory == NULL) {
         return NULL;
     }
@@ -143,7 +117,7 @@ jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size) {
         return NULL;
     }
 
-    return jsonlite_parser_configure(memory, size);
+    return jsonlite_parser_configure(memory, size, rest_buffer);
 }
 
 jsonlite_result jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs) {
@@ -169,18 +143,15 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
         return jsonlite_result_invalid_argument;
     }
     
-    if (parser->buffer_own != NULL) {
-        size_t total_size = size + parser->limit - parser->buffer_own;
-        uint8_t *b = (uint8_t *)malloc(total_size);
-        memcpy(b, parser->buffer_own, parser->limit - parser->buffer_own);  // LCOV_EXCL_LINE
-        memcpy(b + (parser->limit - parser->buffer_own), buffer, size);     // LCOV_EXCL_LINE
+    size_t rest_size = jsonlite_buffer_size(parser->rest_buffer);
+    if (rest_size > 0) {
+        if (jsonlite_buffer_append_mem(parser->rest_buffer, buffer, size) < 0) {
+            return jsonlite_result_out_of_memory;
+        }
         
-        free(parser->buffer_own);
-        
-        parser->buffer = b;
-        parser->buffer_own = b;
-        parser->cursor = b;
-        parser->limit = b + total_size;
+        parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
+        parser->cursor = parser->buffer;
+        parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
     } else {
         parser->buffer = buffer;
         parser->cursor = parser->buffer;
@@ -220,19 +191,6 @@ jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_resul
     parser->result = result;
     **parser->control |= state_stop;
     return jsonlite_result_ok;
-}
-
-void jsonlite_parser_release(jsonlite_parser parser) {
-    jsonlite_parser_cleanup(parser);
-    free(parser);
-}
-
-void jsonlite_parser_cleanup(jsonlite_parser parser) {
-    if (parser == NULL) {
-        return;
-    }
-    
-    free(parser->buffer_own);
 }
 
 static void jsonlite_do_parse(jsonlite_parser parser) {
@@ -562,20 +520,11 @@ end:
         return;
     }
     
-    res = parser->buffer_own != NULL;
-    if ((parser->limit - token_start) > 0) {
-        parser->buffer_own = malloc(parser->limit - token_start);       // LCOV_EXCL_LINE
-        parser->limit = parser->buffer_own + (parser->limit - token_start);
-        memcpy(parser->buffer_own, token_start, parser->limit - parser->buffer_own);
-        if (res) {
-            free((void *)parser->buffer);
-            parser->buffer = parser->buffer_own;
-        }
+    res = jsonlite_buffer_set_mem(parser->rest_buffer, token_start, parser->limit - token_start);
+    if (res < 0) {
+        parser->result = jsonlite_result_out_of_memory;
     } else {
-        if (res) {
-            free((void *)parser->buffer_own);
-            parser->buffer = NULL;
-            parser->buffer_own = NULL;
-        }
+        parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
+        parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
     }
 }

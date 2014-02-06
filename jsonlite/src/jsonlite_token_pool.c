@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index);
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
 static jsonlite_token_bucket terminate_bucket = {NULL, NULL, 0, 0, NULL};
 
-jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value_fn release_fn) {
+jsonlite_token_pool jsonlite_token_pool_alloc(jsonlite_token_pool_release_value_fn release_fn) {
     jsonlite_token_pool pool = (jsonlite_token_pool)malloc(sizeof(jsonlite_token_pool_struct));
     int i;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
@@ -88,7 +88,7 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     pool->content_pool_size = size;
 }
 
-void jsonlite_token_pool_release(jsonlite_token_pool pool) {
+void jsonlite_token_pool_free(jsonlite_token_pool pool) {
     int i;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         jsonlite_token_bucket *bucket = pool->blocks[i].buckets;

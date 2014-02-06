@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -13,4 +13,4 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-const char *jsonlite_version = "1.1.2";
+const char *jsonlite_version = "1.2.0";

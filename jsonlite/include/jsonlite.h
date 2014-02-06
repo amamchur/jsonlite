@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 #ifndef JSONLITE_H
 #define JSONLITE_H
 
+#include "jsonlite_buffer.h"
 #include "jsonlite_builder.h"
 #include "jsonlite_parser.h"
 #include "jsonlite_stream.h"

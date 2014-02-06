@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -25,395 +25,255 @@
 }
 
 - (void)testZeroTerminatedByTab {
-    NSString *json = @"[0\t]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[0\t]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testZeroTerminatedByLF {
-    NSString *json = @"[0\n]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[0\n]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testZeroTerminatedByCR {
-    NSString *json = @"[0\r]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[0\r]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testZeroTerminatedBySpace {
-    NSString *json = @"[0 ]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[0 ]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testZeroTerminatedByComma {
-    NSString *json = @"[0, 0]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[0, 0]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testZeroTerminatedBySquareBraket {
-    NSString *json = @"[0]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[0]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testZeroTerminatedByBrace {
-    NSString *json = @"{\"key\":0}";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "{\"key\":0}";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testIntTerminatedByTab {
-    NSString *json = @"[12345\t]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[12345\t]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testIntTerminatedByLF {
-    NSString *json = @"[12345\n]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[12345\n]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testIntTerminatedByCR {
-    NSString *json = @"[12345\r]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[12345\r]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testIntTerminatedBySpace {
-    NSString *json = @"[12345 ]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[12345 ]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testIntTerminatedByComma {
-    NSString *json = @"[12345, 12345]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[12345, 12345]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testIntTerminatedBySquareBraket {
-    NSString *json = @"[12345]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
-    
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[12345]";
+
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testIntTerminatedByBrace {
-    NSString *json = @"{\"key\":12345}";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
-    
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "{\"key\":12345}";
+
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testExpTerminatedByTab {
-    NSString *json = @"[1234e5\t]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
-    
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234e5\t]";
+
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testExpTerminatedByLF {
-    NSString *json = @"[1234e5\n]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
-    
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234e5\n]";
+
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testExpTerminatedByCR {
-    NSString *json = @"[1234e5\r]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
-    
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234e5\r]";
+
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testExpTerminatedBySpace {
-    NSString *json = @"[1234e5 ]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
-    
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234e5 ]";
+
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testExpTerminatedByComma {
-    NSString *json = @"[1234e5, 1234e5]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234e5, 1234e5]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testExpTerminatedBySquareBraket {
-    NSString *json = @"[1234e5]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
-    
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234e5]";
+
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testExpTerminatedByBrace {
-    NSString *json = @"{\"key\":1234e5}";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "{\"key\":1234e5}";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testFracTerminatedByTab {
-    NSString *json = @"[1234.5\t]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
-    
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234.5\t]";
+
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testFracTerminatedByLF {
-    NSString *json = @"[1234.5\n]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
-    
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234.5\n]";
+
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testFracTerminatedByCR {
-    NSString *json = @"[1234.5\r]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234.5\r]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testFracTerminatedBySpace {
-    NSString *json = @"[1234.5 ]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234.5 ]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testFracTerminatedByComma {
-    NSString *json = @"[1234.5, 1234.5]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234.5, 1234.5]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testFracTerminatedBySquareBraket {
-    NSString *json = @"[1234.5]";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "[1234.5]";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testFracTerminatedByBrace {
-    NSString *json = @"{\"key\":1234.5}";
-    NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    XCTAssertNotNil(data, @"Data is nil");
-    XCTAssertTrue([data length] > 0, @"Data is empty");
+    char memory[jsonlite_parser_estimate_size(4)];
+    char json[] = "{\"key\":1234.5}";
     
-    const void *buffer = [data bytes];
-    size_t size = [data length];
-    jsonlite_parser ps = jsonlite_parser_init(8);
-    jsonlite_result result = jsonlite_parser_tokenize(ps, buffer, size);
+    jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error code");
-    jsonlite_parser_release(ps);
 }
 
 - (void)testNumber {

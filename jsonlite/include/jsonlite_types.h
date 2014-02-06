@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -34,7 +34,8 @@ typedef enum {
     jsonlite_result_invalid_utf8,
     jsonlite_result_suspended,    
     
-    jsonlite_result_not_allowed
+    jsonlite_result_not_allowed,
+    jsonlite_result_out_of_memory,
 } jsonlite_result;
 
 
