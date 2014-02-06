@@ -171,7 +171,7 @@ extern "C" {
      * @param ts jsonlite token
      * @return length in bytes  of converted string.
      */
-    size_t jsonlite_token_to_uft8(jsonlite_token *ts, uint8_t **buffer);
+    size_t jsonlite_token_to_uft8(jsonlite_token *ts, uint8_t *buffer);
     
     /** @brief Returns a size of memory that is required for token conversion to UTF-16 string.
      * @param ts jsonlite token
@@ -188,10 +188,10 @@ extern "C" {
      * @param ts jsonlite token
      * @return length in bytes of converted string.
      */
-    size_t jsonlite_token_to_uft16(jsonlite_token *ts, uint16_t **buffer);
+    size_t jsonlite_token_to_uft16(jsonlite_token *ts, uint16_t *buffer);
     
     size_t jsonlite_token_size_of_base64_binary(jsonlite_token *ts);
-    size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void **buffer);
+    size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void *buffer);
     
     long jsonlite_token_to_long(jsonlite_token *token);
     long long jsonlite_token_to_long_long(jsonlite_token *token);

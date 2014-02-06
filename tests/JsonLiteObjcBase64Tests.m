@@ -69,107 +69,88 @@ static uint8_t img_bytes[] = {
 
 - (void)testBase64IncorrectInputs {
     jsonlite_token token;
-    char *buffer = NULL;
+    char buffer[256];
     size_t size = 0;
     
     token.start = (uint8_t *)"";
     token.end = token.start + 0;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 0, @"Incorrect size");
-    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"=";
     token.end = token.start + 1;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 0, @"Incorrect size");
-    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)" ";
     token.end = token.start + 1;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 0, @"Incorrect size");
-    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"}";
     token.end = token.start + 1;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 0, @"Incorrect size");
-    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"TWF";
     token.end = token.start + 3;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 0, @"Incorrect size");
-    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"TWF{";
     token.end = token.start + 4;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 0, @"Incorrect size");
-    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"TWF ";
     token.end = token.start + 4;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 0, @"Incorrect size");
-    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"SGVsbG8===";
     token.end = token.start + 10;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 0, @"Incorrect size");
-    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
     
     token.start = (uint8_t *)"aaaa\\ba";
     token.end = token.start + 8;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 0, @"Incorrect size");
-    XCTAssertTrue(buffer == NULL, @"Incorect decoding");
 }
 
 - (void)testBase64Decoding {
+    char buffer[256];
     jsonlite_token token;
     token.start = (uint8_t *)"TWFu";
     token.end = token.start + 4;
     
-    char *buffer = NULL;
-    size_t size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size_t size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 3, @"Incorrect size");
     XCTAssertTrue(memcmp(buffer, "Man", 3) == 0, @"Incorect decoding");
-    free(buffer);
-    buffer = NULL;
     
     token.start = (uint8_t *)"SGVsbG8=";
     token.end = token.start + 8;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 5, @"Incorrect size");
     XCTAssertTrue(memcmp(buffer, "Hello", 5) == 0, @"Incorect decoding");
-    free(buffer);
-    buffer = NULL;
     
     token.start = (uint8_t *)"SGVsbG8hIQ==";
     token.end = token.start + 12;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == 7, @"Incorrect size");
     XCTAssertTrue(memcmp(buffer, "Hello!!", 7) == 0, @"Incorect decoding");
-    free(buffer);
-    buffer = NULL;
     
     token.start = (uint8_t *)img;
     token.end = token.start + sizeof(img) - 1;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == sizeof(img_bytes), @"Incorrect size");
     XCTAssertTrue(memcmp(buffer, img_bytes, sizeof(img_bytes)) == 0, @"Incorect decoding");
-    free(buffer);
-    buffer = NULL;
 
     token.start = (uint8_t *)img_scaped;
     token.end = token.start + sizeof(img_scaped) - 1;
-    size = jsonlite_token_base64_to_binary(&token, (void **)&buffer);
+    size = jsonlite_token_base64_to_binary(&token, buffer);
     XCTAssertTrue(size == sizeof(img_bytes), @"Incorrect size");
     XCTAssertTrue(memcmp(buffer, img_bytes, sizeof(img_bytes)) == 0, @"Incorect decoding");
-    free(buffer);
-    buffer = NULL;
 }
 
 - (void)testBase64Man {

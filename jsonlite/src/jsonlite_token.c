@@ -64,12 +64,11 @@ size_t jsonlite_token_size_of_uft8(jsonlite_token *ts) {
     return (size_t)(ts->end - ts->start + 1);
 }
 
-size_t jsonlite_token_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
-    size_t size = jsonlite_token_size_of_uft8(ts);
+size_t jsonlite_token_to_uft8(jsonlite_token *ts, uint8_t *buffer) {
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint32_t value, utf32;
-  	uint8_t *c = *buffer = (uint8_t *)malloc(size);
+  	uint8_t *c = buffer;
     int res;
 step:
     if (p == l)         goto done;
@@ -142,19 +141,18 @@ utf8:
     goto step;
 done:
     *c = 0;
-    return c - *buffer;
+    return c - buffer;
 }
 
 size_t jsonlite_token_size_of_uft16(jsonlite_token *ts) {
     return (ts->end - ts->start + 1) * sizeof(uint16_t);
 }
 
-size_t jsonlite_token_to_uft16(jsonlite_token *ts, uint16_t **buffer) {
-    size_t size = jsonlite_token_size_of_uft16(ts);
+size_t jsonlite_token_to_uft16(jsonlite_token *ts, uint16_t *buffer) {
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint16_t utf16;
-    uint16_t *c = *buffer = (uint16_t *)malloc(size);
+    uint16_t *c = buffer;
     int res;    
 step:
     if (p == l)         goto done;
@@ -205,26 +203,19 @@ utf8:
     goto step;
 done:
     *c = 0;
-    return (c - *buffer) * sizeof(uint16_t);
+    return (c - buffer) * sizeof(uint16_t);
 }
 
 size_t jsonlite_token_size_of_base64_binary(jsonlite_token *ts) {
     return (((ts->end - ts->start) * 3) / 4 + 3) & ~3;
 }
 
-size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void **buffer) {
+size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void *buffer) {
     size_t length = 0;
-    size_t size = jsonlite_token_size_of_base64_binary(ts);
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
-    uint8_t *c;
+    uint8_t *c = buffer;
     size_t bytes, i;
-    if (size > 0) {
-        c = *buffer = (uint16_t *)malloc(size);
-    } else {
-        *buffer = NULL;
-        goto error;
-    }
 next:
     bytes = 0;
     i = 0;
@@ -237,7 +228,7 @@ next:
         if (0x30 <= *p && *p <= 0x39) { bytes |= *p++ + 0x04; continue; }
         if (*p == 0x2B) { bytes |= 0x3E; p++; continue; }
         if (*p == 0x2F) { bytes |= 0x3F; p++; continue; }
-        if (*p == '=') {
+        if (*p == '=' && length > 0) {
             switch (l - p) {
                 case 1:
                     *c++ = (uint8_t)((bytes >> 16) & 0x000000FF);
@@ -260,8 +251,6 @@ next:
     if (p == l) goto done;
     goto next;
 error:
-    free(*buffer);
-    *buffer = NULL;
     length = 0;
 done:
     return length;

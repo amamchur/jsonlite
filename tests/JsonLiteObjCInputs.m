@@ -141,8 +141,9 @@
     
     size_t size = jsonlite_token_size_of_uft8(&token);
     XCTAssertTrue(size == sizeof(str), @"Incorrect size - %zu", size);
-        
-    size = jsonlite_token_to_uft8(&token, &buffer);
+    
+    buffer = malloc(jsonlite_token_size_of_uft8(&token));
+    size = jsonlite_token_to_uft8(&token, buffer);
     XCTAssertTrue(buffer != NULL, @"Buffer is null");
     XCTAssertTrue(size == strlen((char *)str), @"Size is not zero");
     XCTAssertTrue(memcmp(str, buffer, sizeof(str)) == 0, @"String are not equal");
@@ -152,8 +153,9 @@
     
     size = jsonlite_token_size_of_uft16(&token);
     XCTAssertTrue(size == sizeof(str) * 2, @"Incorrect size - %zu", size);
-        
-    size = jsonlite_token_to_uft16(&token, &unicode);
+    
+    unicode = malloc(jsonlite_token_size_of_uft16(&token));
+    size = jsonlite_token_to_uft16(&token, unicode);
     XCTAssertTrue(unicode != NULL, @"Buffer is null");
     XCTAssertTrue(size == sizeof(str16) - sizeof(uint16_t), @"Size is not zero");
     XCTAssertTrue(memcmp(str16, unicode, sizeof(str16)) == 0, @"String are not equal");

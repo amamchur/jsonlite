@@ -101,8 +101,8 @@ static Class class_JsonLiteNumberToken;
 @implementation JsonLiteStringToken 
 
 - (NSString *)allocEscapedString:(jsonlite_token *)token {
-    void *buffer = NULL;
-    size_t size = jsonlite_token_to_uft16(token, (uint16_t **)&buffer);
+    uint16_t *buffer = malloc(jsonlite_token_size_of_uft16(token));
+    size_t size = jsonlite_token_to_uft16(token, buffer);
     NSString *str = (NSString *)CFStringCreateWithBytesNoCopy(NULL, 
                                                               (const UInt8 *)buffer,
                                                               size,
@@ -161,9 +161,10 @@ static Class class_JsonLiteNumberToken;
 
 - (NSData *)copyBase64Data {
     jsonlite_token *token = (jsonlite_token *)self;
-    void *buffer = NULL;
-    size_t size = jsonlite_token_base64_to_binary(token, &buffer);
-    if (buffer == NULL) {
+    void *buffer = malloc(jsonlite_token_size_of_base64_binary(token));
+    size_t size = jsonlite_token_base64_to_binary(token, buffer);
+    if (size == 0) {
+        free(buffer);
         return nil;
     }
     

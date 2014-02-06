@@ -520,8 +520,8 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
 static void string_found(jsonlite_callback_context *ctx, struct jsonlite_token *token) {
     UnicodeTestCtx *context = (UnicodeTestCtx *)ctx->client_state;
     NSDictionary *dict = context->dict;
-    uint8_t *buffer = NULL;
-    size_t size = jsonlite_token_to_uft8(token, &buffer);
+    uint8_t *buffer = malloc(jsonlite_token_size_of_uft8(token));
+    size_t size = jsonlite_token_to_uft8(token, buffer);
     
     NSString *str = [[NSString alloc] initWithBytes:buffer length:size encoding:NSUTF8StringEncoding];
     [str autorelease];
@@ -540,9 +540,9 @@ static void string_found(jsonlite_callback_context *ctx, struct jsonlite_token *
 }
 
 static void string_token_found(jsonlite_callback_context *ctx, struct jsonlite_token *token) {
-    uint8_t *buffer_utf8 = NULL;
+    uint8_t *buffer_utf8 = malloc(jsonlite_token_size_of_uft8(token));
     uint16_t *buffer_utf16 = NULL;
-    size_t size = jsonlite_token_to_uft8(token, &buffer_utf8);
+    size_t size = jsonlite_token_to_uft8(token, buffer_utf8);
     
     NSString *str1 = [[NSString alloc] initWithBytes:buffer_utf8
                                               length:size
@@ -550,7 +550,8 @@ static void string_token_found(jsonlite_callback_context *ctx, struct jsonlite_t
     [str1 autorelease];
     free(buffer_utf8);
     
-    size = jsonlite_token_to_uft16(token, &buffer_utf16);
+    buffer_utf16 = malloc(jsonlite_token_size_of_uft16(token));
+    size = jsonlite_token_to_uft16(token, buffer_utf16);
     NSString *str2 = (NSString *)CFStringCreateWithBytesNoCopy(NULL,
                                                                (const UInt8 *)buffer_utf16,
                                                                size,
