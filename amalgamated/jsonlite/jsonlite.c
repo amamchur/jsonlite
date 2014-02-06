@@ -1,7 +1,7 @@
 #define JSONLITE_AMALGAMATED
 #include "jsonlite.h"
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 const char *jsonlite_version = "1.2.0";
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -38,20 +38,16 @@ const char *jsonlite_version = "1.2.0";
 #include <stdlib.h>
 #include <string.h>
 
-static int jsonlite_null_buffer_set_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
+static int jsonlite_null_buffer_set_append(jsonlite_buffer buffer, const void *data, size_t length) {
     return length == 0 ? 0 : -1;
-}
-
-static void jsonlite_null_buffer_cleanup(jsonlite_buffer buffer) {
 }
 
 struct jsonlite_buffer_struct jsonlite_null_buffer_struct = {
     NULL,
     0,
     0,
-    &jsonlite_null_buffer_set_append_mem,
-    &jsonlite_null_buffer_set_append_mem,
-    &jsonlite_null_buffer_cleanup
+    &jsonlite_null_buffer_set_append,
+    &jsonlite_null_buffer_set_append
 };
 
 jsonlite_buffer jsonlite_null_buffer = &jsonlite_null_buffer_struct;
@@ -70,12 +66,6 @@ int jsonlite_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t len
 
 int jsonlite_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
     return buffer->append_mem(buffer, data, length);
-}
-
-void jsonlite_buffer_cleanup(jsonlite_buffer buffer) {
-    if (buffer != NULL) {
-        buffer->cleanup(buffer);
-    }
 }
 
 static int jsonlite_static_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t length) {
@@ -99,18 +89,15 @@ static int jsonlite_static_buffer_append_mem(jsonlite_buffer buffer, const void 
     return 0;
 }
 
-jsonlite_buffer jsonlite_static_buffer_init_memory(void *mem) {
+jsonlite_buffer jsonlite_static_buffer_init(void *mem, size_t size) {
     struct jsonlite_buffer_struct *buffer = (struct jsonlite_buffer_struct *)mem;
     buffer->set_mem = &jsonlite_static_buffer_set_mem;
     buffer->append_mem = &jsonlite_static_buffer_append_mem;
-    buffer->cleanup = &jsonlite_null_buffer_cleanup;
-    buffer->mem = NULL;
+    buffer->mem = (uint8_t *)mem + sizeof(jsonlite_buffer_struct);
     buffer->size = 0;
-    buffer->capacity = 0;
+    buffer->capacity = size - sizeof(jsonlite_buffer_struct);
     return buffer;
 }
-
-#if JSONLITE_HEAP_ENABLED
 
 static int jsonlite_heap_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t length) {
     if (length > buffer->capacity) {
@@ -138,24 +125,26 @@ static int jsonlite_heap_buffer_append_mem(jsonlite_buffer buffer, const void *d
     return 0;
 }
 
-static void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer) {
-    free(buffer->mem);
+void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer) {
+    if (buffer != NULL) {
+        free(buffer->mem);
+        buffer->mem = NULL;
+        buffer->size = 0;
+        buffer->capacity = 0;
+    }
 }
 
-jsonlite_buffer jsonlite_heap_buffer_init_memory(void *mem) {
+jsonlite_buffer jsonlite_heap_buffer_init(void *mem) {
     struct jsonlite_buffer_struct *buffer = (struct jsonlite_buffer_struct *)mem;
     buffer->set_mem = &jsonlite_heap_buffer_set_mem;
     buffer->append_mem = &jsonlite_heap_buffer_append_mem;
-    buffer->cleanup = &jsonlite_heap_buffer_cleanup;
     buffer->mem = NULL;
     buffer->size = 0;
     buffer->capacity = 0;
     return buffer;
 }
-
-#endif
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -217,17 +206,6 @@ enum {
                                     | jsonlite_accept_array_end
 };
 
-typedef uint16_t jsonlite_write_state;
-typedef struct jsonlite_builder_struct {
-    jsonlite_write_state *state;
-    jsonlite_write_state *limit;
-    jsonlite_write_state *stack;
-    jsonlite_stream stream;
-
-    size_t indentation;
-    char doubleFormat[8];
-} jsonlite_builder_struct;
-
 static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_write_state a);
 static void jsonlite_builder_pop_state(jsonlite_builder builder);
 static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder);
@@ -238,33 +216,8 @@ static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, siz
 static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length);
 static jsonlite_builder jsonlite_builder_configure(void *memory, size_t size, jsonlite_stream stream);
 
-#if JSONLITE_HEAP_ENABLED
-
-jsonlite_builder jsonlite_builder_init(size_t depth, jsonlite_stream stream) {
-    depth = depth < 2 ? MIN_DEPTH : depth;
-    size_t size = sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state);
-    void *mem = malloc(size);
-    return jsonlite_builder_configure(mem, size, stream);
-}
-
-jsonlite_result jsonlite_builder_release(jsonlite_builder builder) {
-    if (builder == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
-    free(builder);
-    return jsonlite_result_ok;
-}
-
-#endif
-
-size_t jsonlite_builder_estimate_size(size_t depth) {
-    depth = depth < MIN_DEPTH ? MIN_DEPTH : depth;
-    return sizeof(jsonlite_builder_struct) + depth * sizeof(jsonlite_write_state);
-}
-
-jsonlite_builder jsonlite_builder_init_memory(void *memory, size_t size, jsonlite_stream stream) {
-    if (memory == NULL) {
+jsonlite_builder jsonlite_builder_init(void *memory, size_t size, jsonlite_stream stream) {
+    if (memory == NULL || stream == NULL) {
         return NULL;
     }
     
@@ -750,7 +703,7 @@ jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const vo
 
 }
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -859,22 +812,7 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, json
     return parser;
 }
 
-#if JSONLITE_HEAP_ENABLED
-
-jsonlite_parser jsonlite_parser_init(size_t depth, jsonlite_buffer rest_buffer) {
-    size_t size = jsonlite_parser_estimate_size(depth);
-    void *memory = malloc(size);
-    return jsonlite_parser_configure(memory, size, rest_buffer);
-}
-
-void jsonlite_parser_release(jsonlite_parser parser) {
-    jsonlite_parser_cleanup(parser);
-    free(parser);
-}
-
-#endif
-
-jsonlite_parser jsonlite_parser_init_memory(void *memory, size_t size, jsonlite_buffer rest_buffer) {
+jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer rest_buffer) {
     if (memory == NULL) {
         return NULL;
     }
@@ -911,7 +849,10 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
     
     size_t rest_size = jsonlite_buffer_size(parser->rest_buffer);
     if (rest_size > 0) {
-        jsonlite_buffer_append_mem(parser->rest_buffer, buffer, size);
+        if (jsonlite_buffer_append_mem(parser->rest_buffer, buffer, size) < 0) {
+            return jsonlite_result_out_of_memory;
+        }
+        
         parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
         parser->cursor = parser->buffer;
         parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
@@ -954,14 +895,6 @@ jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_resul
     parser->result = result;
     **parser->control |= state_stop;
     return jsonlite_result_ok;
-}
-
-void jsonlite_parser_cleanup(jsonlite_parser parser) {
-    if (parser == NULL) {
-        return;
-    }
-    
-    jsonlite_buffer_cleanup(parser->rest_buffer);
 }
 
 static void jsonlite_do_parse(jsonlite_parser parser) {
@@ -1291,12 +1224,16 @@ end:
         return;
     }
     
-    jsonlite_buffer_set_mem(parser->rest_buffer, token_start, parser->limit - token_start);
-    parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
-    parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
+    res = jsonlite_buffer_set_mem(parser->rest_buffer, token_start, parser->limit - token_start);
+    if (res < 0) {
+        parser->result = jsonlite_result_out_of_memory;
+    } else {
+        parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
+        parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
+    }
 }
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -1315,48 +1252,15 @@ end:
 #endif
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
-
-struct jsonlite_stream_struct {
-    jsonlite_stream_write_fn write;
-    jsonlite_stream_release_fn release;
-} jsonlite_stream_struct;
 
 int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t length) {
     return stream->write(stream, data, length);
 }
 
-void jsonlite_stream_release(jsonlite_stream stream) {
-    if (stream == NULL) {
-        return;
-    }
-    
-    if (stream->release != NULL) {
-        stream->release(stream);
-    }
-}
-
-static void jsonlite_stream_free_mem(jsonlite_stream stream) {
-    free((void *)stream);
-}
-
-#ifdef JSONLITE_HEAP_ENABLED
-
 #define CAST_TO_MEM_STREAM(S)   (jsonlite_mem_stream *)((uint8_t *)(S) + sizeof(jsonlite_stream_struct))
 #define SIZE_OF_MEM_STREAM()    (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_mem_stream))
-
-typedef struct jsonlite_mem_stream_block {
-    struct jsonlite_mem_stream_block *next;
-    uint8_t *data;
-} jsonlite_mem_stream_block;
-
-typedef struct jsonlite_mem_stream {
-    size_t block_size;
-    uint8_t *cursor;
-    uint8_t *limit;
-    struct jsonlite_mem_stream_block *current;
-    struct jsonlite_mem_stream_block *first;
-} jsonlite_mem_stream;
 
 static int jsonlite_mem_stream_write(jsonlite_stream stream, const void *data, size_t length) {
     jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
@@ -1384,7 +1288,7 @@ static int jsonlite_mem_stream_write(jsonlite_stream stream, const void *data, s
     return (int)length;
 }
 
-static void jsonlite_mem_stream_release(jsonlite_stream stream) {
+void jsonlite_mem_stream_free(jsonlite_stream stream) {
     jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
     jsonlite_mem_stream_block *block = mem_stream->first;
     void *prev;
@@ -1397,11 +1301,10 @@ static void jsonlite_mem_stream_release(jsonlite_stream stream) {
     free((void *)stream);
 }
 
-jsonlite_stream jsonlite_mem_stream_init(size_t block_size) {
+jsonlite_stream jsonlite_mem_stream_alloc(size_t block_size) {
     size_t size = SIZE_OF_MEM_STREAM();    
     struct jsonlite_stream_struct *stream = malloc(size);
     stream->write = jsonlite_mem_stream_write;
-    stream->release = jsonlite_mem_stream_release;
 
     jsonlite_mem_stream_block *first = malloc(sizeof(jsonlite_mem_stream_block) + block_size);
     first->data = (uint8_t *)first + sizeof(jsonlite_mem_stream_block);
@@ -1448,16 +1351,6 @@ size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data, size_t e
     return size;
 }
 
-#endif
-
-typedef struct jsonlite_static_mem_stream {
-    uint8_t *buffer;
-    size_t size;
-    size_t written;
-    uint8_t *limit;
-    int enabled;
-} jsonlite_static_mem_stream;
-
 static int jsonlite_static_mem_stream_write(jsonlite_stream stream, const void *data, size_t length) {
     jsonlite_static_mem_stream *mem_stream = (jsonlite_static_mem_stream *)((uint8_t *)stream + sizeof(jsonlite_stream_struct));
     size_t write_limit = mem_stream->size - mem_stream->written;
@@ -1473,18 +1366,17 @@ static int jsonlite_static_mem_stream_write(jsonlite_stream stream, const void *
 }
 
 jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size) {
-    int extra_size = size - sizeof(jsonlite_stream_struct) - sizeof(jsonlite_static_mem_stream);
+    int extra_size = (int)size - sizeof(jsonlite_stream_struct) - sizeof(jsonlite_static_mem_stream);
     if (extra_size <= 0) {
         return NULL;
     }
     
     struct jsonlite_stream_struct *stream = (struct jsonlite_stream_struct *)buffer;
     stream->write = jsonlite_static_mem_stream_write;
-    stream->release = jsonlite_stream_free_mem;
     
     jsonlite_static_mem_stream *mem_stream = (jsonlite_static_mem_stream *)((uint8_t *)stream + sizeof(jsonlite_stream_struct));
     mem_stream->buffer = (uint8_t *)mem_stream + sizeof(jsonlite_static_mem_stream);
-    mem_stream->size = extra_size;
+    mem_stream->size = (size_t)extra_size;
     mem_stream->written = 0;
     mem_stream->enabled = 1;
     return stream;
@@ -1500,8 +1392,6 @@ const void * jsonlite_static_mem_stream_data(jsonlite_stream stream) {
     return mem_stream->buffer;
 }
 
-#if JSONLITE_FILE_SYSTEM_ENABLED
-
 #define CAST_TO_FILE_STREAM(S)   (jsonlite_file_stream *)((uint8_t *)(S) + sizeof(jsonlite_stream_struct))
 #define SIZE_OF_FILE_STREAM()    (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_file_stream))
 
@@ -1514,18 +1404,19 @@ static int jsonlite_file_stream_write(jsonlite_stream stream, const void *data, 
     return (int)fwrite(data, 1, length, file_stream->file);
 }
 
-jsonlite_stream jsonlite_file_stream_init(FILE *file) {
+jsonlite_stream jsonlite_file_stream_alloc(FILE *file) {
     size_t size = SIZE_OF_FILE_STREAM();
     struct jsonlite_stream_struct *stream = malloc(size);
     stream->write = jsonlite_file_stream_write;
-    stream->release = jsonlite_stream_free_mem;
     
     jsonlite_file_stream *file_stream = CAST_TO_FILE_STREAM(stream);
     file_stream->file = file;
     return stream;
 }
 
-#endif
+void jsonlite_file_stream_free(jsonlite_stream stream) {
+    free((void *)stream);
+}
 
 static int jsonlite_null_stream_write(jsonlite_stream stream, const void *data, size_t length) {
     return (int)length;
@@ -1535,13 +1426,13 @@ static int jsonlite_stdout_stream_write(jsonlite_stream stream, const void *data
     return (int)fwrite(data, 1, length, stdout);
 }
 
-static struct jsonlite_stream_struct jsonlite_stdout_stream_struct = {jsonlite_stdout_stream_write, NULL};
-static struct jsonlite_stream_struct jsonlite_null_stream_struct = {jsonlite_null_stream_write, NULL};
+static struct jsonlite_stream_struct jsonlite_stdout_stream_struct = {jsonlite_stdout_stream_write};
+static struct jsonlite_stream_struct jsonlite_null_stream_struct = {jsonlite_null_stream_write};
 
 jsonlite_stream jsonlite_stdout_stream = &jsonlite_stdout_stream_struct;
 jsonlite_stream jsonlite_null_stream = &jsonlite_null_stream_struct;
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -1606,12 +1497,11 @@ size_t jsonlite_token_size_of_uft8(jsonlite_token *ts) {
     return (size_t)(ts->end - ts->start + 1);
 }
 
-size_t jsonlite_token_to_uft8(jsonlite_token *ts, uint8_t **buffer) {
-    size_t size = jsonlite_token_size_of_uft8(ts);
+size_t jsonlite_token_to_uft8(jsonlite_token *ts, uint8_t *buffer) {
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint32_t value, utf32;
-  	uint8_t *c = *buffer = (uint8_t *)malloc(size);
+  	uint8_t *c = buffer;
     int res;
 step:
     if (p == l)         goto done;
@@ -1684,19 +1574,18 @@ utf8:
     goto step;
 done:
     *c = 0;
-    return c - *buffer;
+    return c - buffer;
 }
 
 size_t jsonlite_token_size_of_uft16(jsonlite_token *ts) {
     return (ts->end - ts->start + 1) * sizeof(uint16_t);
 }
 
-size_t jsonlite_token_to_uft16(jsonlite_token *ts, uint16_t **buffer) {
-    size_t size = jsonlite_token_size_of_uft16(ts);
+size_t jsonlite_token_to_uft16(jsonlite_token *ts, uint16_t *buffer) {
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint16_t utf16;
-    uint16_t *c = *buffer = (uint16_t *)malloc(size);
+    uint16_t *c = buffer;
     int res;    
 step:
     if (p == l)         goto done;
@@ -1747,26 +1636,19 @@ utf8:
     goto step;
 done:
     *c = 0;
-    return (c - *buffer) * sizeof(uint16_t);
+    return (c - buffer) * sizeof(uint16_t);
 }
 
 size_t jsonlite_token_size_of_base64_binary(jsonlite_token *ts) {
     return (((ts->end - ts->start) * 3) / 4 + 3) & ~3;
 }
 
-size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void **buffer) {
+size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void *buffer) {
     size_t length = 0;
-    size_t size = jsonlite_token_size_of_base64_binary(ts);
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
-    uint8_t *c;
+    uint8_t *c = buffer;
     size_t bytes, i;
-    if (size > 0) {
-        c = *buffer = (uint16_t *)malloc(size);
-    } else {
-        *buffer = NULL;
-        goto error;
-    }
 next:
     bytes = 0;
     i = 0;
@@ -1779,7 +1661,7 @@ next:
         if (0x30 <= *p && *p <= 0x39) { bytes |= *p++ + 0x04; continue; }
         if (*p == 0x2B) { bytes |= 0x3E; p++; continue; }
         if (*p == 0x2F) { bytes |= 0x3F; p++; continue; }
-        if (*p == '=') {
+        if (*p == '=' && length > 0) {
             switch (l - p) {
                 case 1:
                     *c++ = (uint8_t)((bytes >> 16) & 0x000000FF);
@@ -1802,8 +1684,6 @@ next:
     if (p == l) goto done;
     goto next;
 error:
-    free(*buffer);
-    *buffer = NULL;
     length = 0;
 done:
     return length;
@@ -1847,7 +1727,7 @@ long long jsonlite_token_to_long_long(jsonlite_token *token) {
     return negative ? -res : res;
 }
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -1888,7 +1768,7 @@ static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index);
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
 static jsonlite_token_bucket terminate_bucket = {NULL, NULL, 0, 0, NULL};
 
-jsonlite_token_pool jsonlite_token_pool_create(jsonlite_token_pool_release_value_fn release_fn) {
+jsonlite_token_pool jsonlite_token_pool_alloc(jsonlite_token_pool_release_value_fn release_fn) {
     jsonlite_token_pool pool = (jsonlite_token_pool)malloc(sizeof(jsonlite_token_pool_struct));
     int i;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
@@ -1936,7 +1816,7 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     pool->content_pool_size = size;
 }
 
-void jsonlite_token_pool_release(jsonlite_token_pool pool) {
+void jsonlite_token_pool_free(jsonlite_token_pool pool) {
     int i;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         jsonlite_token_bucket *bucket = pool->blocks[i].buckets;
