@@ -30,6 +30,7 @@ _jsonlite_ designed as goto driven finite state machine. This approach provides 
 * Depth checking
 * Size of JSON payload doesn't influence memory usage
 * Recursion free
+* No malloc required
 * Good testability
 
 ##### Lightweight
