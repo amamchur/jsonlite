@@ -59,7 +59,7 @@ extern "C" {
         int enabled;
     } jsonlite_static_mem_stream;
     
-    #define jsonlite_static_mem_stream_size() (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_stream_struct))
+    #define jsonlite_static_mem_stream_size() (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_static_mem_stream))
     
     jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size);
     size_t jsonlite_static_mem_stream_written_bytes(jsonlite_stream stream);

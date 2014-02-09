@@ -124,7 +124,6 @@ extern "C" {
     
     /** @brief Initializes memory for parser object.
      *
-     * You should release internal resources using ::jsonlite_parser_cleanup
      * @see jsonlite_parser
      * @see jsonlite_parser_reset
      * @param memory the memory for parser.
@@ -160,30 +159,6 @@ extern "C" {
      * @param buffer the pointer to JSON payload buffer.
      * @param size the JSON payload buffer size.
      * @return JSON parsing result or jsonlite_result_invalid_argument when some parameter is invalid.
-     * 
-     * There is an example of JSON validation
-     * @code{.c}
-     * char json[] = "{\"key\" : 12345, \"obj\": {}, \"array\":[null, true, false, \"string\"]}";
-     * jsonlite_parser p = jsonlite_parser_init(16);
-     * jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));
-     * assert(result == jsonlite_result_ok);
-     * jsonlite_parser_release(p);
-     * @endcode
-     *
-     * There is an another example of JSON chunk parsing.
-     * @code{.c}
-     * char chunk1[] = "{\"key\" : 12345, \"obj\": {}, \"arr";
-     * char chunk2[] = "ay\":[null, true, false, \"string\"]}";
-     * jsonlite_parser p = jsonlite_parser_init(16);
-     *
-     * jsonlite_result result = jsonlite_parser_tokenize(p, chunk1, sizeof(chunk1) - 1);
-     * assert(result == jsonlite_result_end_of_stream);
-     * // Now you can release or reuse chunk1 buffer.
-     *
-     * result = jsonlite_parser_tokenize(p, chunk2, sizeof(chunk2) - 1);
-     * assert(result == jsonlite_result_ok);
-     *
-     * jsonlite_parser_release(p);
      * @endcode
      */
     jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buffer, size_t size);
