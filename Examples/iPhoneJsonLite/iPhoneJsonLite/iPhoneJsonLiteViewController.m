@@ -113,11 +113,10 @@
     clock_get_time(cclock, &start);
     
     const int COUNT = 1000;
-    char parser[1024];
+    char parser_memory[jsonlite_parser_estimate_size(512)];
     for (int i = 0; i < COUNT; i++) {
-        jsonlite_parser p = jsonlite_parser_init_memory(parser, sizeof(parser));
+        jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer);
         jsonlite_parser_tokenize(p, buffer, l);
-        jsonlite_parser_cleanup(p);
     }
     
     clock_get_time(cclock, &end);

@@ -91,18 +91,9 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     cbs.context.client_state = &ctx;
     cbs.string_found = string_found;
     
-    jsonlite_result result = jsonlite_parser_set_callback(NULL, &cbs);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
+    jsonlite_result result;
+    jsonlite_parser_set_callback(p, &cbs);
     
-    result = jsonlite_parser_set_callback(p, NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
-    
-    result = jsonlite_parser_set_callback(NULL, NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
-    
-    result = jsonlite_parser_set_callback(p, &cbs);
-    XCTAssertTrue(result == jsonlite_result_ok, @"Bad error");
-
     result = jsonlite_parser_tokenize(p, [data bytes], [data length]);
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error");
 }
@@ -114,8 +105,8 @@ static void string_token_found(jsonlite_callback_context *, jsonlite_token *);
     cbs.context.client_state = self;
     cbs.string_found = string_token_found;
     
-    jsonlite_result result = jsonlite_parser_set_callback(p, &cbs);
-    XCTAssertTrue(result == jsonlite_result_ok, @"Bad error");
+    jsonlite_result result;
+    jsonlite_parser_set_callback(p, &cbs);
     
     NSData *data = [self dataFromFile:@"tokens" inDir:@"tokens"];
     result = jsonlite_parser_tokenize(p, [data bytes], [data length]);

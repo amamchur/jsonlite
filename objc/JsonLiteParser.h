@@ -19,7 +19,6 @@ typedef enum {
     JsonLiteCodeOk,
     JsonLiteCodeEndOfStream,
     JsonLiteCodeDepthLimit,
-    JsonLiteCodeInvalidArgument,
     JsonLiteCodeExpectedObjectOrArray,
     JsonLiteCodeExpectedValue,
     JsonLiteCodeExpectedKeyOrEnd,
@@ -31,7 +30,9 @@ typedef enum {
     JsonLiteCodeInvalidToken,
     JsonLiteCodeInvalidUTF8,
     JsonLiteCodeSuspended,    
-    JsonLiteCodeNotAllowed
+    JsonLiteCodeNotAllowed,
+    
+    JsonLiteCodeInvalidArgument = 0xF0
 }  JsonLiteCode;
 
 extern NSString * const JsonLiteCodeDomain;

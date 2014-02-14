@@ -51,13 +51,7 @@
     char builder_memory[jsonlite_builder_estimate_size(32)];
     
     jsonlite_stream stream = jsonlite_mem_stream_alloc(0x100);
-    jsonlite_builder bs = jsonlite_builder_init(NULL, sizeof(builder_memory), stream);
-    XCTAssertTrue(bs == NULL, @"Builder was created");
-    
-    bs = jsonlite_builder_init(builder_memory, sizeof(builder_memory), NULL);
-    XCTAssertTrue(bs == NULL, @"Builder was created");
-    
-    bs = jsonlite_builder_init(builder_memory, 0, stream);
+    jsonlite_builder bs = jsonlite_builder_init(builder_memory, 0, stream);
     XCTAssertTrue(bs == NULL, @"Builder was created");
 }
 
@@ -123,99 +117,8 @@
     XCTAssertTrue(bs != NULL, @"Builder not created");
     
     jsonlite_result result = jsonlite_result_ok;
-    
-    result = jsonlite_builder_set_indentation(NULL, indentation);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_set_double_format(NULL, "%.10f");
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_set_double_format(bs, NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
 
-    result = jsonlite_builder_object_begin(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_object_end(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_array_begin(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_array_end(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_key(NULL, "key", strlen("key"));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_key(bs, NULL, strlen("key"));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_raw_key(NULL, "key", strlen("key"));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_raw_key(bs, NULL, strlen("key"));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_raw_key(bs, "key", 0);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_raw_value(NULL, "\"key\"", strlen("\"key\""));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_raw_value(bs, NULL, strlen("\"key\""));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_raw_value(bs, "\"key\"", 0);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_raw_string(NULL, "key", strlen("key"));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_raw_string(bs, NULL, strlen("key"));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_raw_string(bs, "key", 0);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_base64_value(NULL, "key", 3);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_base64_value(bs, NULL, 3);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_base64_value(bs, "key", 0);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_string(NULL, "key", strlen("key"));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_string(bs, NULL, strlen("key"));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_null(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_true(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_false(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_int(NULL, 100);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_double(NULL, 100.0);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_object_end(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_array_end(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
-    result = jsonlite_builder_set_indentation(bs, indentation);
-    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect error");
+    jsonlite_builder_set_indentation(bs, indentation);
     
     result = jsonlite_builder_key(bs, "key", strlen("key"));
     XCTAssertTrue(result == jsonlite_result_not_allowed, @"Parse state error");
@@ -256,8 +159,7 @@
     result = jsonlite_builder_array_end(bs);
     XCTAssertTrue(result == jsonlite_result_not_allowed, @"Parse state error");
     
-    result = jsonlite_builder_set_indentation(bs, indentation);
-    XCTAssertTrue(result == jsonlite_result_ok, @"Incorrect error");
+    jsonlite_builder_set_indentation(bs, indentation);
         
     result = jsonlite_builder_object_begin(bs);
     XCTAssertTrue(result == jsonlite_result_ok, @"Parse state error");

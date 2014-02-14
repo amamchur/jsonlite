@@ -21,7 +21,6 @@ typedef enum {
     jsonlite_result_ok,
     jsonlite_result_end_of_stream,
     jsonlite_result_depth_limit,
-    jsonlite_result_invalid_argument,
     jsonlite_result_expected_object_or_array,
     jsonlite_result_expected_value,
     jsonlite_result_expected_key_or_end,

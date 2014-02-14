@@ -62,12 +62,12 @@ case 0x7D: goto number_parsed
 enum {
     state_start,
     state_object_key,
-    state_object_key_end,
-    state_colon,
-    state_object_comma_end,
-    state_array_value_end,
-    state_array_comma_end,
-    state_key,
+    state_object_key_only,
+    state_object_key_or_end,
+    state_object_colon,
+    state_object_comma_or_end,
+    state_array_value_or_end,
+    state_array_comma_or_end,
     state_value,
     state_end,
     
@@ -109,10 +109,6 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, json
 }
 
 jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer rest_buffer) {
-    if (memory == NULL) {
-        return NULL;
-    }
-    
     if (size < jsonlite_parser_estimate_size(MIN_DEPTH)) {
         return NULL;
     }
@@ -120,29 +116,16 @@ jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer 
     return jsonlite_parser_configure(memory, size, rest_buffer);
 }
 
-jsonlite_result jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs) {
-    if (parser == NULL || cbs == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-
+void jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs) {
     parser->callbacks = *cbs;
     parser->callbacks.context.parser = parser;
-    return jsonlite_result_ok;
 }
 
 jsonlite_result jsonlite_parser_get_result(jsonlite_parser parser) {
-    if (parser == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
     return parser->result;
 }
 
 jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buffer, size_t size) {
-    if (parser == NULL || buffer == NULL || size == 0) {
-        return jsonlite_result_invalid_argument;
-    }
-    
     size_t rest_size = jsonlite_buffer_size(parser->rest_buffer);
     if (rest_size > 0) {
         if (jsonlite_buffer_append_mem(parser->rest_buffer, buffer, size) < 0) {
@@ -163,10 +146,6 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
 }
 
 jsonlite_result jsonlite_parser_resume(jsonlite_parser parser) {
-    if (parser == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
     if (parser->result != jsonlite_result_suspended) {
         return jsonlite_result_not_allowed;
     }
@@ -180,10 +159,6 @@ jsonlite_result jsonlite_parser_suspend(jsonlite_parser parser) {
 }
 
 jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_result result) {
-    if (parser == NULL) {
-        return jsonlite_result_invalid_argument;
-    }
-    
     if (parser->control == NULL) {
         return jsonlite_result_not_allowed;
     }
@@ -222,13 +197,13 @@ select_state:
     
     switch (*state) {
         case state_value:               goto parse_value;
-        case state_colon:               goto parse_colon;
-        case state_object_comma_end:    goto parse_object_comma_end;
-        case state_object_key:          goto parse_key;
-        case state_object_key_end:      goto parse_key_end;
-        case state_array_comma_end:     goto parse_array_comma_end;
-        case state_array_value_end:     goto parse_array_value_end;
-        case state_key:                 goto parse_string_token;
+        case state_object_key:          goto parse_string;
+        case state_object_key_only:     goto parse_object_key_only;
+        case state_object_key_or_end:   goto parse_object_key_or_end;
+        case state_object_colon:        goto parse_colon;
+        case state_object_comma_or_end: goto parse_object_comma_end;
+        case state_array_comma_or_end:  goto parse_array_comma_end;
+        case state_array_value_or_end:  goto parse_array_value_end;
         case state_start:
             if (*c == 0x7B)             goto parse_object;
             if (*c == 0x5B)             goto parse_array_state;
@@ -239,40 +214,22 @@ select_state:
             goto end;
     }
 parse_object:
-    *state = state_object_key_end;
+    *state = state_object_key_or_end;
     CALL_STATE_CALLBACK(parser->callbacks, object_start);
     goto skip_char_and_whitespaces;
 parse_array_state:
-    *state = state_array_value_end;
+    *state = state_array_value_or_end;
     CALL_STATE_CALLBACK(parser->callbacks, array_start);
     goto skip_char_and_whitespaces;
-parse_key:
-    if (*c != 0x22) goto error_exp_key;
-    *state = state_colon;
-    *++state = state_key;
-    goto parse_string_token;
 parse_colon:
     if (*c != 0x3A) goto error_exp_colon;
-    *state = state_object_comma_end;
+    *state = state_object_comma_or_end;
     *++state = state_value;
     goto skip_char_and_whitespaces;
-parse_key_end:
-    switch (*c) {
-        case 0x22:
-            *state = state_colon;
-            if (++state == last) goto error_depth;
-            *state = state_key;
-            goto parse_string_token;
-        case 0x7D:
-            state--;
-            CALL_STATE_CALLBACK(parser->callbacks, object_end);
-            goto structure_finished;
-        default: goto error_exp_koe;
-    }
 parse_object_comma_end:
     switch (*c) {
         case 0x2C:
-            *state = state_object_key;
+            *state = state_object_key_only;
             goto skip_char_and_whitespaces;
         case 0x7D:
             state--;
@@ -287,7 +244,7 @@ parse_array_value_end:
             CALL_STATE_CALLBACK(parser->callbacks, array_end);
             goto structure_finished;
         default:
-            *state = state_array_comma_end;
+            *state = state_array_comma_or_end;
             if (++state == last) goto error_depth;
             *state = state_value;
             goto parse_value;
@@ -307,7 +264,7 @@ parse_value:
     if (0x31 <= *c && *c <= 0x39)   goto parse_digit_leading_number;
     if (*c == 0x30)                 goto parse_zero_leading_number;
     if (*c == 0x2D)                 goto parse_negative_number;
-    if (*c == 0x22)                 goto parse_string_token;
+    if (*c == 0x22)                 goto parse_string;
     if (*c == 0x74)                 goto parse_true_token;
     if (*c == 0x66)                 goto parse_false_token;
     if (*c == 0x6E)                 goto parse_null_token;
@@ -387,9 +344,27 @@ number_parsed:
     state--;
     CALL_VALUE_CALLBACK(parser->callbacks, number_found, &token);
     goto select_state;
+
+parse_object_key_or_end:
+    switch (*c) {
+        case 0x22:
+            *state = state_object_colon;
+            if (++state == last) goto error_depth;
+            *state = state_object_key;
+            goto parse_string;
+        case 0x7D:
+            state--;
+            CALL_STATE_CALLBACK(parser->callbacks, object_end);
+            goto structure_finished;
+        default: goto error_exp_koe;
+    }
+parse_object_key_only:
+    if (*c != 0x22) goto error_exp_key;
+    *state = state_object_colon;
+    *++state = state_object_key;
     
 // String parsing
-parse_string_token:
+parse_string:
     token.type.string = jsonlite_string_ascii;
     token.start = c + 1;
 next_char:

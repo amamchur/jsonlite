@@ -158,19 +158,10 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 - (void)testIncorrectInitialization {
     char memory[jsonlite_parser_estimate_size(4)];
     
-    jsonlite_result result = jsonlite_parser_get_result(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
-
     jsonlite_parser ps = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
     char json[] = "{}";
-    result = jsonlite_parser_tokenize(NULL, json, sizeof(json));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
-    
-    result = jsonlite_parser_tokenize(ps, NULL, sizeof(json));
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
-    
-    result = jsonlite_parser_tokenize(ps, json, 0);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
+    jsonlite_result result = jsonlite_parser_tokenize(ps, json, 0);
+    XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Bad error");
     
     result = jsonlite_parser_tokenize(ps, json, sizeof(json));
     XCTAssertTrue(result == jsonlite_result_ok, @"Bad error");
@@ -414,9 +405,6 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     jsonlite_result result = jsonlite_parser_tokenize(ps, json1, sizeof(json1) - 1);
     XCTAssertTrue(result == jsonlite_result_end_of_stream, @"Parse fails");
 
-    result = jsonlite_parser_tokenize(NULL, json2, sizeof(json2) - 1);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad error");
-
     result = jsonlite_parser_tokenize(ps, json2, sizeof(json2) - 1);
     XCTAssertTrue(result == jsonlite_result_ok, @"Parse fails");
 }
@@ -444,19 +432,13 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     jsonlite_result result = jsonlite_parser_resume(p);
     XCTAssertTrue(result == jsonlite_result_not_allowed, @"Bad result");
     
-    result = jsonlite_parser_resume(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad result");
-    
-    result = jsonlite_parser_suspend(NULL);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Bad result");
-    
     result = jsonlite_parser_suspend(p);
     XCTAssertTrue(result == jsonlite_result_not_allowed, @"Bad result");
     
     result = jsonlite_parser_tokenize(p, json1, sizeof(json1));
     XCTAssertTrue(result == jsonlite_result_suspended, @"Bad result");
     
-    result = jsonlite_parser_terminate(p, jsonlite_result_invalid_argument);
+    result = jsonlite_parser_terminate(p, jsonlite_result_invalid_token);
     XCTAssertTrue(result == jsonlite_result_not_allowed, @"Bad result");
     
     result = jsonlite_result_suspended;

@@ -147,11 +147,8 @@ static void terminate_if_noncharacter(jsonlite_callback_context *ctx, jsonlite_t
     XCTAssertNotNil(data, @"Data is nil");
     noncharacters_count = 0;
     
-    jsonlite_result result = jsonlite_parser_terminate(NULL, jsonlite_result_invalid_token);
-    XCTAssertTrue(result == jsonlite_result_invalid_argument, @"Incorrect error");
-    
     jsonlite_parser parser = jsonlite_parser_init(memory, sizeof(memory), jsonlite_null_buffer);
-    result = jsonlite_parser_terminate(parser, jsonlite_result_unknown);
+    jsonlite_result result = jsonlite_parser_terminate(parser, jsonlite_result_unknown);
     XCTAssertTrue(result == jsonlite_result_not_allowed, @"Incorrect error");
     
     jsonlite_parser_callbacks c = jsonlite_default_callbacks;

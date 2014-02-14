@@ -138,15 +138,14 @@ extern "C" {
      * @see jsonlite_result
      * @param parser the parser object.
      * @param parser the callbacks object.
-     * @return jsonlite_result_invalid_argument when parser or cbs are NULL; otherwise jsonlite_result_ok.
      */
-    jsonlite_result jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs);
+    void jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs);
     
     /** \brief Returns result of last operation.
      * @see jsonlite_parser
      * @see jsonlite_result
      * @param parser the parser object.
-     * @return jsonlite_result_invalid_argument when parser is NULL; otherwise s result of last operation.
+     * @return Result of last operation.
      */
     jsonlite_result jsonlite_parser_get_result(jsonlite_parser parser);
     
@@ -158,7 +157,7 @@ extern "C" {
      * @param parser the parser object.
      * @param buffer the pointer to JSON payload buffer.
      * @param size the JSON payload buffer size.
-     * @return JSON parsing result or jsonlite_result_invalid_argument when some parameter is invalid.
+     * @return JSON parsing result.
      * @endcode
      */
     jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buffer, size_t size);
@@ -167,7 +166,7 @@ extern "C" {
      * @see jsonlite_parser
      * @see jsonlite_result
      * @param parser the parser object.
-     * @return JSON parsing result or jsonlite_result_invalid_argument when parser is NULL.
+     * @return JSON parsing result.
      */
     jsonlite_result jsonlite_parser_resume(jsonlite_parser parser);
     
@@ -177,8 +176,7 @@ extern "C" {
      * @see jsonlite_parser
      * @see jsonlite_result
      * @param parser the parser object.
-     * @return jsonlite_result_invalid_argument when parser is NULL; 
-     * jsonlite_result_not_allowed when operation is not allowed;
+     * @return jsonlite_result_not_allowed when operation is not allowed;
      * otherwise jsonlite_result_ok.
      */
     jsonlite_result jsonlite_parser_suspend(jsonlite_parser parser);
@@ -188,7 +186,7 @@ extern "C" {
      * @see jsonlite_parser
      * @see jsonlite_result
      * @param parser the parser object.
-     * @return jsonlite_result_invalid_argument when parser is NULL or result is jsonlite_result_unknown;
+     * @return jsonlite_result_not_allowed when operation is not allowed;
      * otherwise jsonlite_result_ok.
      */
     jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_result result);
