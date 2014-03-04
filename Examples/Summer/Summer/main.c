@@ -21,20 +21,20 @@
 long long sum = 0;
 
 static void number_callback(jsonlite_callback_context *ctx, jsonlite_token *token) {
-    char *end = NULL;
-    sum += strtoll((const char *)token->start, &end, 10);
-    assert(end == (char *)token->end);
+    sum += jsonlite_token_to_long_long(token);
 }
 
 int main(int argc, const char * argv[]) {
-    const int JSON_DEPTH = 4;                                   // Limitation of JSON depth
-    char json[] = "[-13453453, 0, 1, 123, 45345, -94534555]";   // Numbers to sum
-    jsonlite_parser_callbacks cbs = jsonlite_default_callbacks; // Init callbacks with default values
-    cbs.number_found = &number_callback;                        // Assign new callback function
-    jsonlite_parser p = jsonlite_parser_init(JSON_DEPTH);       // Init parser with specified depth
-    jsonlite_parser_set_callback(p, &cbs);                      // Set callback function(s)
-    jsonlite_parser_tokenize(p, json, sizeof(json));            // Tokenize/find numbers
-    jsonlite_parser_release(p);                                 // Free resources
-    printf("Total sum: %lld", sum);
+    const int JSON_DEPTH = 4;                                           // Limitation of JSON depth
+    char json[] = "[-13453453, 0, 1, 123, 45345, -94534555]";           // Numbers to sum
+    uint8_t parser_memory[jsonlite_parser_estimate_size(JSON_DEPTH)];   // Parser memory
+    jsonlite_parser_callbacks cbs = jsonlite_default_callbacks;         // Init callbacks with default values
+    cbs.number_found = &number_callback;                                // Assign new callback function
+    jsonlite_parser p = jsonlite_parser_init(parser_memory,
+                                             sizeof(parser_memory),
+                                             jsonlite_null_buffer);     // Init parser
+    jsonlite_parser_set_callback(p, &cbs);                              // Set callback function(s)
+    jsonlite_parser_tokenize(p, json, sizeof(json));                    // Tokenize/find numbers
+    printf("Total sum: %lld\n", sum);
     return 0;
 }

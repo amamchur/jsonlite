@@ -70,11 +70,13 @@ static void null_callback(jsonlite_callback_context *ctx) {
 int main(int argc, const char * argv[]) {
     context ctx;
     char json[] = "{\"a\":null,\"b\":[1,2,3],\"c\":true,\"d\":{\"a\":1,\"b\":[]},\"e\":false,\"f\":[\"a\",\"a\",\"a\"]}";
+    uint8_t parser_memory[jsonlite_parser_estimate_size(JSON_DEPTH)];
+    uint8_t builder_memory[jsonlite_builder_estimate_size(JSON_DEPTH)];
     
-    ctx.builder = jsonlite_builder_init(JSON_DEPTH, jsonlite_stdout_stream);
+    ctx.builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), jsonlite_stdout_stream);
     jsonlite_builder_set_indentation(ctx.builder, 4);
     
-    ctx.parser = jsonlite_parser_init(JSON_DEPTH);
+    ctx.parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer);
     jsonlite_parser_callbacks cbs = {
         .parse_finished = jsonlite_default_callbacks.parse_finished,
         .object_start = object_begin_callback,
@@ -93,8 +95,7 @@ int main(int argc, const char * argv[]) {
     };
     jsonlite_parser_set_callback(ctx.parser, &cbs);
     jsonlite_parser_tokenize(ctx.parser, json, sizeof(json));
-    jsonlite_parser_release(ctx.parser);
-    jsonlite_builder_release(ctx.builder);
+    printf("\n");
     return 0;
 }
 

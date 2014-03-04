@@ -277,12 +277,11 @@ static Class class_JsonLiteNumberToken;
     }
     
     jsonlite_parser jp = internal->parser;
-    jsonlite_buffer buffer = internal->buffer;
     if (jp == NULL) {
         size_t size = jsonlite_parser_estimate_size(depth);
         void *parserMemory = (uint8_t *)internal + sizeof(JsonLiteInternal);
         void *bufferMemory = (uint8_t *)parserMemory + size;
-        buffer = jsonlite_heap_buffer_init(bufferMemory);
+        jsonlite_buffer buffer = jsonlite_heap_buffer_init(bufferMemory);
         jp = jsonlite_parser_init(parserMemory, size, buffer);
         internal->parser = jp;
         if (delegate != nil) {

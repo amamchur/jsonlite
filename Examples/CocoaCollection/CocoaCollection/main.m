@@ -19,7 +19,7 @@ int main(int argc, const char * argv[]) {
     @autoreleasepool {
         NSString *json = @"[\"hello\", null, 1234567890]";
         NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-        NSArray *result = [JsonLiteAccumulator objectFromData:data withMaxDepth:4];
+        NSArray *result = [JsonLiteObjC objectFromData:data];
         NSLog(@"%@", result);        
     }
     return 0;

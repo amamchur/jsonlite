@@ -19,11 +19,13 @@
 int main(int argc, const char * argv[]) {
     const int JSON_DEPTH = 4;                                                   // Limitation of JSON depth
     char json[] = "[-1, 0, 1, true, false, null]";                              // JSON to validate
+    uint8_t parser_memory[jsonlite_parser_estimate_size(JSON_DEPTH)];           // Parser memory
     size_t mem_used = jsonlite_parser_estimate_size(JSON_DEPTH);                // Estimate memory usage
-    printf("jsonlite will use %zd bytes of RAM for JSON validation", mem_used);
-    jsonlite_parser p = jsonlite_parser_init(JSON_DEPTH);                       // Init parser with specified depth
+    printf("jsonlite will use %zd bytes of RAM for JSON validation\n", mem_used);
+    jsonlite_parser p = jsonlite_parser_init(parser_memory,
+                                             sizeof(parser_memory),
+                                             jsonlite_null_buffer);             // Init parser
     jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));   // Check JSON
     assert(result == jsonlite_result_ok);                                       // Check result
-    jsonlite_parser_release(p);                                                 // Free resources
     return 0;
 }

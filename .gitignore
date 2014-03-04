@@ -7,6 +7,7 @@
 *.xcscheme
 *.xcsettings
 *.xccheckout
+**/xcuserdata/**
 platform/ios/JsonLiteObjC.xcodeproj/xcuserdata/**
 platform/macosx/JsonLiteObjC.xcodeproj/xcuserdata/**
 

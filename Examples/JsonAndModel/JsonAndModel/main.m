@@ -52,6 +52,7 @@ int main(int argc, const char * argv[]) {
         model.number = [NSNumber numberWithInt:256];
         model.array = [NSArray arrayWithObjects:@"Test", [NSNull null], nil];
         JsonLiteSerializer *serializer = [JsonLiteSerializer serializer];
+        serializer.indentation = 4;
         data = [serializer serializeObject:model];
         json = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
         NSLog(@"%@", json);     
