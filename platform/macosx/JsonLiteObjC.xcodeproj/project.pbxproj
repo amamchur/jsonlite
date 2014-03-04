@@ -79,6 +79,9 @@
 		84E6553E1811F4DF000901D2 /* jsonlite.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E6553D1811F4DF000901D2 /* jsonlite.h */; };
 		84F80D32181B11E3006AB5FD /* jsonlite_stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 87737D77181ABDF900D0F12C /* jsonlite_stream.c */; };
 		84FC6F38181B2C840087DABC /* jsonlite_stream.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 87737D76181ABD7300D0F12C /* jsonlite_stream.h */; };
+		8761E00E18C62B4700AEE292 /* JsonLiteOutputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 8761E00C18C62B4700AEE292 /* JsonLiteOutputStream.h */; };
+		8761E00F18C62B4700AEE292 /* JsonLiteOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8761E00D18C62B4700AEE292 /* JsonLiteOutputStream.m */; };
+		8761E01018C62B4700AEE292 /* JsonLiteOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8761E00D18C62B4700AEE292 /* JsonLiteOutputStream.m */; };
 		87737D78181ABDF900D0F12C /* jsonlite_stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 87737D77181ABDF900D0F12C /* jsonlite_stream.c */; };
 		87737D7B181AC0DF00D0F12C /* JsonLiteObjCOutStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 87737D7A181AC0DF00D0F12C /* JsonLiteObjCOutStream.m */; };
 		8794B0C91835402200AA7CFC /* JsonLiteObjCBase64Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8794B0C81835402200AA7CFC /* JsonLiteObjCBase64Tests.m */; };
@@ -199,6 +202,8 @@
 		8469954A17EA59FF00BBB8BA /* success */ = {isa = PBXFileReference; lastKnownFileType = folder; name = success; path = ../../../tests/success; sourceTree = "<group>"; };
 		8469954B17EA59FF00BBB8BA /* tokens */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tokens; path = ../../../tests/tokens; sourceTree = "<group>"; };
 		84E6553D1811F4DF000901D2 /* jsonlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlite.h; sourceTree = "<group>"; };
+		8761E00C18C62B4700AEE292 /* JsonLiteOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteOutputStream.h; sourceTree = "<group>"; };
+		8761E00D18C62B4700AEE292 /* JsonLiteOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteOutputStream.m; sourceTree = "<group>"; };
 		87737D76181ABD7300D0F12C /* jsonlite_stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jsonlite_stream.h; sourceTree = "<group>"; };
 		87737D77181ABDF900D0F12C /* jsonlite_stream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jsonlite_stream.c; sourceTree = "<group>"; };
 		87737D79181AC0DF00D0F12C /* JsonLiteObjCOutStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLiteObjCOutStream.h; path = ../../../tests/JsonLiteObjCOutStream.h; sourceTree = "<group>"; };
@@ -387,6 +392,8 @@
 				8469949717EA568400BBB8BA /* JsonLiteMetaData.m */,
 				B53DFEEF1860204F007C83A7 /* JsonLiteObjC.h */,
 				B53DFEF01860204F007C83A7 /* JsonLiteObjC.m */,
+				8761E00C18C62B4700AEE292 /* JsonLiteOutputStream.h */,
+				8761E00D18C62B4700AEE292 /* JsonLiteOutputStream.m */,
 				8469949917EA568400BBB8BA /* JsonLiteParser.h */,
 				8469949A17EA568400BBB8BA /* JsonLiteParser.m */,
 				8469949B17EA568400BBB8BA /* JsonLiteSerializer.h */,
@@ -413,6 +420,7 @@
 				8469956817EA5B3300BBB8BA /* JsonLiteCollections.h in Headers */,
 				B52C0204189E825C00A7F7AC /* jsonlite_buffer.h in Headers */,
 				8469956917EA5B3300BBB8BA /* JsonLiteConverters.h in Headers */,
+				8761E00E18C62B4700AEE292 /* JsonLiteOutputStream.h in Headers */,
 				8469956A17EA5B3300BBB8BA /* JsonLiteDeserializer.h in Headers */,
 				B53DFEF11860204F007C83A7 /* JsonLiteObjC.h in Headers */,
 				8469956B17EA5B3300BBB8BA /* JsonLiteMetaData.h in Headers */,
@@ -532,6 +540,7 @@
 				8469955517EA5A9A00BBB8BA /* JsonLiteDeserializer.m in Sources */,
 				B57A1B401860148500C40F21 /* jsonlite.c in Sources */,
 				8469955717EA5A9A00BBB8BA /* JsonLiteMetaData.m in Sources */,
+				8761E00F18C62B4700AEE292 /* JsonLiteOutputStream.m in Sources */,
 				8469955A17EA5A9A00BBB8BA /* JsonLiteParser.m in Sources */,
 				8469955C17EA5A9A00BBB8BA /* JsonLiteSerializer.m in Sources */,
 				8469955D17EA5AA000BBB8BA /* jsonlite_builder.c in Sources */,
@@ -570,6 +579,7 @@
 				8469953A17EA59E800BBB8BA /* JsonLiteObjCConvertersTests.m in Sources */,
 				8469953B17EA59E800BBB8BA /* JsonLiteObjCCoverageTests.m in Sources */,
 				8469953C17EA59E800BBB8BA /* JsonLiteObjCDeserializerTest.m in Sources */,
+				8761E01018C62B4700AEE292 /* JsonLiteOutputStream.m in Sources */,
 				8469953D17EA59E800BBB8BA /* JsonLiteObjCInputs.m in Sources */,
 				8469953E17EA59E800BBB8BA /* JsonLiteObjCPoolTests.m in Sources */,
 				8469953F17EA59E800BBB8BA /* JsonLiteObjCStream.m in Sources */,

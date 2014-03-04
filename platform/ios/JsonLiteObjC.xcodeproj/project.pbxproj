@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8761E00A18C624A400AEE292 /* JsonLiteOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8761E00918C624A400AEE292 /* JsonLiteOutputStream.m */; };
+		8761E00B18C624A400AEE292 /* JsonLiteOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 8761E00918C624A400AEE292 /* JsonLiteOutputStream.m */; };
 		B50155521867A4C8002AF125 /* jsonlite.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5A2EAE4186025D800293619 /* jsonlite.h */; };
 		B50155531867A4C8002AF125 /* jsonlite_builder.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5A2EAE5186025D800293619 /* jsonlite_builder.h */; };
 		B50155541867A4C8002AF125 /* jsonlite_parser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5A2EAE6186025D800293619 /* jsonlite_parser.h */; };
@@ -107,6 +109,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8761E00818C624A400AEE292 /* JsonLiteOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonLiteOutputStream.h; sourceTree = "<group>"; };
+		8761E00918C624A400AEE292 /* JsonLiteOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonLiteOutputStream.m; sourceTree = "<group>"; };
 		B52C01E6189CFBAD00A7F7AC /* jsonlite_buffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jsonlite_buffer.h; sourceTree = "<group>"; };
 		B52C01E7189CFBBC00A7F7AC /* jsonlite_buffer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = jsonlite_buffer.c; sourceTree = "<group>"; };
 		B5A2EAB9186024A400293619 /* libJsonLiteObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJsonLiteObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -366,6 +370,8 @@
 				B5A2EB02186025E400293619 /* JsonLiteMetaData.m */,
 				B5A2EB03186025E400293619 /* JsonLiteObjC.h */,
 				B5A2EB04186025E400293619 /* JsonLiteObjC.m */,
+				8761E00818C624A400AEE292 /* JsonLiteOutputStream.h */,
+				8761E00918C624A400AEE292 /* JsonLiteOutputStream.m */,
 				B5A2EB05186025E400293619 /* JsonLiteParser.h */,
 				B5A2EB06186025E400293619 /* JsonLiteParser.m */,
 				B5A2EB07186025E400293619 /* JsonLiteSerializer.h */,
@@ -467,6 +473,7 @@
 				B5A2EB0D186025E400293619 /* JsonLiteMetaData.m in Sources */,
 				B5A2EAF5186025D800293619 /* jsonlite_stream.c in Sources */,
 				B5A2EAF4186025D800293619 /* jsonlite_parser.c in Sources */,
+				8761E00A18C624A400AEE292 /* JsonLiteOutputStream.m in Sources */,
 				B5A2EAF3186025D800293619 /* jsonlite_builder.c in Sources */,
 				B5A2EAF6186025D800293619 /* jsonlite_token.c in Sources */,
 				B5A2EB0B186025E400293619 /* JsonLiteConverters.m in Sources */,
@@ -490,6 +497,7 @@
 				B5A2EB42186025F900293619 /* JsonLiteObjCTokenTests.m in Sources */,
 				B5A2EB3E186025F900293619 /* JsonLiteObjCOutStream.m in Sources */,
 				B5A2EB43186025F900293619 /* JsonLiteObjCUnicodeTests.m in Sources */,
+				8761E00B18C624A400AEE292 /* JsonLiteOutputStream.m in Sources */,
 				B5A2EB3C186025F900293619 /* JsonLiteObjCDeserializerTest.m in Sources */,
 				B5A2EB34186025F900293619 /* JsonLiteObjCAcc.m in Sources */,
 				B5A2EB3B186025F900293619 /* JsonLiteObjCCoverageTests.m in Sources */,

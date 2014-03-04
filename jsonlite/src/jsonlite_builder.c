@@ -359,7 +359,7 @@ static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, siz
     }
 }
 
-static  void jsonlite_builder_raw_char(jsonlite_builder builder, char data) {
+static void jsonlite_builder_raw_char(jsonlite_builder builder, char data) {
     jsonlite_stream_write(builder->stream, &data, 1);
 }
 
@@ -483,5 +483,4 @@ jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const vo
     }
     
     return jsonlite_result_not_allowed;
-
 }
