@@ -1,13 +1,9 @@
-
-.DS_Store
-.idea/
-
-*.xcuserstate
 *.xcbkptlist
+*.xccheckout
 *.xcscheme
 *.xcsettings
-*.xccheckout
-**/xcuserdata/**
-platform/ios/JsonLiteObjC.xcodeproj/xcuserdata/**
-platform/macosx/JsonLiteObjC.xcodeproj/xcuserdata/**
+*.xcuserstate
+.DS_Store
+.idea/
+xcuserdata
 

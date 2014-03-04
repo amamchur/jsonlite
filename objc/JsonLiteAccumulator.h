@@ -33,9 +33,9 @@ struct JsonLiteAccumulatorState;
     id __unsafe_unretained *keys;
     id __unsafe_unretained *values;
     CFHashCode *hashes;
-    jsonlite_token_pool keyPool;
-    jsonlite_token_pool stringPool;
-    jsonlite_token_pool numberPool;
+    
+    jsonlite_token_pool pools[3];
+    uint8_t pools_mem[jsonlite_token_pool_estimate_size(3)];
 
     struct {
         BOOL didAccumulateArray : 1;

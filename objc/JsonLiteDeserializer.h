@@ -40,9 +40,9 @@
 @end
 
 @interface JsonLiteDeserializer : NSObject<JsonLiteParserDelegate> {
-    jsonlite_token_pool keyPool;
-    jsonlite_token_pool stringPool;
-    jsonlite_token_pool numberPool;
+    jsonlite_token_pool pools[3];
+    uint8_t pools_mem[jsonlite_token_pool_estimate_size(3)];
+    
     id object;
     Class rootClass;
     NSMutableArray *bindingStack;
