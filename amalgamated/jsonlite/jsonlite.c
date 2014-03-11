@@ -103,6 +103,7 @@ static int jsonlite_heap_buffer_set_mem(jsonlite_buffer buffer, const void *data
     if (length > buffer->capacity) {
         free(buffer->mem);
         buffer->mem = malloc(length);
+        buffer->capacity = length;
     }
     
     buffer->size = length;
@@ -118,6 +119,7 @@ static int jsonlite_heap_buffer_append_mem(jsonlite_buffer buffer, const void *d
         
         free(buffer->mem);
         buffer->mem = b;
+        buffer->capacity = total_size;
     }
     
     memcpy(buffer->mem + buffer->size, data, length);
@@ -504,7 +506,7 @@ static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, siz
     }
 }
 
-static  void jsonlite_builder_raw_char(jsonlite_builder builder, char data) {
+static void jsonlite_builder_raw_char(jsonlite_builder builder, char data) {
     jsonlite_stream_write(builder->stream, &data, 1);
 }
 
@@ -628,7 +630,6 @@ jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const vo
     }
     
     return jsonlite_result_not_allowed;
-
 }
 //
 //  Copyright 2012-2014, Andrii Mamchur
@@ -1169,10 +1170,10 @@ static int jsonlite_mem_stream_write(jsonlite_stream stream, const void *data, s
     jsonlite_mem_stream *mem_stream = CAST_TO_MEM_STREAM(stream);
     size_t write_limit = mem_stream->limit - mem_stream->cursor;
     if (write_limit >= length) {
-        memcpy(mem_stream->cursor, data, length); // LCOV_EXCL_LINE
+        memcpy(mem_stream->cursor, data, length);       // LCOV_EXCL_LINE
         mem_stream->cursor += length;
     } else {
-        memcpy(mem_stream->cursor, data, write_limit); // LCOV_EXCL_LINE
+        memcpy(mem_stream->cursor, data, write_limit);  // LCOV_EXCL_LINE
         mem_stream->cursor += write_limit;
         
         size_t size = sizeof(jsonlite_mem_stream_block) + mem_stream->block_size;
@@ -1651,37 +1652,26 @@ long long jsonlite_token_to_long_long(jsonlite_token *token) {
 #include <stdlib.h>
 #include <string.h>
 
-#define JSONLITE_TOKEN_POOL_FRONT 0x80
-#define JSONLITE_TOKEN_POOL_FRONT_MASK (JSONLITE_TOKEN_POOL_FRONT - 1)
-
-typedef struct jsonlite_token_block {
-    jsonlite_token_bucket *buckets;
-    size_t capacity;
-} jsonlite_token_block;
-
-typedef struct jsonlite_token_pool_struct {
-    jsonlite_token_block blocks[JSONLITE_TOKEN_POOL_FRONT];    
-    uint8_t *content_pool;
-    size_t content_pool_size;    
-    jsonlite_token_pool_release_value_fn release_fn;
-    
-} jsonlite_token_pool_struct;
-
 static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index);
 static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
 static jsonlite_token_bucket terminate_bucket = {NULL, NULL, 0, 0, NULL};
 
-jsonlite_token_pool jsonlite_token_pool_alloc(jsonlite_token_pool_release_value_fn release_fn) {
-    jsonlite_token_pool pool = (jsonlite_token_pool)malloc(sizeof(jsonlite_token_pool_struct));
-    int i;
-    for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
-        pool->blocks[i].buckets = &terminate_bucket;
-        pool->blocks[i].capacity = 0;
+size_t jsonlite_token_pool_init_memory(void *mem, size_t size, jsonlite_token_pool* pools) {
+    int i, j;
+    jsonlite_token_pool p = (jsonlite_token_pool)mem;
+    size_t count = size / sizeof(jsonlite_token_pool_struct);
+    for (i = 0; i < count; i++, p++, pools++) {
+        *pools = p;
+        p->content_pool = NULL;
+        p->content_pool_size = 0;
+        
+        for (j = 0; j < JSONLITE_TOKEN_POOL_FRONT; j++) {
+            p->blocks[j].buckets = &terminate_bucket;
+            p->blocks[j].capacity = 0;
+        }
     }
-    pool->release_fn = release_fn;
-    pool->content_pool = NULL;
-    pool->content_pool_size = 0;
-    return pool;
+    
+    return count;
 }
 
 void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
@@ -1719,25 +1709,31 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
     pool->content_pool_size = size;
 }
 
-void jsonlite_token_pool_free(jsonlite_token_pool pool) {
-    int i;
-    for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
-        jsonlite_token_bucket *bucket = pool->blocks[i].buckets;
-        if (bucket->start == NULL) {
-            continue;
+void jsonlite_token_pool_cleanup(jsonlite_token_pool* pools, size_t count, jsonlite_token_pool_release_value_fn release) {
+    int i, j;
+    jsonlite_token_pool pool = *pools;
+    for (i = 0; i < count; i++, pool++) {
+        for (j = 0; j < JSONLITE_TOKEN_POOL_FRONT; j++) {
+            jsonlite_token_bucket *bucket = pool->blocks[j].buckets;
+            if (bucket->start == NULL) {
+                continue;
+            }
+            
+            if (release != NULL) {
+                for (; bucket->start != NULL; bucket++) {
+                    release((void *)bucket->value);
+                }
+            }
+
+            free(pool->blocks[j].buckets);
+            pool->blocks[j].buckets = &terminate_bucket;
+            pool->blocks[j].capacity = 0;
         }
         
-        if (pool->release_fn != NULL) {
-            for (; bucket->start != NULL; bucket++) {
-                pool->release_fn((void *)bucket->value);           
-            }
-        }
-
-        free(pool->blocks[i].buckets);
+        free(pool->content_pool);
+        pool->content_pool = NULL;
+        pool->content_pool_size = 0;
     }
-    
-    free(pool->content_pool);
-    free(pool);
 }
 
 jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, jsonlite_token *token) {
