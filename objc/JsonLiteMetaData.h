@@ -54,8 +54,6 @@
 @end
 
 @interface JsonLiteClassProperty : NSObject<JsonLiteClassInstanceCreator, JsonLiteValueBinder> {
-    IMP getterImp;
-    IMP setterImp;
     SEL getterSelector;
     SEL setterSelector;
     struct {

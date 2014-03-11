@@ -85,6 +85,7 @@ static int jsonlite_heap_buffer_set_mem(jsonlite_buffer buffer, const void *data
     if (length > buffer->capacity) {
         free(buffer->mem);
         buffer->mem = malloc(length);
+        buffer->capacity = length;
     }
     
     buffer->size = length;
@@ -100,6 +101,7 @@ static int jsonlite_heap_buffer_append_mem(jsonlite_buffer buffer, const void *d
         
         free(buffer->mem);
         buffer->mem = b;
+        buffer->capacity = total_size;
     }
     
     memcpy(buffer->mem + buffer->size, data, length);

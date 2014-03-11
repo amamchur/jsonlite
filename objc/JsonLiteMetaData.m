@@ -80,14 +80,14 @@
 //    }
 //#endif
     if (value == nil || [value isKindOfClass:objectClass]) {
-        setterImp(obj, setterSelector, value);
+        [obj performSelector:setterSelector withObject:value];
     } else {
         NSLog(@"Invalid type mapping %@ != %@!", [value class], objectClass);
     }
 }
 
 - (id)valueOfObject:(id)obj {
-    return getterImp(obj, getterSelector);
+    return [obj performSelector:getterSelector];
 }
 
 - (const char *)takeAccessor:(const char *)p ofClass:(Class)cls {
@@ -108,7 +108,6 @@
                                            encoding:NSUTF8StringEncoding];
     
     getterSelector = NSSelectorFromString(str);
-    getterImp = class_getMethodImplementation(cls, getterSelector);
     [str release];
     
     return p;
@@ -123,7 +122,6 @@
                                            encoding:NSUTF8StringEncoding];
     
     setterSelector = NSSelectorFromString(str);
-    setterImp = class_getMethodImplementation(cls, setterSelector);
     [str release];
     
     return p;
@@ -207,16 +205,15 @@
 }
 
 - (void)completeImplementationForClass:(Class)cls {
-    if (getterImp == NULL) {
+    if (getterSelector == NULL) {
         getterSelector = NSSelectorFromString(name);
-        getterImp = class_getMethodImplementation(cls, getterSelector);
     }
-    if (setterImp == NULL && !propertyFlags.readonlyAccess) {
+    
+    if (!propertyFlags.readonlyAccess) {
         NSString *str = [NSString stringWithFormat:@"set%@%@:",
                                 [[name substringToIndex:1] uppercaseString],
                                 [name substringFromIndex:1]];
         setterSelector = NSSelectorFromString(str);
-        setterImp = class_getMethodImplementation(cls, setterSelector);
     }
 }
 
