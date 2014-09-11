@@ -94,7 +94,7 @@
     const char *start = p;
     const char *end = NULL;
     int run = 1;
-    while (*p && run) {
+    while (run && *p) {
         if (*p ==  ',') {
             end = p;
             run = 0;
@@ -115,10 +115,20 @@
 
 - (const char *)takeMutator:(const char *)p ofClass:(Class)cls {
     const char *start = p;
-    for (; *p !=  ','; p++);
+    const char *end = NULL;
+    int run = 1;
+    while (run && *p) {
+        if (*p ==  ':') {
+            end = ++p;
+            run = 0;
+        }
+        p++;
+    }
+    
+    end = end ? end : p;
     
     NSString *str = [[NSString alloc] initWithBytes:start
-                                             length:p - start
+                                             length:end - start
                                            encoding:NSUTF8StringEncoding];
     
     setterSelector = NSSelectorFromString(str);
@@ -209,7 +219,7 @@
         getterSelector = NSSelectorFromString(name);
     }
     
-    if (!propertyFlags.readonlyAccess) {
+    if (!propertyFlags.readonlyAccess && setterSelector == NULL) {
         NSString *str = [NSString stringWithFormat:@"set%@%@:",
                                 [[name substringToIndex:1] uppercaseString],
                                 [name substringFromIndex:1]];

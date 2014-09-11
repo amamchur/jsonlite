@@ -392,11 +392,10 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 }
 
 - (void)testJsonChunkIncorrectInitialization {
-    char parser_memory[jsonlite_parser_estimate_size(4)];
-    char buffer_memory[jsonlite_static_buffer_size() + 512];
-    
     char json1[] = "{\"key\" : 12345, \"obj\": {}, \"arr";
     char json2[] = "ay\":[null, true, false, \"string\"]}";
+    char parser_memory[jsonlite_parser_estimate_size(4)];
+    char buffer_memory[jsonlite_static_buffer_size_ext(7, sizeof(json2))];
     
     jsonlite_buffer buffer = jsonlite_static_buffer_init(buffer_memory, sizeof(buffer_memory));
     jsonlite_parser ps = jsonlite_parser_init(parser_memory, sizeof(parser_memory), buffer);
