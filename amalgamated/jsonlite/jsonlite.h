@@ -61,6 +61,9 @@ extern "C" {
     size_t jsonlite_buffer_size(jsonlite_buffer buffer);
 
     #define jsonlite_static_buffer_size() (sizeof(jsonlite_buffer_struct))
+    #define jsonlite_static_buffer_size_ext(max_token_size, chunk_size) \
+    (sizeof(jsonlite_buffer_struct) + MAX(2 * (max_token_size), (max_token_size) + (chunk_size)))
+    
     jsonlite_buffer jsonlite_static_buffer_init(void *mem, size_t size);
     
     #define jsonlite_heap_buffer_size() (sizeof(jsonlite_buffer_struct))

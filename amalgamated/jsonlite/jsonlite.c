@@ -15,7 +15,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-const char *jsonlite_version = "1.2.0";
+const char *jsonlite_version = "1.2.1";
 //
 //  Copyright 2012-2014, Andrii Mamchur
 //

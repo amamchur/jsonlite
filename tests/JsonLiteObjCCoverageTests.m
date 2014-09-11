@@ -508,7 +508,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testVersion {
     NSString *version = [JsonLiteObjC version];
-    XCTAssertEqualObjects(version, @"1.2.0", @"Incorrect version");
+    XCTAssertEqualObjects(version, @"1.2.1", @"Incorrect version");
 }
 
 @end
