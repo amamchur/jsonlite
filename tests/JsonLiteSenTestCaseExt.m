@@ -245,9 +245,7 @@ extern void __gcov_flush();
 
 - (void)_swizzledTearDown
 {
-    if (__gcov_flush) {
-        __gcov_flush();
-    }
+    __gcov_flush();
     [self _swizzledTearDown];
 }
 

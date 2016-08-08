@@ -30,7 +30,7 @@
 - (void)deserializer:(JsonLiteDeserializer *)deserializer didDeserializeObject:(id)object {
     if ([object isKindOfClass:[TWTimeline class]]) {
         [timelines addObject:object];
-        _label.text = [NSString stringWithFormat:@"%d", [timelines count]];
+        _label.text = [NSString stringWithFormat:@"%lu", (unsigned long)[timelines count]];
         [table reloadData];
     }
 }
