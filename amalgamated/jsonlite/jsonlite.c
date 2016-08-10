@@ -1,7 +1,7 @@
 #define JSONLITE_AMALGAMATED
 #include "jsonlite.h"
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 const char *jsonlite_version = "1.2.1";
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -146,7 +146,7 @@ jsonlite_buffer jsonlite_heap_buffer_init(void *mem) {
     return buffer;
 }
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -632,7 +632,7 @@ jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const vo
     return jsonlite_result_not_allowed;
 }
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -1137,7 +1137,7 @@ end:
     }
 }
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -1336,7 +1336,7 @@ static struct jsonlite_stream_struct jsonlite_null_stream_struct = {jsonlite_nul
 jsonlite_stream jsonlite_stdout_stream = &jsonlite_stdout_stream_struct;
 jsonlite_stream jsonlite_null_stream = &jsonlite_null_stream_struct;
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -1631,7 +1631,7 @@ long long jsonlite_token_to_long_long(jsonlite_token *token) {
     return negative ? -res : res;
 }
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
