@@ -25,7 +25,7 @@ static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
 static jsonlite_token_bucket terminate_bucket = {NULL, NULL, 0, 0, NULL};
 
 size_t jsonlite_token_pool_init_memory(void *mem, size_t size, jsonlite_token_pool* pools) {
-    int i, j;
+    size_t i, j;
     jsonlite_token_pool p = (jsonlite_token_pool)mem;
     size_t count = size / sizeof(jsonlite_token_pool_struct);
     for (i = 0; i < count; i++, p++, pools++) {
@@ -78,7 +78,7 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
 }
 
 void jsonlite_token_pool_cleanup(jsonlite_token_pool* pools, size_t count, jsonlite_token_pool_release_value_fn release) {
-    int i, j;
+    size_t i, j;
     jsonlite_token_pool pool = *pools;
     for (i = 0; i < count; i++, pool++) {
         for (j = 0; j < JSONLITE_TOKEN_POOL_FRONT; j++) {

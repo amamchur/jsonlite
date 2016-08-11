@@ -152,7 +152,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 - (void)pushState {
     JsonLiteAccumulatorState *next = current + 1;
     
-    NSInteger delta = current->length + 1;
+    NSUInteger delta = current->length + 1;
     if (keys + capacity < current->keys + current->length + delta) {
         [self extendCapacity];
     }

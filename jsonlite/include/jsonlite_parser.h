@@ -137,7 +137,7 @@ extern "C" {
      * @see jsonlite_parser_callbacks
      * @see jsonlite_result
      * @param parser the parser object.
-     * @param parser the callbacks object.
+     * @param cbs the callbacks object.
      */
     void jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs);
     
@@ -158,7 +158,6 @@ extern "C" {
      * @param buffer the pointer to JSON payload buffer.
      * @param size the JSON payload buffer size.
      * @return JSON parsing result.
-     * @endcode
      */
     jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buffer, size_t size);
     

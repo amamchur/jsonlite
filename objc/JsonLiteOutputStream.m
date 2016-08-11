@@ -54,7 +54,7 @@
             return -1;
         }
         
-        return length;
+        return (NSInteger)length;
     }
     
     return -1;
