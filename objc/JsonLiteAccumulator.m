@@ -1,4 +1,4 @@
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -152,7 +152,7 @@ static void ReleaseKeyValues(JsonLiteAccumulatorState *s) {
 - (void)pushState {
     JsonLiteAccumulatorState *next = current + 1;
     
-    NSInteger delta = current->length + 1;
+    NSUInteger delta = current->length + 1;
     if (keys + capacity < current->keys + current->length + delta) {
         [self extendCapacity];
     }

@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -245,9 +245,7 @@ extern void __gcov_flush();
 
 - (void)_swizzledTearDown
 {
-    if (__gcov_flush) {
-        __gcov_flush();
-    }
+    __gcov_flush();
     [self _swizzledTearDown];
 }
 

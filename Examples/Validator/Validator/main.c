@@ -27,5 +27,5 @@ int main(int argc, const char * argv[]) {
                                              jsonlite_null_buffer);             // Init parser
     jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));   // Check JSON
     assert(result == jsonlite_result_ok);                                       // Check result
-    return 0;
+    return result;
 }

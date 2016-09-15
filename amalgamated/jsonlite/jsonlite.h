@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 // #include "jsonlite_buffer.h"
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ extern "C" {
 
 // #include "jsonlite_builder.h"
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ extern "C" {
 #include <stdio.h>
 // #include "jsonlite_types.h"
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -143,7 +143,7 @@ typedef enum {
 
 // #include "jsonlite_stream.h"
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -436,7 +436,7 @@ extern "C" {
 
 // #include "jsonlite_parser.h"
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -457,7 +457,7 @@ extern "C" {
 #include <stdint.h>
 // #include "jsonlite_token.h"
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -852,7 +852,7 @@ extern "C" {
 
 // #include "jsonlite_token_pool.h"
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.

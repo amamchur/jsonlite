@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -174,7 +174,7 @@ static void jsonlite_do_parse(jsonlite_parser parser) {
     const uint8_t *token_start = NULL;
     const parse_state *last = parser->last;
     parse_state *state = parser->current;
-    jsonlite_token token = {NULL, NULL, NULL, 0};
+    jsonlite_token token = {NULL, NULL, NULL, {0}};
     jsonlite_result result = jsonlite_result_ok;
     uint32_t value, utf32;
     uint8_t hex_value;

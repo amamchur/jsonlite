@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2014, Andrii Mamchur
+//  Copyright 2012-2016, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -353,7 +353,7 @@ static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, siz
 }
 
 static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count) {
-    ptrdiff_t i = 0;
+    size_t i = 0;
     for (; i < count; i++) {
         jsonlite_stream_write(builder->stream, &ch, 1);
     }
@@ -436,7 +436,7 @@ next:
         case 0:
             goto done;
         case 1:
-            bits = *c++ << 16;
+            bits = (uint32_t)(*c++ << 16);
             buffer[0] = encode[(bits & 0x00FC0000) >> 18];
             buffer[1] = encode[(bits & 0x0003F000) >> 12];
             buffer[2] = '=';
@@ -444,8 +444,8 @@ next:
             l = c;
             goto write;
         case 2:
-            bits = *c++ << 16;
-            bits |= *c++ << 8;
+            bits = (uint32_t)(*c++ << 16);
+            bits |= (uint32_t)(*c++ << 8);
             buffer[0] = encode[(bits & 0x00FC0000) >> 18];
             buffer[1] = encode[(bits & 0x0003F000) >> 12];
             buffer[2] = encode[(bits & 0x00000FC0) >> 6];
@@ -453,7 +453,7 @@ next:
             l = c;
             goto write;
         default:
-            bits = *c++ << 16;
+            bits = (uint32_t)(*c++ << 16);
             bits |= *c++ << 8;
             bits |= *c++;
             buffer[0] = encode[(bits & 0x00FC0000) >> 18];
