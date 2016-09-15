@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 // #include "jsonlite_buffer.h"
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ extern "C" {
     typedef int (*jsonlite_buffer_mem_fn)(jsonlite_buffer buffer, const void *data, size_t length);
     typedef const void * (*jsonlite_buffer_data_fn)(jsonlite_buffer buffer);
     
-    struct jsonlite_buffer_struct {
+    typedef struct jsonlite_buffer_struct {
         uint8_t *mem;
         size_t size;
         size_t capacity;
@@ -80,7 +80,7 @@ extern "C" {
 
 // #include "jsonlite_builder.h"
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ extern "C" {
 #include <stdio.h>
 // #include "jsonlite_types.h"
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -143,7 +143,7 @@ typedef enum {
 
 // #include "jsonlite_stream.h"
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -168,11 +168,11 @@ typedef enum {
 extern "C" {
 #endif
 
-    struct jsonlite_stream_struct;
+    typedef struct jsonlite_stream_struct;
     typedef struct jsonlite_stream_struct const * jsonlite_stream;
     typedef int (*jsonlite_stream_write_fn)(jsonlite_stream stream, const void *data, size_t length);
 
-    struct jsonlite_stream_struct {
+    typedef struct jsonlite_stream_struct {
         jsonlite_stream_write_fn write;
     } jsonlite_stream_struct;
     
@@ -436,7 +436,7 @@ extern "C" {
 
 // #include "jsonlite_parser.h"
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -457,7 +457,7 @@ extern "C" {
 #include <stdint.h>
 // #include "jsonlite_token.h"
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -480,8 +480,8 @@ extern "C" {
 #ifdef __cplusplus
 extern "C" {
 #endif
-    struct jsonlite_token;
-    struct jsonlite_parser_struct;
+    typedef struct jsonlite_token;
+    typedef struct jsonlite_parser_struct;
 
     /** @brief Provides the hints for number token parsing.
      * 
@@ -750,7 +750,7 @@ extern "C" {
     } jsonlite_parser_callbacks;
 
     typedef uint8_t parse_state;
-    struct jsonlite_parser_struct {
+    typedef struct jsonlite_parser_struct {
         const uint8_t *cursor;
         const uint8_t *limit;
         const uint8_t *buffer;
@@ -852,7 +852,7 @@ extern "C" {
 
 // #include "jsonlite_token_pool.h"
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2014, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
