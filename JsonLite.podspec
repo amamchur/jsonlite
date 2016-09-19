@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.author       = { "Andrii Mamchur" => "andrii.mamchur@gmail.com" }
   s.source       = { :git => "https://github.com/amamchur/jsonlite.git", :tag => "v1.2.2" }
   s.source_files  = 'amalgamated/jsonlite/*.{h,c}', 'objc/*.{h,m}'
-  s.public_header_files = "amalgamated/*.h", "objc/*.h"
+  s.public_header_files = "amalgamated/jsonlite/*.h", "objc/*.h"
   s.framework  = 'Foundation'
   s.requires_arc = false
 end
