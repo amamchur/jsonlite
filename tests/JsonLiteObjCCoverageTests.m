@@ -328,10 +328,6 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
     [parser parse:[NSData dataWithBytes:json5 length:sizeof(json5) - 1]];
     XCTAssertTrue(parser.parseError  == nil, @"Incorrect error");
     [acc reset];
-    
-    Class cls = [JsonLiteToken class];
-    IMP imp = class_getMethodImplementation(cls, @selector(copyValue));
-    imp(nil, nil);
 }
 
 - (void)testEmptyJsonChunk {
@@ -508,7 +504,7 @@ static void value_suspend(jsonlite_callback_context *ctx, jsonlite_token *token)
 
 - (void)testVersion {
     NSString *version = [JsonLiteObjC version];
-    XCTAssertEqualObjects(version, @"1.2.1", @"Incorrect version");
+    XCTAssertEqualObjects(version, @"1.2.2", @"Incorrect version");
 }
 
 @end

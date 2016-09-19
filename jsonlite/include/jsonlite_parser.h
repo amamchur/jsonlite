@@ -107,7 +107,7 @@ extern "C" {
     } jsonlite_parser_callbacks;
 
     typedef uint8_t parse_state;
-    struct jsonlite_parser_struct {
+    typedef struct jsonlite_parser_struct {
         const uint8_t *cursor;
         const uint8_t *limit;
         const uint8_t *buffer;

@@ -29,9 +29,6 @@
       location = "group:Summer/Summer.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:TwitterJsonLite/TwitterJsonLite.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Validator/Validator.xcodeproj">
    </FileRef>
    <FileRef

@@ -28,7 +28,7 @@ extern "C" {
     typedef struct jsonlite_stream_struct const * jsonlite_stream;
     typedef int (*jsonlite_stream_write_fn)(jsonlite_stream stream, const void *data, size_t length);
 
-    struct jsonlite_stream_struct {
+    typedef struct jsonlite_stream_struct {
         jsonlite_stream_write_fn write;
     } jsonlite_stream_struct;
     

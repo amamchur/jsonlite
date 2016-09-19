@@ -27,7 +27,7 @@ extern "C" {
     typedef int (*jsonlite_buffer_mem_fn)(jsonlite_buffer buffer, const void *data, size_t length);
     typedef const void * (*jsonlite_buffer_data_fn)(jsonlite_buffer buffer);
     
-    struct jsonlite_buffer_struct {
+    typedef struct jsonlite_buffer_struct {
         uint8_t *mem;
         size_t size;
         size_t capacity;

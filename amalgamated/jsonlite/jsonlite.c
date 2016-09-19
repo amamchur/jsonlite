@@ -15,7 +15,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-const char *jsonlite_version = "1.2.1";
+const char *jsonlite_version = "1.2.2";
 //
 //  Copyright 2012-2016, Andrii Mamchur
 //
@@ -500,7 +500,7 @@ static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, siz
 }
 
 static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count) {
-    ptrdiff_t i = 0;
+    size_t i = 0;
     for (; i < count; i++) {
         jsonlite_stream_write(builder->stream, &ch, 1);
     }
@@ -807,7 +807,7 @@ static void jsonlite_do_parse(jsonlite_parser parser) {
     const uint8_t *token_start = NULL;
     const parse_state *last = parser->last;
     parse_state *state = parser->current;
-    jsonlite_token token = {NULL, NULL, NULL, 0};
+    jsonlite_token token = {NULL, NULL, NULL, {0}};
     jsonlite_result result = jsonlite_result_ok;
     uint32_t value, utf32;
     uint8_t hex_value;
@@ -1657,7 +1657,7 @@ static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
 static jsonlite_token_bucket terminate_bucket = {NULL, NULL, 0, 0, NULL};
 
 size_t jsonlite_token_pool_init_memory(void *mem, size_t size, jsonlite_token_pool* pools) {
-    int i, j;
+    size_t i, j;
     jsonlite_token_pool p = (jsonlite_token_pool)mem;
     size_t count = size / sizeof(jsonlite_token_pool_struct);
     for (i = 0; i < count; i++, p++, pools++) {
@@ -1710,7 +1710,7 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
 }
 
 void jsonlite_token_pool_cleanup(jsonlite_token_pool* pools, size_t count, jsonlite_token_pool_release_value_fn release) {
-    int i, j;
+    size_t i, j;
     jsonlite_token_pool pool = *pools;
     for (i = 0; i < count; i++, pool++) {
         for (j = 0; j < JSONLITE_TOKEN_POOL_FRONT; j++) {

@@ -46,7 +46,7 @@ extern "C" {
     typedef int (*jsonlite_buffer_mem_fn)(jsonlite_buffer buffer, const void *data, size_t length);
     typedef const void * (*jsonlite_buffer_data_fn)(jsonlite_buffer buffer);
     
-    struct jsonlite_buffer_struct {
+    typedef struct jsonlite_buffer_struct {
         uint8_t *mem;
         size_t size;
         size_t capacity;
@@ -172,7 +172,7 @@ extern "C" {
     typedef struct jsonlite_stream_struct const * jsonlite_stream;
     typedef int (*jsonlite_stream_write_fn)(jsonlite_stream stream, const void *data, size_t length);
 
-    struct jsonlite_stream_struct {
+    typedef struct jsonlite_stream_struct {
         jsonlite_stream_write_fn write;
     } jsonlite_stream_struct;
     
@@ -750,7 +750,7 @@ extern "C" {
     } jsonlite_parser_callbacks;
 
     typedef uint8_t parse_state;
-    struct jsonlite_parser_struct {
+    typedef struct jsonlite_parser_struct {
         const uint8_t *cursor;
         const uint8_t *limit;
         const uint8_t *buffer;
@@ -780,7 +780,7 @@ extern "C" {
      * @see jsonlite_parser_callbacks
      * @see jsonlite_result
      * @param parser the parser object.
-     * @param parser the callbacks object.
+     * @param cbs the callbacks object.
      */
     void jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs);
     
@@ -801,7 +801,6 @@ extern "C" {
      * @param buffer the pointer to JSON payload buffer.
      * @param size the JSON payload buffer size.
      * @return JSON parsing result.
-     * @endcode
      */
     jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buffer, size_t size);
     
