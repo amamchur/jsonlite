@@ -13,29 +13,43 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-
-#include <stdlib.h>
 #include <assert.h>
 #include <jsonlite.h>
+#include <stdlib.h>
 
-#define JSON_DEPTH 4
+#define MAX_JSON_DEPTH 4
 
-long long sum = 0;
+const char json[] = "[-13453453, 0, 1, 123, 45345, -94534555]";
+
+// Reserving memory for jsonlite parser
+// Use jsonlite_parser_estimate_size marco to determinate
+// minimum requires mem size
+uint8_t parser_memory[jsonlite_parser_estimate_size(MAX_JSON_DEPTH)];
 
 static void number_callback(jsonlite_callback_context *ctx, jsonlite_token *token) {
-    sum += jsonlite_token_to_long_long(token);
+    long long *sum = (long long *)ctx->client_state;
+    *sum += jsonlite_token_to_long_long(token);
 }
 
-int main(int argc, const char * argv[]) {                                      // Limitation of JSON depth
-    char json[] = "[-13453453, 0, 1, 123, 45345, -94534555]";           // Numbers to sum
-    uint8_t parser_memory[jsonlite_parser_estimate_size(JSON_DEPTH)];   // Parser memory
-    jsonlite_parser_callbacks cbs = jsonlite_default_callbacks;         // Init callbacks with default values
-    cbs.number_found = &number_callback;                                // Assign new callback function
-    jsonlite_parser p = jsonlite_parser_init(parser_memory,
-                                             sizeof(parser_memory),
-                                             jsonlite_null_buffer);     // Init parser
-    jsonlite_parser_set_callback(p, &cbs);                              // Set callback function(s)
-    jsonlite_parser_tokenize(p, json, sizeof(json));                    // Tokenize/find numbers
-    printf("Total sum: %lld\n", sum);
+int main(int argc, const char *argv[]) {
+    // We are not going to use chunk processing in this example
+    // so we don't need extra buffer for incomplete tokens
+    // use jsonlite_null_buffer is such case
+    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer);
+    assert(p != NULL);
+
+    // We are not going to process all tokens except numbers
+    // initializing other callbacks with default (dummy) callbacks
+    jsonlite_parser_callbacks cbs = jsonlite_default_callbacks;
+    cbs.number_found = &number_callback;
+
+    long long total_sum = 0;
+    cbs.context.client_state = &total_sum;
+
+    jsonlite_parser_set_callback(p, &cbs);
+    jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));
+    assert(result == jsonlite_result_ok);
+
+    printf("Total sum: %lld\n", total_sum);
     return 0;
 }

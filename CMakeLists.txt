@@ -23,5 +23,5 @@ target_link_libraries(jsonlite_adder jsonlite)
 add_executable(jsonlite_validator examples/validator/main.c)
 target_link_libraries(jsonlite_validator jsonlite)
 
-add_executable(jsonlite_heap_free examples/heap_free/main.c)
-target_link_libraries(jsonlite_heap_free jsonlite)
+add_executable(jsonlite_chunk examples/chunk/main.c)
+target_link_libraries(jsonlite_chunk jsonlite)

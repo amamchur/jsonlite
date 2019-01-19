@@ -16,17 +16,27 @@
 #include <assert.h>
 #include <jsonlite.h>
 
-#define JSON_DEPTH 4 // Limitation of JSON depth
+#define MAX_JSON_DEPTH 4
 
-int main(int argc, const char * argv[]) {
-    char json[] = "[-1, 0, 1, true, false, null]";                              // JSON to validate
-    uint8_t parser_memory[jsonlite_parser_estimate_size(JSON_DEPTH)];           // Parser memory
-    size_t mem_used = jsonlite_parser_estimate_size(JSON_DEPTH);                // Estimate memory usage
-    printf("jsonlite will use %d bytes of RAM for JSON validation\n", (int)mem_used);
-    jsonlite_parser p = jsonlite_parser_init(parser_memory,
-                                             sizeof(parser_memory),
-                                             jsonlite_null_buffer);             // Init parser
-    jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));   // Check JSON
-    assert(result == jsonlite_result_ok);                                       // Check result
+const char json[] = "[-1, 0, 1, true, false, null]";
+
+// Reserving memory for jsonlite parser
+// Use jsonlite_parser_estimate_size marco to determinate
+// minimum requires mem size
+uint8_t parser_memory[jsonlite_parser_estimate_size(MAX_JSON_DEPTH)];
+
+int main(int argc, const char *argv[]) {
+    size_t mem_used = jsonlite_parser_estimate_size(MAX_JSON_DEPTH);
+    printf("jsonlite uses %d bytes of RAM for JSON validation\n", (int)mem_used);
+
+    // We are not going to use chunk processing in this example
+    // so we don't need extra buffer for incomplete tokens
+    // use jsonlite_null_buffer is such case
+    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer);
+    assert(p != NULL);
+
+    jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));
+    assert(result == jsonlite_result_ok);
+
     return result;
 }
