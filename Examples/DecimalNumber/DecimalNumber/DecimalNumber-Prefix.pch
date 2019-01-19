@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'DecimalNumber' target in the 'DecimalNumber' project
-//
-
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-#endif

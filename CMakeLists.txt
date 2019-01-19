@@ -14,14 +14,14 @@ add_library(jsonlite STATIC
         )
 include_directories(./jsonlite/include)
 
-add_executable(jsonlite_beautifier ./Examples/Beautifier/Beautifier/main.c)
+add_executable(jsonlite_beautifier examples/beautifier/main.c)
 target_link_libraries(jsonlite_beautifier jsonlite)
 
-add_executable(jsonlite_adder ./Examples/Summer/Summer/main.c)
+add_executable(jsonlite_adder examples/adder/main.c)
 target_link_libraries(jsonlite_adder jsonlite)
 
-add_executable(jsonlite_validator ./Examples/Validator/Validator/main.c)
+add_executable(jsonlite_validator examples/validator/main.c)
 target_link_libraries(jsonlite_validator jsonlite)
 
-add_executable(jsonlite_heap_free ./Examples/HeapFree/HeapFree/main.c)
+add_executable(jsonlite_heap_free examples/heap_free/main.c)
 target_link_libraries(jsonlite_heap_free jsonlite)

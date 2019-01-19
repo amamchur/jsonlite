@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'CocoaCollection' target in the 'CocoaCollection' project
-//
-
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-#endif

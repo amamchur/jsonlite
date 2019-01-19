@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'iPhoneJsonLiteTests' target in the 'iPhoneJsonLiteTests' project
-//
-
-#ifdef __OBJC__
-    #import <UIKit/UIKit.h>
-#endif
