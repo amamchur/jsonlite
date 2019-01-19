@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <assert.h>
-#import "JsonLiteObjC/jsonlite.h"
+#include <jsonlite.h>
 
 uint8_t parser_memory[jsonlite_parser_estimate_size(32)];
 uint8_t buffer_memory[jsonlite_static_buffer_size() + 64];

@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2019, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 #ifdef _MSC_VER
 #include <intrin.h>
 
-static uint32_t __inline jsonlite_clz( uint32_t x ) {
+static uint32_t __inline jsonlite_clz(uint32_t x) {
    unsigned long r = 0;
    _BitScanForward(&r, x);
    return r;
@@ -36,14 +36,14 @@ static uint32_t __inline jsonlite_clz( uint32_t x ) {
 
 static uint8_t jsonlite_hex_char_to_uint8(uint8_t c) {
     if (c >= 'a') {
-        return c - 'a' + 10;
+        return (uint8_t)(c - 'a' + 10);
     }
     
     if (c >= 'A') {
-        return c - 'A' + 10;
+        return (uint8_t)(c - 'A' + 10);
     }
     
-    return c - '0';
+    return (uint8_t)(c - '0');
 }
 
 static int unicode_char_to_utf16(uint32_t ch, uint16_t *utf16) {
@@ -86,6 +86,7 @@ escaped:
         case 110:   *c++ = '\n';    p++; goto step;
         case 114:   *c++ = '\r';    p++; goto step;
         case 116:   *c++ = '\t';    p++; goto step;
+        default:    break;
 	}
 
     // UTF-16    
@@ -108,25 +109,25 @@ encode:
     if (utf32 < 0x80) {
         *c++ = (uint8_t)utf32;
     } else if (utf32 < 0x0800) {
-        c[1] = (uint8_t)(utf32 & 0x3F) | 0x80;
+        c[1] = (uint8_t)((utf32 & 0x3F) | 0x80);
         utf32 = utf32 >> 6;
-        c[0] = (uint8_t)utf32 | 0xC0;
+        c[0] = (uint8_t)(utf32 | 0xC0);
         c += 2;
     } else if (utf32 < 0x10000) {
-        c[2] = (uint8_t)(utf32 & 0x3F) | 0x80;
+        c[2] = (uint8_t)((utf32 & 0x3F) | 0x80);
         utf32 = utf32 >> 6;
-        c[1] = (uint8_t)(utf32 & 0x3F) | 0x80;
+        c[1] = (uint8_t)((utf32 & 0x3F) | 0x80);
         utf32 = utf32 >> 6;
-        c[0] = (uint8_t)utf32 | 0xE0;
+        c[0] = (uint8_t)(utf32 | 0xE0);
         c += 3;
     } else {
-        c[3] = (uint8_t)(utf32 & 0x3F) | 0x80;
+        c[3] = (uint8_t)((utf32 & 0x3F) | 0x80);
         utf32 = utf32 >> 6;
-        c[2] = (uint8_t)(utf32 & 0x3F) | 0x80;
+        c[2] = (uint8_t)((utf32 & 0x3F) | 0x80);
         utf32 = utf32 >> 6;
-        c[1] = (uint8_t)(utf32 & 0x3F) | 0x80;
+        c[1] = (uint8_t)((utf32 & 0x3F) | 0x80);
         utf32 = utf32 >> 6;
-        c[0] = (uint8_t)utf32 | 0xF0;
+        c[0] = (uint8_t)(utf32 | 0xF0);
         c += 4;
     }
     goto step;
@@ -137,6 +138,7 @@ utf8:
         case 3: *c++ = *p++;
         case 2: *c++ = *p++;
         case 1: *c++ = *p++;
+        default: break;
     }
     goto step;
 done:
@@ -170,6 +172,7 @@ escaped:
         case 110:   *c++ = '\n';    p++; goto step;
         case 114:   *c++ = '\r';    p++; goto step;
         case 116:   *c++ = '\t';    p++; goto step;
+        default: break;
 	}
     
     // UTF-16
@@ -191,12 +194,13 @@ escaped:
     goto step;
 utf8:
     res = jsonlite_clz(((*p) ^ 0xFF) << 0x19);
-    uint32_t code = (*p & (0xFF >> (res + 1)));
+    uint32_t code = (uint32_t)(*p & (0xFF >> (res + 1)));
     switch (res) {
         case 3: code = (code << 6) | (*++p & 0x3F);
         case 2: code = (code << 6) | (*++p & 0x3F);
         case 1: code = (code << 6) | (*++p & 0x3F);
         case 0: ++p;
+        default: break;
     }
     
     c += unicode_char_to_utf16(code, c);
@@ -237,6 +241,7 @@ next:
                 case 2:
                     *c = (uint8_t)((bytes >> 10) & 0x000000FF);
                     return length + 1;
+                default: break;
             }
         }
         if (*p == 0x5C && *++p == 0x2F) { bytes |= 0x3F; p++; continue; }

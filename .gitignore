@@ -4,6 +4,9 @@
 *.xcsettings
 *.xcuserstate
 .DS_Store
-.idea/
+.idea
+.vs
 xcuserdata
+CMakeSettings.json
 
+cmake-build-debug

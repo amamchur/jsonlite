@@ -80,4 +80,4 @@ See [Code coverage configuration](https://github.com/amamchur/jsonlite/wiki/Code
 
 jsonlite and JsonLite ObjC are licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-Copyright 2012-2013, Andrii Mamchur
+Copyright 2012-2019, Andrii Mamchur

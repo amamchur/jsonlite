@@ -3,7 +3,7 @@
 //  Base64
 //
 //  Created by Andrii Mamchur on 11/14/13.
-//  Copyright (c) 2013 Andrii Mamchur. All rights reserved.
+//  Copyright (c) 2019 Andrii Mamchur. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

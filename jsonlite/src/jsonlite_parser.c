@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2019, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //  limitations under the License
 
 #ifndef JSONLITE_AMALGAMATED
-#include "jsonlite_parser.h"
+#include "../include/jsonlite_parser.h"
 #endif
 
 #include <stdlib.h>
@@ -418,7 +418,7 @@ hex:
 utf8:
     token.type.string |= jsonlite_string_utf8;
     int res = jsonlite_clz((unsigned int)((*c) ^ 0xFF) << 0x19);
-    utf32 = (*c & (0xFF >> (res + 1)));
+    utf32 = (uint32_t)(*c & (0xFF >> (res + 1)));
     value = 0xAAAAAAAA; // == 1010...
     if (c + res >= l) goto end_of_stream;
     switch (res) {
@@ -428,6 +428,8 @@ utf8:
             if (value != 0xAAAAAAAA)                    goto error_utf8;
             if ((utf32 & 0xFFFFu) >= 0xFFFEu)           token.type.string |= jsonlite_string_unicode_noncharacter;
             if (utf32 >= 0xFDD0u && utf32 <= 0xFDEFu)   token.type.string |= jsonlite_string_unicode_noncharacter;
+        default:
+            break;
     }
     goto next_char;
 string_parsed:

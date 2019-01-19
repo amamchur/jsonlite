@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2019, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 //  limitations under the License
 
 #ifndef JSONLITE_AMALGAMATED
-#include "jsonlite_buffer.h"
+#include "../include/jsonlite_buffer.h"
 #endif
 
 #include <stdlib.h>

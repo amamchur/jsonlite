@@ -3,12 +3,12 @@
 //  Beautifier
 //
 //  Created by admin on 4/5/13.
-//  Copyright (c) 2013 Andrii Mamchur. All rights reserved.
+//  Copyright (c) 2019 Andrii Mamchur. All rights reserved.
 //
 
 #include <stdlib.h>
 #include <stdio.h>
-#import "JsonLiteObjC/jsonlite.h"
+#include <jsonlite.h>
 
 #define JSON_DEPTH (16)
 

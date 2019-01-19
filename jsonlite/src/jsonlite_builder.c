@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2016, Andrii Mamchur
+//  Copyright 2012-2019, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder);
 static void jsonlite_builder_raw_char(jsonlite_builder builder, char data);
 static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length);
 static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length);
-static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count);
+static void jsonlite_builder_repeat(jsonlite_builder builder, char ch, size_t count);
 static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length);
 static jsonlite_builder jsonlite_builder_configure(void *memory, size_t size, jsonlite_stream stream);
 
@@ -121,7 +121,7 @@ static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder) {
         }
         
         if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_raw_char(builder, '\n');
             jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
         }
     } else {
@@ -148,7 +148,7 @@ jsonlite_result jsonlite_builder_object_end(jsonlite_builder builder) {
     if (jsonlite_builder_accept(builder, jsonlite_accept_object_end)) {
         jsonlite_builder_pop_state(builder);
         if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_raw_char(builder, '\n');
             jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
         }
         jsonlite_builder_raw_char(builder, '}');
@@ -177,7 +177,7 @@ jsonlite_result jsonlite_builder_array_end(jsonlite_builder builder) {
     if (jsonlite_builder_accept(builder, jsonlite_accept_array_end)) {
         jsonlite_builder_pop_state(builder);
         if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_raw_char(builder, '\n');
             jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
         }
         jsonlite_builder_raw_char(builder, ']');
@@ -224,7 +224,7 @@ jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const char *data,
         }
         
         if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_raw_char(builder, '\n');
             jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
         }
         
@@ -263,7 +263,7 @@ jsonlite_result jsonlite_builder_int(jsonlite_builder builder, long long value) 
     jsonlite_write_state *ws = builder->state;
     if (jsonlite_builder_accept(builder, jsonlite_accept_value)) {
         jsonlite_builder_prepare_value_writing(builder);
-        size = sprintf(buff, "%lld", value);
+        size = (size_t)sprintf(buff, "%lld", value);
         jsonlite_builder_raw(builder, buff, size);
         if (jsonlite_builder_accept(builder, jsonlite_accept_values_only)) {
             *ws = jsonlite_accept_continue_array;
@@ -282,7 +282,7 @@ jsonlite_result jsonlite_builder_double(jsonlite_builder builder, double value) 
     jsonlite_write_state *ws = builder->state;
     if (jsonlite_builder_accept(builder, jsonlite_accept_value)) {
         jsonlite_builder_prepare_value_writing(builder);
-        size = sprintf(buff, builder->doubleFormat, value);
+        size = (size_t)sprintf(buff, builder->doubleFormat, value);
         jsonlite_builder_raw(builder, buff, size);
         if (jsonlite_builder_accept(builder, jsonlite_accept_values_only)) {
             *ws = jsonlite_accept_continue_array;
@@ -352,7 +352,7 @@ static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, siz
     jsonlite_stream_write(builder->stream, data, length);
 }
 
-static void jsonlite_builder_repeat(jsonlite_builder builder, const char ch, size_t count) {
+static void jsonlite_builder_repeat(jsonlite_builder builder, char ch, size_t count) {
     size_t i = 0;
     for (; i < count; i++) {
         jsonlite_stream_write(builder->stream, &ch, 1);
@@ -371,7 +371,7 @@ jsonlite_result jsonlite_builder_raw_key(jsonlite_builder builder, const void *d
         }
 
         if (builder->indentation != 0) {
-            jsonlite_builder_raw_char(builder, '\r');
+            jsonlite_builder_raw_char(builder, '\n');
             jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
         }
         
@@ -427,8 +427,8 @@ jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void 
 static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length) {
     static const char encode[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     char buffer[5] = {0};
-    const uint8_t *c = data;
-    const uint8_t *l = data + length;
+    const uint8_t *c = (const uint8_t *)data;
+    const uint8_t *l = c + length;
     uint32_t bits;
     jsonlite_stream_write(builder->stream, "\"", 1);
 next:

@@ -1,5 +1,5 @@
 //
-//  Copyright 2012-2013, Andrii Mamchur
+//  Copyright 2012-2019, Andrii Mamchur
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,14 +14,15 @@
 //  limitations under the License
 
 #include <assert.h>
-#include "JsonLiteObjC/jsonlite.h"
+#include <jsonlite.h>
+
+#define JSON_DEPTH 4 // Limitation of JSON depth
 
 int main(int argc, const char * argv[]) {
-    const int JSON_DEPTH = 4;                                                   // Limitation of JSON depth
     char json[] = "[-1, 0, 1, true, false, null]";                              // JSON to validate
     uint8_t parser_memory[jsonlite_parser_estimate_size(JSON_DEPTH)];           // Parser memory
     size_t mem_used = jsonlite_parser_estimate_size(JSON_DEPTH);                // Estimate memory usage
-    printf("jsonlite will use %zd bytes of RAM for JSON validation\n", mem_used);
+    printf("jsonlite will use %d bytes of RAM for JSON validation\n", (int)mem_used);
     jsonlite_parser p = jsonlite_parser_init(parser_memory,
                                              sizeof(parser_memory),
                                              jsonlite_null_buffer);             // Init parser

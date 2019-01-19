@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.6)
+
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 11)
+
+add_library(jsonlite STATIC
+        ./jsonlite/src/jsonlite.c
+        ./jsonlite/src/jsonlite_parser.c
+        ./jsonlite/src/jsonlite_builder.c
+        ./jsonlite/src/jsonlite_buffer.c
+        ./jsonlite/src/jsonlite_stream.c
+        ./jsonlite/src/jsonlite_token.c
+        ./jsonlite/src/jsonlite_token_pool.c
+        )
+include_directories(./jsonlite/include)
+
+add_executable(jsonlite_beautifier ./Examples/Beautifier/Beautifier/main.c)
+target_link_libraries(jsonlite_beautifier jsonlite)
+
+add_executable(jsonlite_adder ./Examples/Summer/Summer/main.c)
+target_link_libraries(jsonlite_adder jsonlite)
+
+add_executable(jsonlite_validator ./Examples/Validator/Validator/main.c)
+target_link_libraries(jsonlite_validator jsonlite)
+
+add_executable(jsonlite_heap_free ./Examples/HeapFree/HeapFree/main.c)
+target_link_libraries(jsonlite_heap_free jsonlite)
