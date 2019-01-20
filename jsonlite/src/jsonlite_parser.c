@@ -19,6 +19,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <jsonlite_parser.h>
 
 #ifdef _MSC_VER
 
@@ -78,33 +79,18 @@ static void jsonlite_do_parse(jsonlite_parser parser);
 static void empty_value_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {}
 static void empty_state_callback(jsonlite_callback_context *ctx) {}
 
-const jsonlite_parser_callbacks jsonlite_default_callbacks = {
-    &empty_state_callback,
-    &empty_state_callback,
-    &empty_state_callback,
-    &empty_state_callback,
-    &empty_state_callback,
-    &empty_state_callback,
-    &empty_state_callback,
-    &empty_state_callback,
-    &empty_value_callback,
-    &empty_value_callback,
-    &empty_value_callback,
-    {NULL, NULL}
-};
-
 static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, jsonlite_buffer rest_buffer) {
     size_t depth = (size - sizeof(jsonlite_parser_struct)) / sizeof(parse_state);
     jsonlite_parser parser = (jsonlite_parser)memory;
     parser->result = jsonlite_result_unknown;
     parser->rest_buffer = rest_buffer;
-    parser->callbacks = jsonlite_default_callbacks;
     parser->control = NULL;
     parser->current = ((uint8_t *)parser + sizeof(jsonlite_parser_struct));
     parser->current[0] = state_end;
     parser->current[1] = state_start;
     parser->last = parser->current + depth;
     parser->current++;
+    jsonlite_parser_callbacks_init(&parser->callbacks);
     return parser;
 }
 
@@ -164,8 +150,22 @@ jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_resul
     }
     
     parser->result = result;
-    **parser->control |= state_stop;
+    *parser->control |= state_stop;
     return jsonlite_result_ok;
+}
+
+void jsonlite_parser_callbacks_init(jsonlite_parser_callbacks *cbs) {
+    cbs->parse_finished = &empty_state_callback;
+    cbs->object_start = &empty_state_callback;
+    cbs->object_end = &empty_state_callback;
+    cbs->array_start = &empty_state_callback;
+    cbs->array_end = &empty_state_callback;
+    cbs->true_found = &empty_state_callback;
+    cbs->false_found = &empty_state_callback;
+    cbs->null_found = &empty_state_callback;
+    cbs->key_found = &empty_value_callback;
+    cbs->string_found = &empty_value_callback;
+    cbs->number_found = &empty_value_callback;
 }
 
 static void jsonlite_do_parse(jsonlite_parser parser) {
@@ -174,13 +174,13 @@ static void jsonlite_do_parse(jsonlite_parser parser) {
     const uint8_t *token_start = NULL;
     const parse_state *last = parser->last;
     parse_state *state = parser->current;
-    jsonlite_token token = {NULL, NULL, NULL, {0}};
+    jsonlite_token token = {NULL, NULL, NULL, {jsonlite_number_none}};
     jsonlite_result result = jsonlite_result_ok;
     uint32_t value, utf32;
     uint8_t hex_value;
     
     *state &= ~state_stop;
-    parser->control = &state;
+    parser->control = state;
     goto select_state;
     
 structure_finished:

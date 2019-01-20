@@ -74,17 +74,21 @@ static void null_callback(jsonlite_callback_context *ctx) {
     jsonlite_builder_null(c->builder);
 }
 
+static void finished_callback(jsonlite_callback_context *ctx) {
+}
+
+
 int main(int argc, const char *argv[]) {
     context ctx;
     char json[] = "{\"a\":null,\"b\":[1,2,3],\"c\":true,\"d\":{\"a\":1,\"b\":[]},\"e\":false,\"f\":[\"a\",\"a\",\"a\"]}";
     uint8_t parser_memory[jsonlite_parser_estimate_size(MAX_JSON_DEPTH)];
     uint8_t builder_memory[jsonlite_builder_estimate_size(MAX_JSON_DEPTH)];
 
-    ctx.builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), jsonlite_stdout_stream);
+    ctx.builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), jsonlite_stdout_stream());
     jsonlite_builder_set_indentation(ctx.builder, 4);
 
-    ctx.parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer);
-    jsonlite_parser_callbacks cbs = {.parse_finished = jsonlite_default_callbacks.parse_finished,
+    ctx.parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
+    jsonlite_parser_callbacks cbs = {.parse_finished = finished_callback,
                                      .object_start = object_begin_callback,
                                      .object_end = object_end_callback,
                                      .array_start = array_begin_callback,

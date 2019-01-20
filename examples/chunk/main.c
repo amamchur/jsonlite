@@ -21,14 +21,14 @@
 #define MAX_JSON_DEPTH 6
 #define MAX_JSON_TOKEN_SIZE 20 // See "long-long-long-key", including double quotes
 
-// Buffer size have to be greater then MAX_CHUNK_SIZE + MAX_JSON_TOKEN_SIZE
-#define BUFFER_SIZE (MAX_CHUNK_SIZE + MAX_JSON_TOKEN_SIZE)
-
 // Reserving space for jsonlite is global memory
 // You can use stack for this purpose, but be careful is case of kernel driver
 // or MCU development, just keep platform limitation in mind
 uint8_t parser_memory[jsonlite_parser_estimate_size(MAX_JSON_DEPTH)];
-uint8_t buffer_memory[jsonlite_static_buffer_size() + BUFFER_SIZE];
+
+// Buffer size have to be greater then MAX_CHUNK_SIZE + MAX_JSON_TOKEN_SIZE
+// and 2 * MAX_JSON_TOKEN_SIZE
+uint8_t buffer_memory[jsonlite_static_buffer_size_ext(MAX_JSON_TOKEN_SIZE, MAX_CHUNK_SIZE)];
 
 const char json_chunk_1[] = "{\"a\":null,\"b\":[1,2,3],\"long-long-";
 const char json_chunk_2[] = "long-key\":true,\"d\":{\"a\":[1234312";
@@ -70,7 +70,8 @@ int main(int argc, const char *argv[]) {
     longest_token = strdup("false");
     longest_token_size = strlen(longest_token);
 
-    jsonlite_parser_callbacks cbs = jsonlite_default_callbacks;
+    jsonlite_parser_callbacks cbs;
+    jsonlite_parser_callbacks_init(&cbs);
     cbs.number_found = &measure_token_size_callback;
     cbs.string_found = &measure_token_size_callback;
     cbs.key_found = &measure_token_size_callback;

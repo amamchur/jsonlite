@@ -116,7 +116,7 @@ extern "C" {
         
         parse_state *current;
         parse_state *last;
-        parse_state **control;
+        parse_state *control;
         
         jsonlite_result result;
         jsonlite_parser_callbacks callbacks;
@@ -190,10 +190,11 @@ extern "C" {
      */
     jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_result result);
     
-    /** \brief jsonlite_parser_callbacks structure initialized with callbacks that do nothing.
+    /** \brief Initialize callbacks with default values
+     * @param cbs the parser callbacks object.
      */
-    extern const jsonlite_parser_callbacks jsonlite_default_callbacks;
-    
+    void jsonlite_parser_callbacks_init(jsonlite_parser_callbacks *cbs);
+
 #ifdef __cplusplus
 }
 #endif

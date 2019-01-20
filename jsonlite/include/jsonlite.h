@@ -23,6 +23,13 @@
 #include "jsonlite_token.h"
 #include "jsonlite_token_pool.h"
 
-extern const char *jsonlite_version;
+#ifdef __cplusplus
+extern "C" {
+#endif
+const char *jsonlite_version();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

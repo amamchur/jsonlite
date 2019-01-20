@@ -68,8 +68,8 @@ extern "C" {
     jsonlite_stream jsonlite_file_stream_alloc(FILE *file);
     void jsonlite_file_stream_free(jsonlite_stream stream);
     
-    extern jsonlite_stream jsonlite_null_stream;
-    extern jsonlite_stream jsonlite_stdout_stream;
+    jsonlite_stream jsonlite_null_stream();
+    jsonlite_stream jsonlite_stdout_stream();
 
 #ifdef __cplusplus
 }

@@ -41,9 +41,10 @@ extern "C" {
     const void *jsonlite_buffer_data(jsonlite_buffer buffer);
     size_t jsonlite_buffer_size(jsonlite_buffer buffer);
 
+    #define JSONLITE_MAX(x, y) (((x) > (y)) ? (x) : (y))
     #define jsonlite_static_buffer_size() (sizeof(jsonlite_buffer_struct))
     #define jsonlite_static_buffer_size_ext(max_token_size, chunk_size) \
-    (sizeof(jsonlite_buffer_struct) + MAX(2 * (max_token_size), (max_token_size) + (chunk_size)))
+    (sizeof(jsonlite_buffer_struct) + JSONLITE_MAX(2 * (max_token_size), (max_token_size) + (chunk_size)))
     
     jsonlite_buffer jsonlite_static_buffer_init(void *mem, size_t size);
     
@@ -51,7 +52,7 @@ extern "C" {
     jsonlite_buffer jsonlite_heap_buffer_init(void *mem);
     void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer);
     
-    extern jsonlite_buffer jsonlite_null_buffer;
+    jsonlite_buffer jsonlite_null_buffer();
     
 #ifdef __cplusplus
 }

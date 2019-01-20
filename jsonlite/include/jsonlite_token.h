@@ -30,10 +30,14 @@ extern "C" {
      * This values is valid for jsonlite_parser_callbacks::number_found callback only.
      */
     typedef enum {
+        /** @brief Initial value
+         */
+        jsonlite_number_none = 0x00,
+
         /** @brief Indicates that number token has integer part.
-         * 
+         *
          * @note
-         * This flag is always set because of JSON number always has integer part (value .123 is not allowed). 
+         * This flag is always set because of JSON number always has integer part (value .123 is not allowed).
          */
         jsonlite_number_int = 0x01,
         
@@ -81,6 +85,10 @@ extern "C" {
      * and jsonlite_parser_callbacks::key_found callbacks only.
      */
     typedef enum {
+        /** @brief Initial value
+        */
+        jsonlite_string_none = 0x00,
+
         /** @brief Indicates that string token contains ASCII characters.
          *
          * @note

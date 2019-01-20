@@ -32,7 +32,7 @@ int main(int argc, const char *argv[]) {
     // We are not going to use chunk processing in this example
     // so we don't need extra buffer for incomplete tokens
     // use jsonlite_null_buffer is such case
-    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer);
+    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
     assert(p != NULL);
 
     jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));

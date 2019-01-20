@@ -195,5 +195,10 @@ static int jsonlite_stdout_stream_write(jsonlite_stream stream, const void *data
 static struct jsonlite_stream_struct jsonlite_stdout_stream_struct = {jsonlite_stdout_stream_write};
 static struct jsonlite_stream_struct jsonlite_null_stream_struct = {jsonlite_null_stream_write};
 
-jsonlite_stream jsonlite_stdout_stream = &jsonlite_stdout_stream_struct;
-jsonlite_stream jsonlite_null_stream = &jsonlite_null_stream_struct;
+jsonlite_stream jsonlite_stdout_stream() {
+	return &jsonlite_stdout_stream_struct;
+}
+
+jsonlite_stream jsonlite_null_stream() {
+    return &jsonlite_null_stream_struct;
+}

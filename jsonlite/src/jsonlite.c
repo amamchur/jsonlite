@@ -13,4 +13,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-const char *jsonlite_version = "1.2.3";
+const char *jsonlite_version() {
+	return "1.2.3.0";
+}

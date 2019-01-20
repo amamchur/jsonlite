@@ -35,12 +35,13 @@ int main(int argc, const char *argv[]) {
     // We are not going to use chunk processing in this example
     // so we don't need extra buffer for incomplete tokens
     // use jsonlite_null_buffer is such case
-    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer);
+    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
     assert(p != NULL);
 
     // We are not going to process all tokens except numbers
     // initializing other callbacks with default (dummy) callbacks
-    jsonlite_parser_callbacks cbs = jsonlite_default_callbacks;
+    jsonlite_parser_callbacks cbs;
+    jsonlite_parser_callbacks_init(&cbs);
     cbs.number_found = &number_callback;
 
     long long total_sum = 0;
