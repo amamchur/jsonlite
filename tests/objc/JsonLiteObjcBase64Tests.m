@@ -6,7 +6,7 @@
 //  Copyright (c) 2019 Andrii Mamchur. All rights reserved.
 //
 
-#import "JsonLiteObjCBase64Tests.h"
+#import "JsonLiteObjcBase64Tests.h"
 #include "jsonlite.h"
 #include "JsonLiteParser.h"
 #include "JsonLiteDeserializer.h"

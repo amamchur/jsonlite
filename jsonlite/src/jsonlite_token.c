@@ -64,11 +64,11 @@ size_t jsonlite_token_size_of_uft8(jsonlite_token *ts) {
     return (size_t)(ts->end - ts->start + 1);
 }
 
-size_t jsonlite_token_to_uft8(jsonlite_token *ts, uint8_t *buffer) {
+size_t jsonlite_token_to_uft8(jsonlite_token *ts, void *buffer) {
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint32_t value, utf32;
-  	uint8_t *c = buffer;
+  	uint8_t *c = (uint8_t *)buffer;
     int res;
 step:
     if (p == l)         goto done;
@@ -143,7 +143,7 @@ utf8:
     goto step;
 done:
     *c = 0;
-    return c - buffer;
+    return c - (uint8_t *)buffer;
 }
 
 size_t jsonlite_token_size_of_uft16(jsonlite_token *ts) {
