@@ -14,7 +14,7 @@
 //  limitations under the License
 
 #ifndef JSONLITE_AMALGAMATED
-#include "../include/jsonlite_token_pool.h"
+#include "jsonlite_token_pool.h"
 #endif
 
 #include <stdlib.h>

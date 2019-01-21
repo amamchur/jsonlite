@@ -14,7 +14,7 @@
 //  limitations under the License
 
 #ifndef JSONLITE_AMALGAMATED
-#include "../include/jsonlite_buffer.h"
+#include "jsonlite_buffer.h"
 #endif
 
 #include <stdlib.h>

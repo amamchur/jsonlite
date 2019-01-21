@@ -67,7 +67,8 @@ int main(int argc, const char *argv[]) {
     jsonlite_parser parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), buffer);
     assert(parser != NULL);
 
-    longest_token = strdup("false");
+    longest_token = malloc(10);
+    strcpy(longest_token, "false");
     longest_token_size = strlen(longest_token);
 
     jsonlite_parser_callbacks cbs;

@@ -83,6 +83,7 @@ void callback_recorder::add_record(record_type type, jsonlite_token *t) {
         auto size = jsonlite_token_to_uft8(t, buffer);
         records.emplace_back(type, std::string(buffer, buffer + size));
         delete[] buffer;
+        return;
     }
 
     records.emplace_back(type, std::string(t->start, t->end));

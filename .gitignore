@@ -6,6 +6,7 @@
 .DS_Store
 .idea
 .vs
+coverage
 xcuserdata
 CMakeSettings.json
 

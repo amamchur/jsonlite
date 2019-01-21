@@ -14,7 +14,7 @@
 //  limitations under the License
 
 #ifndef JSONLITE_AMALGAMATED
-#include "../include/jsonlite_builder.h"
+#include "jsonlite_builder.h"
 #endif
 
 #include <stdlib.h>

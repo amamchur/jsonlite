@@ -14,7 +14,7 @@
 //  limitations under the License
 
 #ifndef JSONLITE_AMALGAMATED
-#include "../include/jsonlite_parser.h"
+#include "jsonlite_parser.h"
 #endif
 
 #include <stdlib.h>
@@ -95,6 +95,14 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, json
 }
 
 jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer rest_buffer) {
+    if (memory == NULL) {
+        return NULL;
+    }
+
+    if (rest_buffer == NULL) {
+        return NULL;
+    }
+
     if (size < jsonlite_parser_estimate_size(MIN_DEPTH)) {
         return NULL;
     }

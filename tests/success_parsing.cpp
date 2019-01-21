@@ -1,10 +1,11 @@
+#include "callback_recorder.hpp"
+
 #include <fstream>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <jsonlite.h>
 #include <stdint.h>
 #include <string>
-#include "callback_recorder.hpp"
 
 TEST(parser, should_parse_array_with_different_values) {
     std::string path = TEST_DIR;
@@ -25,7 +26,7 @@ TEST(parser, should_parse_array_with_different_values) {
 
     jsonlite_result result = jsonlite_parser_tokenize(p, buffer, count);
     EXPECT_EQ(result, jsonlite_result_ok);
-    EXPECT_EQ(cr.records.size(), 32);
+    EXPECT_EQ(cr.records.size(), 36);
 
     cr.expect_finished();
     cr.records[0].expect_eq(begin_array);
@@ -57,8 +58,33 @@ TEST(parser, should_parse_array_with_different_values) {
     cr.records[27].expect_eq(token_number, "-0.5e-5");
     cr.records[28].expect_eq(token_number, "0.5E-5");
     cr.records[29].expect_eq(token_number, "-0.5E-5");
-    cr.records[30].expect_eq(end_array);
-    cr.records[31].expect_eq(parse_finished);
+    cr.records[30].expect_eq(token_number, "0e3");
+    cr.records[31].expect_eq(token_number, "0E3");
+    cr.records[32].expect_eq(token_number, "12e3");
+    cr.records[33].expect_eq(token_number, "12E3");
+    cr.records[34].expect_eq(end_array);
+    cr.records[35].expect_eq(parse_finished);
+}
+
+TEST(parser, should_parse_object_with_default_callbacks) {
+    std::string path = TEST_DIR;
+    std::string file = path + "/success/object_values.json";
+
+    std::fstream f(file, std::ios::in | std::ios::binary);
+    char buffer[4096];
+    f.read(buffer, sizeof(buffer));
+    auto count = static_cast<size_t>(f.gcount());
+    EXPECT_TRUE(count < sizeof(buffer));
+
+    uint8_t parser_memory[1024];
+    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
+    ASSERT_TRUE(p != nullptr);
+
+    jsonlite_result result = jsonlite_parser_tokenize(p, buffer, count);
+    EXPECT_EQ(result, jsonlite_result_ok);
+
+    jsonlite_parser_tokenize(p, buffer, count);
+    EXPECT_EQ(result, jsonlite_result_ok);
 }
 
 TEST(parser, should_parse_object_with_different_values) {
@@ -201,3 +227,87 @@ TEST(parser, should_parse_single_object) {
     cr.records[2].expect_eq(parse_finished);
 }
 
+TEST(parser, should_parse_unicode_string) {
+    std::string path = TEST_DIR;
+    std::string file = path + "/success/strings.json";
+
+    std::fstream f(file, std::ios::in | std::ios::binary);
+    char buffer[4096];
+    f.read(buffer, sizeof(buffer));
+    auto count = static_cast<size_t>(f.gcount());
+    EXPECT_TRUE(count < sizeof(buffer));
+
+    uint8_t parser_memory[1024];
+    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
+    ASSERT_TRUE(p != nullptr);
+
+    callback_recorder cr;
+    jsonlite_parser_set_callback(p, &cr.cbs);
+
+    jsonlite_result result = jsonlite_parser_tokenize(p, buffer, count);
+    EXPECT_EQ(result, jsonlite_result_ok);
+    EXPECT_EQ(cr.records.size(), 18);
+
+    cr.expect_finished();
+    cr.records[0].expect_eq(begin_array);
+    cr.records[1].expect_eq(token_string, "");
+    cr.records[2].expect_eq(token_string, "Test");
+    cr.records[3].expect_eq(token_string, "\nTe\nst\n");
+    cr.records[4].expect_eq(token_string, "\r\n\t\\/\b\f\"");
+    cr.records[5].expect_eq(token_string, " spaces ");
+    cr.records[6].expect_eq(token_string, "/");
+    cr.records[7].expect_eq(token_string, "/unescaped/slashes");
+    cr.records[8].expect_eq(token_string, "/escaped/slashes");
+    cr.records[9].expect_eq(token_string, "\xF0\x9D\x9B\xA2");
+    cr.records[10].expect_eq(token_string, "\xC3\xA9");
+    cr.records[11].expect_eq(token_string, "\xF0\x9D\x84\x9E");
+    cr.records[12].expect_eq(token_string, "42\xC3\xA9""42\xE2\x89\xA5""42");
+    cr.records[13].expect_eq(token_string, "Begin Escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 End Escapes");
+    cr.records[14].expect_eq(token_string, "begin escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 end escapes");
+    cr.records[15].expect_eq(token_string, "\v=>x\xED\x93\xAE\xE2\xA3\xABP1\xE0\xA0\xABLMMX'M\xE5\x88\xBC\xE5\x94\xB3\xEB\x90\xA4\xF0\x9D\x9B\xA2 \xD0\x9A \xE0\xAF\xB5 \xEE\x80\x80\xF0\x9D\x9B\xA2\n");
+    cr.records[16].expect_eq(end_array);
+    cr.records[17].expect_eq(parse_finished);
+}
+
+TEST(parser, should_parse_nested_objects) {
+    std::string path = TEST_DIR;
+    std::string file = path + "/success/nested.json";
+
+    std::fstream f(file, std::ios::in | std::ios::binary);
+    char buffer[4096];
+    f.read(buffer, sizeof(buffer));
+    auto count = static_cast<size_t>(f.gcount());
+    EXPECT_TRUE(count < sizeof(buffer));
+
+    uint8_t parser_memory[1024];
+    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
+    ASSERT_TRUE(p != nullptr);
+
+    callback_recorder cr;
+    jsonlite_parser_set_callback(p, &cr.cbs);
+
+    jsonlite_result result = jsonlite_parser_tokenize(p, buffer, count);
+    EXPECT_EQ(result, jsonlite_result_ok);
+    EXPECT_EQ(cr.records.size(), 19);
+
+    cr.expect_finished();
+    cr.records[0].expect_eq(begin_array);
+    cr.records[1].expect_eq(begin_object);
+    cr.records[2].expect_eq(token_key, "k0");
+    cr.records[3].expect_eq(begin_object);
+    cr.records[4].expect_eq(token_key, "k00");
+    cr.records[5].expect_eq(token_null);
+    cr.records[6].expect_eq(end_object);
+    cr.records[7].expect_eq(token_key, "k2");
+    cr.records[8].expect_eq(begin_array);
+    cr.records[9].expect_eq(begin_array);
+    cr.records[10].expect_eq(end_array);
+    cr.records[11].expect_eq(end_array);
+    cr.records[12].expect_eq(end_object);
+    cr.records[13].expect_eq(begin_array);
+    cr.records[14].expect_eq(begin_array);
+    cr.records[15].expect_eq(end_array);
+    cr.records[16].expect_eq(end_array);
+    cr.records[17].expect_eq(end_array);
+    cr.records[18].expect_eq(parse_finished);
+}

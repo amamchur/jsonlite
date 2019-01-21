@@ -31,16 +31,16 @@ elseif ()
     set(JSONLITE_LIB_TYPE STATIC)
 endif ()
 
-include_directories(./jsonlite/include)
+include_directories(include)
 
 add_library(jsonlite ${JSONLITE_LIB_TYPE}
-        ./jsonlite/src/jsonlite.c
-        ./jsonlite/src/jsonlite_parser.c
-        ./jsonlite/src/jsonlite_builder.c
-        ./jsonlite/src/jsonlite_buffer.c
-        ./jsonlite/src/jsonlite_stream.c
-        ./jsonlite/src/jsonlite_token.c
-        ./jsonlite/src/jsonlite_token_pool.c
+        src/jsonlite.c
+        src/jsonlite_parser.c
+        src/jsonlite_builder.c
+        src/jsonlite_buffer.c
+        src/jsonlite_stream.c
+        src/jsonlite_token.c
+        src/jsonlite_token_pool.c
         )
 
 if (BUILD_EXAMPLES)
@@ -60,23 +60,24 @@ endif ()
 if (BUILD_TESTS AND GTEST_FOUND)
     enable_testing()
     add_executable(jsonlite_tests
-            ./jsonlite/src/jsonlite.c
-            ./jsonlite/src/jsonlite_parser.c
-            ./jsonlite/src/jsonlite_builder.c
-            ./jsonlite/src/jsonlite_buffer.c
-            ./jsonlite/src/jsonlite_stream.c
-            ./jsonlite/src/jsonlite_token.c
-            ./jsonlite/src/jsonlite_token_pool.c
+            src/jsonlite.c
+            src/jsonlite_parser.c
+            src/jsonlite_builder.c
+            src/jsonlite_buffer.c
+            src/jsonlite_stream.c
+            src/jsonlite_token.c
+            src/jsonlite_token_pool.c
 
-            ./tests/callback_recorder.cpp
-            ./tests/success_parsing.cpp
+            tests/callback_recorder.cpp
+            tests/success_parsing.cpp
+            tests/error_handling.cpp
+            tests/chunk_processing.cpp
+            tests/parse_control.cpp
+            tests/version.cpp
             )
     target_compile_definitions(jsonlite_tests PRIVATE TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests")
-    target_compile_options(jsonlite_tests PRIVATE -O0 -g --coverage)
-    target_link_libraries(jsonlite_tests PRIVATE GTest::GTest GTest::Main gcov)
+    target_compile_options(jsonlite_tests PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
+    target_link_libraries(jsonlite_tests PRIVATE GTest::GTest GTest::Main --coverage)
 
-    add_test(
-            NAME jsonlite_tests
-            COMMAND jsonlite_tests
-    )
+    add_test(NAME jsonlite_tests COMMAND jsonlite_tests)
 endif ()
