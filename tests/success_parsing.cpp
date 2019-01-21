@@ -147,3 +147,57 @@ TEST(parser, should_parse_object_with_different_values) {
     cr.records[61].expect_eq(end_object);
     cr.records[62].expect_eq(parse_finished);
 }
+
+TEST(parser, should_parse_single_array) {
+    std::string path = TEST_DIR;
+    std::string file = path + "/success/single_array.json";
+
+    std::fstream f(file, std::ios::in | std::ios::binary);
+    char buffer[4096];
+    f.read(buffer, sizeof(buffer));
+    auto count = static_cast<size_t>(f.gcount());
+    EXPECT_TRUE(count < sizeof(buffer));
+
+    uint8_t parser_memory[1024];
+    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
+    ASSERT_TRUE(p != nullptr);
+
+    callback_recorder cr;
+    jsonlite_parser_set_callback(p, &cr.cbs);
+
+    jsonlite_result result = jsonlite_parser_tokenize(p, buffer, count);
+    EXPECT_EQ(result, jsonlite_result_ok);
+    EXPECT_EQ(cr.records.size(), 3);
+
+    cr.records[0].expect_eq(begin_array);
+    cr.records[1].expect_eq(end_array);
+    cr.records[2].expect_eq(parse_finished);
+}
+
+TEST(parser, should_parse_single_object) {
+    std::string path = TEST_DIR;
+    std::string file = path + "/success/single_object.json";
+
+    std::fstream f(file, std::ios::in | std::ios::binary);
+    char buffer[4096];
+    f.read(buffer, sizeof(buffer));
+    auto count = static_cast<size_t>(f.gcount());
+    EXPECT_TRUE(count < sizeof(buffer));
+
+    uint8_t parser_memory[1024];
+    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
+    ASSERT_TRUE(p != nullptr);
+
+    callback_recorder cr;
+    jsonlite_parser_set_callback(p, &cr.cbs);
+
+    jsonlite_result result = jsonlite_parser_tokenize(p, buffer, count);
+    EXPECT_EQ(result, jsonlite_result_ok);
+    EXPECT_EQ(cr.records.size(), 3);
+
+    cr.expect_finished();
+    cr.records[0].expect_eq(begin_object);
+    cr.records[1].expect_eq(end_object);
+    cr.records[2].expect_eq(parse_finished);
+}
+
