@@ -45,4 +45,6 @@ public:
     std::vector<record> records;
 };
 
+std::vector<char> read_file_content(const std::string &rel_path);
+
 #endif

@@ -24,9 +24,9 @@ extern "C" {
 #endif
     
     typedef struct jsonlite_buffer_struct *jsonlite_buffer;
+    typedef const struct jsonlite_buffer_struct * jsonlite_buffer_const;
     typedef int (*jsonlite_buffer_mem_fn)(jsonlite_buffer buffer, const void *data, size_t length);
-    typedef const void * (*jsonlite_buffer_data_fn)(jsonlite_buffer buffer);
-    
+
     typedef struct jsonlite_buffer_struct {
         uint8_t *mem;
         size_t size;
@@ -38,20 +38,10 @@ extern "C" {
     
     int jsonlite_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t length);
     int jsonlite_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t length);
-    const void *jsonlite_buffer_data(jsonlite_buffer buffer);
-    size_t jsonlite_buffer_size(jsonlite_buffer buffer);
+    const void *jsonlite_buffer_data(jsonlite_buffer_const buffer);
+    size_t jsonlite_buffer_size(jsonlite_buffer_const buffer);
+    size_t jsonlite_buffer_capacity(jsonlite_buffer_const buffer);
 
-    #define JSONLITE_MAX(x, y) (((x) > (y)) ? (x) : (y))
-    #define jsonlite_static_buffer_size() (sizeof(jsonlite_buffer_struct))
-    #define jsonlite_static_buffer_size_ext(max_token_size, chunk_size) \
-    (sizeof(jsonlite_buffer_struct) + JSONLITE_MAX(2 * (max_token_size), (max_token_size) + (chunk_size)))
-    
-    jsonlite_buffer jsonlite_static_buffer_init(void *mem, size_t size);
-    
-    #define jsonlite_heap_buffer_size() (sizeof(jsonlite_buffer_struct))
-    jsonlite_buffer jsonlite_heap_buffer_init(void *mem);
-    void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer);
-    
     jsonlite_buffer jsonlite_null_buffer();
     
 #ifdef __cplusplus

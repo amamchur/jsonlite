@@ -1,6 +1,7 @@
 #include "callback_recorder.hpp"
 
 #include <gtest/gtest.h>
+#include <fstream>
 
 static void key_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
     auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
@@ -99,11 +100,10 @@ void callback_recorder::expect_finished() const {
 }
 
 record::record(record_type type, std::string token)
-    : type(type)
-    , token(std::move(token)) {}
+        : type(type), token(std::move(token)) {}
 
 record::record(record_type type)
-    : type(type) {}
+        : type(type) {}
 
 void record::expect_eq(const record &r) const {
     EXPECT_EQ(type, r.type);
@@ -117,4 +117,25 @@ void record::expect_eq(record_type t) const {
 void record::expect_eq(record_type t, const std::string &tk) const {
     EXPECT_EQ(type, t);
     EXPECT_EQ(token, tk);
+}
+
+std::vector<char> read_file_content(const std::string &rel_path) {
+    std::string path = TEST_DIR;
+    std::string file = path + rel_path;
+    std::ifstream stream(file, std::ios::in | std::ios::binary);
+    std::vector<char> result;
+    if (!stream) {
+        return result;
+    }
+
+    std::ifstream::char_type buffer[4096];
+    do {
+        const auto &count = stream.read(buffer, sizeof(buffer)).gcount();
+        if (count > 0) {
+            result.insert(result.end(), buffer, buffer + count);
+        } else {
+            break;
+        }
+    } while (true);
+    return result;
 }

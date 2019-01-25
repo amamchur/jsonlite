@@ -35,12 +35,16 @@ jsonlite_buffer jsonlite_null_buffer() {
 	return &jsonlite_null_buffer_struct;
 }
 
-const void *jsonlite_buffer_data(jsonlite_buffer buffer) {
+const void *jsonlite_buffer_data(jsonlite_buffer_const buffer) {
     return buffer->mem;
 }
 
-size_t jsonlite_buffer_size(jsonlite_buffer buffer) {
+size_t jsonlite_buffer_size(jsonlite_buffer_const buffer) {
     return buffer->size;
+}
+
+size_t jsonlite_buffer_capacity(jsonlite_buffer_const buffer) {
+    return buffer->capacity;
 }
 
 int jsonlite_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t length) {
@@ -49,86 +53,4 @@ int jsonlite_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t len
 
 int jsonlite_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
     return buffer->append_mem(buffer, data, length);
-}
-
-static int jsonlite_static_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t length) {
-    if (length > buffer->capacity) {
-        return -1;
-    }
-
-    buffer->size = length;
-    memcpy(buffer->mem, data, length);
-    return 0;
-}
-
-static int jsonlite_static_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
-    size_t total_size = buffer->size + length;
-    if (total_size > buffer->capacity) {
-        return -1;
-    }
-
-    memcpy(buffer->mem + buffer->size, data, length);
-    buffer->size = total_size;
-    return 0;
-}
-
-jsonlite_buffer jsonlite_static_buffer_init(void *mem, size_t size) {
-    if (size < sizeof(jsonlite_buffer_struct)) {
-        return NULL;
-    }
-
-    struct jsonlite_buffer_struct *buffer = (struct jsonlite_buffer_struct *)mem;
-    buffer->set_mem = &jsonlite_static_buffer_set_mem;
-    buffer->append_mem = &jsonlite_static_buffer_append_mem;
-    buffer->mem = (uint8_t *)mem + sizeof(jsonlite_buffer_struct);
-    buffer->size = 0;
-    buffer->capacity = size - sizeof(jsonlite_buffer_struct);
-    return buffer;
-}
-
-static int jsonlite_heap_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t length) {
-    if (length > buffer->capacity) {
-        free(buffer->mem);
-        buffer->mem = malloc(length);
-        buffer->capacity = length;
-    }
-
-    buffer->size = length;
-    memcpy(buffer->mem, data, length);
-    return 0;
-}
-
-static int jsonlite_heap_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
-    size_t total_size = buffer->size + length;
-    if (total_size > buffer->capacity) {
-        uint8_t *b = (uint8_t *)malloc(total_size);
-        memcpy(b, buffer->mem, buffer->size);
-
-        free(buffer->mem);
-        buffer->mem = b;
-        buffer->capacity = total_size;
-    }
-
-    memcpy(buffer->mem + buffer->size, data, length);
-    buffer->size = total_size;
-    return 0;
-}
-
-void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer) {
-    if (buffer != NULL) {
-        free(buffer->mem);
-        buffer->mem = NULL;
-        buffer->size = 0;
-        buffer->capacity = 0;
-    }
-}
-
-jsonlite_buffer jsonlite_heap_buffer_init(void *mem) {
-    struct jsonlite_buffer_struct *buffer = (struct jsonlite_buffer_struct *)mem;
-    buffer->set_mem = &jsonlite_heap_buffer_set_mem;
-    buffer->append_mem = &jsonlite_heap_buffer_append_mem;
-    buffer->mem = NULL;
-    buffer->size = 0;
-    buffer->capacity = 0;
-    return buffer;
 }

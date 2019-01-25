@@ -28,7 +28,7 @@ uint8_t parser_memory[jsonlite_parser_estimate_size(MAX_JSON_DEPTH)];
 
 // Buffer size have to be greater then MAX_CHUNK_SIZE + MAX_JSON_TOKEN_SIZE
 // and 2 * MAX_JSON_TOKEN_SIZE
-uint8_t buffer_memory[jsonlite_static_buffer_size_ext(MAX_JSON_TOKEN_SIZE, MAX_CHUNK_SIZE)];
+uint8_t buffer_memory[jsonlite_buffer_static_size_ext(MAX_JSON_TOKEN_SIZE, MAX_CHUNK_SIZE)];
 
 const char json_chunk_1[] = "{\"a\":null,\"b\":[1,2,3],\"long-long-";
 const char json_chunk_2[] = "long-key\":true,\"d\":{\"a\":[1234312";
@@ -61,7 +61,7 @@ int main(int argc, const char *argv[]) {
 
     printf("Total memory used for parsing: %d bytes\n", (int)(sizeof(parser_memory) + sizeof(buffer_memory)));
 
-    jsonlite_buffer buffer = jsonlite_static_buffer_init(buffer_memory, sizeof(buffer_memory));
+    jsonlite_buffer buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));
     assert(buffer != NULL);
 
     jsonlite_parser parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), buffer);

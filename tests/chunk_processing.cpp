@@ -19,7 +19,7 @@ TEST(parser, should_handle_empty_chunk) {
 
 TEST(parser, should_handle_bad_empty_chunk) {
     uint8_t buffer_memory[1024];
-    jsonlite_buffer buffer = jsonlite_static_buffer_init(buffer_memory, sizeof(buffer_memory));
+    jsonlite_buffer buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));
 
     uint8_t parser_memory[1024];
     jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), buffer);
@@ -52,8 +52,8 @@ TEST(parser, should_handle_out_of_memory_for_null_buffer) {
 }
 
 TEST(parser, should_handle_rest_out_of_memory) {
-    uint8_t buffer_memory[jsonlite_static_buffer_size() + 5];
-    jsonlite_buffer buffer = jsonlite_static_buffer_init(buffer_memory, sizeof(buffer_memory));
+    uint8_t buffer_memory[jsonlite_buffer_static_size() + 5];
+    jsonlite_buffer buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));
     ASSERT_TRUE(buffer != nullptr);
 
     uint8_t parser_memory[1024];
@@ -70,8 +70,8 @@ TEST(parser, should_handle_rest_out_of_memory) {
 
 
 TEST(parser, should_handle_chunk_out_of_memory) {
-    uint8_t buffer_memory[jsonlite_static_buffer_size() + 5];
-    jsonlite_buffer buffer = jsonlite_static_buffer_init(buffer_memory, sizeof(buffer_memory));
+    uint8_t buffer_memory[jsonlite_buffer_static_size() + 5];
+    jsonlite_buffer buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));
     ASSERT_TRUE(buffer != nullptr);
 
     uint8_t parser_memory[1024];
@@ -91,8 +91,8 @@ TEST(parser, should_handle_chunk_out_of_memory) {
 }
 
 TEST(parser, should_handle_depth_limit) {
-    uint8_t buffer_memory[jsonlite_static_buffer_size() + 1024];
-    jsonlite_buffer buffer = jsonlite_static_buffer_init(buffer_memory, sizeof(buffer_memory));
+    uint8_t buffer_memory[jsonlite_buffer_static_size() + 1024];
+    jsonlite_buffer buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));
     ASSERT_TRUE(buffer != nullptr);
 
     uint8_t parser_memory[jsonlite_parser_estimate_size(8)];

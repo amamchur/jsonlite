@@ -13,22 +13,26 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#ifndef JSONLITE_H
-#define JSONLITE_H
+#ifndef JSONLITE_BUFFER_STATIC_H
+#define JSONLITE_BUFFER_STATIC_H
 
+#ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_buffer.h"
-#include "jsonlite_buffer_dynamic.h"
-#include "jsonlite_buffer_static.h"
-#include "jsonlite_builder.h"
-#include "jsonlite_parser.h"
-#include "jsonlite_stream.h"
-#include "jsonlite_token.h"
-#include "jsonlite_token_pool.h"
+#endif
+
+#include <stdint.h>
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-const char *jsonlite_version();
+
+    #define JSONLITE_MAX(x, y) (((x) > (y)) ? (x) : (y))
+    #define jsonlite_buffer_static_size() (sizeof(jsonlite_buffer_struct))
+    #define jsonlite_buffer_static_size_ext(max_token_size, chunk_size) \
+    (sizeof(jsonlite_buffer_struct) + JSONLITE_MAX(2 * (max_token_size), (max_token_size) + (chunk_size)))
+    
+    jsonlite_buffer jsonlite_buffer_static_init(void *mem, size_t size);
 
 #ifdef __cplusplus
 }

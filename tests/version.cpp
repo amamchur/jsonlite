@@ -3,5 +3,5 @@
 #include <string>
 
 TEST(jsonlite, should_return_version) {
-    EXPECT_EQ(std::string(jsonlite_version()), "1.2.3.0");
+    EXPECT_EQ(std::string(jsonlite_version()), "2.0.0.0");
 }

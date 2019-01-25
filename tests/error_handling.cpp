@@ -8,27 +8,6 @@
 #include <string>
 #include <vector>
 
-std::vector<char> read_file_content(const std::string &rel_path) {
-    std::string path = TEST_DIR;
-    std::string file = path + rel_path;
-    std::ifstream stream(file, std::ios::in | std::ios::binary);
-    std::vector<char> result;
-    if (!stream) {
-        return result;
-    }
-
-    std::ifstream::char_type buffer[4096];
-    do {
-        const auto &count = stream.read(buffer, sizeof(buffer)).gcount();
-        if (count > 0) {
-            result.insert(result.end(), buffer, buffer + count);
-        } else {
-            break;
-        }
-    } while (true);
-    return result;
-}
-
 TEST(parser, should_handle_bad_utf8_token) {
     auto data = read_file_content("/bad_token/bad_utf8_token.json");
 

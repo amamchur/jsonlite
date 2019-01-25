@@ -64,6 +64,8 @@ if (BUILD_TESTS AND GTEST_FOUND)
             src/jsonlite_parser.c
             src/jsonlite_builder.c
             src/jsonlite_buffer.c
+            src/jsonlite_buffer_dynamic.c
+            src/jsonlite_buffer_static.c
             src/jsonlite_stream.c
             src/jsonlite_token.c
             src/jsonlite_token_pool.c
@@ -73,6 +75,9 @@ if (BUILD_TESTS AND GTEST_FOUND)
             tests/error_handling.cpp
             tests/chunk_processing.cpp
             tests/parse_control.cpp
+            tests/dynamic_buffer.cpp
+            tests/static_buffer.cpp
+            tests/tokens.cpp
             tests/version.cpp
             )
     target_compile_definitions(jsonlite_tests PRIVATE TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests")

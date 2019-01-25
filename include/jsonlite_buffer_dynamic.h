@@ -13,6 +13,27 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-const char *jsonlite_version() {
-	return "2.0.0.0";
+#ifndef JSONLITE_BUFFER_DYNAMIC__H
+#define JSONLITE_BUFFER_DYNAMIC__H
+
+#ifndef JSONLITE_AMALGAMATED
+#include "jsonlite_buffer.h"
+#endif
+
+#include <stdint.h>
+#include <stdlib.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    #define jsonlite_heap_buffer_size() (sizeof(jsonlite_buffer_struct))
+    jsonlite_buffer jsonlite_heap_buffer_init(void *mem);
+    void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer);
+    
+    jsonlite_buffer jsonlite_null_buffer();
+    
+#ifdef __cplusplus
 }
+#endif
+
+#endif
