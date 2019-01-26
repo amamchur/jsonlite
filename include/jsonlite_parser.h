@@ -16,8 +16,6 @@
 #ifndef JSONLITE_PARSER_H
 #define JSONLITE_PARSER_H
 
-#include <stddef.h>
-#include <stdint.h>
 #include "jsonlite_token.h"
 #include "jsonlite_types.h"
 #include "jsonlite_buffer.h"

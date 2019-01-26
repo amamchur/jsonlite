@@ -17,48 +17,35 @@
 #include "jsonlite_builder.h"
 #endif
 
-#include <stdlib.h>
-#include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 
 #define MIN_DEPTH 2
 
-#define jsonlite_builder_check_depth()          \
-do {                                            \
-    if (builder->state >= builder->limit) {     \
-        return jsonlite_result_depth_limit;     \
-    }                                           \
-} while (0)
+#define jsonlite_builder_check_depth()                                                                                                                         \
+    do {                                                                                                                                                       \
+        if (builder->state >= builder->limit) {                                                                                                                \
+            return jsonlite_result_depth_limit;                                                                                                                \
+        }                                                                                                                                                      \
+    } while (0)
 
 enum {
-    jsonlite_accept_object_begin    = 0x0001,
-    jsonlite_accept_object_end      = 0x0002,
-    jsonlite_accept_array_begin     = 0x0004,
-    jsonlite_accept_array_end       = 0x0008,
-    jsonlite_accept_key             = 0x0010,
-    jsonlite_accept_string          = 0x0020,
-    jsonlite_accept_number          = 0x0040,
-    jsonlite_accept_boolean         = 0x0080,
-    jsonlite_accept_null            = 0x0100,
-    jsonlite_accept_values_only     = 0x0200,
-    jsonlite_accept_next            = 0x0400,
+    jsonlite_accept_object_begin = 0x0001,
+    jsonlite_accept_object_end = 0x0002,
+    jsonlite_accept_array_begin = 0x0004,
+    jsonlite_accept_array_end = 0x0008,
+    jsonlite_accept_key = 0x0010,
+    jsonlite_accept_string = 0x0020,
+    jsonlite_accept_number = 0x0040,
+    jsonlite_accept_boolean = 0x0080,
+    jsonlite_accept_null = 0x0100,
+    jsonlite_accept_values_only = 0x0200,
+    jsonlite_accept_next = 0x0400,
 
-    jsonlite_accept_value           = 0
-                                    | jsonlite_accept_object_begin
-                                    | jsonlite_accept_array_begin
-                                    | jsonlite_accept_string
-                                    | jsonlite_accept_number
-                                    | jsonlite_accept_boolean
-                                    | jsonlite_accept_null,
-    jsonlite_accept_continue_object = 0
-                                    | jsonlite_accept_next
-                                    | jsonlite_accept_key
-                                    | jsonlite_accept_object_end,
-    jsonlite_accept_continue_array = 0
-                                    | jsonlite_accept_next
-                                    | jsonlite_accept_values_only
-                                    | jsonlite_accept_value
-                                    | jsonlite_accept_array_end
+    jsonlite_accept_value = 0 | jsonlite_accept_object_begin | jsonlite_accept_array_begin | jsonlite_accept_string | jsonlite_accept_number |
+                            jsonlite_accept_boolean | jsonlite_accept_null,
+    jsonlite_accept_continue_object = 0 | jsonlite_accept_next | jsonlite_accept_key | jsonlite_accept_object_end,
+    jsonlite_accept_continue_array = 0 | jsonlite_accept_next | jsonlite_accept_values_only | jsonlite_accept_value | jsonlite_accept_array_end
 };
 
 static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_write_state a);
@@ -75,7 +62,7 @@ jsonlite_builder jsonlite_builder_init(void *memory, size_t size, jsonlite_strea
     if (size < jsonlite_builder_estimate_size(MIN_DEPTH)) {
         return NULL;
     }
-    
+
     return jsonlite_builder_configure(memory, size, stream);
 }
 
@@ -119,7 +106,7 @@ static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder) {
         if (jsonlite_builder_accept(builder, jsonlite_accept_next)) {
             jsonlite_builder_raw_char(builder, ',');
         }
-        
+
         if (builder->indentation != 0) {
             jsonlite_builder_raw_char(builder, '\n');
             jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
@@ -163,9 +150,7 @@ jsonlite_result jsonlite_builder_array_begin(jsonlite_builder builder) {
 
     if (jsonlite_builder_accept(builder, jsonlite_accept_array_begin)) {
         jsonlite_builder_prepare_value_writing(builder);
-        *++builder->state = jsonlite_accept_array_end
-            | jsonlite_accept_value
-            | jsonlite_accept_values_only;
+        *++builder->state = jsonlite_accept_array_end | jsonlite_accept_value | jsonlite_accept_values_only;
         jsonlite_builder_raw_char(builder, '[');
         return jsonlite_result_ok;
     }
@@ -192,19 +177,36 @@ static void jsonlite_builder_write_uft8(jsonlite_builder builder, const void *da
     const char *c = (const char *)data;
     const char *p = (const char *)data;
     const char *l = (const char *)data + length;
-    
+
     jsonlite_builder_raw_char(builder, '\"');
 next:
-    if (c == l)                     goto end;
+    if (c == l)
+        goto end;
     switch (*c) {
-        case '"':   b[1] = '"';     goto flush;
-        case '\\':  b[1] = '\\';    goto flush;
-        case '\b':  b[1] = 'b';     goto flush;
-        case '\f':  b[1] = 'f';     goto flush;
-        case '\n':  b[1] = 'n';     goto flush;
-        case '\r':  b[1] = 'r';     goto flush;
-        case '\t':  b[1] = 't';     goto flush;
-        default:    c++;            goto next;
+    case '"':
+        b[1] = '"';
+        goto flush;
+    case '\\':
+        b[1] = '\\';
+        goto flush;
+    case '\b':
+        b[1] = 'b';
+        goto flush;
+    case '\f':
+        b[1] = 'f';
+        goto flush;
+    case '\n':
+        b[1] = 'n';
+        goto flush;
+    case '\r':
+        b[1] = 'r';
+        goto flush;
+    case '\t':
+        b[1] = 't';
+        goto flush;
+    default:
+        c++;
+        goto next;
     }
 flush:
     jsonlite_stream_write(builder->stream, p, c - p);
@@ -222,12 +224,12 @@ jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const void *utf8,
         if (jsonlite_builder_accept(builder, jsonlite_accept_next)) {
             jsonlite_builder_raw_char(builder, ',');
         }
-        
+
         if (builder->indentation != 0) {
             jsonlite_builder_raw_char(builder, '\n');
             jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
         }
-        
+
         jsonlite_builder_write_uft8(builder, utf8, length);
         if (builder->indentation != 0) {
             jsonlite_builder_raw(builder, ": ", 2);
@@ -259,7 +261,7 @@ jsonlite_result jsonlite_builder_string(jsonlite_builder builder, const void *ut
 
 jsonlite_result jsonlite_builder_int(jsonlite_builder builder, long long value) {
     char buff[64];
-	size_t size = 0;
+    size_t size = 0;
     jsonlite_write_state *ws = builder->state;
     if (jsonlite_builder_accept(builder, jsonlite_accept_value)) {
         jsonlite_builder_prepare_value_writing(builder);
@@ -278,7 +280,7 @@ jsonlite_result jsonlite_builder_int(jsonlite_builder builder, long long value) 
 
 jsonlite_result jsonlite_builder_double(jsonlite_builder builder, double value) {
     char buff[64];
-	size_t size = 0;
+    size_t size = 0;
     jsonlite_write_state *ws = builder->state;
     if (jsonlite_builder_accept(builder, jsonlite_accept_value)) {
         jsonlite_builder_prepare_value_writing(builder);
@@ -297,9 +299,8 @@ jsonlite_result jsonlite_builder_double(jsonlite_builder builder, double value) 
 
 jsonlite_result jsonlite_builder_true(jsonlite_builder builder) {
     static const char value[] = "true";
-	jsonlite_write_state *ws = builder->state;
+    jsonlite_write_state *ws = builder->state;
     if (!(jsonlite_builder_accept(builder, jsonlite_accept_value))) {
-
         return jsonlite_result_not_allowed;
     }
 
@@ -332,9 +333,8 @@ jsonlite_result jsonlite_builder_false(jsonlite_builder builder) {
 
 jsonlite_result jsonlite_builder_null(jsonlite_builder builder) {
     static const char value[] = "null";
-	jsonlite_write_state *ws = builder->state;
+    jsonlite_write_state *ws = builder->state;
     if (!(jsonlite_builder_accept(builder, jsonlite_accept_value))) {
-
         return jsonlite_result_not_allowed;
     }
 
@@ -374,7 +374,7 @@ jsonlite_result jsonlite_builder_raw_key(jsonlite_builder builder, const void *d
             jsonlite_builder_raw_char(builder, '\n');
             jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
         }
-        
+
         jsonlite_builder_raw_char(builder, '\"');
         jsonlite_builder_raw(builder, data, length);
         jsonlite_builder_raw_char(builder, '\"');
@@ -433,34 +433,34 @@ static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *
     jsonlite_stream_write(builder->stream, "\"", 1);
 next:
     switch (l - c) {
-        case 0:
-            goto done;
-        case 1:
-            bits = (uint32_t)(*c++ << 16);
-            buffer[0] = encode[(bits & 0x00FC0000) >> 18];
-            buffer[1] = encode[(bits & 0x0003F000) >> 12];
-            buffer[2] = '=';
-            buffer[3] = '=';
-            l = c;
-            goto write;
-        case 2:
-            bits = (uint32_t)(*c++ << 16);
-            bits |= (uint32_t)(*c++ << 8);
-            buffer[0] = encode[(bits & 0x00FC0000) >> 18];
-            buffer[1] = encode[(bits & 0x0003F000) >> 12];
-            buffer[2] = encode[(bits & 0x00000FC0) >> 6];
-            buffer[3] = '=';
-            l = c;
-            goto write;
-        default:
-            bits = (uint32_t)(*c++ << 16);
-            bits |= *c++ << 8;
-            bits |= *c++;
-            buffer[0] = encode[(bits & 0x00FC0000) >> 18];
-            buffer[1] = encode[(bits & 0x0003F000) >> 12];
-            buffer[2] = encode[(bits & 0x00000FC0) >> 6];
-            buffer[3] = encode[(bits & 0x0000003F)];
-            goto write;
+    case 0:
+        goto done;
+    case 1:
+        bits = (uint32_t)(*c++ << 16);
+        buffer[0] = encode[(bits & 0x00FC0000) >> 18];
+        buffer[1] = encode[(bits & 0x0003F000) >> 12];
+        buffer[2] = '=';
+        buffer[3] = '=';
+        l = c;
+        goto write;
+    case 2:
+        bits = (uint32_t)(*c++ << 16);
+        bits |= (uint32_t)(*c++ << 8);
+        buffer[0] = encode[(bits & 0x00FC0000) >> 18];
+        buffer[1] = encode[(bits & 0x0003F000) >> 12];
+        buffer[2] = encode[(bits & 0x00000FC0) >> 6];
+        buffer[3] = '=';
+        l = c;
+        goto write;
+    default:
+        bits = (uint32_t)(*c++ << 16);
+        bits |= *c++ << 8;
+        bits |= *c++;
+        buffer[0] = encode[(bits & 0x00FC0000) >> 18];
+        buffer[1] = encode[(bits & 0x0003F000) >> 12];
+        buffer[2] = encode[(bits & 0x00000FC0) >> 6];
+        buffer[3] = encode[(bits & 0x0000003F)];
+        goto write;
     }
 write:
     jsonlite_stream_write(builder->stream, buffer, 4);
@@ -481,6 +481,6 @@ jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const vo
         }
         return jsonlite_result_ok;
     }
-    
+
     return jsonlite_result_not_allowed;
 }

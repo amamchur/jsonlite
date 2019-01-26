@@ -28,7 +28,7 @@ endif ()
 if (BUILD_SHARED_LIBS)
     set(JSONLITE_LIB_TYPE SHARED)
 elseif ()
-    set(JSONLITE_LIB_TYPE STATIC)
+    set(JSONLITE_LIB_TYPE STATIC src/jsonlite_stream_static.c)
 endif ()
 
 include_directories(include)
@@ -41,6 +41,10 @@ add_library(jsonlite ${JSONLITE_LIB_TYPE}
         src/jsonlite_buffer_dynamic.c
         src/jsonlite_buffer_static.c
         src/jsonlite_stream.c
+        src/jsonlite_stream_dynamic.c
+        src/jsonlite_stream_file.c
+        src/jsonlite_stream_static.c
+        src/jsonlite_stream_stdout.c
         src/jsonlite_token.c
         src/jsonlite_token_pool.c
         )
@@ -69,6 +73,10 @@ if (BUILD_TESTS AND GTEST_FOUND)
             src/jsonlite_buffer_dynamic.c
             src/jsonlite_buffer_static.c
             src/jsonlite_stream.c
+            src/jsonlite_stream_dynamic.c
+            src/jsonlite_stream_file.c
+            src/jsonlite_stream_static.c
+            src/jsonlite_stream_stdout.c
             src/jsonlite_token.c
             src/jsonlite_token_pool.c
 

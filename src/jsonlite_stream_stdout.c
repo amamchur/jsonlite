@@ -13,29 +13,22 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#ifndef JSONLITE_STREAM_H
-#define JSONLITE_STREAM_H
-
-#include <stddef.h>
-
-#ifdef __cplusplus
-extern "C" {
+#ifndef JSONLITE_AMALGAMATED
+#include <jsonlite_stream.h>
+#include <jsonlite_stream_stdout.h>
 #endif
 
-struct jsonlite_stream_struct;
-typedef struct jsonlite_stream_struct const *jsonlite_stream;
-typedef int (*jsonlite_stream_write_fn)(jsonlite_stream stream, const void *data, size_t length);
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-typedef struct jsonlite_stream_struct {
-    jsonlite_stream_write_fn write;
-} jsonlite_stream_struct;
-
-int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t length);
-
-jsonlite_stream jsonlite_null_stream();
-
-#ifdef __cplusplus
+static int jsonlite_stdout_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    return (int)fwrite(data, 1, length, stdout);
 }
-#endif
 
-#endif
+static struct jsonlite_stream_struct jsonlite_stdout_stream_struct = {jsonlite_stdout_stream_write};
+
+jsonlite_stream jsonlite_stdout_stream() {
+    return &jsonlite_stdout_stream_struct;
+}

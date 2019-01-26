@@ -16,7 +16,7 @@
 #ifndef JSONLITE_BUILDER_H
 #define JSONLITE_BUILDER_H
 
-#include <stdio.h>
+#include <stdint.h>
 #include "jsonlite_types.h"
 #include "jsonlite_stream.h"
 

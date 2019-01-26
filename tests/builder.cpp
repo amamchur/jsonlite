@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <jsonlite.h>
+#include <jsonlite_stream_static.h>
 #include <stdint.h>
 #include <string>
 
@@ -212,7 +213,7 @@ TEST(builder, should_build_array_with_raw_value) {
     jsonlite_builder_raw_value(builder, number, sizeof(number) - 1);
     jsonlite_builder_array_end(builder);
     char *data = (char *)jsonlite_static_mem_stream_data(stream);
-    EXPECT_EQ(std::string("[raw_value\",12345]"), data);
+    EXPECT_EQ(std::string("[\"raw_value\",12345]"), data);
 }
 
 TEST(builder, should_build_array_with_true_false_null) {

@@ -26,12 +26,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
     #define jsonlite_heap_buffer_size() (sizeof(jsonlite_buffer_struct))
     jsonlite_buffer jsonlite_heap_buffer_init(void *mem);
     void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer);
-    
-    jsonlite_buffer jsonlite_null_buffer();
-    
+
 #ifdef __cplusplus
 }
 #endif
