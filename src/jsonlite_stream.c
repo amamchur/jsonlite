@@ -26,10 +26,12 @@ int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t lengt
 }
 
 static int jsonlite_null_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    (void)(stream);
+    (void)(data);
     return (int)length;
 }
 
-jsonlite_stream jsonlite_null_stream() {
+jsonlite_stream jsonlite_stream_null() {
     static struct jsonlite_stream_struct jsonlite_null_stream_struct = {jsonlite_null_stream_write};
     return &jsonlite_null_stream_struct;
 }

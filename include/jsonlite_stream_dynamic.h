@@ -13,8 +13,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License
 
-#ifndef JSONLITE_STREAM__DYNAMIC_H
-#define JSONLITE_STREAM__DYNAMIC_H
+#ifndef JSONLITE_STREAM_DYNAMIC_H
+#define JSONLITE_STREAM_DYNAMIC_H
 
 #include <jsonlite_stream.h>
 #include <stdint.h>
@@ -23,36 +23,22 @@
 extern "C" {
 #endif
 
-typedef struct jsonlite_mem_stream_block {
-    struct jsonlite_mem_stream_block *next;
+typedef struct jsonlite_stream_dynamic_block {
+    struct jsonlite_stream_dynamic_block *next;
     uint8_t *data;
-} jsonlite_mem_stream_block;
+} jsonlite_stream_dynamic_block;
 
-typedef struct jsonlite_mem_stream {
+typedef struct jsonlite_stream_dynamic {
     size_t block_size;
     uint8_t *cursor;
     uint8_t *limit;
-    struct jsonlite_mem_stream_block *current;
-    struct jsonlite_mem_stream_block *first;
-} jsonlite_mem_stream;
+    struct jsonlite_stream_dynamic_block *current;
+    struct jsonlite_stream_dynamic_block *first;
+} jsonlite_stream_dynamic;
 
-jsonlite_stream jsonlite_mem_stream_alloc(size_t block_size);
-void jsonlite_mem_stream_free(jsonlite_stream stream);
-size_t jsonlite_mem_stream_data(jsonlite_stream stream, uint8_t **data, size_t extra_bytes);
-
-typedef struct jsonlite_static_mem_stream {
-    uint8_t *buffer;
-    size_t size;
-    size_t written;
-    uint8_t *limit;
-    int enabled;
-} jsonlite_static_mem_stream;
-
-#define jsonlite_static_mem_stream_size() (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_static_mem_stream))
-
-jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size);
-size_t jsonlite_static_mem_stream_written_bytes(jsonlite_stream stream);
-const void *jsonlite_static_mem_stream_data(jsonlite_stream stream);
+jsonlite_stream jsonlite_stream_dynamic_alloc(size_t block_size);
+void jsonlite_stream_dynamic_free(jsonlite_stream stream);
+size_t jsonlite_stream_dynamic_data(jsonlite_stream stream, uint8_t **data, size_t extra_bytes);
 
 #ifdef __cplusplus
 }

@@ -32,7 +32,7 @@ typedef struct jsonlite_stream_struct {
 
 int jsonlite_stream_write(jsonlite_stream stream, const void *data, size_t length);
 
-jsonlite_stream jsonlite_null_stream();
+jsonlite_stream jsonlite_stream_null();
 
 #ifdef __cplusplus
 }

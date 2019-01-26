@@ -18,17 +18,14 @@
 #include <jsonlite_stream_stdout.h>
 #endif
 
-#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-static int jsonlite_stdout_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+static int jsonlite__stream_stdout_write(jsonlite_stream stream, const void *data, size_t length) {
+    (void)(stream);
     return (int)fwrite(data, 1, length, stdout);
 }
 
-static struct jsonlite_stream_struct jsonlite_stdout_stream_struct = {jsonlite_stdout_stream_write};
-
-jsonlite_stream jsonlite_stdout_stream() {
+jsonlite_stream jsonlite_stream_stdout() {
+    static struct jsonlite_stream_struct jsonlite_stdout_stream_struct = {jsonlite__stream_stdout_write};
     return &jsonlite_stdout_stream_struct;
 }

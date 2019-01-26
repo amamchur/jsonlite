@@ -34,7 +34,7 @@ static int jsonlite_file_stream_write(jsonlite_stream stream, const void *data, 
     return (int)fwrite(data, 1, length, file_stream->file);
 }
 
-jsonlite_stream jsonlite_file_stream_alloc(FILE *file) {
+jsonlite_stream jsonlite_stream_file_alloc(FILE *file) {
     size_t size = SIZE_OF_FILE_STREAM();
     struct jsonlite_stream_struct *stream = malloc(size);
     stream->write = jsonlite_file_stream_write;
@@ -44,6 +44,6 @@ jsonlite_stream jsonlite_file_stream_alloc(FILE *file) {
     return stream;
 }
 
-void jsonlite_file_stream_free(jsonlite_stream stream) {
+void jsonlite_stream_file_free(jsonlite_stream stream) {
     free((void *)stream);
 }

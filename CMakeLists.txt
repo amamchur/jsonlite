@@ -81,15 +81,16 @@ if (BUILD_TESTS AND GTEST_FOUND)
             src/jsonlite_token_pool.c
 
             tests/callback_recorder.cpp
-            tests/success_parsing.cpp
-            tests/error_handling.cpp
-            tests/chunk_processing.cpp
-            tests/parse_control.cpp
-            tests/dynamic_buffer.cpp
-            tests/static_buffer.cpp
+            tests/parsing_success.cpp
+            tests/parsing_error_handling.cpp
+            tests/parsing_chunk.cpp
+            tests/parsing_control.cpp
+            tests/buffer_dynamic.cpp
+            tests/buffer_static.cpp
             tests/tokens.cpp
             tests/version.cpp
-            tests/builder.cpp)
+            tests/builder.cpp
+            tests/stream_null.cpp tests/stream_static.cpp tests/stream_stdout.cpp tests/stream_dynamic.cpp tests/stream_file.cpp)
     target_compile_definitions(jsonlite_tests PRIVATE TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests")
     target_compile_options(jsonlite_tests PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
     target_link_libraries(jsonlite_tests PRIVATE GTest::GTest GTest::Main --coverage)

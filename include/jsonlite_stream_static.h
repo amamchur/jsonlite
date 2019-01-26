@@ -33,9 +33,9 @@ typedef struct jsonlite_static_mem_stream {
 
 #define jsonlite_static_mem_stream_size() (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_static_mem_stream))
 
-jsonlite_stream jsonlite_static_mem_stream_init(void *buffer, size_t size);
-size_t jsonlite_static_mem_stream_written_bytes(jsonlite_stream stream);
-const void *jsonlite_static_mem_stream_data(jsonlite_stream stream);
+jsonlite_stream jsonlite_stream_static_init(void *buffer, size_t size);
+size_t jsonlite_stream_static_written_bytes(jsonlite_stream stream);
+const void *jsonlite_stream_static_data(jsonlite_stream stream);
 
 #ifdef __cplusplus
 }

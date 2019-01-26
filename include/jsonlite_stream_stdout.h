@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-jsonlite_stream jsonlite_stdout_stream();
+jsonlite_stream jsonlite_stream_stdout();
 
 #ifdef __cplusplus
 }

@@ -23,8 +23,8 @@
 extern "C" {
 #endif
 
-jsonlite_stream jsonlite_file_stream_alloc(FILE *file);
-void jsonlite_file_stream_free(jsonlite_stream stream);
+jsonlite_stream jsonlite_stream_file_alloc(FILE *file);
+void jsonlite_stream_file_free(jsonlite_stream stream);
 
 #ifdef __cplusplus
 }
