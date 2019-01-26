@@ -38,6 +38,8 @@ add_library(jsonlite ${JSONLITE_LIB_TYPE}
         src/jsonlite_parser.c
         src/jsonlite_builder.c
         src/jsonlite_buffer.c
+        src/jsonlite_buffer_dynamic.c
+        src/jsonlite_buffer_static.c
         src/jsonlite_stream.c
         src/jsonlite_token.c
         src/jsonlite_token_pool.c

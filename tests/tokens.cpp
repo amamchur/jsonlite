@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
+#include <jsonlite_token.h>
 
 namespace {
     class string_container {
@@ -65,16 +66,17 @@ static void string_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
 
 TEST(tokens, should_convert_number_to_long_long) {
     jsonlite_token token;
-    token.start = (uint8_t *) "123456789";
+    token.start = (uint8_t *) "1234567890";
     token.end = token.start + strlen((char *) token.start);
 
     long long value = jsonlite_token_to_long_long(&token);
-    EXPECT_EQ(value, 123456789);
+    EXPECT_EQ(value, 1234567890);
 
-    token.start = (uint8_t *) "-123456780";
+    token.start = (uint8_t *) "-1234567890";
     token.end = token.start + strlen((char *) token.start);
+    token.type.number = jsonlite_number_negative;
     value = jsonlite_token_to_long_long(&token);
-    EXPECT_EQ(value, 123456789);
+    EXPECT_EQ(value, -1234567890);
 }
 
 TEST(tokens, should_convert_unicode_string) {
