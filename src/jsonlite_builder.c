@@ -65,7 +65,7 @@ static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_write_stat
 static void jsonlite_builder_pop_state(jsonlite_builder builder);
 static void jsonlite_builder_prepare_value_writing(jsonlite_builder builder);
 static void jsonlite_builder_raw_char(jsonlite_builder builder, char data);
-static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length);
+static void jsonlite_builder_write_uft8(jsonlite_builder builder, const void *data, size_t length);
 static void jsonlite_builder_raw(jsonlite_builder builder, const void *data, size_t length);
 static void jsonlite_builder_repeat(jsonlite_builder builder, char ch, size_t count);
 static void jsonlite_builder_write_base64(jsonlite_builder builder, const void *data, size_t length);
@@ -187,11 +187,11 @@ jsonlite_result jsonlite_builder_array_end(jsonlite_builder builder) {
     return jsonlite_result_not_allowed;
 }
 
-static void jsonlite_builder_write_uft8(jsonlite_builder builder, const char *data, size_t length) {
+static void jsonlite_builder_write_uft8(jsonlite_builder builder, const void *data, size_t length) {
     char b[2] = {'\\', '?'};
-    const char *c = data;
-    const char *p = data;
-    const char *l = data + length;
+    const char *c = (const char *)data;
+    const char *p = (const char *)data;
+    const char *l = (const char *)data + length;
     
     jsonlite_builder_raw_char(builder, '\"');
 next:
@@ -216,7 +216,7 @@ end:
     jsonlite_builder_raw_char(builder, '\"');
 }
 
-jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const char *data, size_t length) {
+jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const void *utf8, size_t length) {
     jsonlite_write_state *ws = builder->state;
     if (jsonlite_builder_accept(builder, jsonlite_accept_key)) {
         if (jsonlite_builder_accept(builder, jsonlite_accept_next)) {
@@ -228,7 +228,7 @@ jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const char *data,
             jsonlite_builder_repeat(builder, ' ', (builder->state - builder->stack) * builder->indentation);
         }
         
-        jsonlite_builder_write_uft8(builder, data, length);
+        jsonlite_builder_write_uft8(builder, utf8, length);
         if (builder->indentation != 0) {
             jsonlite_builder_raw(builder, ": ", 2);
         } else {
@@ -241,11 +241,11 @@ jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const char *data,
     return jsonlite_result_not_allowed;
 }
 
-jsonlite_result jsonlite_builder_string(jsonlite_builder builder, const char *data, size_t length) {
+jsonlite_result jsonlite_builder_string(jsonlite_builder builder, const void *utf8, size_t length) {
     jsonlite_write_state *ws = builder->state;
     if (jsonlite_builder_accept(builder, jsonlite_accept_value)) {
         jsonlite_builder_prepare_value_writing(builder);
-        jsonlite_builder_write_uft8(builder, data, length);
+        jsonlite_builder_write_uft8(builder, utf8, length);
         if (jsonlite_builder_accept(builder, jsonlite_accept_values_only)) {
             *ws = jsonlite_accept_continue_array;
         } else {

@@ -81,7 +81,7 @@ if (BUILD_TESTS AND GTEST_FOUND)
             tests/static_buffer.cpp
             tests/tokens.cpp
             tests/version.cpp
-            )
+            tests/builder.cpp)
     target_compile_definitions(jsonlite_tests PRIVATE TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests")
     target_compile_options(jsonlite_tests PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
     target_link_libraries(jsonlite_tests PRIVATE GTest::GTest GTest::Main --coverage)

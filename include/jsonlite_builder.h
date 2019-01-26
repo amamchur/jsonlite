@@ -107,12 +107,12 @@ extern "C" {
      * @see jsonlite_builder
      * @see jsonlite_result
      * @param builder the builder object
-     * @param data the UTF-8 encoded string
+     * @param utf8 the UTF-8 encoded string
      * @param length the string length
      * @return jsonlite_result_not_allowed when operation is not allowed;
      * otherwise jsonlite_result_ok.
      */
-    jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const char *data, size_t length);
+    jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const void *utf8, size_t length);
     
     /** \brief Write string value.
      *
@@ -121,12 +121,12 @@ extern "C" {
      * @see jsonlite_builder
      * @see jsonlite_result
      * @param builder the builder object
-     * @param data the UTF-8 encoded string
+     * @param utf8 the UTF-8 encoded string
      * @param length the string length
      * @return jsonlite_result_not_allowed when operation is not allowed;
      * otherwise jsonlite_result_ok.
      */
-    jsonlite_result jsonlite_builder_string(jsonlite_builder builder, const char *data, size_t length);
+    jsonlite_result jsonlite_builder_string(jsonlite_builder builder, const void *utf8, size_t length);
     
     /** \brief Write integer value.
      *
