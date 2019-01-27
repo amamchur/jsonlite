@@ -92,8 +92,14 @@ if (BUILD_TESTS AND GTEST_FOUND)
             tests/builder.cpp
             tests/stream_null.cpp tests/stream_static.cpp tests/stream_stdout.cpp tests/stream_dynamic.cpp tests/stream_file.cpp)
     target_compile_definitions(jsonlite_tests PRIVATE TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests")
-    target_compile_options(jsonlite_tests PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
-    target_link_libraries(jsonlite_tests PRIVATE GTest::GTest GTest::Main --coverage)
+
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(jsonlite_tests PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+        target_link_libraries(jsonlite_tests PRIVATE GTest::GTest GTest::Main --coverage)
+    else()
+        target_compile_options(jsonlite_tests PRIVATE -O0 -g --coverage -fprofile-arcs -ftest-coverage)
+        target_link_libraries(jsonlite_tests PRIVATE GTest::GTest GTest::Main --coverage)
+    endif()
 
     add_test(NAME jsonlite_tests COMMAND jsonlite_tests)
 endif ()

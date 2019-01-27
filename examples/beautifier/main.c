@@ -14,6 +14,7 @@
 //  limitations under the License
 
 #include <jsonlite.h>
+#include <jsonlite_stream_stdout.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -84,7 +85,7 @@ int main(int argc, const char *argv[]) {
     uint8_t parser_memory[jsonlite_parser_estimate_size(MAX_JSON_DEPTH)];
     uint8_t builder_memory[jsonlite_builder_estimate_size(MAX_JSON_DEPTH)];
 
-    ctx.builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), jsonlite_stdout_stream());
+    ctx.builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), jsonlite_stream_stdout());
     jsonlite_builder_set_indentation(ctx.builder, 4);
 
     ctx.parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
