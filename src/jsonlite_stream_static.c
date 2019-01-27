@@ -36,7 +36,7 @@ static int jsonlite_static_mem_stream_write(jsonlite_stream stream, const void *
     jsonlite_static_mem_stream *mem_stream = (jsonlite_static_mem_stream *)((uint8_t *)stream + sizeof(jsonlite_stream_struct));
     size_t write_limit = mem_stream->size - mem_stream->written;
     if (mem_stream->enabled && write_limit >= length) {
-        memcpy(mem_stream->buffer + mem_stream->written, data, length); // LCOV_EXCL_LINE
+        memcpy(mem_stream->buffer + mem_stream->written, data, length);
         mem_stream->written += length;
     } else {
         mem_stream->enabled = 0;

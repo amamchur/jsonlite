@@ -29,10 +29,10 @@ static int jsonlite_mem_stream_write(jsonlite_stream stream, const void *data, s
     jsonlite_stream_dynamic *mem_stream = CAST_TO_MEM_STREAM(stream);
     size_t write_limit = mem_stream->limit - mem_stream->cursor;
     if (write_limit >= length) {
-        memcpy(mem_stream->cursor, data, length);       // LCOV_EXCL_LINE
+        memcpy(mem_stream->cursor, data, length);
         mem_stream->cursor += length;
     } else {
-        memcpy(mem_stream->cursor, data, write_limit);  // LCOV_EXCL_LINE
+        memcpy(mem_stream->cursor, data, write_limit);
         mem_stream->cursor += write_limit;
         
         size_t size = sizeof(jsonlite_stream_dynamic_block) + mem_stream->block_size;
@@ -103,10 +103,10 @@ size_t jsonlite_stream_dynamic_data(jsonlite_stream stream, uint8_t **data, size
         buff = *data;
         for (block = mem_stream->first; block != NULL; block = block->next) {
             if (block->next != NULL) {
-                memcpy(buff, block->data, mem_stream->block_size); // LCOV_EXCL_LINE
+                memcpy(buff, block->data, mem_stream->block_size);
                 buff += mem_stream->block_size;
             } else {
-                memcpy(buff, block->data, mem_stream->cursor - block->data); // LCOV_EXCL_LINE
+                memcpy(buff, block->data, mem_stream->cursor - block->data);
             }
         }
     }

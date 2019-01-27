@@ -3,79 +3,65 @@
 #include <gtest/gtest.h>
 #include <fstream>
 
-static void key_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
+static void token_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
     auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(token_key, t);
+    auto type = t->type & jsonlite_token_type_mask;
+    switch (type) {
+        case jsonlite_token_null:
+            cr->add_record(token_null, t);
+            break;
+        case jsonlite_token_true:
+            cr->add_record(token_true, t);
+            break;
+        case jsonlite_token_false:
+            cr->add_record(token_false, t);
+            break;
+        case jsonlite_token_key:
+            cr->add_record(token_key, t);
+            break;
+        case jsonlite_token_number:
+            cr->add_record(token_number, t);
+            break;
+        case jsonlite_token_string:
+            cr->add_record(token_string, t);
+            break;
+        default:
+            break;
+    }
 }
 
-static void number_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
+static void event_occurred(jsonlite_callback_context *ctx, jsonlite_event event) {
     auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(token_number, t);
-}
-
-static void string_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
-    auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(token_string, t);
-}
-
-static void object_begin_callback(jsonlite_callback_context *ctx) {
-    auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(begin_object);
-}
-
-static void object_end_callback(jsonlite_callback_context *ctx) {
-    auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(end_object);
-}
-
-static void array_begin_callback(jsonlite_callback_context *ctx) {
-    auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(begin_array);
-}
-
-static void array_end_callback(jsonlite_callback_context *ctx) {
-    auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(end_array);
-}
-
-static void true_callback(jsonlite_callback_context *ctx) {
-    auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(token_true);
-}
-
-static void false_callback(jsonlite_callback_context *ctx) {
-    auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(token_false);
-}
-
-static void null_callback(jsonlite_callback_context *ctx) {
-    auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(token_null);
-}
-
-static void finished_callback(jsonlite_callback_context *ctx) {
-    auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
-    cr->add_record(parse_finished);
+    switch (event) {
+        case jsonlite_event_none:
+            break;
+        case jsonlite_event_finished:
+            cr->add_record(parse_finished);
+            break;
+        case jsonlite_event_object_start:
+            cr->add_record(begin_object);
+            break;
+        case jsonlite_event_object_end:
+            cr->add_record(end_object);
+            break;
+        case jsonlite_event_array_start:
+            cr->add_record(begin_array);
+            break;
+        case jsonlite_event_array_end:
+            cr->add_record(end_array);
+            break;
+    }
 }
 
 callback_recorder::callback_recorder() {
-    cbs.parse_finished = finished_callback;
-    cbs.object_start = object_begin_callback;
-    cbs.object_end = object_end_callback;
-    cbs.array_start = array_begin_callback;
-    cbs.array_end = array_end_callback;
-    cbs.key_found = key_callback;
-    cbs.string_found = string_callback;
-    cbs.number_found = number_callback;
-    cbs.true_found = true_callback;
-    cbs.false_found = false_callback;
-    cbs.null_found = null_callback;
+    cbs.event_occurred = event_occurred;
+    cbs.token_found = token_callback;
     cbs.context.client_state = this;
 }
 
 void callback_recorder::add_record(record_type type, jsonlite_token *t) {
     if (type == token_string) {
-        if (t->type.string == jsonlite_string_ascii) {
+        if (t->type == jsonlite_string_ascii) {
             records.emplace_back(type, std::string(t->start, t->end));
             return;
         }

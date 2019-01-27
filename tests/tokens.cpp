@@ -62,30 +62,224 @@ TEST(tokens, should_convert_number_to_long_long) {
     jsonlite_token token;
     token.start = (uint8_t *)"1234567890";
     token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
 
     long long value = jsonlite_token_to_long_long(&token);
     EXPECT_EQ(value, 1234567890);
 
     token.start = (uint8_t *)"-1234567890";
     token.end = token.start + strlen((char *)token.start);
-    token.type.number = jsonlite_number_negative;
+    token.type = jsonlite_number_negative;
     value = jsonlite_token_to_long_long(&token);
     EXPECT_EQ(value, -1234567890);
+}
+
+TEST(tokens, should_convert_number_to_long_long_2) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"1";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long long value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, 1);
+
+    token.start = (uint8_t *)"-1";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, -1);
+}
+
+TEST(tokens, should_convert_number_to_long_long_3) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"12";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long long value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, 12);
+
+    token.start = (uint8_t *)"-12";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, -12);
+}
+
+TEST(tokens, should_convert_number_to_long_long_4) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"123";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long long value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, 123);
+
+    token.start = (uint8_t *)"-123";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, -123);
+}
+
+TEST(tokens, should_convert_number_to_long_long_5) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"1234";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long long value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, 1234);
+
+    token.start = (uint8_t *)"-1234";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, -1234);
+}
+
+TEST(tokens, should_convert_number_to_long_long_6) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"12345";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long long value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, 12345);
+
+    token.start = (uint8_t *)"-12345";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, -12345);
+}
+
+TEST(tokens, should_convert_number_to_long_long_7) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"123456";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long long value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, 123456);
+
+    token.start = (uint8_t *)"-123456";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, -123456);
+}
+
+TEST(tokens, should_convert_number_to_long_long_8) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"1234567";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long long value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, 1234567);
+
+    token.start = (uint8_t *)"-1234567";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, -1234567);
+}
+
+TEST(tokens, should_convert_number_to_long_long_9) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"12345678";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long long value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, 12345678);
+
+    token.start = (uint8_t *)"-12345678";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long_long(&token);
+    EXPECT_EQ(value, -12345678);
 }
 
 TEST(tokens, should_convert_number_to_long) {
     jsonlite_token token;
     token.start = (uint8_t *)"1234567890";
     token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
 
     long value = jsonlite_token_to_long(&token);
     EXPECT_EQ(value, 1234567890);
 
     token.start = (uint8_t *)"-1234567890";
     token.end = token.start + strlen((char *)token.start);
-    token.type.number = jsonlite_number_negative;
-    value = jsonlite_token_to_long_long(&token);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long(&token);
     EXPECT_EQ(value, -1234567890);
+}
+
+TEST(tokens, should_convert_number_to_long_1) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"1";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long value = jsonlite_token_to_long(&token);
+    EXPECT_EQ(value, 1);
+
+    token.start = (uint8_t *)"-1";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long(&token);
+    EXPECT_EQ(value, -1);
+}
+
+TEST(tokens, should_convert_number_to_long_2) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"12";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long value = jsonlite_token_to_long(&token);
+    EXPECT_EQ(value, 12);
+
+    token.start = (uint8_t *)"-12";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long(&token);
+    EXPECT_EQ(value, -12);
+}
+
+TEST(tokens, should_convert_number_to_long_3) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"123";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long value = jsonlite_token_to_long(&token);
+    EXPECT_EQ(value, 123);
+
+    token.start = (uint8_t *)"-123";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long(&token);
+    EXPECT_EQ(value, -123);
+}
+
+TEST(tokens, should_convert_number_to_long_4) {
+    jsonlite_token token;
+    token.start = (uint8_t *)"1234";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_digit_leading;
+
+    long value = jsonlite_token_to_long(&token);
+    EXPECT_EQ(value, 1234);
+
+    token.start = (uint8_t *)"-1234";
+    token.end = token.start + strlen((char *)token.start);
+    token.type = jsonlite_number_negative;
+    value = jsonlite_token_to_long(&token);
+    EXPECT_EQ(value, -1234);
 }
 
 TEST(tokens, should_convert_unicode_string) {
@@ -100,13 +294,13 @@ TEST(tokens, should_convert_unicode_string) {
 
     jsonlite_parser_callbacks cbs;
     jsonlite_parser_callbacks_init(&cbs);
-    cbs.string_found = &string_callback;
+    cbs.token_found = &string_callback;
     cbs.context.client_state = &sc;
     jsonlite_parser_set_callback(p, &cbs);
 
     jsonlite_result result = jsonlite_parser_tokenize(p, data.data(), data.size());
     EXPECT_EQ(result, jsonlite_result_ok);
-    EXPECT_EQ(sc.size(), 15);
+    EXPECT_EQ(sc.size(), 16);
     EXPECT_EQ(sc[0].utf8, "");
     EXPECT_EQ(sc[0].utf16, L"");
     EXPECT_EQ(sc[1].utf8, "Test");
@@ -129,22 +323,24 @@ TEST(tokens, should_convert_unicode_string) {
     EXPECT_EQ(sc[9].utf16, L"\xE9");
     EXPECT_EQ(sc[10].utf8, "\xF0\x9D\x84\x9E");
     EXPECT_EQ(sc[10].utf16, L"\xD834\xDD1E");
-    EXPECT_EQ(sc[11].utf8,
+    EXPECT_EQ(sc[11].utf8, "\xF0\x9D\x84\x9E");
+    EXPECT_EQ(sc[11].utf16, L"\xD834\xDD1E");
+    EXPECT_EQ(sc[12].utf8,
               "42\xC3\xA9"
               "42\xE2\x89\xA5"
               "42");
-    EXPECT_EQ(sc[11].utf16,
+    EXPECT_EQ(sc[12].utf16,
               L"42\xE9"
               L"42\x2265"
               L"42");
-    EXPECT_EQ(sc[12].utf8, "Begin Escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 End Escapes");
-    EXPECT_EQ(sc[12].utf16, L"Begin Escapes \"\\\n\r/\b\f\t\xD835\xDEE2 End Escapes");
-    EXPECT_EQ(sc[13].utf8, "begin escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 end escapes");
-    EXPECT_EQ(sc[13].utf16, L"begin escapes \"\\\n\r/\b\f\t\xD835\xDEE2 end escapes");
-    EXPECT_EQ(sc[14].utf8,
+    EXPECT_EQ(sc[13].utf8, "Begin Escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 End Escapes");
+    EXPECT_EQ(sc[13].utf16, L"Begin Escapes \"\\\n\r/\b\f\t\xD835\xDEE2 End Escapes");
+    EXPECT_EQ(sc[14].utf8, "begin escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 end escapes");
+    EXPECT_EQ(sc[14].utf16, L"begin escapes \"\\\n\r/\b\f\t\xD835\xDEE2 end escapes");
+    EXPECT_EQ(sc[15].utf8,
               "\v=>x\xED\x93\xAE\xE2\xA3\xABP1\xE0\xA0\xABLMMX'M\xE5\x88\xBC\xE5\x94\xB3\xEB\x90\xA4\xF0\x9D\x9B\xA2 \xD0\x9A \xE0\xAF\xB5 "
               "\xEE\x80\x80\xF0\x9D\x9B\xA2\n");
-    EXPECT_EQ(sc[14].utf16, L"\v=>x\xD4EE\x28EBP1\x82BLMMX'M\x523C\x5533\xB424\xD835\xDEE2 \x41A \xBF5 \xE000\xD835\xDEE2\n");
+    EXPECT_EQ(sc[15].utf16, L"\v=>x\xD4EE\x28EBP1\x82BLMMX'M\x523C\x5533\xB424\xD835\xDEE2 \x41A \xBF5 \xE000\xD835\xDEE2\n");
 }
 
 TEST(tokens, should_convert_base64) {
@@ -246,4 +442,95 @@ TEST(tokens, should_handle_base64_errors) {
     token.end = token.start + strlen((char *)token.start);
     size = jsonlite_token_base64_to_binary(&token, buffer);
     EXPECT_EQ(size, 0);
+}
+
+TEST(tokens, should_convert_to_utf16) {
+    jsonlite_token token;
+    uint16_t buffer[256];
+    uint16_t result1[] = {0x0457};
+    uint16_t result2[] = {0x266C};
+    uint16_t result3[] = {0xD835, 0xDEE2};
+    uint16_t result4[] = {0x0393};
+
+    token.start = (uint8_t *)R"json(ї)json";
+    token.end = token.start + strlen((char *)token.start);
+
+    auto length = jsonlite_token_to_uft16(&token, buffer);
+    EXPECT_EQ(length, 2);
+
+    int r = memcmp(buffer, result1, sizeof(result1));
+    EXPECT_EQ(r, 0);
+
+    token.start = (uint8_t *)R"json(♬)json";
+    token.end = token.start + strlen((char *)token.start);
+
+    length = jsonlite_token_to_uft16(&token, buffer);
+    EXPECT_EQ(length, 2);
+
+    r = memcmp(buffer, result2, sizeof(result2));
+    EXPECT_EQ(r, 0);
+
+    token.start = (uint8_t *)R"json(𝛢)json";
+    token.end = token.start + strlen((char *)token.start);
+
+    length = jsonlite_token_to_uft16(&token, buffer);
+    EXPECT_EQ(length, 4);
+
+    r = memcmp(buffer, result3, sizeof(result3));
+    EXPECT_EQ(r, 0);
+
+    token.start = (uint8_t *)R"json(Γ)json";
+    token.end = token.start + strlen((char *)token.start);
+
+    length = jsonlite_token_to_uft16(&token, buffer);
+    EXPECT_EQ(length, 2);
+
+    r = memcmp(buffer, result4, sizeof(result4));
+    EXPECT_EQ(r, 0);
+}
+
+TEST(tokens, should_convert_to_uft8) {
+    // https://www.compart.com/en/unicode/U+0393
+    jsonlite_token token;
+    uint8_t buffer[256];
+    uint8_t result1[] = {0xD1, 0x97};
+    uint8_t result2[] = {0xE2, 0x99, 0xAC};
+    uint8_t result3[] = {0xF0, 0x9D, 0x9B, 0xA2};
+    uint8_t result4[] = {0xCE, 0x93};
+
+    token.start = (uint8_t *)R"json(ї)json";
+    token.end = token.start + strlen((char *)token.start);
+
+    auto length = jsonlite_token_to_uft8(&token, buffer);
+    EXPECT_EQ(length, 2);
+
+    int r = memcmp(buffer, result1, sizeof(result1));
+    EXPECT_EQ(r, 0);
+
+    token.start = (uint8_t *)R"json(♬)json";
+    token.end = token.start + strlen((char *)token.start);
+
+    length = jsonlite_token_to_uft8(&token, buffer);
+    EXPECT_EQ(length, 3);
+
+    r = memcmp(buffer, result2, sizeof(result2));
+    EXPECT_EQ(r, 0);
+
+    token.start = (uint8_t *)R"json(𝛢)json";
+    token.end = token.start + strlen((char *)token.start);
+
+    length = jsonlite_token_to_uft8(&token, buffer);
+    EXPECT_EQ(length, 4);
+
+    r = memcmp(buffer, result3, sizeof(result3));
+    EXPECT_EQ(r, 0);
+
+    token.start = (uint8_t *)R"json(Γ)json";
+    token.end = token.start + strlen((char *)token.start);
+
+    length = jsonlite_token_to_uft8(&token, buffer);
+    EXPECT_EQ(length, 2);
+
+    r = memcmp(buffer, result4, sizeof(result4));
+    EXPECT_EQ(r, 0);
 }

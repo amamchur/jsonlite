@@ -15,6 +15,7 @@
 
 #include <assert.h>
 #include <jsonlite.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #define MAX_JSON_DEPTH 4
@@ -27,8 +28,11 @@ const char json[] = "[-13453453, 0, 1, 123, 45345, -94534555]";
 uint8_t parser_memory[jsonlite_parser_estimate_size(MAX_JSON_DEPTH)];
 
 static void number_callback(jsonlite_callback_context *ctx, jsonlite_token *token) {
-    long long *sum = (long long *)ctx->client_state;
-    *sum += jsonlite_token_to_long_long(token);
+    jsonlite_token_type type = token->type & jsonlite_token_type_mask;
+    if (type == jsonlite_token_number) {
+        long long *sum = (long long *)ctx->client_state;
+        *sum += jsonlite_token_to_long_long(token);
+    }
 }
 
 int main(int argc, const char *argv[]) {
@@ -42,7 +46,7 @@ int main(int argc, const char *argv[]) {
     // initializing other callbacks with default (dummy) callbacks
     jsonlite_parser_callbacks cbs;
     jsonlite_parser_callbacks_init(&cbs);
-    cbs.number_found = &number_callback;
+    cbs.token_found = &number_callback;
 
     long long total_sum = 0;
     cbs.context.client_state = &total_sum;

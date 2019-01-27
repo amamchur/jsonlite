@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-static void null_callback(jsonlite_callback_context *ctx) {
+static void null_callback(jsonlite_callback_context *ctx, jsonlite_event event) {
 }
 
 static void suspend_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
@@ -38,10 +38,8 @@ TEST(parser, should_suspend_resume_parsing) {
     EXPECT_EQ(result, jsonlite_result_not_allowed);
 
     callback_recorder cr;
-    cr.cbs.string_found = &suspend_callback;
-    cr.cbs.number_found = &suspend_callback;
-    cr.cbs.key_found = &suspend_callback;
-    cr.cbs.parse_finished = &null_callback;
+    cr.cbs.token_found = &suspend_callback;
+    cr.cbs.event_occurred = &null_callback;
     jsonlite_parser_set_callback(p, &cr.cbs);
 
     result = jsonlite_parser_tokenize(p, buffer, count);
@@ -50,5 +48,5 @@ TEST(parser, should_suspend_resume_parsing) {
     }
 
     EXPECT_EQ(result, jsonlite_result_ok);
-    EXPECT_EQ(cr.records.size(), 62);
+    EXPECT_EQ(cr.records.size(), 60);
 }

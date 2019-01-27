@@ -15,6 +15,7 @@
 
 #include <assert.h>
 #include <jsonlite.h>
+#include <stdio.h>
 
 #define MAX_JSON_DEPTH 4
 

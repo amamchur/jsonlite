@@ -246,7 +246,7 @@ TEST(parser, should_parse_unicode_string) {
 
     jsonlite_result result = jsonlite_parser_tokenize(p, buffer, count);
     EXPECT_EQ(result, jsonlite_result_ok);
-    EXPECT_EQ(cr.records.size(), 18);
+    EXPECT_EQ(cr.records.size(), 19);
 
     cr.expect_finished();
     cr.records[0].expect_eq(begin_array);
@@ -261,12 +261,13 @@ TEST(parser, should_parse_unicode_string) {
     cr.records[9].expect_eq(token_string, "\xF0\x9D\x9B\xA2");
     cr.records[10].expect_eq(token_string, "\xC3\xA9");
     cr.records[11].expect_eq(token_string, "\xF0\x9D\x84\x9E");
-    cr.records[12].expect_eq(token_string, "42\xC3\xA9""42\xE2\x89\xA5""42");
-    cr.records[13].expect_eq(token_string, "Begin Escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 End Escapes");
-    cr.records[14].expect_eq(token_string, "begin escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 end escapes");
-    cr.records[15].expect_eq(token_string, "\v=>x\xED\x93\xAE\xE2\xA3\xABP1\xE0\xA0\xABLMMX'M\xE5\x88\xBC\xE5\x94\xB3\xEB\x90\xA4\xF0\x9D\x9B\xA2 \xD0\x9A \xE0\xAF\xB5 \xEE\x80\x80\xF0\x9D\x9B\xA2\n");
-    cr.records[16].expect_eq(end_array);
-    cr.records[17].expect_eq(parse_finished);
+    cr.records[12].expect_eq(token_string, "\xF0\x9D\x84\x9E");
+    cr.records[13].expect_eq(token_string, "42\xC3\xA9""42\xE2\x89\xA5""42");
+    cr.records[14].expect_eq(token_string, "Begin Escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 End Escapes");
+    cr.records[15].expect_eq(token_string, "begin escapes \"\\\n\r/\b\f\t\xF0\x9D\x9B\xA2 end escapes");
+    cr.records[16].expect_eq(token_string, "\v=>x\xED\x93\xAE\xE2\xA3\xABP1\xE0\xA0\xABLMMX'M\xE5\x88\xBC\xE5\x94\xB3\xEB\x90\xA4\xF0\x9D\x9B\xA2 \xD0\x9A \xE0\xAF\xB5 \xEE\x80\x80\xF0\x9D\x9B\xA2\n");
+    cr.records[17].expect_eq(end_array);
+    cr.records[18].expect_eq(parse_finished);
 }
 
 TEST(parser, should_parse_nested_objects) {

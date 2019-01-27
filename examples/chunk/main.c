@@ -15,6 +15,7 @@
 
 #include <assert.h>
 #include <jsonlite.h>
+#include <stdio.h>
 #include <string.h>
 
 #define MAX_CHUNK_SIZE 64
@@ -73,9 +74,7 @@ int main(int argc, const char *argv[]) {
 
     jsonlite_parser_callbacks cbs;
     jsonlite_parser_callbacks_init(&cbs);
-    cbs.number_found = &measure_token_size_callback;
-    cbs.string_found = &measure_token_size_callback;
-    cbs.key_found = &measure_token_size_callback;
+    cbs.token_found = &measure_token_size_callback;
     jsonlite_parser_set_callback(parser, &cbs);
 
     // C-string literal always contains '\0' (null char) in the end

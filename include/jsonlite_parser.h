@@ -26,7 +26,16 @@ extern "C" {
     
     struct jsonlite_parser_struct;
     typedef struct jsonlite_parser_struct* jsonlite_parser;
-    
+
+    typedef enum {
+        jsonlite_event_none,
+        jsonlite_event_finished,
+        jsonlite_event_object_start,
+        jsonlite_event_object_end,
+        jsonlite_event_array_start,
+        jsonlite_event_array_end
+    } jsonlite_event;
+
     /** @brief Contains callback information.
      */
     typedef struct {
@@ -43,62 +52,25 @@ extern "C" {
     
     /** @brief Type of value callback function.
      */
-    typedef void (*jsonlite_value_callback)(jsonlite_callback_context *, jsonlite_token *);
+    typedef void (*jsonlite_token_callback)(jsonlite_callback_context *, jsonlite_token *);
     
     /** @brief Type of state callback function.
      */
-    typedef void (*jsonlite_state_callback)(jsonlite_callback_context *);
+    typedef void (*jsonlite_event_callback)(jsonlite_callback_context *, jsonlite_event event);
     
     /** @brief Contains references to client callback functions.
      * 
      * You can use the global jsonlite_default_callbacks constant to initialize default values.
      */
     typedef struct {
-        /** @brief Called when parser finished tokenization.
-         * You can retrieve result of parsing using jsonlite_parser_get_result.
+        /** @brief
+        */
+        jsonlite_event_callback event_occurred;
+
+        /** @brief Called when parser found JSON token.
          */
-        jsonlite_state_callback parse_finished;
-        
-        /** @brief Called when parser found object start.
-         */
-        jsonlite_state_callback object_start;
-        
-        /** @brief Called when parser found object end.
-         */
-        jsonlite_state_callback object_end;
-        
-        /** @brief Called when parser found array start.
-         */
-        jsonlite_state_callback array_start;
-        
-        /** @brief Called when parser found array end.
-         */
-        jsonlite_state_callback array_end;
-        
-        /** @brief Called when parser found \a true token.
-         */
-        jsonlite_state_callback true_found;
-        
-        /** @brief Called when parser found \a false token.
-         */
-        jsonlite_state_callback false_found;
-        
-        /** @brief Called when parser found \a null token.
-         */
-        jsonlite_state_callback null_found;
-        
-        /** @brief Called when parser found key token.
-         */
-        jsonlite_value_callback key_found;
-        
-        /** @brief Called when parser found string token.
-         */
-        jsonlite_value_callback string_found;
-        
-        /** @brief Called when parser found number token.
-         */
-        jsonlite_value_callback number_found;
-        
+        jsonlite_token_callback token_found;
+
         /** @brief Callbacks' context, will be past as first parameter of callback function.
          */
         jsonlite_callback_context context;

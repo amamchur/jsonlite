@@ -61,6 +61,9 @@ TEST(stream_static, should_stop_write_data_if_out_of_memory) {
     result = jsonlite_stream_write(stream, data, sizeof(data));
     EXPECT_EQ(result, 0);
 
+    result = jsonlite_stream_write(stream, data, sizeof(data));
+    EXPECT_EQ(result, 0);
+
     size  = jsonlite_stream_static_written_bytes(stream);
     EXPECT_EQ(size, 8);
 }

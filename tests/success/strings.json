@@ -10,6 +10,7 @@
     "\uD835\uDEE2",
     "\u00E9",
     "\ud834\udd1e",
+    "\ud834\udd1E",
     "42\u00e942\u226542",
     "Begin Escapes \"\\\n\r\/\b\f\t\uD835\uDEE2 End Escapes",
     "begin escapes \"\\\n\r\/\b\f\t\ud835\udee2 end escapes",

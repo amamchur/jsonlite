@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int jsonlite_heap_buffer_set_mem(jsonlite_buffer buffer, const void *data, size_t length) {
+static int jsonlite_buffer_dynamic_set(jsonlite_buffer buffer, const void *data, size_t length) {
     if (length > buffer->capacity) {
         free(buffer->mem);
         buffer->mem = malloc(length);
@@ -32,7 +32,7 @@ static int jsonlite_heap_buffer_set_mem(jsonlite_buffer buffer, const void *data
     return 0;
 }
 
-static int jsonlite_heap_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t length) {
+static int jsonlite_buffer_dynamic_append(jsonlite_buffer buffer, const void *data, size_t length) {
     size_t total_size = buffer->size + length;
     if (total_size > buffer->capacity) {
         uint8_t *b = (uint8_t *)malloc(total_size);
@@ -48,7 +48,7 @@ static int jsonlite_heap_buffer_append_mem(jsonlite_buffer buffer, const void *d
     return 0;
 }
 
-void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer) {
+void jsonlite_buffer_dynamic_cleanup(jsonlite_buffer buffer) {
     if (buffer != NULL) {
         free(buffer->mem);
         buffer->mem = NULL;
@@ -57,10 +57,10 @@ void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer) {
     }
 }
 
-jsonlite_buffer jsonlite_heap_buffer_init(void *mem) {
+jsonlite_buffer jsonlite_buffer_dynamic_init(void *mem) {
     struct jsonlite_buffer_struct *buffer = (struct jsonlite_buffer_struct *)mem;
-    buffer->set_mem = &jsonlite_heap_buffer_set_mem;
-    buffer->append_mem = &jsonlite_heap_buffer_append_mem;
+    buffer->set_mem = &jsonlite_buffer_dynamic_set;
+    buffer->append_mem = &jsonlite_buffer_dynamic_append;
     buffer->mem = NULL;
     buffer->size = 0;
     buffer->capacity = 0;

@@ -27,9 +27,9 @@
 extern "C" {
 #endif
 
-    #define jsonlite_heap_buffer_size() (sizeof(jsonlite_buffer_struct))
-    jsonlite_buffer jsonlite_heap_buffer_init(void *mem);
-    void jsonlite_heap_buffer_cleanup(jsonlite_buffer buffer);
+    #define jsonlite_buffer_dynamic_size() (sizeof(jsonlite_buffer_struct))
+    jsonlite_buffer jsonlite_buffer_dynamic_init(void *mem);
+    void jsonlite_buffer_dynamic_cleanup(jsonlite_buffer buffer);
 
 #ifdef __cplusplus
 }

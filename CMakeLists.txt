@@ -28,7 +28,7 @@ endif ()
 if (BUILD_SHARED_LIBS)
     set(JSONLITE_LIB_TYPE SHARED)
 elseif ()
-    set(JSONLITE_LIB_TYPE STATIC src/jsonlite_stream_static.c)
+    set(JSONLITE_LIB_TYPE STATIC src/jsonlite_stream_static.c include/jsonlite_utf.h)
 endif ()
 
 include_directories(include)
@@ -64,6 +64,9 @@ if (BUILD_EXAMPLES)
 endif ()
 
 if (BUILD_TESTS AND GTEST_FOUND)
+    add_executable(collision tests/collision.cpp)
+    target_link_libraries(collision jsonlite pthread)
+
     enable_testing()
     add_executable(jsonlite_tests
             src/jsonlite.c
@@ -90,7 +93,17 @@ if (BUILD_TESTS AND GTEST_FOUND)
             tests/tokens.cpp
             tests/version.cpp
             tests/builder.cpp
-            tests/stream_null.cpp tests/stream_static.cpp tests/stream_stdout.cpp tests/stream_dynamic.cpp tests/stream_file.cpp)
+            tests/builder_error_handling.cpp
+            tests/stream_null.cpp
+            tests/stream_static.cpp
+            tests/stream_stdout.cpp
+            tests/stream_dynamic.cpp
+            tests/stream_file.cpp
+            tests/token_pool.cpp
+            tests/parsing_state.cpp
+            tests/parsing_depth.cpp
+            tests/builder_depth.cpp
+            )
     target_compile_definitions(jsonlite_tests PRIVATE TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests")
 
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")

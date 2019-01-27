@@ -20,11 +20,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index);
-static uint32_t jsonlite_hash(const uint8_t *data, size_t len);
+static void jsonlite_token_pool_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index);
 static jsonlite_token_bucket terminate_bucket = {NULL, NULL, 0, 0, NULL};
 
-size_t jsonlite_token_pool_init_memory(void *mem, size_t size, jsonlite_token_pool* pools) {
+size_t jsonlite_token_pool_batch_init(void *mem, size_t size, jsonlite_token_pool *pools) {
     size_t i, j;
     jsonlite_token_pool p = (jsonlite_token_pool)mem;
     size_t count = size / sizeof(jsonlite_token_pool_struct);
@@ -32,13 +31,13 @@ size_t jsonlite_token_pool_init_memory(void *mem, size_t size, jsonlite_token_po
         *pools = p;
         p->content_pool = NULL;
         p->content_pool_size = 0;
-        
+
         for (j = 0; j < JSONLITE_TOKEN_POOL_FRONT; j++) {
             p->blocks[j].buckets = &terminate_bucket;
             p->blocks[j].capacity = 0;
         }
     }
-    
+
     return count;
 }
 
@@ -53,31 +52,31 @@ void jsonlite_token_pool_copy_tokens(jsonlite_token_pool pool) {
             bucket++;
         }
     }
-    
+
     if (size == pool->content_pool_size) {
         return;
     }
-    
-	uint8_t *buffer = (uint8_t *)malloc(size);
+
+    uint8_t *buffer = (uint8_t *)malloc(size);
     uint8_t *p = buffer;
     for (i = 0; i < JSONLITE_TOKEN_POOL_FRONT; i++) {
         bucket = pool->blocks[i].buckets;
         while (bucket->start != NULL) {
             size_t length = bucket->end - bucket->start;
-            memcpy(p, bucket->start, length); // LCOV_EXCL_LINE
+            memcpy(p, bucket->start, length);
             bucket->start = p;
             bucket->end = p + length;
             p += length;
             bucket++;
         }
     }
-    
+
     free(pool->content_pool);
     pool->content_pool = buffer;
     pool->content_pool_size = size;
 }
 
-void jsonlite_token_pool_cleanup(jsonlite_token_pool* pools, size_t count, jsonlite_token_pool_release_value_fn release) {
+void jsonlite_token_pool_batch_cleanup(jsonlite_token_pool *pools, size_t count, jsonlite_token_pool_release_value_fn release) {
     size_t i, j;
     jsonlite_token_pool pool = *pools;
     for (i = 0; i < count; i++, pool++) {
@@ -86,7 +85,7 @@ void jsonlite_token_pool_cleanup(jsonlite_token_pool* pools, size_t count, jsonl
             if (bucket->start == NULL) {
                 continue;
             }
-            
+
             if (release != NULL) {
                 for (; bucket->start != NULL; bucket++) {
                     release((void *)bucket->value);
@@ -97,28 +96,28 @@ void jsonlite_token_pool_cleanup(jsonlite_token_pool* pools, size_t count, jsonl
             pool->blocks[j].buckets = &terminate_bucket;
             pool->blocks[j].capacity = 0;
         }
-        
+
         free(pool->content_pool);
         pool->content_pool = NULL;
         pool->content_pool_size = 0;
     }
 }
 
-jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, jsonlite_token *token) {
+jsonlite_token_bucket *jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, jsonlite_token *token) {
     ptrdiff_t length = token->end - token->start;
-    ptrdiff_t hash = jsonlite_hash(token->start, (size_t)length);
+    uint32_t hash = jsonlite_hash(token->start, (size_t)length);
     ptrdiff_t index = hash & JSONLITE_TOKEN_POOL_FRONT_MASK;
     size_t count = 0;
     jsonlite_token_bucket *bucket = pool->blocks[index].buckets;
     for (; bucket->start != NULL; count++, bucket++) {
-        if (bucket->hash != hash) {
+        if (bucket->token_hash != hash) {
             continue;
         }
-        
+
         if (length != bucket->end - bucket->start) {
             continue;
         }
-        
+
         if (memcmp(token->start, bucket->start, (size_t)length) == 0) {
             return bucket;
         }
@@ -126,11 +125,11 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
 
     size_t capacity = pool->blocks[index].capacity;
     if (count + 1 >= capacity) {
-        jsonlite_extend_capacity(pool, index);
+        jsonlite_token_pool_extend_capacity(pool, index);
     }
-    
+
     bucket = pool->blocks[index].buckets + count;
-    bucket->hash = hash;
+    bucket->token_hash = hash;
     bucket->start = token->start;
     bucket->end = token->end;
     bucket->value = NULL;
@@ -138,21 +137,21 @@ jsonlite_token_bucket* jsonlite_token_pool_get_bucket(jsonlite_token_pool pool, 
     return bucket;
 }
 
-static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index) {
+static void jsonlite_token_pool_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index) {
     size_t capacity = pool->blocks[index].capacity;
     if (capacity == 0) {
         capacity = 0x10;
     }
-    
+
     size_t size = capacity * sizeof(jsonlite_token_bucket);
     jsonlite_token_bucket *buckets = pool->blocks[index].buckets;
-	jsonlite_token_bucket *extended = (jsonlite_token_bucket *)malloc(2 * size);
-    
+    jsonlite_token_bucket *extended = (jsonlite_token_bucket *)malloc(2 * size);
+
     if (buckets->start != NULL) {
-        memcpy(extended, buckets, size); // LCOV_EXCL_LINE
+        memcpy(extended, buckets, size);
         free(buckets);
     }
-    
+
     pool->blocks[index].buckets = extended;
     pool->blocks[index].capacity = 2 * capacity;
 }
@@ -175,59 +174,58 @@ static void jsonlite_extend_capacity(jsonlite_token_pool pool, ptrdiff_t index) 
 // 2. It will not produce the same results on little-endian and big-endian
 //    machines.
 
-static uint32_t MurmurHash2(const void * key, size_t len)
-{
+static uint32_t MurmurHash2(const void *key, size_t len) {
     // 'm' and 'r' are mixing constants generated offline.
     // They're not really 'magic', they just happen to work well.
-    
+
     const uint32_t m = 0x5bd1e995;
     const int r = 24;
-    
-    // Initialize the hash to a 'random' value
-    
+
+    // Initialize the token_hash to a 'random' value
+
     uint32_t h = (uint32_t)len;
-    
-    // Mix 4 bytes at a time into the hash
-    
-    const unsigned char * data = (const unsigned char *)key;
-    
-    while(len >= 4)
-    {
-        uint32_t k = *(uint32_t*)data;
-        
+
+    // Mix 4 bytes at a time into the token_hash
+
+    const unsigned char *data = (const unsigned char *)key;
+
+    while (len >= 4) {
+        uint32_t k = *(uint32_t *)data;
+
         k *= m;
         k ^= k >> r;
         k *= m;
-        
+
         h *= m;
         h ^= k;
-        
+
         data += 4;
         len -= 4;
     }
-    
+
     // Handle the last few bytes of the input array
-    
-    switch(len)
-    {
-        case 3: h ^= data[2] << 16;
-        case 2: h ^= data[1] << 8;
-        case 1: h ^= data[0];
-            h *= m;
+
+    switch (len) {
+    case 3:
+        h ^= data[2] << 16;
+    case 2:
+        h ^= data[1] << 8;
+    case 1:
+        h ^= data[0];
+        h *= m;
     };
-    
-    // Do a few final mixes of the hash to ensure the last few
+
+    // Do a few final mixes of the token_hash to ensure the last few
     // bytes are well-incorporated.
-    
+
     h ^= h >> 13;
     h *= m;
     h ^= h >> 15;
-    
+
     return h;
 }
 
 //-----------------------------------------------------------------------------
-
-static uint32_t jsonlite_hash(const uint8_t *data, size_t len) {
+uint32_t jsonlite_hash(const void *data, size_t len) {
     return MurmurHash2(data, len);
 }
