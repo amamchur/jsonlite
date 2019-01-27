@@ -33,8 +33,6 @@ static void token_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
 static void event_occurred(jsonlite_callback_context *ctx, jsonlite_event event) {
     auto *cr = reinterpret_cast<callback_recorder *>(ctx->client_state);
     switch (event) {
-        case jsonlite_event_none:
-            break;
         case jsonlite_event_finished:
             cr->add_record(parse_finished);
             break;
@@ -110,11 +108,8 @@ std::vector<char> read_file_content(const std::string &rel_path) {
     std::string file = path + rel_path;
     std::ifstream stream(file, std::ios::in | std::ios::binary);
     std::vector<char> result;
-    if (!stream) {
-        return result;
-    }
-
     std::ifstream::char_type buffer[4096];
+
     do {
         const auto &count = stream.read(buffer, sizeof(buffer)).gcount();
         if (count > 0) {

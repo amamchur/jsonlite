@@ -32,12 +32,12 @@ static uint8_t jsonlite_hex_char_to_uint8(uint8_t c) {
     return (uint8_t)(c - '0');
 }
 
-static int unicode_char_to_utf16(uint32_t ch, uint16_t *utf16) {
-    uint32_t v = ch - 0x10000;
+static int unicode_char_to_utf16(uint32_t utf32, uint16_t *utf16) {
+    uint32_t v = utf32 - 0x10000;
     uint32_t vh = v >> 10;
     uint32_t vl = v & 0x3FF;
-	if (ch <= 0xFFFF) {
-        *utf16 = (uint16_t)ch;
+	if (utf32 <= 0xFFFF) {
+        *utf16 = (uint16_t)utf32;
         return 1;
     }
 
@@ -247,15 +247,10 @@ done:
 long jsonlite_token_to_long(jsonlite_token *token) {
     long res = 0;
     int negative = (token->type & jsonlite_number_negative) == jsonlite_number_negative;
-    ptrdiff_t length = token->end - token->start - negative;
     const uint8_t *c = token->start + negative;
-    switch (length & 3) {
-        for (; length > 0; length -= 4) {
-            default : res = res * 10 + *c++ - '0';
-            case 3: res = res * 10 + *c++ - '0';
-            case 2: res = res * 10 + *c++ - '0';
-            case 1: res = res * 10 + *c++ - '0';
-        }
+    const uint8_t *e = token->end;
+    while (c != e) {
+        res = res * 10 + (*c++ - '0');
     }
 
     return negative ? -res : res;
@@ -264,19 +259,10 @@ long jsonlite_token_to_long(jsonlite_token *token) {
 long long jsonlite_token_to_long_long(jsonlite_token *token) {
     long long res = 0;
     int negative = (token->type & jsonlite_number_negative) == jsonlite_number_negative;
-    ptrdiff_t length = token->end - token->start - negative;
     const uint8_t *c = token->start + negative;
-    switch (length & 7) {
-        for (; length > 0; length -= 8) {
-            default: res = res * 10 + *c++ - '0';
-            case 7: res = res * 10 + *c++ - '0';
-            case 6: res = res * 10 + *c++ - '0';
-            case 5: res = res * 10 + *c++ - '0';
-            case 4: res = res * 10 + *c++ - '0';
-            case 3: res = res * 10 + *c++ - '0';
-            case 2: res = res * 10 + *c++ - '0';
-            case 1: res = res * 10 + *c++ - '0';
-        }
+    const uint8_t *e = token->end;
+    while (c != e) {
+        res = res * 10 + (*c++ - '0');
     }
 
     return negative ? -res : res;
