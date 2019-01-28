@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <jsonlite.h>
+#include <jsonlite_buffer_static.h>
 #include <stdint.h>
 #include <string>
 #include <vector>
@@ -83,7 +84,6 @@ TEST(parsing_chunk, should_handle_rest_out_of_memory) {
     EXPECT_EQ(result, jsonlite_result_out_of_memory);
 }
 
-
 TEST(parsing_chunk, should_handle_chunk_out_of_memory) {
     uint8_t buffer_memory[jsonlite_buffer_static_size() + 5];
     jsonlite_buffer buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));
@@ -133,4 +133,3 @@ TEST(parsing_chunk, should_parser_init_params) {
     p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), nullptr);
     EXPECT_EQ(p, nullptr);
 }
-

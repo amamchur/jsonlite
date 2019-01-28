@@ -15,6 +15,7 @@
 
 #include <assert.h>
 #include <jsonlite.h>
+#include <jsonlite_parser.h>
 #include <stdio.h>
 #include <stdlib.h>
 

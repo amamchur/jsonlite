@@ -14,6 +14,8 @@
 //  limitations under the License
 
 #include <jsonlite.h>
+#include <jsonlite_builder.h>
+#include <jsonlite_parser.h>
 #include <jsonlite_stream_stdout.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,22 +30,22 @@ typedef struct context {
 static void event_occurred(jsonlite_callback_context *ctx, jsonlite_event event) {
     context *c = (context *)ctx->client_state;
     switch (event) {
-        case jsonlite_event_finished:
-            break;
-        case jsonlite_event_object_start:
-            jsonlite_builder_object_begin(c->builder);
-            break;
-        case jsonlite_event_object_end:
-            jsonlite_builder_object_end(c->builder);
-            break;
-        case jsonlite_event_array_start:
-            jsonlite_builder_array_begin(c->builder);
-            break;
-        case jsonlite_event_array_end:
-            jsonlite_builder_array_end(c->builder);
-            break;
-        default:
-            break;
+    case jsonlite_event_finished:
+        break;
+    case jsonlite_event_object_start:
+        jsonlite_builder_object_begin(c->builder);
+        break;
+    case jsonlite_event_object_end:
+        jsonlite_builder_object_end(c->builder);
+        break;
+    case jsonlite_event_array_start:
+        jsonlite_builder_array_begin(c->builder);
+        break;
+    case jsonlite_event_array_end:
+        jsonlite_builder_array_end(c->builder);
+        break;
+    default:
+        break;
     }
 }
 
@@ -51,26 +53,26 @@ static void token_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
     context *c = (context *)ctx->client_state;
     jsonlite_token_type type = t->type & jsonlite_token_type_mask;
     switch (type) {
-        case jsonlite_token_null:
-            jsonlite_builder_null(c->builder);
-            break;
-        case jsonlite_token_true:
-            jsonlite_builder_true(c->builder);
-            break;
-        case jsonlite_token_false:
-            jsonlite_builder_false(c->builder);
-            break;
-        case jsonlite_token_key:
-            jsonlite_builder_raw_key(c->builder, t->start, t->end - t->start);
-            break;
-        case jsonlite_token_number:
-            jsonlite_builder_raw_value(c->builder, t->start, t->end - t->start);
-            break;
-        case jsonlite_token_string:
-            jsonlite_builder_raw_string(c->builder, t->start, t->end - t->start);
-            break;
-        default:
-            break;
+    case jsonlite_token_null:
+        jsonlite_builder_null(c->builder);
+        break;
+    case jsonlite_token_true:
+        jsonlite_builder_true(c->builder);
+        break;
+    case jsonlite_token_false:
+        jsonlite_builder_false(c->builder);
+        break;
+    case jsonlite_token_key:
+        jsonlite_builder_raw_key(c->builder, t->start, t->end - t->start);
+        break;
+    case jsonlite_token_number:
+        jsonlite_builder_raw_value(c->builder, t->start, t->end - t->start);
+        break;
+    case jsonlite_token_string:
+        jsonlite_builder_raw_string(c->builder, t->start, t->end - t->start);
+        break;
+    default:
+        break;
     }
 }
 
@@ -84,9 +86,7 @@ int main(int argc, const char *argv[]) {
     jsonlite_builder_set_indentation(ctx.builder, 4);
 
     ctx.parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
-    jsonlite_parser_callbacks cbs = {.event_occurred = event_occurred,
-                                     .token_found = token_callback,
-                                     .context = {.client_state = &ctx}};
+    jsonlite_parser_callbacks cbs = {.event_occurred = event_occurred, .token_found = token_callback, .context = {.client_state = &ctx}};
     jsonlite_parser_set_callback(ctx.parser, &cbs);
     jsonlite_parser_tokenize(ctx.parser, json, sizeof(json));
     printf("\n");

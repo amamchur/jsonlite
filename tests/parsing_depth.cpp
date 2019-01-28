@@ -4,12 +4,13 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <jsonlite.h>
+#include <jsonlite_buffer_static.h>
 #include <stdint.h>
 #include <string>
 #include <vector>
 
 TEST(parsing_depth, should_handle_depth_limit_for_array) {
-    char json[] =  R"json([[[[[[[[]]]]]]]])json";
+    char json[] = R"json([[[[[[[[]]]]]]]])json";
     uint8_t parser_memory[jsonlite_parser_estimate_size(4)];
     uint8_t buffer_memory[1024];
     jsonlite_buffer buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));
@@ -19,7 +20,7 @@ TEST(parsing_depth, should_handle_depth_limit_for_array) {
 }
 
 TEST(parsing_depth, should_handle_depth_limit_for_object) {
-    char json[] =  R"json({"k":{"k":{"k":{"k":{"k":{"k":{"k":{"k":{)json";
+    char json[] = R"json({"k":{"k":{"k":{"k":{"k":{"k":{"k":{"k":{)json";
     uint8_t parser_memory[jsonlite_parser_estimate_size(4)];
     uint8_t buffer_memory[1024];
     jsonlite_buffer buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));

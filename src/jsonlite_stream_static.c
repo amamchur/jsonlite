@@ -14,8 +14,7 @@
 //  limitations under the License
 
 #ifndef JSONLITE_AMALGAMATED
-#include <jsonlite_stream.h>
-#include <jsonlite_stream_static.h>
+#include "jsonlite_stream_static.h"
 #endif
 
 #include <stdlib.h>

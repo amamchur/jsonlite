@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <jsonlite.h>
+#include <jsonlite_buffer_dynamic.h>
 #include <stdint.h>
 #include <string>
 #include <vector>
@@ -75,9 +76,9 @@ TEST(dynamic_buffer, should_not_reuse_memory) {
     jsonlite_parser_set_callback(p, &cr.cbs);
 
     char chunk1[] = R"json({"k)json";
-    char chunk2[] =  R"json(-long-key-rest":nul)json";
-    char chunk3[] =  R"json(l,)json";
-    char chunk4[] =  R"json("q":[]})json";
+    char chunk2[] = R"json(-long-key-rest":nul)json";
+    char chunk3[] = R"json(l,)json";
+    char chunk4[] = R"json("q":[]})json";
     jsonlite_result result = jsonlite_parser_tokenize(p, chunk1, sizeof(chunk1) - 1);
     EXPECT_EQ(result, jsonlite_result_end_of_stream);
     EXPECT_EQ(jsonlite_buffer_size(buffer), 2);

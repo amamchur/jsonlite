@@ -2,9 +2,13 @@
 	"project": "jsonlite.h",
 	"target": "../amalgamated/jsonlite/jsonlite.h",
 	"sources": [
-		"../jsonlite/include/jsonlite.h"
+		"../include/jsonlite.h",
+		"../include/jsonlite_parser.h",
+		"../include/jsonlite_builder.h",
+		"../include/jsonlite_stream.h",
+		"../include/jsonlite_token.h"
 	],
 	"include_paths": [
-		"../jsonlite/include"
+		"../include"
 	]
 }

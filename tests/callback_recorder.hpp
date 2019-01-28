@@ -2,6 +2,8 @@
 #define JSONLITE_CALLBACK_RECORDER_HPP
 
 #include <jsonlite.h>
+#include <jsonlite_token.h>
+#include <jsonlite_parser.h>
 #include <string>
 #include <vector>
 

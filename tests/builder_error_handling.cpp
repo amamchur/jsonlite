@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <jsonlite.h>
+#include <jsonlite_builder.h>
 #include <jsonlite_stream_static.h>
 #include <stdint.h>
 #include <string>
@@ -106,7 +107,6 @@ TEST(builder_error_handling, should_check_double) {
     EXPECT_EQ(result, jsonlite_result_not_allowed);
 }
 
-
 TEST(builder_error_handling, should_check_int) {
     uint8_t builder_memory[jsonlite_builder_estimate_size(16)];
     jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), jsonlite_stream_null());
@@ -125,7 +125,6 @@ TEST(builder_error_handling, should_check_true) {
     EXPECT_EQ(result, jsonlite_result_not_allowed);
 }
 
-
 TEST(builder_error_handling, should_check_false) {
     uint8_t builder_memory[jsonlite_builder_estimate_size(16)];
     jsonlite_builder builder = jsonlite_builder_init(builder_memory, sizeof(builder_memory), jsonlite_stream_null());
@@ -134,7 +133,6 @@ TEST(builder_error_handling, should_check_false) {
     jsonlite_result result = jsonlite_builder_false(builder);
     EXPECT_EQ(result, jsonlite_result_not_allowed);
 }
-
 
 TEST(builder_error_handling, should_check_null) {
     uint8_t builder_memory[jsonlite_builder_estimate_size(16)];

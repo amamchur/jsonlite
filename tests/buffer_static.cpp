@@ -4,10 +4,10 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <jsonlite.h>
+#include <jsonlite_buffer_static.h>
 #include <stdint.h>
 #include <string>
 #include <vector>
-
 
 TEST(static_buffer, should_not_be_created_if_not_enough_memory) {
     uint8_t mem[jsonlite_buffer_static_size() + 64];

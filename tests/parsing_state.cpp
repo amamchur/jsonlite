@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <jsonlite.h>
+#include <jsonlite_buffer_static.h>
 #include <stdint.h>
 #include <string>
 
@@ -15,12 +16,12 @@ TEST(parsing_state, skip_whitespaces) {
     jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
     jsonlite_result result = jsonlite_parser_tokenize(p, simple_object, sizeof(simple_object));
     EXPECT_EQ(result, jsonlite_result_ok);
-    EXPECT_EQ((void *) p->cursor, (void *) &simple_object[5]);
+    EXPECT_EQ((void *)p->cursor, (void *)&simple_object[5]);
 
     p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
     result = jsonlite_parser_tokenize(p, simple_object_2, sizeof(simple_object_2));
     EXPECT_EQ(result, jsonlite_result_ok);
-    EXPECT_EQ((void *) p->cursor, (void *) &simple_object_2[8]);
+    EXPECT_EQ((void *)p->cursor, (void *)&simple_object_2[8]);
 
     char array_object[] = "\r\n\t [] \t\n\r";
     char array_object_2[] = "\r\n\t [\r\n\t] \t\n\r";
@@ -28,12 +29,12 @@ TEST(parsing_state, skip_whitespaces) {
     p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
     result = jsonlite_parser_tokenize(p, array_object, sizeof(array_object));
     EXPECT_EQ(result, jsonlite_result_ok);
-    EXPECT_EQ((void *) p->cursor, (void *) &array_object[5]);
+    EXPECT_EQ((void *)p->cursor, (void *)&array_object[5]);
 
     p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
     result = jsonlite_parser_tokenize(p, array_object_2, sizeof(array_object_2));
     EXPECT_EQ(result, jsonlite_result_ok);
-    EXPECT_EQ((void *) p->cursor, (void *) &array_object_2[8]);
+    EXPECT_EQ((void *)p->cursor, (void *)&array_object_2[8]);
 }
 
 TEST(parsing_state, skip_whitespaces_eos) {
@@ -386,7 +387,6 @@ TEST(parsing_state, utf8_hex) {
     result = jsonlite_parser_tokenize(p, json_11, sizeof(json_11) - 1);
     EXPECT_EQ(result, jsonlite_result_ok);
 }
-
 
 TEST(parsing_state, utf8_hex_validation) {
     char json_1[] = R"json(["\uzzzz"])json";

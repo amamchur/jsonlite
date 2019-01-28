@@ -15,8 +15,9 @@
 
 #include <assert.h>
 #include <jsonlite.h>
+#include <jsonlite_parser.h>
+#include <stdint.h>
 #include <stdio.h>
-
 #define MAX_JSON_DEPTH 4
 
 const char json[] = "[-1, 0, 1, true, false, null]";

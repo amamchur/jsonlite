@@ -15,7 +15,11 @@
 
 #include <assert.h>
 #include <jsonlite.h>
+#include <jsonlite_buffer_static.h>
+#include <jsonlite_parser.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define MAX_CHUNK_SIZE 64

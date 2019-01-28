@@ -20,7 +20,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <jsonlite_parser.h>
 
 #define MIN_DEPTH 2
 #define CALL_VALUE_CALLBACK(cbs, type, token)   (cbs.token_found(&cbs.context, token))

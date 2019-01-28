@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <jsonlite.h>
+#include <jsonlite_builder.h>
 #include <jsonlite_stream_static.h>
 #include <stdint.h>
 #include <string>

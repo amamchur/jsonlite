@@ -2,13 +2,14 @@
 	"project": "jsonlite.c",
 	"target": "../amalgamated/jsonlite/jsonlite.c",
 	"sources": [
-		"../jsonlite/src/jsonlite.c",
-		"../jsonlite/src/jsonlite_buffer.c",
-		"../jsonlite/src/jsonlite_builder.c",
-		"../jsonlite/src/jsonlite_parser.c",
-		"../jsonlite/src/jsonlite_stream.c",
-		"../jsonlite/src/jsonlite_token.c",
-		"../jsonlite/src/jsonlite_token_pool.c"
+		"../src/jsonlite.c",
+		"../src/jsonlite_buffer.c",
+		"../src/jsonlite_buffer_static.c",
+		"../src/jsonlite_builder.c",
+		"../src/jsonlite_parser.c",
+		"../src/jsonlite_stream.c",
+		"../src/jsonlite_stream_static.c",
+		"../src/jsonlite_token.c"
 	],
 	"include_paths": [
 	]
