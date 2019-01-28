@@ -15,6 +15,8 @@
 #ifndef JSONLITE_JSONLITE_UTF_H
 #define JSONLITE_JSONLITE_UTF_H
 
+#include <stdint.h>
+
 #ifdef _MSC_VER
 
 #include <intrin.h>

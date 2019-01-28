@@ -436,7 +436,7 @@ next:
     case 0:
         goto done;
     case 1:
-        bits = (uint32_t)(*c++ << 16);
+        bits = (uint32_t)(*c++) << 16;
         buffer[0] = encode[(bits & 0x00FC0000) >> 18];
         buffer[1] = encode[(bits & 0x0003F000) >> 12];
         buffer[2] = '=';
@@ -444,7 +444,7 @@ next:
         l = c;
         goto write;
     case 2:
-        bits = (uint32_t)(*c++ << 16);
+        bits = (uint32_t)(*c++) << 16;
         bits |= (uint32_t)(*c++ << 8);
         buffer[0] = encode[(bits & 0x00FC0000) >> 18];
         buffer[1] = encode[(bits & 0x0003F000) >> 12];
@@ -453,7 +453,7 @@ next:
         l = c;
         goto write;
     default:
-        bits = (uint32_t)(*c++ << 16);
+        bits = (uint32_t)(*c++) << 16;
         bits |= *c++ << 8;
         bits |= *c++;
         buffer[0] = encode[(bits & 0x00FC0000) >> 18];

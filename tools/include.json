@@ -3,9 +3,13 @@
 	"target": "../amalgamated/jsonlite/jsonlite.h",
 	"sources": [
 		"../include/jsonlite.h",
+		"../include/jsonlite_utf.h",
 		"../include/jsonlite_parser.h",
 		"../include/jsonlite_builder.h",
+		"../include/jsonlite_buffer.h",
+		"../include/jsonlite_buffer_static.h",
 		"../include/jsonlite_stream.h",
+		"../include/jsonlite_stream_static.h",
 		"../include/jsonlite_token.h"
 	],
 	"include_paths": [

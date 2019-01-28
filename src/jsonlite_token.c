@@ -202,7 +202,7 @@ size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void *buffer) {
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint8_t *c = buffer;
-    size_t bytes, i;
+    uint32_t bytes, i;
 next:
     bytes = 0;
     i = 0;
