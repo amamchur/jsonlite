@@ -12,7 +12,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific l
 
-#ifndef JSONLITE_JSONLITE_UTF_Hs
+#ifndef JSONLITE_JSONLITE_UTF_H
 #define JSONLITE_JSONLITE_UTF_H
 
 #ifdef _MSC_VER

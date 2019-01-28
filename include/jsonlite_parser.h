@@ -28,7 +28,6 @@ extern "C" {
     typedef struct jsonlite_parser_struct* jsonlite_parser;
 
     typedef enum {
-        jsonlite_event_none,
         jsonlite_event_finished,
         jsonlite_event_object_start,
         jsonlite_event_object_end,
