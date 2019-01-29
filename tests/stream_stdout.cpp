@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <jsonlite.h>
-#include <jsonlite_stream_stdout.h>
 #include <string>
 
 TEST(stream_stdout, should_be_initialized_from_memory) {

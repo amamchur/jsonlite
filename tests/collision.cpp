@@ -1,7 +1,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <iostream>
-#include <jsonlite_token_pool.h>
+#include <jsonlite.h>
 #include <mutex>
 #include <string.h>
 #include <thread>
@@ -22,8 +22,7 @@ collision_struct collisions[] = {{"collision_a", 0},
                                  {"collision_e", 0},
                                  {"collision_f", 0},
                                  {"collision_g", 0},
-                                 {"collision_h", 0}
-};
+                                 {"collision_h", 0}};
 
 auto collision_n = sizeof(collisions) / sizeof(collisions[0]);
 

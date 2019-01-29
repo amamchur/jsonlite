@@ -1,0 +1,10 @@
+{
+	"project": "jsonlite.h",
+	"target": "../amalgamated/mcu/jsonlite.h",
+	"sources": [
+		"../include/jsonlite_mcu.h"
+	],
+	"include_paths": [
+		"../include"
+	]
+}

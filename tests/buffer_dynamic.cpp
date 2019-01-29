@@ -4,7 +4,6 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <jsonlite.h>
-#include <jsonlite_buffer_dynamic.h>
 #include <stdint.h>
 #include <string>
 #include <vector>

@@ -34,7 +34,6 @@ endif ()
 include_directories(include)
 
 add_library(jsonlite ${JSONLITE_LIB_TYPE}
-        src/jsonlite.c
         src/jsonlite_parser.c
         src/jsonlite_builder.c
         src/jsonlite_buffer.c
@@ -64,12 +63,20 @@ if (BUILD_EXAMPLES)
 endif ()
 
 if (BUILD_TESTS AND GTEST_FOUND)
+    add_executable(amalgamated-test-mcu
+            amalgamated/mcu/jsonlite.c
+            examples/validator/main.c
+            )
+    add_executable(amalgamated-test-all
+            amalgamated/all/jsonlite.c
+            examples/beautifier/main.c
+            )
+
     add_executable(collision tests/collision.cpp)
     target_link_libraries(collision jsonlite pthread)
 
     enable_testing()
     add_executable(jsonlite_tests
-            src/jsonlite.c
             src/jsonlite_parser.c
             src/jsonlite_builder.c
             src/jsonlite_buffer.c

@@ -1,0 +1,6 @@
+#ifndef JSONLITE_VERSION_H
+#define JSONLITE_VERSION_H
+
+#define JSONLITE_VERSION 200000
+
+#endif

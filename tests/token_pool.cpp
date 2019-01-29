@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 #include <jsonlite.h>
-#include <jsonlite_token_pool.h>
 #include <string>
 
 TEST(token_pool, should_be_initialized_from_memory) {

@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <jsonlite.h>
-#include <jsonlite_stream_file.h>
 #include <string>
 
 TEST(stream_file, should_be_initialized) {

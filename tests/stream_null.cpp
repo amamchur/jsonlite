@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <jsonlite.h>
-#include <jsonlite_stream.h>
 #include <string>
 
 TEST(stream_null, should_write_any_data) {

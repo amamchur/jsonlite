@@ -1,8 +1,7 @@
 {
 	"project": "jsonlite.c",
-	"target": "../amalgamated/jsonlite/jsonlite.c",
+	"target": "../amalgamated/mcu/jsonlite.c",
 	"sources": [
-		"../src/jsonlite.c",
 		"../src/jsonlite_buffer.c",
 		"../src/jsonlite_buffer_static.c",
 		"../src/jsonlite_builder.c",

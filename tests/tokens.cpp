@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 #include <jsonlite.h>
-#include <jsonlite_token.h>
 #include <stdint.h>
 #include <string>
 #include <vector>
