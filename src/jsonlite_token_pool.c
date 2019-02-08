@@ -1,5 +1,6 @@
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_token_pool.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>

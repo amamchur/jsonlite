@@ -1,6 +1,7 @@
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_parser.h"
 #include "jsonlite_utf.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>
@@ -45,10 +46,17 @@ enum {
 };
 
 static void jsonlite_do_parse(jsonlite_parser parser);
-static void empty_value_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {}
-static void empty_state_callback(jsonlite_callback_context *ctx, jsonlite_event event) {}
+static void empty_value_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
+    jsonlite_stack_check();
+}
+
+static void empty_state_callback(jsonlite_callback_context *ctx, jsonlite_event event) {
+    jsonlite_stack_check();
+}
 
 static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, jsonlite_buffer rest_buffer) {
+    jsonlite_stack_check();
+
     size_t depth = (size - sizeof(jsonlite_parser_struct)) / sizeof(parse_state);
     jsonlite_parser parser = (jsonlite_parser)memory;
     parser->result = jsonlite_result_unknown;
@@ -60,10 +68,14 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, json
     parser->last = parser->current + depth;
     parser->current++;
     jsonlite_parser_callbacks_init(&parser->callbacks);
+
+    jsonlite_stack_check();
     return parser;
 }
 
 jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer rest_buffer) {
+    jsonlite_stack_check();
+
     if (memory == NULL) {
         return NULL;
     }
@@ -76,22 +88,27 @@ jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer 
         return NULL;
     }
 
+    jsonlite_stack_check();
     return jsonlite_parser_configure(memory, size, rest_buffer);
 }
 
 void jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs) {
+    jsonlite_stack_check();
     parser->callbacks = *cbs;
     parser->callbacks.context.parser = parser;
 }
 
 jsonlite_result jsonlite_parser_get_result(jsonlite_parser parser) {
+    jsonlite_stack_check();
     return parser->result;
 }
 
 jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buffer, size_t size) {
+    jsonlite_stack_check();
     size_t rest_size = jsonlite_buffer_size(parser->rest_buffer);
     if (rest_size > 0) {
         if (jsonlite_buffer_append_mem(parser->rest_buffer, buffer, size) < 0) {
+            jsonlite_stack_check();
             return jsonlite_result_out_of_memory;
         }
 
@@ -105,38 +122,48 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
     }
 
     jsonlite_do_parse(parser);
+
+    jsonlite_stack_check();
     return parser->result;
 }
 
 jsonlite_result jsonlite_parser_resume(jsonlite_parser parser) {
+    jsonlite_stack_check();
     if (parser->result != jsonlite_result_suspended) {
         return jsonlite_result_not_allowed;
     }
 
     jsonlite_do_parse(parser);
+    jsonlite_stack_check();
     return parser->result;
 }
 
 jsonlite_result jsonlite_parser_suspend(jsonlite_parser parser) {
+    jsonlite_stack_check();
     return jsonlite_parser_terminate(parser, jsonlite_result_suspended);
 }
 
 jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_result result) {
+    jsonlite_stack_check();
     if (parser->control == NULL) {
         return jsonlite_result_not_allowed;
     }
 
     parser->result = result;
     *parser->control |= state_stop;
+    jsonlite_stack_check();
     return jsonlite_result_ok;
 }
 
 void jsonlite_parser_callbacks_init(jsonlite_parser_callbacks *cbs) {
+    jsonlite_stack_check();
     cbs->event_occurred = &empty_state_callback;
     cbs->token_found = &empty_value_callback;
 }
 
 static void jsonlite_do_parse(jsonlite_parser parser) {
+    jsonlite_stack_check();
+
     const uint8_t *c = parser->cursor;
     const uint8_t *l = parser->limit;
     const uint8_t *token_start = NULL;
@@ -478,6 +505,7 @@ end:
     parser->cursor = c;
     parser->callbacks.event_occurred(&parser->callbacks.context, jsonlite_event_finished);
     if (result != jsonlite_result_end_of_stream) {
+        jsonlite_stack_check();
         return;
     }
 
@@ -488,4 +516,6 @@ end:
         parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
         parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
     }
+
+    jsonlite_stack_check();
 }

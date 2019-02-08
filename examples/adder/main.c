@@ -55,7 +55,7 @@ int main(int argc, const char *argv[]) {
     jsonlite_parser_set_callback(p, &cbs);
     jsonlite_result result = jsonlite_parser_tokenize(p, json, sizeof(json));
     assert(result == jsonlite_result_ok);
-
+    jsonlite_stack_used();
     printf("Total sum: %lld\n", total_sum);
     return 0;
 }

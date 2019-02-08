@@ -1,5 +1,6 @@
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_stream_static.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>
@@ -12,11 +13,14 @@ size_t jsonlite_stream_static_written_bytes(jsonlite_stream stream) {
 }
 
 const void * jsonlite_stream_static_data(jsonlite_stream stream) {
+    jsonlite_stack_check();
     jsonlite_static_mem_stream *mem_stream = (jsonlite_static_mem_stream *)((uint8_t *)stream + sizeof(jsonlite_stream_struct));
+    jsonlite_stack_check();
     return mem_stream->buffer;
 }
 
 static int jsonlite_static_mem_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    jsonlite_stack_check();
     jsonlite_static_mem_stream *mem_stream = (jsonlite_static_mem_stream *)((uint8_t *)stream + sizeof(jsonlite_stream_struct));
     size_t write_limit = mem_stream->size - mem_stream->written;
     if (mem_stream->enabled && write_limit >= length) {
@@ -24,15 +28,19 @@ static int jsonlite_static_mem_stream_write(jsonlite_stream stream, const void *
         mem_stream->written += length;
     } else {
         mem_stream->enabled = 0;
+        jsonlite_stack_check();
         return 0;
     }
 
+    jsonlite_stack_check();
     return (int)length;
 }
 
 jsonlite_stream jsonlite_stream_static_init(void *buffer, size_t size) {
+    jsonlite_stack_check();
     int extra_size = (int)size - sizeof(jsonlite_stream_struct) - sizeof(jsonlite_static_mem_stream);
     if (extra_size <= 0) {
+        jsonlite_stack_check();
         return NULL;
     }
 
@@ -44,5 +52,7 @@ jsonlite_stream jsonlite_stream_static_init(void *buffer, size_t size) {
     mem_stream->size = (size_t)extra_size;
     mem_stream->written = 0;
     mem_stream->enabled = 1;
+
+    jsonlite_stack_check();
     return stream;
 }

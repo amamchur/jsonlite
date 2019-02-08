@@ -1,5 +1,6 @@
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_stream_dynamic.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>
@@ -10,6 +11,8 @@
 #define SIZE_OF_MEM_STREAM()    (sizeof(jsonlite_stream_struct) + sizeof(jsonlite_stream_dynamic))
 
 static int jsonlite_mem_stream_write(jsonlite_stream stream, const void *data, size_t length) {
+    jsonlite_stack_check();
+
     jsonlite_stream_dynamic *mem_stream = CAST_TO_MEM_STREAM(stream);
     size_t write_limit = mem_stream->limit - mem_stream->cursor;
     if (write_limit >= length) {
@@ -31,11 +34,14 @@ static int jsonlite_mem_stream_write(jsonlite_stream stream, const void *data, s
         
         jsonlite_mem_stream_write(stream, (char *)data + write_limit, length - write_limit);
     }
-    
+
+    jsonlite_stack_check();
     return (int)length;
 }
 
 void jsonlite_stream_dynamic_free(jsonlite_stream stream) {
+    jsonlite_stack_check();
+
     jsonlite_stream_dynamic *mem_stream = CAST_TO_MEM_STREAM(stream);
     jsonlite_stream_dynamic_block *block = mem_stream->first;
     void *prev;
@@ -46,9 +52,11 @@ void jsonlite_stream_dynamic_free(jsonlite_stream stream) {
     }
     
     free((void *)stream);
+    jsonlite_stack_check();
 }
 
 jsonlite_stream jsonlite_stream_dynamic_alloc(size_t block_size) {
+    jsonlite_stack_check();
     size_t size = SIZE_OF_MEM_STREAM();    
     struct jsonlite_stream_struct *stream = malloc(size);
     stream->write = jsonlite_mem_stream_write;
@@ -63,10 +71,13 @@ jsonlite_stream jsonlite_stream_dynamic_alloc(size_t block_size) {
     mem_stream->limit = first->data + block_size;
     mem_stream->current = first;
     mem_stream->first = first;
+
+    jsonlite_stack_check();
     return stream;
 }
 
 size_t jsonlite_stream_dynamic_data(jsonlite_stream stream, uint8_t **data, size_t extra_bytes) {
+    jsonlite_stack_check();
     jsonlite_stream_dynamic *mem_stream = CAST_TO_MEM_STREAM(stream);
     jsonlite_stream_dynamic_block *block = NULL;
     uint8_t *buff = NULL;
@@ -95,5 +106,6 @@ size_t jsonlite_stream_dynamic_data(jsonlite_stream stream, uint8_t **data, size
         }
     }
 
+    jsonlite_stack_check();
     return size;
 }

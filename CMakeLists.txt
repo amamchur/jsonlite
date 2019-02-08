@@ -28,12 +28,12 @@ endif ()
 if (BUILD_SHARED_LIBS)
     set(JSONLITE_LIB_TYPE SHARED)
 elseif ()
-    set(JSONLITE_LIB_TYPE STATIC src/jsonlite_stream_static.c include/jsonlite_utf.h)
+    set(JSONLITE_LIB_TYPE STATIC src/jsonlite_stream_static.c include/jsonlite_utf.h examples/stack_usage/main.c src/jsonlite_stack_check.c include/jsonlite_stack_check.h)
 endif ()
 
 include_directories(include)
 
-add_library(jsonlite ${JSONLITE_LIB_TYPE}
+set(JSONLIE_SRC
         src/jsonlite_parser.c
         src/jsonlite_builder.c
         src/jsonlite_buffer.c
@@ -46,7 +46,9 @@ add_library(jsonlite ${JSONLITE_LIB_TYPE}
         src/jsonlite_stream_stdout.c
         src/jsonlite_token.c
         src/jsonlite_token_pool.c
+        src/jsonlite_stack_check.c
         )
+add_library(jsonlite ${JSONLITE_LIB_TYPE} ${JSONLIE_SRC})
 
 if (BUILD_EXAMPLES)
     add_executable(jsonlite_beautifier examples/beautifier/main.c)
@@ -60,6 +62,9 @@ if (BUILD_EXAMPLES)
 
     add_executable(jsonlite_chunk examples/chunk/main.c)
     target_link_libraries(jsonlite_chunk jsonlite)
+
+    add_executable(jsonlite_stack_usage examples/stack_usage/main.c ${JSONLIE_SRC})
+    target_compile_definitions(jsonlite_stack_usage PRIVATE JSONLIE_STACK_CHECK)
 endif ()
 
 if (BUILD_TESTS AND GTEST_FOUND)
