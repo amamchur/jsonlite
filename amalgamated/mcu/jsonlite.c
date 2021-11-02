@@ -3,6 +3,7 @@
 
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_buffer.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>
@@ -44,6 +45,7 @@ int jsonlite_buffer_append_mem(jsonlite_buffer buffer, const void *data, size_t 
 }
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_buffer.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>
@@ -71,6 +73,8 @@ static int jsonlite_static_buffer_append_mem(jsonlite_buffer buffer, const void 
 }
 
 jsonlite_buffer jsonlite_buffer_static_init(void *mem, size_t size) {
+	struct jsonlite_buffer_struct *buffer;
+
     if (mem == NULL) {
         return NULL;
     }
@@ -79,7 +83,7 @@ jsonlite_buffer jsonlite_buffer_static_init(void *mem, size_t size) {
         return NULL;
     }
 
-    struct jsonlite_buffer_struct *buffer = (struct jsonlite_buffer_struct *)mem;
+    buffer = (struct jsonlite_buffer_struct *)mem;
     buffer->set_mem = &jsonlite_static_buffer_set_mem;
     buffer->append_mem = &jsonlite_static_buffer_append_mem;
     buffer->mem = (uint8_t *)mem + sizeof(jsonlite_buffer_struct);
@@ -89,6 +93,7 @@ jsonlite_buffer jsonlite_buffer_static_init(void *mem, size_t size) {
 }
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_builder.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdio.h>
@@ -141,8 +146,8 @@ jsonlite_builder jsonlite_builder_init(void *memory, size_t size, jsonlite_strea
 }
 
 static jsonlite_builder jsonlite_builder_configure(void *memory, size_t size, jsonlite_stream stream) {
-    jsonlite_builder builder = (jsonlite_builder)memory;
-    size_t depth = (size - sizeof(jsonlite_builder_struct)) / sizeof(jsonlite_write_state);
+	jsonlite_builder builder = (jsonlite_builder)memory;
+	size_t depth = (size - sizeof(jsonlite_builder_struct)) / sizeof(jsonlite_write_state);
     builder->state = (jsonlite_write_state *)((uint8_t *)builder + sizeof(jsonlite_builder_struct));
     builder->limit = builder->state + depth - 1;
     builder->stack = builder->state;
@@ -150,6 +155,7 @@ static jsonlite_builder jsonlite_builder_configure(void *memory, size_t size, js
     builder->indentation = 0;
     *builder->state = jsonlite_accept_object_begin | jsonlite_accept_array_begin;
     jsonlite_builder_set_double_format(builder, "%.16g");
+
     return builder;
 }
 
@@ -166,7 +172,8 @@ static int jsonlite_builder_accept(jsonlite_builder builder, jsonlite_write_stat
 }
 
 static void jsonlite_builder_pop_state(jsonlite_builder builder) {
-    jsonlite_write_state *ws = --builder->state;
+    jsonlite_write_state *ws;
+    ws = --builder->state;
     if (jsonlite_builder_accept(builder, jsonlite_accept_values_only)) {
         *ws = jsonlite_accept_continue_array;
     } else {
@@ -215,7 +222,6 @@ jsonlite_result jsonlite_builder_object_end(jsonlite_builder builder) {
         jsonlite_builder_raw_char(builder, '}');
         return jsonlite_result_ok;
     }
-
     return jsonlite_result_not_allowed;
 }
 
@@ -228,7 +234,6 @@ jsonlite_result jsonlite_builder_array_begin(jsonlite_builder builder) {
         jsonlite_builder_raw_char(builder, '[');
         return jsonlite_result_ok;
     }
-
     return jsonlite_result_not_allowed;
 }
 
@@ -311,6 +316,7 @@ jsonlite_result jsonlite_builder_key(jsonlite_builder builder, const void *utf8,
             jsonlite_builder_raw_char(builder, ':');
         }
         *ws = jsonlite_accept_value;
+
         return jsonlite_result_ok;
     }
 
@@ -385,6 +391,7 @@ jsonlite_result jsonlite_builder_true(jsonlite_builder builder) {
     } else {
         *ws = jsonlite_accept_continue_object;
     }
+
     return jsonlite_result_ok;
 }
 
@@ -402,6 +409,7 @@ jsonlite_result jsonlite_builder_false(jsonlite_builder builder) {
     } else {
         *ws = jsonlite_accept_continue_object;
     }
+
     return jsonlite_result_ok;
 }
 
@@ -419,6 +427,7 @@ jsonlite_result jsonlite_builder_null(jsonlite_builder builder) {
     } else {
         *ws = jsonlite_accept_continue_object;
     }
+
     return jsonlite_result_ok;
 }
 
@@ -458,6 +467,7 @@ jsonlite_result jsonlite_builder_raw_key(jsonlite_builder builder, const void *d
             jsonlite_builder_raw_char(builder, ':');
         }
         *ws = jsonlite_accept_value;
+
         return jsonlite_result_ok;
     }
 
@@ -476,6 +486,7 @@ jsonlite_result jsonlite_builder_raw_string(jsonlite_builder builder, const void
         } else {
             *ws = jsonlite_accept_continue_object;
         }
+
         return jsonlite_result_ok;
     }
 
@@ -492,6 +503,7 @@ jsonlite_result jsonlite_builder_raw_value(jsonlite_builder builder, const void 
         } else {
             *ws = jsonlite_accept_continue_object;
         }
+
         return jsonlite_result_ok;
     }
 
@@ -541,6 +553,7 @@ write:
     goto next;
 done:
     jsonlite_stream_write(builder->stream, "\"", 1);
+
 }
 
 jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const void *data, size_t length) {
@@ -553,6 +566,7 @@ jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const vo
         } else {
             *ws = jsonlite_accept_continue_object;
         }
+
         return jsonlite_result_ok;
     }
 
@@ -561,6 +575,7 @@ jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const vo
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_parser.h"
 #include "jsonlite_utf.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>
@@ -605,8 +620,11 @@ enum {
 };
 
 static void jsonlite_do_parse(jsonlite_parser parser);
-static void empty_value_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {}
-static void empty_state_callback(jsonlite_callback_context *ctx, jsonlite_event event) {}
+static void empty_value_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
+}
+
+static void empty_state_callback(jsonlite_callback_context *ctx, jsonlite_event event) {
+}
 
 static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, jsonlite_buffer rest_buffer) {
     size_t depth = (size - sizeof(jsonlite_parser_struct)) / sizeof(parse_state);
@@ -620,6 +638,7 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, json
     parser->last = parser->current + depth;
     parser->current++;
     jsonlite_parser_callbacks_init(&parser->callbacks);
+
     return parser;
 }
 
@@ -650,7 +669,7 @@ jsonlite_result jsonlite_parser_get_result(jsonlite_parser parser) {
 
 jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buffer, size_t size) {
     size_t rest_size = jsonlite_buffer_size(parser->rest_buffer);
-    if (rest_size > 0) {
+	if (rest_size > 0) {
         if (jsonlite_buffer_append_mem(parser->rest_buffer, buffer, size) < 0) {
             return jsonlite_result_out_of_memory;
         }
@@ -665,6 +684,7 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
     }
 
     jsonlite_do_parse(parser);
+
     return parser->result;
 }
 
@@ -706,6 +726,7 @@ static void jsonlite_do_parse(jsonlite_parser parser) {
     jsonlite_result result = jsonlite_result_ok;
     uint32_t value, utf32;
     uint8_t hex_value;
+	int res;
 
     *state &= ~state_stop;
     parser->control = state;
@@ -800,7 +821,7 @@ parse_value:
     if (*c == 0x5B)                 goto parse_array_state;
     goto error_exp_value;
 
-// Number parsing
+/* Number parsing */
 parse_negative_number:
     token.start = c;
     token.type = jsonlite_token_number | jsonlite_number_int | jsonlite_number_negative;
@@ -891,7 +912,7 @@ parse_object_key_only:
     *state = state_object_colon;
     *++state = state_object_key;
 
-// String parsing
+/* String parsing */
 parse_string:
     token.type = jsonlite_string_ascii;
     token.start = c + 1;
@@ -906,15 +927,15 @@ escaped:
     token.type |= jsonlite_string_escape;
     if (++c == l)       goto end_of_stream;
     switch (*c) {
-        case 0x22:      goto next_char;     // "    quotation mark  U+0022
-        case 0x2F:      goto next_char;     // /    solidus         U+002F
-        case 0x5C:      goto next_char;     // \    reverse solidus U+005C
-        case 0x62:      goto next_char;     // b    backspace       U+0008
-        case 0x66:      goto next_char;     // f    form feed       U+000C
-        case 0x6E:      goto next_char;     // n    line feed       U+000A
-        case 0x72:      goto next_char;     // r    carriage return U+000D
-        case 0x74:      goto next_char;     // t    tab             U+0009
-        case 0x75:      goto hex;           // uXXXX                U+XXXX
+        case 0x22:      goto next_char;     /* "    quotation mark  U+0022 */
+        case 0x2F:      goto next_char;     /* /    solidus         U+002F */
+        case 0x5C:      goto next_char;     /* \    reverse solidus U+005C */
+        case 0x62:      goto next_char;     /* b    backspace       U+0008 */
+        case 0x66:      goto next_char;     /* f    form feed       U+000C */
+        case 0x6E:      goto next_char;     /* n    line feed       U+000A */
+        case 0x72:      goto next_char;     /* r    carriage return U+000D */
+        case 0x74:      goto next_char;     /* t    tab             U+0009 */
+        case 0x75:      goto hex;           /* uXXXX                U+XXXX */
         default:        goto error_escape;
     }
 hex:
@@ -929,7 +950,7 @@ hex:
     if (value >= 0xFDD0u && value <= 0xFDEFu)   token.type |= jsonlite_string_unicode_noncharacter;
     if (0xD800 > value || value > 0xDBFF)       goto next_char;
 
-    // UTF-16 Surrogate
+    /* UTF-16 Surrogate */
     utf32 = (value - 0xD800) << 10;
     if (c++ + 6 >= l)       goto end_of_stream;
     if (*c++ != 0x5C)       goto error_escape;
@@ -945,18 +966,20 @@ hex:
     goto next_char;
 utf8:
     token.type |= jsonlite_string_utf8;
-    // See https://en.wikipedia.org/wiki/UTF-8#Description
-    // 0xxxxxxx -> ASCII char, should not occur here, checked in next_char state
-    // 10xxxxxx -> error
-    // 110xxxxx -> sequence length 2
-    // 1110xxxx -> sequence length 3
-    // 11110xxx -> sequence length 4
-    // 11111xxx -> error
-    int res = jsonlite_utf8_sequence_length(*c);
+    /*
+        See https://en.wikipedia.org/wiki/UTF-8#Description
+        0xxxxxxx -> ASCII char, should not occur here, checked in next_char state
+        10xxxxxx -> error
+        110xxxxx -> sequence length 2
+        1110xxxx -> sequence length 3
+        11110xxx -> sequence length 4
+        11111xxx -> error
+     */
+    res = jsonlite_utf8_sequence_length(*c);
     if (2 > res || res > 4) goto error_utf8;
     if (c + res >= l) goto end_of_stream;
     utf32 = (uint32_t)(*c & (0xFF >> (res)));
-    value = 0xAAAAAAAA; // == 1010...
+    value = 0xAAAAAAAA; /* == 1010... */
     switch (res) {
         case 4: value = (value << 2) | (*++c >> 6), utf32 = (utf32 << 6) | (*c & 0x3F);
         case 3: value = (value << 2) | (*++c >> 6), utf32 = (utf32 << 6) | (*c & 0x3F);
@@ -983,7 +1006,7 @@ string_parsed:
     }
     goto skip_char_and_whitespaces;
 
-// Primitive tokens
+/* Primitive tokens */
 parse_true_token:
     if (c++ + 3 >= l)   goto end_of_stream;
     if (*c++ != 0x72)   goto error_token;
@@ -1013,7 +1036,7 @@ parse_null_token:
     CALL_VALUE_CALLBACK(parser->callbacks, null_found,  &token);
     goto select_state;
 
-// Error states.
+/* Error states. */
 error_depth:        result = jsonlite_result_depth_limit;               goto end;
 error_exp_ooa:      result = jsonlite_result_expected_object_or_array;  goto end;
 error_exp_value:    result = jsonlite_result_expected_value;            goto end;
@@ -1026,7 +1049,7 @@ error_number:       result = jsonlite_result_invalid_number;            goto end
 error_token:        result = jsonlite_result_invalid_token;             goto end;
 error_utf8:         result = jsonlite_result_invalid_utf8;              goto end;
 
-// End of stream states.
+/* End of stream states. */
 end_of_stream_whitespaces:
     token_start = l;
 end_of_stream:
@@ -1051,6 +1074,7 @@ end:
 }
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_stream.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>
@@ -1073,6 +1097,7 @@ jsonlite_stream jsonlite_stream_null() {
 }
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_stream_static.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>
@@ -1104,29 +1129,34 @@ static int jsonlite_static_mem_stream_write(jsonlite_stream stream, const void *
 }
 
 jsonlite_stream jsonlite_stream_static_init(void *buffer, size_t size) {
-    int extra_size = (int)size - sizeof(jsonlite_stream_struct) - sizeof(jsonlite_static_mem_stream);
+    struct jsonlite_stream_struct *stream;
+	jsonlite_static_mem_stream *mem_stream;
+	int extra_size = (int)size - sizeof(jsonlite_stream_struct) - sizeof(jsonlite_static_mem_stream);
     if (extra_size <= 0) {
         return NULL;
     }
 
-    struct jsonlite_stream_struct *stream = (struct jsonlite_stream_struct *)buffer;
+    stream = (struct jsonlite_stream_struct *)buffer;
     stream->write = jsonlite_static_mem_stream_write;
 
-    jsonlite_static_mem_stream *mem_stream = (jsonlite_static_mem_stream *)((uint8_t *)stream + sizeof(jsonlite_stream_struct));
+    mem_stream = (jsonlite_static_mem_stream *)((uint8_t *)stream + sizeof(jsonlite_stream_struct));
     mem_stream->buffer = (uint8_t *)mem_stream + sizeof(jsonlite_static_mem_stream);
     mem_stream->size = (size_t)extra_size;
     mem_stream->written = 0;
     mem_stream->enabled = 1;
+
     return stream;
 }
 #ifndef JSONLITE_AMALGAMATED
 #include "jsonlite_token.h"
 #include "jsonlite_utf.h"
+#include "jsonlite_stack_check.h"
 #endif
 
 #include <stdlib.h>
 
 static uint8_t jsonlite_hex_char_to_uint8(uint8_t c) {
+    jsonlite_stack_check();
     if (c >= 'a') {
         return (uint8_t)(c - 'a' + 10);
     }
@@ -1181,7 +1211,7 @@ escaped:
         default:    break;
 	}
 
-    // UTF-16    
+    /* UTF-16 */
     p++;
     utf32 = jsonlite_hex_char_to_uint8(*p++);
     utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
@@ -1189,7 +1219,7 @@ escaped:
     utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
     if (0xD800 > utf32 || utf32 > 0xDBFF) goto encode;
 
-    // UTF-16 Surrogate
+    /* UTF-16 Surrogate */
     p += 2;
     utf32 = (utf32 - 0xD800) << 10;
     value = jsonlite_hex_char_to_uint8(*p++);
@@ -1234,6 +1264,7 @@ utf8:
     goto step;
 done:
     *c = 0;
+
     return c - (uint8_t *)buffer;
 }
 
@@ -1244,6 +1275,7 @@ size_t jsonlite_token_size_of_uft16(jsonlite_token *ts) {
 size_t jsonlite_token_to_uft16(jsonlite_token *ts, void *buffer) {
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
+	uint32_t code;
     uint16_t utf16;
     uint16_t *c = (uint16_t *)buffer;
     int res;
@@ -1266,7 +1298,7 @@ escaped:
         default: break;
 	}
 
-    // UTF-16
+    /* UTF-16 */
     p++;
     utf16 = jsonlite_hex_char_to_uint8(*p++);
     utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
@@ -1275,7 +1307,7 @@ escaped:
     *c++ = utf16;
     if (0xD800 > utf16 || utf16 > 0xDBFF) goto step;
 
-    // UTF-16 Surrogate
+    /* UTF-16 Surrogate */
     p += 2;
     utf16 = jsonlite_hex_char_to_uint8(*p++);
     utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
@@ -1285,7 +1317,7 @@ escaped:
     goto step;
 utf8:
     res = jsonlite_utf8_sequence_length(*p);
-    uint32_t code = (uint32_t)(*p & (0xFF >> (res + 1)));
+    code = (uint32_t)(*p & (0xFF >> (res + 1)));
     switch (res) {
         case 4: code = (code << 6) | (*++p & 0x3F);
         case 3: code = (code << 6) | (*++p & 0x3F);

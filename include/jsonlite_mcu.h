@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "jsonlite_version.h"
+#include "jsonlite_stack_check.h"
 #include "jsonlite_types.h"
 #include "jsonlite_utf.h"
 #include "jsonlite_token.h"

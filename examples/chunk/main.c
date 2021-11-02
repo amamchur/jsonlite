@@ -1,17 +1,16 @@
-//
-//  Copyright 2012-2019, Andrii Mamchur
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//  http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License
+/*
+ * Copyright 2012-2021, Andrii Mamchur
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http:www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+*/
 
 #include <assert.h>
 #include <jsonlite.h>
@@ -24,15 +23,19 @@
 
 #define MAX_CHUNK_SIZE 64
 #define MAX_JSON_DEPTH 6
-#define MAX_JSON_TOKEN_SIZE 20 // See "long-long-long-key", including double quotes
+#define MAX_JSON_TOKEN_SIZE 20
 
-// Reserving space for jsonlite is global memory
-// You can use stack for this purpose, but be careful is case of kernel driver
-// or MCU development, just keep platform limitation in mind
+/*
+    Reserving space for jsonlite is global memory
+    You can use stack for this purpose, but be careful is case of kernel driver
+    or MCU development, just keep platform limitation in mind
+*/
 uint8_t parser_memory[jsonlite_parser_estimate_size(MAX_JSON_DEPTH)];
 
-// Buffer size have to be greater then MAX_CHUNK_SIZE + MAX_JSON_TOKEN_SIZE
-// and 2 * MAX_JSON_TOKEN_SIZE
+/*
+    Buffer size have to be greater then MAX_CHUNK_SIZE + MAX_JSON_TOKEN_SIZE
+    and 2 * MAX_JSON_TOKEN_SIZE
+*/
 uint8_t buffer_memory[jsonlite_buffer_static_size_ext(MAX_JSON_TOKEN_SIZE, MAX_CHUNK_SIZE)];
 
 const char json_chunk_1[] = "{\"a\":null,\"b\":[1,2,3],\"long-long-";
@@ -56,35 +59,41 @@ static void measure_token_size_callback(jsonlite_callback_context *ctx, jsonlite
 }
 
 int main(int argc, const char *argv[]) {
-    // The longest JSON token should fill data chunk
+	jsonlite_result result;
+	jsonlite_buffer buffer;
+	jsonlite_parser parser;
+	jsonlite_parser_callbacks cbs;
+
+    /* The longest JSON token should fill data chunk */
     assert(MAX_CHUNK_SIZE > MAX_JSON_TOKEN_SIZE);
 
-    // Just checking if all chunks matches memory limits
+    /* Just checking if all chunks matches memory limits */
     assert(MAX_CHUNK_SIZE > sizeof(json_chunk_1));
     assert(MAX_CHUNK_SIZE > sizeof(json_chunk_2));
     assert(MAX_CHUNK_SIZE > sizeof(json_chunk_3));
 
     printf("Total memory used for parsing: %d bytes\n", (int)(sizeof(parser_memory) + sizeof(buffer_memory)));
 
-    jsonlite_buffer buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));
+    buffer = jsonlite_buffer_static_init(buffer_memory, sizeof(buffer_memory));
     assert(buffer != NULL);
 
-    jsonlite_parser parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), buffer);
+    parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), buffer);
     assert(parser != NULL);
 
     longest_token = malloc(10);
     strcpy(longest_token, "false");
     longest_token_size = strlen(longest_token);
 
-    jsonlite_parser_callbacks cbs;
     jsonlite_parser_callbacks_init(&cbs);
     cbs.token_found = &measure_token_size_callback;
     jsonlite_parser_set_callback(parser, &cbs);
 
-    // C-string literal always contains '\0' (null char) in the end
-    // That's why we are using sizeof(xxx) - 1 instead of sizeof(xxx)
-    // otherwise we will get invalid_token error
-    jsonlite_result result = jsonlite_parser_tokenize(parser, json_chunk_1, sizeof(json_chunk_1) - 1);
+    /*
+     * C-string literal always contains '\0' (null char) in the end
+     * That's why we are using sizeof(xxx) - 1 instead of sizeof(xxx)
+     * otherwise we will get invalid_token error
+     */
+    result = jsonlite_parser_tokenize(parser, json_chunk_1, sizeof(json_chunk_1) - 1);
     assert(result == jsonlite_result_end_of_stream);
 
     result = jsonlite_parser_tokenize(parser, json_chunk_2, sizeof(json_chunk_2) - 1);

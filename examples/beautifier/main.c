@@ -1,17 +1,16 @@
-//
-//  Copyright 2012-2019, Andrii Mamchur
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//  http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License
+/*
+ * Copyright 2012-2021, Andrii Mamchur
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http:www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+*/
 
 #include <jsonlite.h>
 #include <jsonlite_builder.h>
@@ -78,6 +77,7 @@ static void token_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
 
 int main(int argc, const char *argv[]) {
     context ctx;
+	jsonlite_parser_callbacks cbs;
     char json[] = "{\"a\":null,\"b\":[1,2,3],\"c\":true,\"d\":{\"a\":1,\"b\":[]},\"e\":false,\"f\":[\"a\",\"a\",\"a\"]}";
     uint8_t parser_memory[jsonlite_parser_estimate_size(MAX_JSON_DEPTH)];
     uint8_t builder_memory[jsonlite_builder_estimate_size(MAX_JSON_DEPTH)];
@@ -86,7 +86,9 @@ int main(int argc, const char *argv[]) {
     jsonlite_builder_set_indentation(ctx.builder, 4);
 
     ctx.parser = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
-    jsonlite_parser_callbacks cbs = {.event_occurred = event_occurred, .token_found = token_callback, .context = {.client_state = &ctx}};
+    cbs.event_occurred = event_occurred;
+	cbs.token_found = token_callback;
+	cbs.context.client_state = &ctx;
     jsonlite_parser_set_callback(ctx.parser, &cbs);
     jsonlite_parser_tokenize(ctx.parser, json, sizeof(json));
     printf("\n");

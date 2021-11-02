@@ -9,33 +9,27 @@
 static uint8_t jsonlite_hex_char_to_uint8(uint8_t c) {
     jsonlite_stack_check();
     if (c >= 'a') {
-        jsonlite_stack_check();
         return (uint8_t)(c - 'a' + 10);
     }
 
     if (c >= 'A') {
-        jsonlite_stack_check();
         return (uint8_t)(c - 'A' + 10);
     }
 
-    jsonlite_stack_check();
     return (uint8_t)(c - '0');
 }
 
 static int unicode_char_to_utf16(uint32_t utf32, uint16_t *utf16) {
-    jsonlite_stack_check();
     uint32_t v = utf32 - 0x10000;
     uint32_t vh = v >> 10;
     uint32_t vl = v & 0x3FF;
 	if (utf32 <= 0xFFFF) {
         *utf16 = (uint16_t)utf32;
-        jsonlite_stack_check();
         return 1;
     }
 
     *utf16++ = (uint16_t)(0xD800 + vh);
     *utf16 = (uint16_t)(0xDC00 + vl);
-    jsonlite_stack_check();
     return 2;
 }
 
@@ -44,7 +38,6 @@ size_t jsonlite_token_size_of_uft8(jsonlite_token *ts) {
 }
 
 size_t jsonlite_token_to_uft8(jsonlite_token *ts, void *buffer) {
-    jsonlite_stack_check();
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
     uint32_t value, utf32;
@@ -69,7 +62,7 @@ escaped:
         default:    break;
 	}
 
-    // UTF-16    
+    /* UTF-16 */
     p++;
     utf32 = jsonlite_hex_char_to_uint8(*p++);
     utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
@@ -77,7 +70,7 @@ escaped:
     utf32 = (uint32_t)(utf32 << 4) | jsonlite_hex_char_to_uint8(*p++);
     if (0xD800 > utf32 || utf32 > 0xDBFF) goto encode;
 
-    // UTF-16 Surrogate
+    /* UTF-16 Surrogate */
     p += 2;
     utf32 = (utf32 - 0xD800) << 10;
     value = jsonlite_hex_char_to_uint8(*p++);
@@ -123,20 +116,17 @@ utf8:
 done:
     *c = 0;
 
-    jsonlite_stack_check();
     return c - (uint8_t *)buffer;
 }
 
 size_t jsonlite_token_size_of_uft16(jsonlite_token *ts) {
-    jsonlite_stack_check();
     return (ts->end - ts->start + 1) * sizeof(uint16_t);
 }
 
 size_t jsonlite_token_to_uft16(jsonlite_token *ts, void *buffer) {
-    jsonlite_stack_check();
-
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
+	uint32_t code;
     uint16_t utf16;
     uint16_t *c = (uint16_t *)buffer;
     int res;
@@ -159,7 +149,7 @@ escaped:
         default: break;
 	}
 
-    // UTF-16
+    /* UTF-16 */
     p++;
     utf16 = jsonlite_hex_char_to_uint8(*p++);
     utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
@@ -168,7 +158,7 @@ escaped:
     *c++ = utf16;
     if (0xD800 > utf16 || utf16 > 0xDBFF) goto step;
 
-    // UTF-16 Surrogate
+    /* UTF-16 Surrogate */
     p += 2;
     utf16 = jsonlite_hex_char_to_uint8(*p++);
     utf16 = (uint16_t)(utf16 << 4) | jsonlite_hex_char_to_uint8(*p++);
@@ -178,7 +168,7 @@ escaped:
     goto step;
 utf8:
     res = jsonlite_utf8_sequence_length(*p);
-    uint32_t code = (uint32_t)(*p & (0xFF >> (res + 1)));
+    code = (uint32_t)(*p & (0xFF >> (res + 1)));
     switch (res) {
         case 4: code = (code << 6) | (*++p & 0x3F);
         case 3: code = (code << 6) | (*++p & 0x3F);
@@ -189,17 +179,14 @@ utf8:
     goto step;
 done:
     *c = 0;
-    jsonlite_stack_check();
     return (c - (uint16_t *)buffer) * sizeof(uint16_t);
 }
 
 size_t jsonlite_token_size_of_base64_binary(jsonlite_token *ts) {
-    jsonlite_stack_check();
     return (((ts->end - ts->start) * 3) / 4 + 3) & ~3;
 }
 
 size_t jsonlite_token_base64_to_binary(jsonlite_token *ts, void *buffer) {
-    jsonlite_stack_check();
     size_t length = 0;
     const uint8_t *p = ts->start;
     const uint8_t *l = ts->end;
@@ -243,12 +230,10 @@ next:
 error:
     length = 0;
 done:
-    jsonlite_stack_check();
     return length;
 }
 
 long jsonlite_token_to_long(jsonlite_token *token) {
-    jsonlite_stack_check();
     long res = 0;
     int negative = (token->type & jsonlite_number_negative) == jsonlite_number_negative;
     const uint8_t *c = token->start + negative;
@@ -257,12 +242,10 @@ long jsonlite_token_to_long(jsonlite_token *token) {
         res = res * 10 + (*c++ - '0');
     }
 
-    jsonlite_stack_check();
     return negative ? -res : res;
 }
 
 long long jsonlite_token_to_long_long(jsonlite_token *token) {
-    jsonlite_stack_check();
     long long res = 0;
     int negative = (token->type & jsonlite_number_negative) == jsonlite_number_negative;
     const uint8_t *c = token->start + negative;
@@ -271,6 +254,5 @@ long long jsonlite_token_to_long_long(jsonlite_token *token) {
         res = res * 10 + (*c++ - '0');
     }
 
-    jsonlite_stack_check();
     return negative ? -res : res;
 }

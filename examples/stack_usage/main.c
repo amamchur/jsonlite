@@ -1,3 +1,17 @@
+/*
+ * Copyright 2012-2021, Andrii Mamchur
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http:www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+*/
+
 #include <assert.h>
 #include <jsonlite.h>
 #include <math.h>
@@ -41,59 +55,6 @@ static void token_callback(jsonlite_callback_context *ctx, jsonlite_token *token
 }
 
 int main(int argc, const char *argv[]) {
-    jsonlite_stack_check_init();
-    printf("Initial stack usage (should be signed machine infinite): %ti bytes\n\n", jsonlite_stack_used());
 
-    jsonlite_stack_check_init();
-    size_t n = 1000;
-    size_t value = arithmetic_progression_sum(n);
-    printf("Arithmetic progression sum of %zu = %zu\n", n, value);
-    printf("Used %ti bytes of stack memory\n\n", jsonlite_stack_used());
-
-    jsonlite_stack_check_init();
-    jsonlite_parser p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
-    assert(p != NULL);
-
-    jsonlite_result result = jsonlite_parser_tokenize(p, json_1, strlen(json_1));
-    assert(result == jsonlite_result_ok);
-
-    printf("jsonlite validation\n");
-    printf("Used %ti bytes of stack memory (case 1)\n\n", jsonlite_stack_used());
-
-    jsonlite_stack_check_init();
-    p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
-    assert(p != NULL);
-    result = jsonlite_parser_tokenize(p, json_2, strlen(json_2));
-    assert(result == jsonlite_result_ok);
-    printf("jsonlite validation\n");
-    printf("Used %ti bytes of stack memory (case 2)\n\n", jsonlite_stack_used());
-
-    jsonlite_stack_check_init();
-    p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
-    assert(p != NULL);
-    result = jsonlite_parser_tokenize(p, json_3, strlen(json_3));
-    assert(result == jsonlite_result_ok);
-    printf("jsonlite validation\n");
-    printf("Used %ti bytes of stack memory (case 3)\n\n", jsonlite_stack_used());
-
-    jsonlite_stack_check_init();
-    p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
-    assert(p != NULL);
-    result = jsonlite_parser_tokenize(p, json_4, strlen(json_4));
-    assert(result == jsonlite_result_ok);
-    printf("jsonlite validation\n");
-    printf("Used %ti bytes of stack memory (case 4)\n\n", jsonlite_stack_used());
-
-    jsonlite_stack_check_init();
-    p = jsonlite_parser_init(parser_memory, sizeof(parser_memory), jsonlite_null_buffer());
-    assert(p != NULL);
-
-    jsonlite_parser_callbacks cbs;
-    jsonlite_parser_callbacks_init(&cbs);
-    cbs.token_found = &token_callback;
-    jsonlite_parser_set_callback(p, &cbs);
-    result = jsonlite_parser_tokenize(p, json_4, strlen(json_4));
-    assert(result == jsonlite_result_ok);
-    printf("jsonlite validation with jsonlite_token_to_uft16\n");
-    printf("Used %ti bytes of stack memory (case 4)\n\n", jsonlite_stack_used());
+	return 0;
 }

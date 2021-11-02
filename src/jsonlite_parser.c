@@ -47,16 +47,12 @@ enum {
 
 static void jsonlite_do_parse(jsonlite_parser parser);
 static void empty_value_callback(jsonlite_callback_context *ctx, jsonlite_token *t) {
-    jsonlite_stack_check();
 }
 
 static void empty_state_callback(jsonlite_callback_context *ctx, jsonlite_event event) {
-    jsonlite_stack_check();
 }
 
 static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, jsonlite_buffer rest_buffer) {
-    jsonlite_stack_check();
-
     size_t depth = (size - sizeof(jsonlite_parser_struct)) / sizeof(parse_state);
     jsonlite_parser parser = (jsonlite_parser)memory;
     parser->result = jsonlite_result_unknown;
@@ -69,13 +65,10 @@ static jsonlite_parser jsonlite_parser_configure(void *memory, size_t size, json
     parser->current++;
     jsonlite_parser_callbacks_init(&parser->callbacks);
 
-    jsonlite_stack_check();
     return parser;
 }
 
 jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer rest_buffer) {
-    jsonlite_stack_check();
-
     if (memory == NULL) {
         return NULL;
     }
@@ -88,27 +81,22 @@ jsonlite_parser jsonlite_parser_init(void *memory, size_t size, jsonlite_buffer 
         return NULL;
     }
 
-    jsonlite_stack_check();
     return jsonlite_parser_configure(memory, size, rest_buffer);
 }
 
 void jsonlite_parser_set_callback(jsonlite_parser parser, const jsonlite_parser_callbacks *cbs) {
-    jsonlite_stack_check();
     parser->callbacks = *cbs;
     parser->callbacks.context.parser = parser;
 }
 
 jsonlite_result jsonlite_parser_get_result(jsonlite_parser parser) {
-    jsonlite_stack_check();
     return parser->result;
 }
 
 jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buffer, size_t size) {
-    jsonlite_stack_check();
     size_t rest_size = jsonlite_buffer_size(parser->rest_buffer);
-    if (rest_size > 0) {
+	if (rest_size > 0) {
         if (jsonlite_buffer_append_mem(parser->rest_buffer, buffer, size) < 0) {
-            jsonlite_stack_check();
             return jsonlite_result_out_of_memory;
         }
 
@@ -123,47 +111,38 @@ jsonlite_result jsonlite_parser_tokenize(jsonlite_parser parser, const void *buf
 
     jsonlite_do_parse(parser);
 
-    jsonlite_stack_check();
     return parser->result;
 }
 
 jsonlite_result jsonlite_parser_resume(jsonlite_parser parser) {
-    jsonlite_stack_check();
     if (parser->result != jsonlite_result_suspended) {
         return jsonlite_result_not_allowed;
     }
 
     jsonlite_do_parse(parser);
-    jsonlite_stack_check();
     return parser->result;
 }
 
 jsonlite_result jsonlite_parser_suspend(jsonlite_parser parser) {
-    jsonlite_stack_check();
     return jsonlite_parser_terminate(parser, jsonlite_result_suspended);
 }
 
 jsonlite_result jsonlite_parser_terminate(jsonlite_parser parser, jsonlite_result result) {
-    jsonlite_stack_check();
     if (parser->control == NULL) {
         return jsonlite_result_not_allowed;
     }
 
     parser->result = result;
     *parser->control |= state_stop;
-    jsonlite_stack_check();
     return jsonlite_result_ok;
 }
 
 void jsonlite_parser_callbacks_init(jsonlite_parser_callbacks *cbs) {
-    jsonlite_stack_check();
     cbs->event_occurred = &empty_state_callback;
     cbs->token_found = &empty_value_callback;
 }
 
 static void jsonlite_do_parse(jsonlite_parser parser) {
-    jsonlite_stack_check();
-
     const uint8_t *c = parser->cursor;
     const uint8_t *l = parser->limit;
     const uint8_t *token_start = NULL;
@@ -173,6 +152,7 @@ static void jsonlite_do_parse(jsonlite_parser parser) {
     jsonlite_result result = jsonlite_result_ok;
     uint32_t value, utf32;
     uint8_t hex_value;
+	int res;
 
     *state &= ~state_stop;
     parser->control = state;
@@ -267,7 +247,7 @@ parse_value:
     if (*c == 0x5B)                 goto parse_array_state;
     goto error_exp_value;
 
-// Number parsing
+/* Number parsing */
 parse_negative_number:
     token.start = c;
     token.type = jsonlite_token_number | jsonlite_number_int | jsonlite_number_negative;
@@ -358,7 +338,7 @@ parse_object_key_only:
     *state = state_object_colon;
     *++state = state_object_key;
 
-// String parsing
+/* String parsing */
 parse_string:
     token.type = jsonlite_string_ascii;
     token.start = c + 1;
@@ -373,15 +353,15 @@ escaped:
     token.type |= jsonlite_string_escape;
     if (++c == l)       goto end_of_stream;
     switch (*c) {
-        case 0x22:      goto next_char;     // "    quotation mark  U+0022
-        case 0x2F:      goto next_char;     // /    solidus         U+002F
-        case 0x5C:      goto next_char;     // \    reverse solidus U+005C
-        case 0x62:      goto next_char;     // b    backspace       U+0008
-        case 0x66:      goto next_char;     // f    form feed       U+000C
-        case 0x6E:      goto next_char;     // n    line feed       U+000A
-        case 0x72:      goto next_char;     // r    carriage return U+000D
-        case 0x74:      goto next_char;     // t    tab             U+0009
-        case 0x75:      goto hex;           // uXXXX                U+XXXX
+        case 0x22:      goto next_char;     /* "    quotation mark  U+0022 */
+        case 0x2F:      goto next_char;     /* /    solidus         U+002F */
+        case 0x5C:      goto next_char;     /* \    reverse solidus U+005C */
+        case 0x62:      goto next_char;     /* b    backspace       U+0008 */
+        case 0x66:      goto next_char;     /* f    form feed       U+000C */
+        case 0x6E:      goto next_char;     /* n    line feed       U+000A */
+        case 0x72:      goto next_char;     /* r    carriage return U+000D */
+        case 0x74:      goto next_char;     /* t    tab             U+0009 */
+        case 0x75:      goto hex;           /* uXXXX                U+XXXX */
         default:        goto error_escape;
     }
 hex:
@@ -396,7 +376,7 @@ hex:
     if (value >= 0xFDD0u && value <= 0xFDEFu)   token.type |= jsonlite_string_unicode_noncharacter;
     if (0xD800 > value || value > 0xDBFF)       goto next_char;
 
-    // UTF-16 Surrogate
+    /* UTF-16 Surrogate */
     utf32 = (value - 0xD800) << 10;
     if (c++ + 6 >= l)       goto end_of_stream;
     if (*c++ != 0x5C)       goto error_escape;
@@ -412,18 +392,20 @@ hex:
     goto next_char;
 utf8:
     token.type |= jsonlite_string_utf8;
-    // See https://en.wikipedia.org/wiki/UTF-8#Description
-    // 0xxxxxxx -> ASCII char, should not occur here, checked in next_char state
-    // 10xxxxxx -> error
-    // 110xxxxx -> sequence length 2
-    // 1110xxxx -> sequence length 3
-    // 11110xxx -> sequence length 4
-    // 11111xxx -> error
-    int res = jsonlite_utf8_sequence_length(*c);
+    /*
+        See https://en.wikipedia.org/wiki/UTF-8#Description
+        0xxxxxxx -> ASCII char, should not occur here, checked in next_char state
+        10xxxxxx -> error
+        110xxxxx -> sequence length 2
+        1110xxxx -> sequence length 3
+        11110xxx -> sequence length 4
+        11111xxx -> error
+     */
+    res = jsonlite_utf8_sequence_length(*c);
     if (2 > res || res > 4) goto error_utf8;
     if (c + res >= l) goto end_of_stream;
     utf32 = (uint32_t)(*c & (0xFF >> (res)));
-    value = 0xAAAAAAAA; // == 1010...
+    value = 0xAAAAAAAA; /* == 1010... */
     switch (res) {
         case 4: value = (value << 2) | (*++c >> 6), utf32 = (utf32 << 6) | (*c & 0x3F);
         case 3: value = (value << 2) | (*++c >> 6), utf32 = (utf32 << 6) | (*c & 0x3F);
@@ -450,7 +432,7 @@ string_parsed:
     }
     goto skip_char_and_whitespaces;
 
-// Primitive tokens
+/* Primitive tokens */
 parse_true_token:
     if (c++ + 3 >= l)   goto end_of_stream;
     if (*c++ != 0x72)   goto error_token;
@@ -480,7 +462,7 @@ parse_null_token:
     CALL_VALUE_CALLBACK(parser->callbacks, null_found,  &token);
     goto select_state;
 
-// Error states.
+/* Error states. */
 error_depth:        result = jsonlite_result_depth_limit;               goto end;
 error_exp_ooa:      result = jsonlite_result_expected_object_or_array;  goto end;
 error_exp_value:    result = jsonlite_result_expected_value;            goto end;
@@ -493,7 +475,7 @@ error_number:       result = jsonlite_result_invalid_number;            goto end
 error_token:        result = jsonlite_result_invalid_token;             goto end;
 error_utf8:         result = jsonlite_result_invalid_utf8;              goto end;
 
-// End of stream states.
+/* End of stream states. */
 end_of_stream_whitespaces:
     token_start = l;
 end_of_stream:
@@ -505,7 +487,6 @@ end:
     parser->cursor = c;
     parser->callbacks.event_occurred(&parser->callbacks.context, jsonlite_event_finished);
     if (result != jsonlite_result_end_of_stream) {
-        jsonlite_stack_check();
         return;
     }
 
@@ -516,6 +497,4 @@ end:
         parser->buffer = jsonlite_buffer_data(parser->rest_buffer);
         parser->limit = parser->buffer + jsonlite_buffer_size(parser->rest_buffer);
     }
-
-    jsonlite_stack_check();
 }

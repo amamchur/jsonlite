@@ -1,17 +1,16 @@
-//
-//  Copyright 2012-2019, Andrii Mamchur
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//  http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License
+/*
+ * Copyright 2012-2021, Andrii Mamchur
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http:www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+*/
 
 #ifndef JSONLITE_H
 #define JSONLITE_H
@@ -20,7 +19,7 @@
 extern "C" {
 #endif
 
-// #include "jsonlite_version.h"
+/* #include "jsonlite_version.h" */
 #ifndef JSONLITE_VERSION_H
 #define JSONLITE_VERSION_H
 
@@ -28,7 +27,58 @@ extern "C" {
 
 #endif
 
-// #include "jsonlite_types.h"
+/* #include "jsonlite_stack_check.h" */
+#ifndef JSONLITE_STACK_CHECK_H
+#define JSONLITE_STACK_CHECK_H
+
+#include <stddef.h>
+#include <stdint.h>
+
+#ifdef JSONLIE_STACK_CHECK
+
+extern ptrdiff_t jsonlite_stack_origin;
+extern ptrdiff_t jsonlite_stack_max;
+extern ptrdiff_t jsonlite_stack_min;
+
+static void jsonlite_stack_check() {
+    uint8_t stack_marker = 0;
+    ptrdiff_t current = (ptrdiff_t)&stack_marker;
+    jsonlite_stack_max = jsonlite_stack_max < current ? current : jsonlite_stack_max;
+    jsonlite_stack_min = jsonlite_stack_min > current ? current : jsonlite_stack_min;
+}
+
+static void jsonlite_stack_check_init() {
+    uint8_t stack_marker = 0;
+    jsonlite_stack_origin = (ptrdiff_t)&stack_marker;
+    jsonlite_stack_max = PTRDIFF_MIN;
+    jsonlite_stack_min = PTRDIFF_MAX;
+}
+
+static ptrdiff_t jsonlite_stack_used() {
+    ptrdiff_t a = jsonlite_stack_origin - jsonlite_stack_max;
+    ptrdiff_t b = jsonlite_stack_origin - jsonlite_stack_min;
+    if (a < 0) {
+        a = -a;
+    }
+
+    if (b < 0) {
+        b = -b;
+    }
+
+    return a < b ? b : a;
+}
+
+#else
+
+#define jsonlite_stack_check()
+#define jsonlite_stack_check_init()
+#define jsonlite_stack_used() PTRDIFF_MAX
+
+#endif
+
+#endif
+
+/* #include "jsonlite_types.h" */
 #ifndef JSONLITE_TYPES_H
 #define JSONLITE_TYPES_H
 
@@ -55,7 +105,7 @@ typedef enum {
 
 #endif
 
-// #include "jsonlite_token.h"
+/* #include "jsonlite_token.h" */
 #ifndef JSONLITE_TOKEN_H
 #define JSONLITE_TOKEN_H
 
@@ -226,7 +276,7 @@ long long jsonlite_token_to_long_long(jsonlite_token *token);
 
 #endif
 
-// #include "jsonlite_utf.h"
+/* #include "jsonlite_utf.h" */
 #ifndef JSONLITE_JSONLITE_UTF_H
 #define JSONLITE_JSONLITE_UTF_H
 
@@ -236,7 +286,7 @@ long long jsonlite_token_to_long_long(jsonlite_token *token);
 
 #include <intrin.h>
 
-static inline uint32_t __inline jsonlite_utf8_sequence_length(uint8_t c) {
+static uint32_t jsonlite_utf8_sequence_length(uint8_t c) {
     unsigned long r = 0;
     unsigned long x = c;
     _BitScanForward(&r, x);
@@ -245,12 +295,10 @@ static inline uint32_t __inline jsonlite_utf8_sequence_length(uint8_t c) {
 
 #else
 
-//#define jsonlite_utf8_sequence_length(x) __builtin_clz(((uint32_t)(x) ^ 0xFFu) << 0x19)
-
-static inline int jsonlite_utf8_sequence_length(uint8_t c) {
-    unsigned int value = c; // cast uint8_t to unsigned int
-    unsigned int inverted = ~value; // invert bits, now we can count leading zeros, instead of one
-    unsigned int shift = sizeof(unsigned int) * 8 - 8; // move uint8_t data to begin
+static int jsonlite_utf8_sequence_length(uint8_t c) {
+    unsigned int value = c;
+    unsigned int inverted = ~value;
+    unsigned int shift = sizeof(unsigned int) * 8 - 8;
     unsigned int leading_zeros = inverted << shift;
     return __builtin_clz(leading_zeros);
 }
@@ -261,7 +309,7 @@ static inline int jsonlite_utf8_sequence_length(uint8_t c) {
 
 #endif
 
-// #include "jsonlite_buffer.h"
+/* #include "jsonlite_buffer.h" */
 #ifndef JSONLITE_BUFFER_H
 #define JSONLITE_BUFFER_H
 
@@ -296,7 +344,7 @@ jsonlite_buffer jsonlite_null_buffer();
 
 #endif
 
-// #include "jsonlite_stream.h"
+/* #include "jsonlite_stream.h" */
 #ifndef JSONLITE_STREAM_H
 #define JSONLITE_STREAM_H
 
@@ -316,16 +364,16 @@ jsonlite_stream jsonlite_stream_null();
 
 #endif
 
-// #include "jsonlite_parser.h"
+/* #include "jsonlite_parser.h" */
 #ifndef JSONLITE_PARSER_H
 #define JSONLITE_PARSER_H
 
 #ifndef JSONLITE_AMALGAMATED
-// #include "jsonlite_buffer.h"
+/* #include "jsonlite_buffer.h" */
 
-// #include "jsonlite_token.h"
+/* #include "jsonlite_token.h" */
 
-// #include "jsonlite_types.h"
+/* #include "jsonlite_types.h" */
 
 #endif
 
@@ -475,14 +523,14 @@ void jsonlite_parser_callbacks_init(jsonlite_parser_callbacks *cbs);
 
 #endif
 
-// #include "jsonlite_builder.h"
+/* #include "jsonlite_builder.h" */
 #ifndef JSONLITE_BUILDER_H
 #define JSONLITE_BUILDER_H
 
 #ifndef JSONLITE_AMALGAMATED
-// #include "jsonlite_stream.h"
+/* #include "jsonlite_stream.h" */
 
-// #include "jsonlite_types.h"
+/* #include "jsonlite_types.h" */
 
 #endif
 
@@ -692,12 +740,12 @@ jsonlite_result jsonlite_builder_base64_value(jsonlite_builder builder, const vo
 
 #endif
 
-// #include "jsonlite_token_pool.h"
+/* #include "jsonlite_token_pool.h" */
 #ifndef JSONLITE_TOKEN_POOL_H
 #define JSONLITE_TOKEN_POOL_H
 
 #ifndef JSONLITE_AMALGAMATED
-// #include "jsonlite_token.h"
+/* #include "jsonlite_token.h" */
 
 #endif
 
@@ -738,12 +786,12 @@ uint32_t jsonlite_hash(const void *data, size_t len);
 
 #endif
 
-// #include "jsonlite_buffer_dynamic.h"
+/* #include "jsonlite_buffer_dynamic.h" */
 #ifndef JSONLITE_BUFFER_DYNAMIC__H
 #define JSONLITE_BUFFER_DYNAMIC__H
 
 #ifndef JSONLITE_AMALGAMATED
-// #include "jsonlite_buffer.h"
+/* #include "jsonlite_buffer.h" */
 
 #endif
 
@@ -755,12 +803,12 @@ void jsonlite_buffer_dynamic_cleanup(jsonlite_buffer buffer);
 
 #endif
 
-// #include "jsonlite_buffer_static.h"
+/* #include "jsonlite_buffer_static.h" */
 #ifndef JSONLITE_BUFFER_STATIC_H
 #define JSONLITE_BUFFER_STATIC_H
 
 #ifndef JSONLITE_AMALGAMATED
-// #include "jsonlite_buffer.h"
+/* #include "jsonlite_buffer.h" */
 
 #endif
 
@@ -773,12 +821,12 @@ jsonlite_buffer jsonlite_buffer_static_init(void *mem, size_t size);
 
 #endif
 
-// #include "jsonlite_stream_dynamic.h"
+/* #include "jsonlite_stream_dynamic.h" */
 #ifndef JSONLITE_STREAM_DYNAMIC_H
 #define JSONLITE_STREAM_DYNAMIC_H
 
 #ifndef JSONLITE_AMALGAMATED
-// #include "jsonlite_stream.h"
+/* #include "jsonlite_stream.h" */
 
 #endif
 
@@ -803,12 +851,12 @@ size_t jsonlite_stream_dynamic_data(jsonlite_stream stream, uint8_t **data, size
 
 #endif
 
-// #include "jsonlite_stream_file.h"
+/* #include "jsonlite_stream_file.h" */
 #ifndef JSONLITE_STREAM_FILE_H
 #define JSONLITE_STREAM_FILE_H
 
 #ifndef JSONLITE_AMALGAMATED
-// #include "jsonlite_stream.h"
+/* #include "jsonlite_stream.h" */
 
 #endif
 
@@ -819,12 +867,12 @@ void jsonlite_stream_file_free(jsonlite_stream stream);
 
 #endif
 
-// #include "jsonlite_stream_static.h"
+/* #include "jsonlite_stream_static.h" */
 #ifndef JSONLITE_STREAM_STATIC_H
 #define JSONLITE_STREAM_STATIC_H
 
 #ifndef JSONLITE_AMALGAMATED
-// #include "jsonlite_stream.h"
+/* #include "jsonlite_stream.h" */
 
 #endif
 
@@ -846,12 +894,12 @@ const void *jsonlite_stream_static_data(jsonlite_stream stream);
 
 #endif
 
-// #include "jsonlite_stream_stdout.h"
+/* #include "jsonlite_stream_stdout.h" */
 #ifndef JSONLITE_STREAM_STDOUT_H
 #define JSONLITE_STREAM_STDOUT_H
 
 #ifndef JSONLITE_AMALGAMATED
-// #include "jsonlite_stream.h"
+/* #include "jsonlite_stream.h" */
 
 #endif
 

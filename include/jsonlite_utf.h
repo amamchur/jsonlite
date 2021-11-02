@@ -7,7 +7,7 @@
 
 #include <intrin.h>
 
-static inline uint32_t __inline jsonlite_utf8_sequence_length(uint8_t c) {
+static uint32_t jsonlite_utf8_sequence_length(uint8_t c) {
     unsigned long r = 0;
     unsigned long x = c;
     _BitScanForward(&r, x);
@@ -16,12 +16,10 @@ static inline uint32_t __inline jsonlite_utf8_sequence_length(uint8_t c) {
 
 #else
 
-//#define jsonlite_utf8_sequence_length(x) __builtin_clz(((uint32_t)(x) ^ 0xFFu) << 0x19)
-
-static inline int jsonlite_utf8_sequence_length(uint8_t c) {
-    unsigned int value = c; // cast uint8_t to unsigned int
-    unsigned int inverted = ~value; // invert bits, now we can count leading zeros, instead of one
-    unsigned int shift = sizeof(unsigned int) * 8 - 8; // move uint8_t data to begin
+static int jsonlite_utf8_sequence_length(uint8_t c) {
+    unsigned int value = c;
+    unsigned int inverted = ~value;
+    unsigned int shift = sizeof(unsigned int) * 8 - 8;
     unsigned int leading_zeros = inverted << shift;
     return __builtin_clz(leading_zeros);
 }

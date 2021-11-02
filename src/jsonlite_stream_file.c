@@ -16,25 +16,21 @@ typedef struct jsonlite_file_stream {
 } jsonlite_file_stream;
 
 static int jsonlite_file_stream_write(jsonlite_stream stream, const void *data, size_t length) {
-    jsonlite_stack_check();
     jsonlite_file_stream *file_stream = CAST_TO_FILE_STREAM(stream);
-    jsonlite_stack_check();
     return (int)fwrite(data, 1, length, file_stream->file);
 }
 
 jsonlite_stream jsonlite_stream_file_alloc(FILE *file) {
-    jsonlite_stack_check();
-    size_t size = SIZE_OF_FILE_STREAM();
+    jsonlite_file_stream *file_stream;
+	size_t size = SIZE_OF_FILE_STREAM();
     struct jsonlite_stream_struct *stream = malloc(size);
     stream->write = jsonlite_file_stream_write;
 
-    jsonlite_file_stream *file_stream = CAST_TO_FILE_STREAM(stream);
+    file_stream = CAST_TO_FILE_STREAM(stream);
     file_stream->file = file;
-    jsonlite_stack_check();
     return stream;
 }
 
 void jsonlite_stream_file_free(jsonlite_stream stream) {
-    jsonlite_stack_check();
     free((void *)stream);
 }
